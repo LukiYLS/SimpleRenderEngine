@@ -1,0 +1,2 @@
+project(SimpleRenderEngine)
+add_subdirectory(RenderSystem)
