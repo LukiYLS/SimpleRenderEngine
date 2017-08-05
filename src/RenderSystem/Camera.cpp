@@ -1,5 +1,15 @@
 #include "Camera.h"
 
+
+
+namespace RenderSystem {
+
+
+	Camera::Camera(const glm::vec3& pos = glm::vec3(0.0f,0.0f,0.0f), const glm::vec3& lookat = glm::vec3(), const glm::vec3& up):
+		
+}
+/*
+
 void PerspectiveCamera::setCamera(const Vector3& pos, const Vector3& look, const Vector3& up)
 {
 	_position = pos;

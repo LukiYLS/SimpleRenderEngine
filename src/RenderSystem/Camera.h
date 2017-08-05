@@ -1,18 +1,66 @@
-#ifndef Camera_H
-#define Camera_H
+#ifndef CAMERA_H
+#define CAMERA_H
+#include <glm\glm.hpp>
+namespace RenderSystem {
+	enum Camera_Movement {
+		FORWARD,
+		BACKWARD,
+		LEFT,
+		RIGHT
+	};
+	//默认设置
+	const float YAW = -90.0f;
+	const float PITCH = 0.0f;
+	const float SPEED = 2.5f;
+	const float SENSITIVTY = 0.1f;
+	const float ZOOM = 45.0f;
 
-#include "Vector3.h"
-#include "Matrix4.h"
+	class Camera {
+	public:
+		Camera(const glm::vec3& pos,const glm::vec3& lookat,const glm::vec3& up);
+	public:
+
+		//键盘控制前后左右
+		void ProcessKeyboard(Camera_Movement direction, float deltaTime);
+		//鼠标控制旋转
+		void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
+		// 放大缩小
+		void ProcessMouseScroll(float yoffset);
+		
+
+		glm::mat4 getViewMatrix();
+		glm::mat4 BuildPerspectiveFovLHMatrix(float angle, float fov,float near,float far);
+
+
+	public:
+		glm::vec3 Position;
+		glm::vec3 LookAt;
+		glm::vec3 Up;
+
+	protected:
+		glm::vec3 _front;		
+		glm::vec3 _right;
+		glm::vec3 _worldUp;
+		float _yaw;
+		float _pitch;		
+		float _movementSpeed;
+		float _mouseSensitivity;
+		float _zoom;
+
+	};
+}
+#endif
+/*
 class Camera{
 public:
 	Camera(){}
 	~Camera(){}
 public:
-	virtual void setCamera(const Vector3&, const Vector3&, const Vector3&) = 0;
-	virtual void setPosition(const Vector3&) = 0;
-	virtual void setLookAt(const Vector3&) = 0;
-	virtual void setUp(const Vector3&) = 0;
-	virtual const Vector3& getPosition() = 0;	
+	virtual void setCamera(const glm::vec3&, const glm::vec3&, const glm::vec3&) = 0;
+	virtual void setPosition(const glm::vec3&) = 0;
+	virtual void setLookAt(const glm::vec3&) = 0;
+	virtual void setUp(const glm::vec3&) = 0;
+	virtual const glm::vec3& getPosition() = 0;	
 	virtual const Vector3& getLookAt() = 0;		
 	virtual const Vector3& getUp() = 0;
 	//virtual const Vector3& getRight() = 0;
