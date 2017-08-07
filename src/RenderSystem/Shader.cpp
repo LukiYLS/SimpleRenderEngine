@@ -7,7 +7,7 @@
 namespace RenderSystem {
 
 
-	Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr)
+	Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath)
 	{
 		std::string vertexCode;
 		std::string fragmentCode;
@@ -54,7 +54,7 @@ namespace RenderSystem {
 		unsigned int vertex, fragment;
 		int success;
 		char infoLog[512];
-		
+		//glewInit();
 		vertex = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertex, 1, &vShaderCode, NULL);
 		glCompileShader(vertex);

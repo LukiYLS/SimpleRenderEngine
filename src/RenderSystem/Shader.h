@@ -1,13 +1,15 @@
 #ifndef SHADER_H
-#define SHADER_J
+#define SHADER_H
 
 #include <glew\glew.h>
 #include <glm\glm.hpp>
-
+#include <memory>
 namespace RenderSystem {
 	class Shader {
 	public:
-		Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath);
+		typedef std::shared_ptr<Shader> ptr;
+	public:
+		Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 		Shader(const Shader& shader) {}
 		~Shader() {}
 	public:

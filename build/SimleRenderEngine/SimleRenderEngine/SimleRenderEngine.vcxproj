@@ -79,7 +79,7 @@
       <SDLCheck>true</SDLCheck>
     </ClCompile>
     <Link>
-      <AdditionalDependencies>glew32.lib;glfw3.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glew32.lib;glfw3.lib;FreeImaged.lib;opengl32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -116,10 +116,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\RenderSystem\Camera.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\Entity.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\Light.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\Mesh.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\RenderState.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\RenderSystem.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\Scene.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\Shader.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\TextureManager.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\Win.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\RenderSystem\Camera.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\Light.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\RenderSystem.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\Scene.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\Shader.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\test.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\TextureManager.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\Win.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

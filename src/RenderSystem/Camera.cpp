@@ -1,168 +1,94 @@
 #include "Camera.h"
-
-
+#include <glm/gtc/matrix_transform.hpp>
 
 namespace RenderSystem {
 
 
-	Camera::Camera(const glm::vec3& pos = glm::vec3(0.0f,0.0f,0.0f), const glm::vec3& lookat = glm::vec3(), const glm::vec3& up):
+	Camera::Camera(const glm::vec3& eye, const glm::vec3& center, const glm::vec3& up) :
+		Eye(eye),
+		Center(center),
+		Up(up),
+		_front(glm::normalize(center - eye)),
+		_worldUp(Up),
+		_yaw(-90.0f),
+		_pitch( 0.0f),
+		_movementSpeed(2.5f),
+		_mouseSensitivity(0.1f),		
+		_right(glm::normalize(glm::cross(_front, _worldUp)))
+	{
+	}
+
+	void Camera::ProcessKeyboard(Camera_Movement direction, float deltaTime)
+	{
+		float velocity = _movementSpeed * deltaTime;
+		if (direction == FORWARD)
+			Eye += _front * velocity;
+		if (direction == BACKWARD)
+			Eye -= _front * velocity;
+		if (direction == LEFT)
+			Eye -= _right * velocity;
+		if (direction == RIGHT)
+			Eye += _right * velocity;
+	}
+
+	void Camera::ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch)
+	{
+		xoffset *= _mouseSensitivity;
+		yoffset *= _mouseSensitivity;
+
+		_yaw += xoffset;
+		_pitch += yoffset;
+
+		// Make sure that when pitch is out of bounds, screen doesn't get flipped
+		if (constrainPitch)
+		{
+			if (_pitch > 89.0f)
+				_pitch = 89.0f;
+			if (_pitch < -89.0f)
+				_pitch = -89.0f;
+		}
+
+		// Update Front, Right and Up Vectors using the updated Eular angles
+		updateCamera();
+	}
+
+	void Camera::ProcessMouseScroll(float yoffset)
+	{
+		if (_fovy >= 1.0f && _fovy <= 45.0f)
+			_fovy -= yoffset;
+		if (_fovy <= 1.0f)
+			_fovy = 1.0f;
+		if (_fovy >= 45.0f)
+			_fovy = 45.0f;
+	}
+
+	glm::mat4 Camera::getViewMatrix()
+	{
+		return glm::lookAt(Eye, Center, Up);
+	}
+	glm::mat4 Camera::getProjectMatrix()
+	{
+		return glm::perspective(_fovy, _aspect, _near, _far);
+	}
+
+	void Camera::updateCamera()
+	{
+		glm::vec3 front;
+		front.x = cos(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+		front.y = sin(glm::radians(_pitch));
+		front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
+		_front = glm::normalize(front);
+	
+		_right = glm::normalize(glm::cross(_front, _worldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+		Up = glm::normalize(glm::cross(_right, _front));
+		Center = Eye + _front;
+	}
+	void Camera::setPerspectiveFovLHMatrix(float fovy, float aspect, float near, float far)
+	{
+		_fovy = fovy;
+		_aspect = aspect;
+		_near = near;
+		_far = far;
+	}
 		
-}
-/*
-
-void PerspectiveCamera::setCamera(const Vector3& pos, const Vector3& look, const Vector3& up)
-{
-	_position = pos;
-	_lookAt = look;
-	_up = up;
-	updataVeiwMatrix();
-}
-
-void PerspectiveCamera::setPosition(const Vector3& pos)
-{
-	_position = pos;
-	updataVeiwMatrix();
-}
-
-void PerspectiveCamera::setLookAt(const Vector3& lookAt)
-{
-	_lookAt = lookAt;
-	updataVeiwMatrix();
-}
-
-void PerspectiveCamera::setUp(const Vector3& up)
-{
-	_up = up;
-	updataVeiwMatrix();
-}
-
-const Vector3& PerspectiveCamera::getPosition()
-{
-	return _position;
-}
-
-const Vector3& PerspectiveCamera::getLookAt()
-{
-	return _lookAt;
-}
-
-const Vector3& PerspectiveCamera::getUp()
-{
-	return _up;
-}
-
-const Matrix4& PerspectiveCamera::getViewMatrix()
-{
-	return _viewMatrix;
-}
-
-const Matrix4& PerspectiveCamera::getProjectMatrix()
-{
-	return _projectMatrix;
-}
-
-void PerspectiveCamera::updataVeiwMatrix()
-{
-	Vector3 zAxis, xAxis, yAxis;
-	float length, result1, result2, result3;
-
-
-
-	zAxis.x = _lookAt.x - _position.x;
-	zAxis.y = _lookAt.y - _position.y;
-	zAxis.z = _lookAt.z - _position.z;
-	
-	zAxis.x = zAxis.x / zAxis.length();
-	zAxis.y = zAxis.y / zAxis.length();
-	zAxis.z = zAxis.z / zAxis.length();
-
-
-	xAxis.x = (_up.y * zAxis.z) - (_up.z * zAxis.y);
-	xAxis.y = (_up.z * zAxis.x) - (_up.x * zAxis.z);
-	xAxis.z = (_up.x * zAxis.y) - (_up.y * zAxis.x);
-	
-	xAxis.x = xAxis.x / xAxis.length();
-	xAxis.y = xAxis.y / xAxis.length();
-	xAxis.z = xAxis.z / xAxis.length();
-
-
-	yAxis.x = (zAxis.y * xAxis.z) - (zAxis.z * xAxis.y);
-	yAxis.y = (zAxis.z * xAxis.x) - (zAxis.x * xAxis.z);
-	yAxis.z = (zAxis.x * xAxis.y) - (zAxis.y * xAxis.x);
-
-
-	result1 = ((xAxis.x * _position.x) + (xAxis.y * _position.y) + (xAxis.z * _position.z)) * -1.0f;
-
-
-	result2 = ((yAxis.x * _position.x) + (yAxis.y * _position.y) + (yAxis.z * _position.z)) * -1.0f;
-
-
-	result3 = ((zAxis.x * _position.x) + (zAxis.y * _position.y) + (zAxis.z * _position.z)) * -1.0f;
-
-
-	_viewMatrix[0] = xAxis.x;
-	_viewMatrix[1] = yAxis.x;
-	_viewMatrix[2] = zAxis.x;
-	_viewMatrix[3] = 0.0f;
-
-	_viewMatrix[4] = xAxis.y;
-	_viewMatrix[5] = yAxis.y;
-	_viewMatrix[6] = zAxis.y;
-	_viewMatrix[7] = 0.0f;
-
-	_viewMatrix[8] = xAxis.z;
-	_viewMatrix[9] = yAxis.z;
-	_viewMatrix[10] = zAxis.z;
-	_viewMatrix[11] = 0.0f;
-
-	_viewMatrix[12] = result1;
-	_viewMatrix[13] = result2;
-	_viewMatrix[14] = result3;
-	_viewMatrix[15] = 1.0f;
-}
-
-void PerspectiveCamera::BuildPerspectiveFovLHMatrix(float fieldOfView, float screenAspect, float screenNear, float screenDepth)
-{
-	_projectMatrix[0] = 1.0f / (screenAspect * tan(fieldOfView * 0.5f));
-	_projectMatrix[1] = 0.0f;
-	_projectMatrix[2] = 0.0f;
-	_projectMatrix[3] = 0.0f;
-
-	_projectMatrix[4] = 0.0f;
-	_projectMatrix[5] = 1.0f / tan(fieldOfView * 0.5f);
-	_projectMatrix[6] = 0.0f;
-	_projectMatrix[7] = 0.0f;
-
-	_projectMatrix[8] = 0.0f;
-	_projectMatrix[9] = 0.0f;
-	_projectMatrix[10] = screenDepth / (screenDepth - screenNear);
-	_projectMatrix[11] = 1.0f;
-
-	_projectMatrix[12] = 0.0f;
-	_projectMatrix[13] = 0.0f;
-	_projectMatrix[14] = (-screenNear * screenDepth) / (screenDepth - screenNear);
-	_projectMatrix[15] = 0.0f;
-}
-
-void PerspectiveCamera::BuildFrustumMatrix(float left, float right, float top, float bottom, float Near, float Far)
-{
-	_projectMatrix[0] = Near / right;
-	_projectMatrix[1] = 0.0f;
-	_projectMatrix[2] = 0.0f;
-	_projectMatrix[3] = 0.0f;
-
-	_projectMatrix[4] = 0.0f;
-	_projectMatrix[5] = Near / top;
-	_projectMatrix[6] = 0.0f;
-	_projectMatrix[7] = 0.0f;
-
-	_projectMatrix[8] = 0.0f;
-	_projectMatrix[9] = 0.0f;
-	_projectMatrix[10] = -(Far + Near) / (Far - Near);
-	_projectMatrix[11] = (-2 * Near * Far) / (Far - Near);
-
-	_projectMatrix[12] = 0.0f;
-	_projectMatrix[13] = 0.0f;
-	_projectMatrix[14] = -1.0f;
-	_projectMatrix[15] = 0.0f;
 }
