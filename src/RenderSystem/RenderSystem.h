@@ -9,7 +9,7 @@ namespace RenderSystem {
 		void render(float time);
 		void endRender();//Ò»Ö¡½áÊø
 	protected:
-		RenderSystem();
+		RenderSystem() {}
 		RenderSystem(const RenderSystem&);
 		RenderSystem& operator = (const RenderSystem&);
 	private:

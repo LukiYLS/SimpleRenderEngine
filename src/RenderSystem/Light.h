@@ -6,11 +6,13 @@
 #include <vector>
 #include <string>
 #include <map>
-
+#include <memory>
 namespace RenderSystem
 {
 	enum LightType { DirectLight, PointLight, SpotLight };
 	class Light {
+	public:
+		typedef std::shared_ptr<Light> ptr;
 	public:
 		Light();
 		Light(unsigned int num);

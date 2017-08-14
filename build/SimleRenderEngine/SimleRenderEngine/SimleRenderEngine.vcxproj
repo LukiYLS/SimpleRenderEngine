@@ -130,12 +130,14 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\RenderSystem\Camera.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\Light.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\Mesh.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\RenderState.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\RenderSystem.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\Scene.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\Shader.cpp" />
-    <ClCompile Include="..\..\..\src\RenderSystem\test.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\TextureManager.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\Win.cpp" />
+    <ClCompile Include="..\..\..\src\test\test2.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

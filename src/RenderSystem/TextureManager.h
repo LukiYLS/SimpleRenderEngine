@@ -9,7 +9,7 @@
 #include <glew\glew.h>
 #include "FreeImage.h"
 #include <map>
-
+#include <vector>
 namespace RenderSystem {
 	class TextureManager
 	{
@@ -17,26 +17,19 @@ namespace RenderSystem {
 		static TextureManager* Inst();
 		virtual ~TextureManager();
 
-		//load a texture an make it the current texture
-		//if texID is already in use, it will be unloaded and replaced with this texture
-		bool LoadTexture(const char* filename,	//where to load the file from
-			const unsigned int texID,			//arbitrary id you will reference the texture by
-												//does not have to be generated with glGenTextures
-			GLenum image_format = GL_RGB,		//format the image is in
-			GLint internal_format = GL_RGB,		//format to store the image in
-			GLint level = 0,					//mipmapping level
-			GLint border = 0);					//border size
 
-												//free the memory for a texture
-		bool UnloadTexture(const unsigned int texID);
+		bool loadTexture(const char* filename, const char* texName, GLenum image_format = GL_RGB, GLint internal_format = GL_RGB, GLint level = 0, GLint border = 0);
 
-		//set the current texture
-		bool BindTexture(const unsigned int texID);
+		bool unloadTexture(const char* texName);
 
-		//free all texture memory
-		void UnloadAllTextures();
+		bool loadCubeMap(std::vector<const char*> flies);
 
-		unsigned int getTextureID(int index);
+		bool bindTexture(const char* texName);
+		bool bindTexture(const char* texName,bool isCube);
+
+		GLuint getTextureUnit(const char* texName);
+
+		void unloadAllTextures();
 
 	protected:
 		TextureManager();//×èÖ¹¹¹Ôì
@@ -44,7 +37,8 @@ namespace RenderSystem {
 		TextureManager& operator=(const TextureManager& tm);//×èÖ¹¸³Öµ
 
 		static TextureManager* m_inst;
-		std::map<unsigned int, GLuint> m_texID;
+		std::map<const char*, GLuint> m_texID;
+		unsigned int m_cubeMap;
 	};
 
 }

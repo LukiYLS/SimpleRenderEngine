@@ -59,9 +59,6 @@
     <ClCompile Include="..\..\..\src\RenderSystem\TextureManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\RenderSystem\test.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\RenderSystem\Win.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -69,6 +66,15 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\RenderSystem\Scene.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\RenderSystem\Mesh.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\RenderSystem\RenderState.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\test\test2.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
