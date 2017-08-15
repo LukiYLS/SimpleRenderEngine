@@ -1,4 +1,1 @@
-temp.txt
-*.log
-//build/*
-Data/*
+build/SimpleRenderEngine/Debug
