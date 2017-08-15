@@ -1,5 +1,6 @@
 #include "Scene.h"
-
+#include "PickTool.h"
+#include "FrameBuffer.h"
 namespace RenderSystem {
 	Scene* Scene::m_Inst(0);
 	Scene* Scene::Inst()
@@ -22,5 +23,19 @@ namespace RenderSystem {
 	{
 		for (auto it = _entity_map.begin(); it != _entity_map.end(); it++)
 			it->second->draw();
+	}
+
+	void Scene::pickRender()
+	{
+		//render to buffer
+		int index = 0;
+		for (auto it = _entity_map.begin(); it != _entity_map.end(); it++, index++)
+		{
+			glm::vec4 color = GetColorByIndex(index);
+			_entity_vec.push_back(it->second);
+		}
+		FrameBuffer fbo;
+		fbo.createFrameBufferWithTexture()
+
 	}
 }

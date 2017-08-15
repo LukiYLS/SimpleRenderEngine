@@ -13,12 +13,13 @@ namespace RenderSystem {
 		void addLight();
 		void setCamera();
 		void update();//
-
+		void pickRender();//…Ë÷√color£¨render to buffer£¨read buffer£¨
 		void render();
 	private:
 		static Scene* m_Inst;
 		std::map<std::string, Entity::ptr> _entity_map;
 		std::map<LightType, Light::ptr> _light_map;
+		std::vector<Entity::ptr> _entity_vec;
 	};
 }
 #endif // !SCENEH
