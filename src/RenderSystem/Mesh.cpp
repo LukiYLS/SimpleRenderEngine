@@ -124,6 +124,10 @@ namespace RenderSystem {
 		}
 		this->setVertices(vertices);
 	}
+	void Mesh::render(Shader::ptr shader)
+	{
+
+	}
 	void Mesh::draw()
 	{
 		//shader¸³Öµ

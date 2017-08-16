@@ -24,6 +24,7 @@ namespace RenderSystem {
 		Mesh(const Mesh& mesh) {}
 	public:
 		virtual void draw();
+		virtual void render(Shader::ptr shader);
 		virtual void setVertices(std::vector<Vertex> vertices) { _vertices = vertices; }
 		virtual void setIndex(std::vector<unsigned int> indices) { _indices = indices; }		
 		virtual void setupBuffer();

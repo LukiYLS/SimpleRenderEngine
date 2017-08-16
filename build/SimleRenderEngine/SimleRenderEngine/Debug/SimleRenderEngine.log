@@ -1,0 +1,20 @@
+﻿  Scene.cpp
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(29): error C2511: “void RenderSystem::Scene::pickRender(int,int)”:“RenderSystem::Scene”中没有找到重载的成员函数
+  c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.h(8): note: 参见“RenderSystem::Scene”的声明
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(32): error C2228: “.begin”的左边必须有类/结构/联合
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(32): error C3536: “it”: 初始化之前无法使用
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(32): error C2228: “.end”的左边必须有类/结构/联合
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(35): error C2228: “.push_back”的左边必须有类/结构/联合
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(35): error C2227: “->second”的左边必须指向类/结构/联合/泛型类型
+  c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(35): note: 类型是“int”
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(38): error C2660: “RenderSystem::FrameBuffer::createFrameBufferWithTexture”: 函数不接受 0 个参数
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\scene.cpp(40): error C2143: 语法错误: 缺少“;”(在“}”的前面)
+  PickTool.cpp
+  FrameBuffer.cpp
+c:\users\luki\desktop\simplerenderengine\src\rendersystem\framebuffer.cpp(14): error C2065: “NULL”: 未声明的标识符
+  正在生成代码...
+  正在编译...
+  RenderSystem.cpp
+  正在生成代码...
+  正在跳过...(未检测到相关更改)
+  test2.cpp

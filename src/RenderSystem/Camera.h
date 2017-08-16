@@ -4,6 +4,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 #include <glm\glm.hpp>
+#include <memory>
 namespace RenderSystem {
 	enum Camera_Movement {
 		FORWARD,
@@ -13,6 +14,8 @@ namespace RenderSystem {
 	};
 
 	class Camera {
+	public:
+		typedef std::shared_ptr<Camera> ptr;
 	public:		
 		Camera(const glm::vec3& eye = glm::vec3(0.0f, 0.0f, 0.0f), const glm::vec3& center = glm::vec3(0.0f, 0.0f, -1.0f), const glm::vec3& up = glm::vec3(0.0f, 1.0f, 0.0f));
 	public:
