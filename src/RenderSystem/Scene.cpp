@@ -25,7 +25,7 @@ namespace RenderSystem {
 			it->second->draw();
 	}
 
-	void Scene::pickRender()
+	void Scene::pickRender(int width, int height)
 	{
 		//render to buffer
 		int index = 0;
@@ -35,7 +35,9 @@ namespace RenderSystem {
 			_entity_vec.push_back(it->second);
 		}
 		FrameBuffer fbo;
-		fbo.createFrameBufferWithTexture()
+		fbo.createFrameBufferWithTexture(width, height);
+		fbo.bindFrameBuffer(true);
+
 
 	}
 }

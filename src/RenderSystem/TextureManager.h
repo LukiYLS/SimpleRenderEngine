@@ -24,12 +24,14 @@ namespace RenderSystem {
 
 		bool loadCubeMap(std::vector<const char*> flies);
 
-		bool bindTexture(const char* texName);
-		bool bindTexture(const char* texName,bool isCube);
+		bool bindTexture(const char* texName, int units);
+		bool bindTexture(const char* texName, bool isCube);
 
 		GLuint getTextureUnit(const char* texName);
 
 		void unloadAllTextures();
+
+		void addTexture(const char* texName, GLuint textureID);
 
 	protected:
 		TextureManager();//×èÖ¹¹¹Ôì

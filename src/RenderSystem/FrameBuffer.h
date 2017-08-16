@@ -9,7 +9,7 @@ namespace RenderSystem {
 		bool createFrameBufferWithTexture(int width, int height);
 
 		void bindFrameBuffer(bool isFullViewPort = true);
-		void bindFrameBufferTexture();
+		void bindFrameBufferTexture(int units, bool isMipMap = true);
 	private:
 		int _width, _height;
 		unsigned int _fbo;

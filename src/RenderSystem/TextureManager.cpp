@@ -147,13 +147,13 @@ namespace RenderSystem {
 		return result;
 	}
 
-	bool TextureManager::bindTexture(const char* texName)
+	bool TextureManager::bindTexture(const char* texName,int units)
 	{
 		bool result(true);
 
 		if (m_texID.find(texName) != m_texID.end())
-		{		
-			
+		{
+			glActiveTexture(GL_TEXTURE0 + units);
 			glBindTexture(GL_TEXTURE_2D, m_texID[texName]);			
 		}
 		else
@@ -166,6 +166,13 @@ namespace RenderSystem {
 		if (m_texID.find(texName) != m_texID.end())
 			return m_texID[texName];
 		return 0;
+	}
+
+	void TextureManager::addTexture(const char* texName, GLuint textureID)
+	{
+		if (m_texID.find(texName) != m_texID.end())
+			glDeleteTextures(1, &(m_texID[texName]));
+		m_texID[texName] = textureID;
 	}
 
 	void TextureManager::unloadAllTextures()

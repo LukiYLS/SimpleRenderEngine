@@ -1,0 +1,34 @@
+﻿  test2.cpp
+c:\users\user\desktop\simplerenderengine\build\simlerenderengine\simlerenderengine\3rdparty\include\freeimage.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\users\user\desktop\simplerenderengine\src\test\test2.cpp(122): error C2661: “RenderSystem::TextureManager::bindTexture”: 没有重载函数接受 1 个参数
+c:\users\user\desktop\simplerenderengine\src\test\test2.cpp(124): error C2661: “RenderSystem::TextureManager::bindTexture”: 没有重载函数接受 1 个参数
+  Win.cpp
+c:\users\user\desktop\simplerenderengine\src\rendersystem\win.cpp(34): warning C4244: “初始化”: 从“double”转换到“float”，可能丢失数据
+  TextureManager.cpp
+c:\users\user\desktop\simplerenderengine\build\simlerenderengine\simlerenderengine\3rdparty\include\freeimage.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\users\user\desktop\simplerenderengine\src\rendersystem\texturemanager.cpp(101): warning C4018: “<”: 有符号/无符号不匹配
+  Shader.cpp
+c:\users\user\desktop\simplerenderengine\src\rendersystem\shader.cpp(56): warning C4101: “infoLog”: 未引用的局部变量
+c:\users\user\desktop\simplerenderengine\src\rendersystem\shader.cpp(55): warning C4101: “success”: 未引用的局部变量
+  Scene.cpp
+c:\users\user\desktop\simplerenderengine\src\rendersystem\scene.cpp(29): error C2511: “void RenderSystem::Scene::pickRender(int,int)”:“RenderSystem::Scene”中没有找到重载的成员函数
+  c:\users\user\desktop\simplerenderengine\src\rendersystem\scene.h(8): note: 参见“RenderSystem::Scene”的声明
+c:\users\user\desktop\simplerenderengine\src\rendersystem\scene.cpp(32): error C2228: “.begin”的左边必须有类/结构/联合
+c:\users\user\desktop\simplerenderengine\src\rendersystem\scene.cpp(32): error C3536: “it”: 初始化之前无法使用
+c:\users\user\desktop\simplerenderengine\src\rendersystem\scene.cpp(32): error C2228: “.end”的左边必须有类/结构/联合
+c:\users\user\desktop\simplerenderengine\src\rendersystem\scene.cpp(35): error C2228: “.push_back”的左边必须有类/结构/联合
+c:\users\user\desktop\simplerenderengine\src\rendersystem\scene.cpp(35): error C2227: “->second”的左边必须指向类/结构/联合/泛型类型
+  c:\users\user\desktop\simplerenderengine\src\rendersystem\scene.cpp(35): note: 类型是“int”
+  RenderSystem.cpp
+  RenderState.cpp
+  PickTool.cpp
+  Mesh.cpp
+c:\users\user\desktop\simplerenderengine\build\simlerenderengine\simlerenderengine\3rdparty\include\freeimage.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+c:\users\user\desktop\simplerenderengine\src\rendersystem\mesh.cpp(141): warning C4018: “<”: 有符号/无符号不匹配
+c:\users\user\desktop\simplerenderengine\src\rendersystem\mesh.cpp(143): error C2661: “RenderSystem::TextureManager::bindTexture”: 没有重载函数接受 1 个参数
+  Light.cpp
+  FrameBuffer.cpp
+c:\users\user\desktop\simplerenderengine\build\simlerenderengine\simlerenderengine\3rdparty\include\freeimage.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  Camera.cpp
+  正在生成代码...
+c:\users\user\desktop\simplerenderengine\src\rendersystem\texturemanager.cpp(132): warning C4715: “RenderSystem::TextureManager::loadCubeMap”: 不是所有的控件路径都返回值

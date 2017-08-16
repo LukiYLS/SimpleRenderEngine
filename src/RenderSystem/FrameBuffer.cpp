@@ -1,5 +1,5 @@
 #include "FrameBuffer.h"
-
+#include "TextureManager.h"
 namespace RenderSystem {
 
 	bool FrameBuffer::createFrameBufferWithTexture(int width, int height)
@@ -19,13 +19,30 @@ namespace RenderSystem {
 
 		_width = width;
 		_height = height;
+		glReadBuffer(GL_NONE);
+		
+		if (glCheckFramebufferStatus(GL_FRAMEBUFFER) != GL_FRAMEBUFFER_COMPLETE)
+		{
+			//std::cout << "FB error";
+			return false;
+		}
 
-		return glCheckFramebufferStatus(GL_FRAMEBUFFER) == GL_FRAMEBUFFER_COMPLETE;
+		glBindTexture(GL_TEXTURE_2D, 0);
+		glBindFramebuffer(GL_FRAMEBUFFER, 0);	
+
+		return true;
 	}
 
 	void FrameBuffer::bindFrameBuffer(bool isFullViewPort)
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
 		if (isFullViewPort)glViewport(0, 0, _width, _height);
+	}
+
+	void FrameBuffer::bindFrameBufferTexture(int units, bool isMipMap)
+	{
+		TextureManager::Inst()->addTexture("framebufferTex", _texture);
+		TextureManager::Inst()->bindTexture("framebufferTex", units);
+		if(isMipMap)glGenerateMipmap(GL_TEXTURE_2D);
 	}
 }
