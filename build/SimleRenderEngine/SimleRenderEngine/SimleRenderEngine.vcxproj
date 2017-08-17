@@ -117,15 +117,18 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\RenderSystem\Camera.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\Effect.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\Entity.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\FrameBuffer.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\Light.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\Mesh.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\ParticleSytem.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\PickTool.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\RenderState.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\RenderSystem.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\Scene.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\Shader.h" />
+    <ClInclude Include="..\..\..\src\RenderSystem\Texture.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\TextureManager.h" />
     <ClInclude Include="..\..\..\src\RenderSystem\Win.h" />
   </ItemGroup>
@@ -134,6 +137,7 @@
     <ClCompile Include="..\..\..\src\RenderSystem\FrameBuffer.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\Light.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\Mesh.cpp" />
+    <ClCompile Include="..\..\..\src\RenderSystem\ParticleSystemcpp.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\PickTool.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\RenderState.cpp" />
     <ClCompile Include="..\..\..\src\RenderSystem\RenderSystem.cpp" />

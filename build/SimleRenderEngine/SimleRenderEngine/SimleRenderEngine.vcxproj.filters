@@ -51,6 +51,15 @@
     <ClInclude Include="..\..\..\src\RenderSystem\PickTool.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\RenderSystem\Effect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\RenderSystem\ParticleSytem.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\RenderSystem\Texture.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\RenderSystem\Shader.cpp">
@@ -87,6 +96,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\RenderSystem\PickTool.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\RenderSystem\ParticleSystemcpp.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
