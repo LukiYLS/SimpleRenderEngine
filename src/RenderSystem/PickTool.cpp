@@ -30,12 +30,6 @@ namespace RenderSystem
 		if (iResult == RGB_WHITE)return -1;
 		return iResult;
 	}
-}
-
-
-
-		return (r) | (g << 8) | (b << 16);
-	}
 
 	int GetPickedColorIndexUnderMouse(int x, int y)
 	{
@@ -47,7 +41,7 @@ namespace RenderSystem
 		return iResult;
 	}
 
-	void Get3DRayUnderMouse(int x, int y, glm::vec3* v1, glm::vec3* v2,Camera::ptr camera)
+	void Get3DRayUnderMouse(int x, int y,int width, int height, glm::vec3* v1, glm::vec3* v2,Camera::ptr camera)
 	{		
 
 		glm::vec4 viewport = glm::vec4(0.0f, 0.0f, width, height);
