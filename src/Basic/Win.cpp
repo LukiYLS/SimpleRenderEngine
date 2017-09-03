@@ -1,0 +1,48 @@
+#include "Win.h"
+#include  <iostream>
+#include "RenderSystem.h"
+namespace Basic {
+	Win* Win::m_Inst(0);
+	Win* Win::Inst() {
+		if (m_Inst)
+			m_Inst = new Win();
+		return m_Inst;
+	}
+
+	bool Win::createWindow(const int& width, const int& height, const char* name)
+	{
+		glfwInit();
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+														
+		GLFWwindow* window = glfwCreateWindow(width, height, name, NULL, NULL);
+		if (window == NULL)
+		{
+			std::cout << "Failed to create GLFW window" << std::endl;
+			glfwTerminate();
+			return false;
+		}
+		return true;
+	}
+	void Win::starup(Camera::ptr camera)
+	{
+		while (!glfwWindowShouldClose(window))
+		{
+			//我希望这里应该有个整个场景的update，加入场景中的entity必须重载update
+			float currentFrame = glfwGetTime();
+			RenderSystem::RenderSystem::Inst()->beginRender();
+			RenderSystem::RenderSystem::Inst()->render(camera, currentFrame);
+			RenderSystem::RenderSystem::Inst()->endRender();
+			//deltaTime = currentFrame - lastFrame;
+			//lastFrame = currentFrame;
+		
+			//事件处理怎么写呀？？？
+			//processInput(window);
+			
+			glfwSwapBuffers(window);
+			glfwPollEvents();
+		}
+
+	}
+}
