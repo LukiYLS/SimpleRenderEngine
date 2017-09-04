@@ -128,7 +128,7 @@
     <ClCompile Include="..\..\..\src\Basic\Shader.cpp" />
     <ClCompile Include="..\..\..\src\Basic\TextureManager.cpp" />
     <ClCompile Include="..\..\..\src\Basic\Win.cpp" />
-    <ClCompile Include="..\..\..\src\test\DrawTriangle.cpp" />
+    <ClCompile Include="..\..\..\src\Example\DrawCube.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Basic\Camera.h" />

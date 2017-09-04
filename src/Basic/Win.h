@@ -2,7 +2,7 @@
 #define WIN_H
 #include "Camera.h"
 #include <glfw3.h>
-namespace Basic {
+namespace Basic {//时间怎么加进来啊，glfw的研究一下
 	class Win {
 	public:
 		static Win* Inst();

@@ -111,6 +111,7 @@ namespace Basic {
 	}
 	void Shader::setVec3(const char* name, const glm::vec3& value)const
 	{
+		GLint loc = glGetUniformLocation(shader_ID, name);
 		glUniform3fv(glGetUniformLocation(shader_ID, name), 1, &value[0]);
 	}
 	void Shader::setVec4(const char* name, const glm::vec4& value)const

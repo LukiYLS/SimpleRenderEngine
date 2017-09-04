@@ -13,7 +13,7 @@ namespace Basic {
 		Vertex(float x, float y, float z, float n1, float n2, float n3, float u, float v) :
 			Position(x, y, z), Normal(n1, n2, n3), TexCoords(u, v) {}
 	};	
-	class Entity {
+	class Entity {//所有的模型都必须继承这个类
 	public:
 		typedef std::shared_ptr<Entity> ptr;
 	public:

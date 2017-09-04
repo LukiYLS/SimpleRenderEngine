@@ -49,6 +49,8 @@ namespace Basic
 		void setLightNum(int num) { _lightnum = num; }
 		int getLightNum() const { return _lightnum; }
 
+		inline void setColor(const glm::vec3& color) { _color = color; }
+		inline const glm::vec3& getColor() const { return _color; }
 
 		inline void setAmbient(const glm::vec3& ambient) { _ambient = ambient; }
 		inline const glm::vec3& getAmbient() const { return _ambient; }
@@ -87,12 +89,14 @@ namespace Basic
 		inline float getSpotCutoff() const { return _spotCosCutoff; }
 
 		inline LightType getType() const{ return _type; }
+		inline void setType(LightType type) { _type = type; }
 		//void captureLightState();
 
 	private:
 		void init();
 	private:
 		int _lightnum;
+		glm::vec3 _color;
 		glm::vec3 _ambient;
 		glm::vec3 _diffuse;
 		glm::vec3 _specular;

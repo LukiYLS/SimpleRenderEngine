@@ -38,8 +38,7 @@ namespace Basic {
 
 		_yaw += xoffset;
 		_pitch += yoffset;
-
-		// Make sure that when pitch is out of bounds, screen doesn't get flipped
+		
 		if (constrainPitch)
 		{
 			if (_pitch > 89.0f)
@@ -47,8 +46,7 @@ namespace Basic {
 			if (_pitch < -89.0f)
 				_pitch = -89.0f;
 		}
-
-		// Update Front, Right and Up Vectors using the updated Eular angles
+	
 		updateCamera();
 	}
 
@@ -79,7 +77,7 @@ namespace Basic {
 		front.z = sin(glm::radians(_yaw)) * cos(glm::radians(_pitch));
 		_front = glm::normalize(front);
 	
-		_right = glm::normalize(glm::cross(_front, _worldUp));  // Normalize the vectors, because their length gets closer to 0 the more you look up or down which results in slower movement.
+		_right = glm::normalize(glm::cross(_front, _worldUp));  
 		Up = glm::normalize(glm::cross(_right, _front));
 		Center = Eye + _front;
 	}

@@ -11,7 +11,7 @@
 
 using namespace Basic;
 namespace Basic {
-	struct Material
+	struct Material//材质应该和纹理封装在一块吧？
 	{
 		glm::vec3 ambient;   // 环境光
 		glm::vec3 diffuse;    // 漫反射光
@@ -22,7 +22,7 @@ namespace Basic {
 		:public Entity {
 	public:
 		typedef std::shared_ptr<Mesh> ptr;
-		Mesh() {}
+		Mesh();
 		virtual ~Mesh() {}
 		Mesh(const Mesh& mesh) {}
 	public:	

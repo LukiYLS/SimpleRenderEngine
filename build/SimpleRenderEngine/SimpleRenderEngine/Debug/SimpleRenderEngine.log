@@ -1,5 +1,4 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (Debug\) contains files shared from another project (SimleRenderEngine.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  DrawTriangle.cpp
-c:\users\luki\desktop\simplerenderengine\build\simplerenderengine\simplerenderengine\3rdparty\include\freeimage.h : warning C4819: 该文件包含不能在当前代码页(936)中表示的字符。请将该文件保存为 Unicode 格式以防止数据丢失
+  Light.cpp
   SimpleRenderEngine.vcxproj -> C:\Users\Luki\Desktop\SimpleRenderEngine\build\SimpleRenderEngine\Debug\SimpleRenderEngine.exe
   SimpleRenderEngine.vcxproj -> C:\Users\Luki\Desktop\SimpleRenderEngine\build\SimpleRenderEngine\Debug\SimpleRenderEngine.pdb (Partial PDB)

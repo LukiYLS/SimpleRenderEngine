@@ -3,7 +3,7 @@
 #include <glew\glew.h>
 namespace Basic {
 
-	class FrameBuffer {
+	class FrameBuffer {//Õâ¸ö
 
 	public:
 		bool createFrameBufferWithTexture(int width, int height);

@@ -3,6 +3,7 @@
 #include <glew\glew.h>
 #include <memory>
 namespace Basic {
+	//这个类有必要吗？？
 	/*enum Type {
 		FLOAT = GL_FLOAT,
 		FLOAT_VEC2 = GL_FLOAT_VEC2,

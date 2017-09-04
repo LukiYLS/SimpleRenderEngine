@@ -6,7 +6,7 @@
 #include <map>
 #include <string>
 namespace Basic {
-	class Scene {//要是camera和light也能继承entity就很完美？
+	class Scene {//场景目前可以管理所有的渲染对象，后期引入osg节点管理方式
 	public:
 		static Scene* Inst();
 		void addEntity(std::string name, Entity::ptr entity);

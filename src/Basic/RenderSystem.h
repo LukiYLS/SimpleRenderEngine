@@ -2,7 +2,7 @@
 #define RENDERSYSTEM_H
 #include "Camera.h"
 namespace Basic {
-	class RenderSystem {
+	class RenderSystem {//后期扩展成一个组件，专门做渲染的工作
 	public:
 		static RenderSystem* Inst();
 		void beginRender();//渲染之前设置renderstate

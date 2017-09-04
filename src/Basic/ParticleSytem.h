@@ -10,7 +10,7 @@ namespace Basic {
 		glm::vec3 vel;//velocity
 		float lifetime;
 	};
-	class ParticleSystem {
+	class ParticleSystem {//用transfrom feedback实现的粒子还没测试
 	public:
 		ParticleSystem(int count);
 		~ParticleSystem();

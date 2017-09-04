@@ -7,6 +7,10 @@
 #include <algorithm>
 namespace Basic {
 
+	Mesh::Mesh()
+	{
+		_hasMaterial = false;
+	}
 	void Mesh::setProgram(Shader::ptr shader)
 	{
 		_shader = shader;
@@ -29,14 +33,17 @@ namespace Basic {
 			}
 			else if ((*it)->getType() == PointLight)
 			{
-				_shader->setVec3("PointLight.position", (*it)->getPosition());
-				_shader->setVec3("PointLight.ambient", (*it)->getAmbient());
-				_shader->setVec3("PointLight.diffuse", (*it)->getDiffuse());
-				_shader->setVec3("PointLight.specular", (*it)->getSpecular());
+				_shader->setVec3("pointLight.color", (*it)->getColor());
+				_shader->setVec3("pointLight.position", (*it)->getPosition());
+				_shader->setVec3("pointLight.ambient", (*it)->getAmbient());
+				_shader->setVec3("pointLight.diffuse", (*it)->getDiffuse());
+				_shader->setVec3("pointLight.specular", (*it)->getSpecular());
 
-				_shader->setFloat("PointLight.constant", (*it)->getConstantAttenuation());
-				_shader->setFloat("PointLight.linear", (*it)->getLinearAttenuation());
-				_shader->setFloat("PointLight.quadratic", (*it)->getQuadraticAttenuation());
+				_shader->setFloat("pointLight.shiness", (*it)->getShiness());
+				_shader->setFloat("pointLight.strength", (*it)->getStrength());
+				_shader->setFloat("pointLight.constant", (*it)->getConstantAttenuation());
+				_shader->setFloat("pointLight.linear", (*it)->getLinearAttenuation());
+				_shader->setFloat("pointLight.quadratic", (*it)->getQuadraticAttenuation());
 			}
 			else if ((*it)->getType() == SpotLight)
 			{
@@ -54,15 +61,15 @@ namespace Basic {
 		}
 	}
 	void Mesh::createBuffer()
-	{
+	{			
 		glGenVertexArrays(1, &_vao);
 		glGenBuffers(1, &_vbo);
 
 
 		glBindVertexArray(_vao);
-		glBindBuffer(GL_VERTEX_ARRAY, _vbo);
+		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
 
-		glBufferData(GL_VERTEX_ARRAY, _vertices.size() * sizeof(Vertex), &_vertices[0], GL_STATIC_DRAW);
+		glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(Vertex), &_vertices[0], GL_STATIC_DRAW);
 
 		if (!_indices.empty())
 		{
@@ -169,8 +176,11 @@ namespace Basic {
 		//shader¸³Öµ
 		_shader->use();
 		_shader->setMat4("modelMatrix", _modelMatrix);
+		glm::mat4 pjM = camera->getProjectMatrix();
+		glm::mat4 vM = camera->getProjectMatrix();
 		_shader->setMat4("projectionMatrix", camera->getProjectMatrix());
 		_shader->setMat4("viewMatrix", camera->getViewMatrix());
+		_shader->setVec3("EyeDirection", camera->Eye);
 		if (_hasMaterial)
 		{
 			_shader->setVec3("ambientMt", _material.ambient);

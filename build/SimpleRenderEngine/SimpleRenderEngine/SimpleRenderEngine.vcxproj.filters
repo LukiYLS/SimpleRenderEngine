@@ -15,9 +15,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\test\DrawTriangle.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Basic\Camera.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -52,6 +49,9 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Basic\Win.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Example\DrawCube.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
