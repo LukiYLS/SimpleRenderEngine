@@ -3,4 +3,6 @@ build/SimpleRenderEngine/Release/*
 build/SimpleRenderEngine/SimpleRenderEngine/Debug/*
 build/SimpleRenderEngine/SimpleRenderEngine/Release/*
 build/SimpleRenderEngine/*.VC.db
+build/SimpleRenderEngine/SimpleRenderEngine.VC.VC.opendb
+
 
