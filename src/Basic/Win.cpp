@@ -39,14 +39,14 @@ namespace Basic {
 		}
 		return true;
 	}
-	void Win::starup(Camera::ptr camera)
+	void Win::starup(RenderParams* params)
 	{
 		while (!glfwWindowShouldClose(window))
 		{
 			//我希望这里应该有个整个场景的update，加入场景中的entity必须重载update?
 			float currentFrame = glfwGetTime();
 			RenderSystem::RenderSystem::Inst()->beginRender();
-			RenderSystem::RenderSystem::Inst()->render(camera, currentFrame);
+			RenderSystem::RenderSystem::Inst()->render(params);
 			RenderSystem::RenderSystem::Inst()->endRender();
 			//deltaTime = currentFrame - lastFrame;
 			//lastFrame = currentFrame;

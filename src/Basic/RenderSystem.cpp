@@ -14,9 +14,9 @@ namespace Basic {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	}
-	void RenderSystem::render(Camera::ptr camera, float currentTime)
+	void RenderSystem::render(RenderParams* params)
 	{
-		Scene::Inst()->render(camera, currentTime);
+		Scene::Inst()->render(params);
 	}
 	void RenderSystem::endRender()
 	{
