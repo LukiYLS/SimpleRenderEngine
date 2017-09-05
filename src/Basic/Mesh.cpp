@@ -30,17 +30,15 @@ namespace Basic {
 			if ((*it)->getType() == DirectLight)
 			{
 				_shader->setVec3("DirLight.direction", (*it)->getDirection());
-				_shader->setVec3("DirLight.ambient", (*it)->getAmbient());
-				_shader->setVec3("DirLight.diffuse", (*it)->getDiffuse());
-				_shader->setVec3("DirLight.specular", (*it)->getSpecular());
+				_shader->setFloat("pointLight.ambientIntensity", (*it)->getAmbientIntensity());
+				_shader->setFloat("pointLight.diffuseIntensity", (*it)->getDiffuseIntensity());
 			}
 			else if ((*it)->getType() == PointLight)
 			{
 				_shader->setVec3("pointLight.color", (*it)->getColor());
 				_shader->setVec3("pointLight.position", (*it)->getPosition());
-				_shader->setVec3("pointLight.ambient", (*it)->getAmbient());
-				_shader->setVec3("pointLight.diffuse", (*it)->getDiffuse());
-				_shader->setVec3("pointLight.specular", (*it)->getSpecular());
+				_shader->setFloat("pointLight.ambientIntensity", (*it)->getAmbientIntensity());
+				_shader->setFloat("pointLight.diffuseIntensity", (*it)->getDiffuseIntensity());				
 
 				_shader->setFloat("pointLight.shiness", (*it)->getShiness());
 				_shader->setFloat("pointLight.strength", (*it)->getStrength());
@@ -53,9 +51,8 @@ namespace Basic {
 				_shader->setVec3("SpotLight.position", (*it)->getPosition());
 				_shader->setVec3("SpotLight.direction", (*it)->getDirection());
 				_shader->setFloat("SpotLight.cutoff", (*it)->getSpotCutoff());
-				_shader->setVec3("SpotLight.ambient", (*it)->getAmbient());
-				_shader->setVec3("SpotLight.diffuse", (*it)->getDiffuse());
-				_shader->setVec3("SpotLight.specular", (*it)->getSpecular());
+				_shader->setFloat("pointLight.ambientIntensity", (*it)->getAmbientIntensity());
+				_shader->setFloat("pointLight.diffuseIntensity", (*it)->getDiffuseIntensity());
 
 				_shader->setFloat("SpotLight.constant", (*it)->getConstantAttenuation());
 				_shader->setFloat("SpotLight.linear", (*it)->getLinearAttenuation());

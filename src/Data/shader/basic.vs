@@ -14,9 +14,9 @@ out vec3 Position;
 out vec3 Normal;
 void main(){
 	gl_Position = modelMatrix * vec4(position,1.0);
-	gl_Position = viewMatrix * gl_Position;
 	Position = gl_Position.xyz;
-	gl_Position = projectionMatrix * gl_Position;
+	gl_Position = viewMatrix * gl_Position;	
+	gl_Position = projectionMatrix * gl_Position;	
 	Normal = normal;
 	uv = tex;
 }

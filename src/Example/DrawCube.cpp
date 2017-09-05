@@ -48,16 +48,6 @@ int main()
 	Scene::Inst()->addEntity("test", (Entity::ptr)mesh);
 	Scene::Inst()->addLight(light);
 
-	/*
-			//_shader->setMat4("modelMatrix", _modelMatrix);
-		//glm::mat4 pjM = camera->getProjectMatrix();
-		//glm::mat4 vM = camera->getProjectMatrix();
-		//_shader->setMat4("projectionMatrix", camera->getProjectMatrix());
-		//_shader->setMat4("viewMatrix", camera->getViewMatrix());
-		//_shader->setVec3("EyeDirection", camera->Eye);
-
-	*/
-
 	RenderParams * params = new RenderParams();
 	params->setEye(camera->Eye);
 	params->setM(glm::mat4());

@@ -49,23 +49,20 @@ namespace Basic
 		void setLightNum(int num) { _lightnum = num; }
 		int getLightNum() const { return _lightnum; }
 
-		inline void setColor(const glm::vec3& color) { _color = color; }
-		inline const glm::vec3& getColor() const { return _color; }
+		inline void setColor(const glm::vec3& color) { _lightColor = color; }
+		inline const glm::vec3& getColor() const { return _lightColor; }
 
-		inline void setAmbient(const glm::vec3& ambient) { _ambient = ambient; }
-		inline const glm::vec3& getAmbient() const { return _ambient; }
+		inline void setAmbientIntensity(const float& ambientIntensity) { _ambientIntensity = ambientIntensity; }
+		inline const float& getAmbientIntensity() const { return _ambientIntensity; }
 
-		inline void setDiffuse(const glm::vec3& diffuse) { _diffuse = diffuse; }
-		inline const glm::vec3& getDiffuse() const { return _diffuse; }
+		inline void setDiffuseIntensity(const float& diffuseIntensity) { _diffuseIntensity = diffuseIntensity; }
+		inline const float& getDiffuseIntensity() const { return _diffuseIntensity; }
 
-		inline void setSpecular(const glm::vec3& specular) { _specular = specular; }
-		inline const glm::vec3& getSpecular() const { return _specular; }
+		inline void setPosition(const glm::vec3& lightPosition) { _lightPosition = lightPosition; }
+		inline const glm::vec3& getPosition() const { return _lightPosition; }
 
-		inline void setPosition(const glm::vec3& position) { _position = position; }
-		inline const glm::vec3& getPosition() const { return _position; }
-
-		inline void setDirection(const glm::vec3& direction) { _direction = direction; }
-		inline const glm::vec3& getDirection() const { return _direction; }
+		inline void setDirection(const glm::vec3& lightDirection) { _lightDirection = lightDirection; }
+		inline const glm::vec3& getDirection() const { return _lightDirection; }
 
 		inline void setConstantAttenuation(float constant_attenuation) { _constantAttenuation = constant_attenuation; }
 		inline const float& getConstantAttenuation() const { return _constantAttenuation; }
@@ -96,12 +93,11 @@ namespace Basic
 		void init();
 	private:
 		int _lightnum;
-		glm::vec3 _color;
-		glm::vec3 _ambient;
-		glm::vec3 _diffuse;
-		glm::vec3 _specular;
-		glm::vec3 _position;
-		glm::vec3 _direction;
+		glm::vec3 _lightColor;
+		float _ambientIntensity;
+		float _diffuseIntensity;
+		glm::vec3 _lightPosition;
+		glm::vec3 _lightDirection;
 
 		float _shiness;
 		float _strength;

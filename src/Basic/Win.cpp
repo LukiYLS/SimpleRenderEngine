@@ -51,7 +51,7 @@ namespace Basic {
 			//deltaTime = currentFrame - lastFrame;
 			//lastFrame = currentFrame;
 		
-			//事件处理怎么写呀？？？
+			
 			//processInput(window);
 			
 			glfwSwapBuffers(window);
