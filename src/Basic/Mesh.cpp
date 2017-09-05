@@ -5,6 +5,9 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include "data_structure.h"
+
+
 namespace Basic {
 
 	Mesh::Mesh()
@@ -171,16 +174,21 @@ namespace Basic {
 		}
 		this->setVertices(vertices);
 	}
-	void Mesh::draw(Camera::ptr camera)
+	void Mesh::draw(RenderParams* params)
 	{
 		//shader¸³Öµ
 		_shader->use();
-		_shader->setMat4("modelMatrix", _modelMatrix);
-		glm::mat4 pjM = camera->getProjectMatrix();
-		glm::mat4 vM = camera->getProjectMatrix();
-		_shader->setMat4("projectionMatrix", camera->getProjectMatrix());
-		_shader->setMat4("viewMatrix", camera->getViewMatrix());
-		_shader->setVec3("EyeDirection", camera->Eye);
+		//_shader->setMat4("modelMatrix", _modelMatrix);
+		//glm::mat4 pjM = camera->getProjectMatrix();
+		//glm::mat4 vM = camera->getProjectMatrix();
+		//_shader->setMat4("projectionMatrix", camera->getProjectMatrix());
+		//_shader->setMat4("viewMatrix", camera->getViewMatrix());
+		//_shader->setVec3("EyeDirection", camera->Eye);
+		_shader->setMat4("modelMatrix", params->m()*_modelMatrix);
+		_shader->setMat4("projectionMatrix", params->p());
+		_shader->setMat4("viewMatrix", params->v());
+		_shader->setVec3("EyeDirection", params->eye());
+
 		if (_hasMaterial)
 		{
 			_shader->setVec3("ambientMt", _material.ambient);

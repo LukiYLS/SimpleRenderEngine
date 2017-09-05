@@ -15,7 +15,7 @@ namespace Basic {
 		void update(float time);//
 		void pickRender(int width, int height);//…Ë÷√color£¨render to buffer£¨read buffer£¨
 		
-		void render(Camera::ptr camera, float currentTime);
+		void render(RenderParams* params);
 	private:
 		static Scene* m_Inst;
 		std::map<std::string, Entity::ptr> _entity_map;

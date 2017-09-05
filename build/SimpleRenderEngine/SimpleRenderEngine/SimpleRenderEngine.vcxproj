@@ -69,11 +69,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>3rdParty\include;$(IncludePath);</IncludePath>
+    <IncludePath>3rdParty\include;..\..\..\src\Basic\utils;$(IncludePath);</IncludePath>
     <LibraryPath>3rdParty\lib;$(LibraryPath);</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>3rdParty\include;$(IncludePath)</IncludePath>
+    <IncludePath>3rdParty\include;..\..\..\src\Basic\utils;$(IncludePath)</IncludePath>
     <LibraryPath>3rdParty\lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -151,6 +151,7 @@
     <ClInclude Include="..\..\..\src\Basic\Texture.h" />
     <ClInclude Include="..\..\..\src\Basic\TextureManager.h" />
     <ClInclude Include="..\..\..\src\Basic\Uniform.h" />
+    <ClInclude Include="..\..\..\src\Basic\utils\data_structure.h" />
     <ClInclude Include="..\..\..\src\Basic\Win.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

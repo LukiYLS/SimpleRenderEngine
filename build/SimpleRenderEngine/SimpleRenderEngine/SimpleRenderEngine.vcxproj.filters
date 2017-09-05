@@ -13,6 +13,9 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="源文件\Utils">
+      <UniqueIdentifier>{a32591b5-94a2-454e-a62d-7ded8af298a5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Basic\Camera.cpp">
@@ -103,6 +106,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\Uniform.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\utils\data_structure.h">
+      <Filter>源文件\Utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

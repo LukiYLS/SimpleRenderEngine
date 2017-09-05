@@ -20,14 +20,14 @@ namespace Basic {
 		if (_entity_map.find(name) != _entity_map.end())
 			_entity_map.erase(name);
 	}
-	void Scene::render(Camera::ptr camera, float currentTime)
+	void Scene::render(RenderParams* params)
 	{
 		//遍历所有的灯光，作用于所有的mesh，后期考虑defer render加入	
-		update(currentTime);
+		update(params->currTime());
 		for (auto it = _entity_map.begin(); it != _entity_map.end(); it++)
 		{
 			it->second->setupLights(_lights);
-			it->second->draw(camera);
+			it->second->draw(params);
 		}
 			
 	}
