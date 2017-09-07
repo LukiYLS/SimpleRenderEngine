@@ -10,9 +10,9 @@ namespace Basic
 		RenderParams() {}
 		~RenderParams() {}
 
-		void  setM(glm::mat4 m) { this->_m = m; }
-		void  setV(glm::mat4 v) { this->_v = v; }
-		void  setP(glm::mat4 p) { this->_p = p; }
+		void  setM(const glm::mat4& m) { this->_m = m; }
+		void  setV(const glm::mat4& v) { this->_v = v; }
+		void  setP(const glm::mat4& p) { this->_p = p; }
 		void  setCurrTime(float time) { _currentTime = time; }
 		void  setEye(glm::vec3 eye) { _eye = eye; }
 

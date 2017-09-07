@@ -32,14 +32,14 @@ namespace Basic
 		return iResult;
 	}
 
-	void Get3DRayUnderMouse(int x, int y,int width, int height, glm::vec3* v1, glm::vec3* v2,Camera::ptr camera)
+	/*void Get3DRayUnderMouse(int x, int y,int width, int height, glm::vec3* v1, glm::vec3* v2,Camera::ptr camera)
 	{		
 
 		glm::vec4 viewport = glm::vec4(0.0f, 0.0f, width, height);
 
 		*v1 = glm::unProject(glm::vec3(float(x), float(y), 0.0f), camera->getViewMatrix(),camera->getProjectMatrix(), viewport);
 		*v2 = glm::unProject(glm::vec3(float(x), float(y), 1.0f), camera->getViewMatrix(), camera->getProjectMatrix(), viewport);
-	}
+	}*/
 
 	bool RaySphereCollision(glm::vec3 vSphereCenter, float fSphereRadius, glm::vec3 vA, glm::vec3 vB)
 	{

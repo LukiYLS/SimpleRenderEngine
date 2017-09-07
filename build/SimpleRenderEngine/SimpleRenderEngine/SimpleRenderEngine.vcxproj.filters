@@ -16,11 +16,11 @@
     <Filter Include="源文件\Utils">
       <UniqueIdentifier>{a32591b5-94a2-454e-a62d-7ded8af298a5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{1e1662d4-8861-462e-80ab-623ac7ff20c9}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\Basic\Camera.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Basic\FrameBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -57,11 +57,11 @@
     <ClCompile Include="..\..\..\src\Example\DrawCube.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Basic\Camera\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\Basic\Camera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\Effect.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -109,6 +109,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\utils\data_structure.h">
       <Filter>源文件\Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Camera\OrthographicCamera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Camera\PerspectiveCamera.h">
+      <Filter>Camera</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
