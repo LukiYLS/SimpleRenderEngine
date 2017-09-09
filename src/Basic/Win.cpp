@@ -37,11 +37,36 @@ namespace Basic {
 			std::cout << "Glew not okay! " << glewinit;
 			exit(EXIT_FAILURE);
 		}
+
+		//glfwSetMouseButtonCallback(onMouseButton);
+		//glfwSetMousePosCallback(onMouseMoveLeft);
+		//glfwSetMouseButtonCallback(onMouseButtonRight);
+		//glfwSetMousePosCallback(onMouseMoveRight);
 		
 		//glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 		//glfwSetCursorPosCallback(window, mouse_callback);
 		//glfwSetScrollCallback(window, scroll_callback);
 		return true;
+	}
+	//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	//{
+	//	InputManager * in_manager = InputManager::get_instance();
+	//	in_manager->handle_key_press(params)
+	//}
+	void Win::onMouseButton(int button, int action)
+	{
+		if (button == GLFW_MOUSE_BUTTON_LEFT)
+		{
+
+		}
+		else if (button == GLFW_MOUSE_BUTTON_MIDDLE)
+		{
+
+		}
+		else
+		{
+
+		}
 	}
 	void Win::starup(RenderParams* params)
 	{
