@@ -21,16 +21,16 @@ namespace Basic
 	{
 		_lightnum = 0;
 		_lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-		_ambientIntensity = 0.5f;
-		_diffuseIntensity = 0.7f;		
-		_lightPosition = glm::vec3(0.0f, 0.0f, -3.0f);
+		_ambientIntensity = 0.1f;
+		_diffuseIntensity = 0.1f;		
+		_lightPosition = glm::vec3(0.0f, 0.0f, -1.0f);
 		_lightDirection = glm::vec3(0.0f, 0.0f, -1.0f);
-		_shiness = 50;
-		_strength = 1;
+		_shiness = 80;
+		_strength = 10;
 		_constantAttenuation = 1.0f;
 		_linearAttenuation = 0.0f;
 		_quatricAttenuaion = 0.0f;
 		_spotExponet = 0.0f;
-		_spotCosCutoff = 180.0f;
+		_spotCosCutoff = 0.3;
 	}
 }

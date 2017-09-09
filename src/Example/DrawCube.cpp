@@ -31,7 +31,7 @@ int main()
 	mesh->createBuffer();
 	
 	Light::ptr light = std::make_shared<Light>();
-	light->setType(PointLight);
+	light->setType(SpotLight);
 
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/1.jpg", "texture1");
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/2.jpg", "texture2");
@@ -41,7 +41,7 @@ int main()
 	//camera->setPerspectiveFovLHMatrix(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
 	PerspectiveCamera *camera = new PerspectiveCamera(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	camera->setPosition(glm::vec3(0.0f, 0.0f, -3.0f));	
+	camera->setPosition(glm::vec3(0.0f, 0.0f, -2.0f));	
 
 	glm::vec3 up = camera->getUp();
 	glm::vec3 right = camera->getRight();

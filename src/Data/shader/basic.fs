@@ -35,6 +35,7 @@ struct SpotLight
 	vec3 direction;
 	float cutoff;
 };
+uniform SpotLight spotLight;
 vec4 CalcPointLight(PointLight pointLight,vec3 position, vec3 normal)
 {
     vec3 lightDirection = position - pointLight.position;
@@ -59,20 +60,20 @@ vec4 CalcPointLight(PointLight pointLight,vec3 position, vec3 normal)
 vec4 CalcSpotLight(SpotLight spotLight, vec3 position, vec3 normal)
 {
     vec3 lightToPos = normalize(position - spotLight.pointLight.position);
-    float SpotFactor = dot(lightToPos, spotLight.direction);
-
+    float SpotFactor = max(0.0,dot(lightToPos, spotLight.direction));
+	
     if (SpotFactor > spotLight.cutoff) {
 		
         vec4 Color = CalcPointLight(spotLight.pointLight, position, normal);
         return Color * (1.0 - (1.0 - SpotFactor) * 1.0/(1.0 - spotLight.cutoff));
     }
     else {
-        return vec4(0,0,0,0);
+        return vec4(0.0,0.0,0.0,1.0);
     }
 } 
 void main()
 {	
-	vec4 lightColor = CalcPointLight(pointLight, Position, Normal);
+	vec4 lightColor = CalcSpotLight(spotLight, Position, Normal);
 	vec4 Color = texture(texture1, uv);	
-	gl_FragColor = Color * lightColor;
+	gl_FragColor = lightColor;
 }

@@ -37,6 +37,10 @@ namespace Basic {
 			std::cout << "Glew not okay! " << glewinit;
 			exit(EXIT_FAILURE);
 		}
+		
+		//glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+		//glfwSetCursorPosCallback(window, mouse_callback);
+		//glfwSetScrollCallback(window, scroll_callback);
 		return true;
 	}
 	void Win::starup(RenderParams* params)

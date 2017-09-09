@@ -48,15 +48,15 @@ namespace Basic {
 			}
 			else if ((*it)->getType() == SpotLight)
 			{
-				_shader->setVec3("SpotLight.position", (*it)->getPosition());
-				_shader->setVec3("SpotLight.direction", (*it)->getDirection());
-				_shader->setFloat("SpotLight.cutoff", (*it)->getSpotCutoff());
-				_shader->setFloat("pointLight.ambientIntensity", (*it)->getAmbientIntensity());
-				_shader->setFloat("pointLight.diffuseIntensity", (*it)->getDiffuseIntensity());
+				_shader->setVec3("spotLight.pointLight.position", (*it)->getPosition());
+				_shader->setVec3("spotLight.direction", (*it)->getDirection());
+				_shader->setFloat("spotLight.cutoff", (*it)->getSpotCutoff());
+				_shader->setFloat("spotLight.pointLight.ambientIntensity", (*it)->getAmbientIntensity());
+				_shader->setFloat("spotLight.pointLight.diffuseIntensity", (*it)->getDiffuseIntensity());
 
-				_shader->setFloat("SpotLight.constant", (*it)->getConstantAttenuation());
-				_shader->setFloat("SpotLight.linear", (*it)->getLinearAttenuation());
-				_shader->setFloat("SpotLight.quadratic", (*it)->getQuadraticAttenuation());
+				_shader->setFloat("spotLight.pointLight.constant", (*it)->getConstantAttenuation());
+				_shader->setFloat("spotLight.pointLight.linear", (*it)->getLinearAttenuation());
+				_shader->setFloat("spotLight.pointLight.quadratic", (*it)->getQuadraticAttenuation());
 			}
 		}
 	}
