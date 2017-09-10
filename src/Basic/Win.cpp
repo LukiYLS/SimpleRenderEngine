@@ -2,7 +2,10 @@
 #include "Win.h"
 #include  <iostream>
 #include "RenderSystem.h"
+using namespace Utils;
 namespace Basic {
+	std::vector<mouse_event> mouse_events;
+	bool button_down = false;
 	Win* Win::m_Inst(0);
 	Win* Win::Inst() {
 		if (!m_Inst)
@@ -38,51 +41,121 @@ namespace Basic {
 			exit(EXIT_FAILURE);
 		}
 
-		//glfwSetMouseButtonCallback(onMouseButton);
-		//glfwSetMousePosCallback(onMouseMoveLeft);
-		//glfwSetMouseButtonCallback(onMouseButtonRight);
-		//glfwSetMousePosCallback(onMouseMoveRight);
-		
-		//glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
-		//glfwSetCursorPosCallback(window, mouse_callback);
-		//glfwSetScrollCallback(window, scroll_callback);
+		glfwSetCursorPosCallback(window, cursorPositionCallback);
+		glfwSetMouseButtonCallback(window, mouseButtonCallback);
+		glfwSetKeyCallback(window, keyCallback);
+
+		//register
+
 		return true;
 	}
-	//void key_callback(GLFWwindow* window, int key, int scancode, int action, int mods)
-	//{
-	//	InputManager * in_manager = InputManager::get_instance();
-	//	in_manager->handle_key_press(params)
-	//}
-	void Win::onMouseButton(int button, int action)
+
+	void Win::cursorPositionCallback(GLFWwindow *window, double xpos, double ypos)
 	{
-		if (button == GLFW_MOUSE_BUTTON_LEFT)
+		if (!button_down)return;
+		mouse_event event;
+		double seconds = glfwGetTime();
+		event.mouse_status = M_MOVE;
+		event.time = seconds;
+		event.xpos = xpos;
+		event.ypos = ypos;
+		mouse_events.push_back(event);
+	}
+	void Win::mouseButtonCallback(GLFWwindow *window, int button, int action, int mods)
+	{
+		mouse_event event;
+		double xpos, ypos;
+		glfwGetCursorPos(window, &xpos, &ypos);
+		double seconds = glfwGetTime();	
+		event.mouse_status = MOUSE_NONE;
+		event.time = seconds;
+		event.xpos = xpos;
+		event.ypos = ypos;
+		if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_PRESS)
+		{
+			event.mouse_status = LB_DOWN;
+			button_down = true;
+		}		
+		else if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_PRESS)
+		{
+			event.mouse_status = MB_DOWN;
+			button_down = true;
+		}
+		else if(button == GLFW_MOUSE_BUTTON_RIGHT  && action == GLFW_PRESS)
+		{
+			event.mouse_status = RB_DOWN;
+			button_down = true;
+		}
+		else if (button == GLFW_MOUSE_BUTTON_LEFT && action == GLFW_RELEASE)
+		{
+			event.mouse_status = LB_UP;
+			button_down = false;
+		}
+		else if (button == GLFW_MOUSE_BUTTON_MIDDLE && action == GLFW_RELEASE)
+		{
+			event.mouse_status = MB_UP;
+			button_down = false;
+		}
+		else if (button == GLFW_MOUSE_BUTTON_RIGHT  && action == GLFW_RELEASE)
+		{
+			event.mouse_status = RB_UP;
+			button_down = false;
+		}
+
+		if (event.mouse_status != MOUSE_NONE)
+			mouse_events.push_back(event);
+
+
+
+	}
+	void Win::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+
+		if (key == GLFW_KEY_W && action == GLFW_PRESS)
 		{
 
 		}
-		else if (button == GLFW_MOUSE_BUTTON_MIDDLE)
+		if (key == GLFW_KEY_A && action == GLFW_PRESS)
 		{
 
 		}
-		else
+		if (key == GLFW_KEY_S && action == GLFW_PRESS)
 		{
 
 		}
+		if (key == GLFW_KEY_D && action == GLFW_PRESS)
+		{
+
+		}
+	}
+	void Win::processInput()
+	{
+		unsigned int num_events = mouse_events.size();
+		if (mouse_events.size() > 0)
+		{
+			Event::ptr event = EventManager::Inst()->createEvent();
+			mouse_event_vector xx;
+			xx._mouse_events = &mouse_events[0];//mouse_events;
+			xx._event_num = num_events;
+			event->setName("mouse.event");
+			event->setValue("mouse.event", xx);
+			EventManager::Inst()->sendEvent(event);
+		}
+		mouse_events.clear();
 	}
 	void Win::starup(RenderParams* params)
 	{
 		while (!glfwWindowShouldClose(window))
 		{
 			//我希望这里应该有个整个场景的update，加入场景中的entity必须重载update?
+			processInput();
 			float currentFrame = glfwGetTime();
 			RenderSystem::RenderSystem::Inst()->beginRender();
 			RenderSystem::RenderSystem::Inst()->render(params);
 			RenderSystem::RenderSystem::Inst()->endRender();
 			//deltaTime = currentFrame - lastFrame;
 			//lastFrame = currentFrame;
-		
-			
-			//processInput(window);
-			
+						
 			glfwSwapBuffers(window);
 			glfwPollEvents();
 		}

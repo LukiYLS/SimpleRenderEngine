@@ -2,7 +2,7 @@
 #include <glew\glew.h>
 #include <glm/gtc/matrix_transform.hpp>
 #include "PickTool.h"
-#include "Camera.h"
+
 #define RGB_WHITE (0xFF | (0xFF<<8) | (0xFF<<16))
 
 namespace Basic

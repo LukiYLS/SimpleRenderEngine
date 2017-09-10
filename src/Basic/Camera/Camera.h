@@ -4,10 +4,12 @@
 #include <glm\gtc\quaternion.hpp>
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\geometric.hpp>
+#include <memory>
 namespace Core {
 
 	class Camera {
 	public:
+		typedef std::shared_ptr<Camera> ptr;
 		Camera() = default;
 		Camera(const Camera&) = default;
 		Camera(const glm::vec3& pos) :_position(pos) {}
@@ -43,6 +45,7 @@ namespace Core {
 		glm::quat RotationBetweenVectors(const glm::vec3& start, const glm::vec3& dest);
 
 		//for mouse and keyboard control
+	public:
 		void ProcessKeyboard(float xoffset, float yoffset);
 		void ProcessMouseMovement(float xoffset, float yoffset, bool constrainPitch = true);
 		//void ProcessMouseScroll(float yoffset);

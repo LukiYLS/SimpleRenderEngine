@@ -5,6 +5,8 @@
 #include "../Basic/Light.h"
 #include "../Basic/Win.h"
 #include "../Basic/Scene.h"
+#include "../Basic/utils/CamerControl.h"
+#include "../Basic/utils/Event.h"
 #include <vector>
 #include <iostream>
 using namespace Basic;
@@ -12,6 +14,7 @@ using namespace std;
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 using namespace Core;
+using namespace Utils;
 int main()
 {
 	
@@ -31,7 +34,7 @@ int main()
 	mesh->createBuffer();
 	
 	Light::ptr light = std::make_shared<Light>();
-	light->setType(SpotLight);
+	light->setType(PointLight);
 
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/1.jpg", "texture1");
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/2.jpg", "texture2");
@@ -40,12 +43,10 @@ int main()
 	//Camera::ptr camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
 	//camera->setPerspectiveFovLHMatrix(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
-	PerspectiveCamera *camera = new PerspectiveCamera(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 	camera->setPosition(glm::vec3(0.0f, 0.0f, -2.0f));	
 
-	glm::vec3 up = camera->getUp();
-	glm::vec3 right = camera->getRight();
-	glm::vec3 dir = camera->getDirection();
+
 
 	Shader::ptr shader = std::make_shared<Shader>("../../../src/Data/shader/basic.vs", "../../../src/Data/shader/basic.fs");	
 	mesh->setProgram(shader);	
@@ -60,6 +61,11 @@ int main()
 	params->setM(glm::mat4());
 	params->setV(camera->getViewMatrix());
 	params->setP(camera->getProjectMatrix());
+
+	CameraControl::ptr cc = make_shared<CameraControl>((Core::Camera::ptr)camera);
+	EventManager::Inst()->registerReceiver("mouse.event", cc);
+
+	
 	Win::Inst()->starup(params);
 	
 }

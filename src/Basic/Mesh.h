@@ -4,9 +4,10 @@
 #include "Shader.h"
 #include "Uniform.h"
 #include "Light.h"
-#include "Camera.h"
+#include "Camera\PerspectiveCamera.h"
 #include <vector>
 #include <map>
+using namespace Core;
 //#include "glm\glm.hpp"
 /*struct VertexFormat
 {

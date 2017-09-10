@@ -73,7 +73,7 @@ vec4 CalcSpotLight(SpotLight spotLight, vec3 position, vec3 normal)
 } 
 void main()
 {	
-	vec4 lightColor = CalcSpotLight(spotLight, Position, Normal);
+	vec4 lightColor = CalcPointLight(pointLight, Position, Normal);
 	vec4 Color = texture(texture1, uv);	
-	gl_FragColor = lightColor;
+	gl_FragColor = Color * lightColor;
 }

@@ -2,9 +2,9 @@
 #define SCENE_H
 #include "Entity.h"
 #include "Light.h"
-#include "Camera.h"
 #include <map>
 #include <string>
+#include "Camera\PerspectiveCamera.h"
 namespace Basic {
 	class Scene {//场景目前可以管理所有的渲染对象，后期引入osg节点管理方式
 	public:
@@ -14,7 +14,7 @@ namespace Basic {
 		void addLight(Light::ptr light) { _lights.push_back(light); }
 		void update(float time);//
 		void pickRender(int width, int height);//设置color，render to buffer，read buffer，
-		
+		void setCamera();
 		void render(RenderParams* params);
 	private:
 		static Scene* m_Inst;

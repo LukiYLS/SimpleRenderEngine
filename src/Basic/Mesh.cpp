@@ -8,6 +8,7 @@
 #include "data_structure.h"
 
 
+
 namespace Basic {
 
 	Mesh::Mesh()
@@ -171,7 +172,7 @@ namespace Basic {
 		}
 		this->setVertices(vertices);
 	}
-	void Mesh::draw(RenderParams* params)
+	void Mesh::draw(Camera::ptr camera)
 	{
 		//shader¸³Öµ
 		_shader->use();
@@ -181,8 +182,8 @@ namespace Basic {
 		//_shader->setMat4("projectionMatrix", camera->getProjectMatrix());
 		//_shader->setMat4("viewMatrix", camera->getViewMatrix());
 		//_shader->setVec3("EyeDirection", camera->Eye);
-		_shader->setMat4("modelMatrix", params->m()*_modelMatrix);
-		_shader->setMat4("projectionMatrix", params->p());
+		_shader->setMat4("modelMatrix",_modelMatrix);
+		_shader->setMat4("projectionMatrix", ((PerspectiveCamera::ptr)camera)->getProjectMatrix());
 		_shader->setMat4("viewMatrix", params->v());
 		_shader->setVec3("EyeDirection", params->eye());
 

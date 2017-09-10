@@ -132,6 +132,8 @@
     <ClCompile Include="..\..\..\src\Basic\Scene.cpp" />
     <ClCompile Include="..\..\..\src\Basic\Shader.cpp" />
     <ClCompile Include="..\..\..\src\Basic\TextureManager.cpp" />
+    <ClCompile Include="..\..\..\src\Basic\utils\CameraControl.cpp" />
+    <ClCompile Include="..\..\..\src\Basic\utils\Event.cpp" />
     <ClCompile Include="..\..\..\src\Basic\Win.cpp" />
     <ClCompile Include="..\..\..\src\Example\DrawCube.cpp" />
   </ItemGroup>
@@ -153,7 +155,11 @@
     <ClInclude Include="..\..\..\src\Basic\Texture.h" />
     <ClInclude Include="..\..\..\src\Basic\TextureManager.h" />
     <ClInclude Include="..\..\..\src\Basic\Uniform.h" />
+    <ClInclude Include="..\..\..\src\Basic\utils\AnyValue.h" />
+    <ClInclude Include="..\..\..\src\Basic\utils\CamerControl.h" />
     <ClInclude Include="..\..\..\src\Basic\utils\data_structure.h" />
+    <ClInclude Include="..\..\..\src\Basic\utils\Event.h" />
+    <ClInclude Include="..\..\..\src\Basic\utils\InputDefine.h" />
     <ClInclude Include="..\..\..\src\Basic\Win.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

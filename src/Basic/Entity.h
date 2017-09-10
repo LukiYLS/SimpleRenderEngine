@@ -3,7 +3,6 @@
 #include <memory>
 //#include <glm\glm.hpp>
 #include "Light.h"
-#include "Camera.h"
 #include "data_structure.h"
 
 namespace Basic {
