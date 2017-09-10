@@ -4,7 +4,7 @@
 #include <glm\glm.hpp>
 #include <memory>
 namespace Basic {
-	class Texture {//所有的纹理继承这个,后期会是一个单独的组件
+	class Texture {//所有的纹理继承这个
 	public:
 		typedef std::shared_ptr<Texture> ptr;
 	public:

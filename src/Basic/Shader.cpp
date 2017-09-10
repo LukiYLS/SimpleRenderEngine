@@ -15,7 +15,7 @@ namespace Basic {
 		std::ifstream vShaderFile;
 		std::ifstream fShaderFile;
 		std::ifstream gShaderFile;
-		// 确保可以抛出异常
+		
 		vShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 		fShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
 		gShaderFile.exceptions(std::ifstream::failbit | std::ifstream::badbit);
@@ -25,16 +25,16 @@ namespace Basic {
 			vShaderFile.open(vertexPath);
 			fShaderFile.open(fragmentPath);
 			std::stringstream vShaderStream, fShaderStream;
-			//读取文件到stream
+			
 			vShaderStream << vShaderFile.rdbuf();
 			fShaderStream << fShaderFile.rdbuf();
 			
 			vShaderFile.close();
 			fShaderFile.close();
-			// stream转到string
+			
 			vertexCode = vShaderStream.str();
 			fragmentCode = fShaderStream.str();
-			// geometry shader判断
+			
 			if (geometryPath != nullptr)
 			{
 				gShaderFile.open(geometryPath);
@@ -50,11 +50,11 @@ namespace Basic {
 		}
 		const char* vShaderCode = vertexCode.c_str();
 		const char * fShaderCode = fragmentCode.c_str();
-		// 编译
+
 		unsigned int vertex, fragment;
 		int success;
 		char infoLog[512];
-		//glewInit();
+		
 		vertex = glCreateShader(GL_VERTEX_SHADER);
 		glShaderSource(vertex, 1, &vShaderCode, NULL);
 		glCompileShader(vertex);
