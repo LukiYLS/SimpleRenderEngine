@@ -87,10 +87,15 @@ namespace Basic
 
 		inline LightType getType() const{ return _type; }
 		inline void setType(LightType type) { _type = type; }
+
+		bool enableShadow();
+		
 		//void captureLightState();
 
 	private:
 		void init();
+	public:
+		bool has_Shadow;
 	private:
 		int _lightnum;
 		glm::vec3 _lightColor;
@@ -109,6 +114,7 @@ namespace Basic
 		float _spotCosCutoff;
 		float _spotExponet;
 
+		
 		LightType _type;
 	};
 

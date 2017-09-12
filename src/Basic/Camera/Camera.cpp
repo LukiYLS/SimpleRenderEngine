@@ -17,7 +17,6 @@ namespace Core {
 			rotationAxis = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), start_normal);
 			if (glm::length(rotationAxis) < 0.01) // bad luck, they were parallel, try again!
 				rotationAxis = glm::cross(glm::vec3(1.0f, 0.0f, 0.0f), start_normal);
-
 			rotationAxis = -normalize(rotationAxis);
 			return glm::angleAxis(glm::radians(180.0f), rotationAxis);
 		}

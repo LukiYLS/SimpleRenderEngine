@@ -131,6 +131,7 @@
     <ClCompile Include="..\..\..\src\Basic\RenderSystem.cpp" />
     <ClCompile Include="..\..\..\src\Basic\Scene.cpp" />
     <ClCompile Include="..\..\..\src\Basic\Shader.cpp" />
+    <ClCompile Include="..\..\..\src\Basic\ShadowEffect.cpp" />
     <ClCompile Include="..\..\..\src\Basic\TextureManager.cpp" />
     <ClCompile Include="..\..\..\src\Basic\utils\CameraControl.cpp" />
     <ClCompile Include="..\..\..\src\Basic\utils\Event.cpp" />
@@ -152,6 +153,7 @@
     <ClInclude Include="..\..\..\src\Basic\RenderSystem.h" />
     <ClInclude Include="..\..\..\src\Basic\Scene.h" />
     <ClInclude Include="..\..\..\src\Basic\Shader.h" />
+    <ClInclude Include="..\..\..\src\Basic\ShadowEffect.h" />
     <ClInclude Include="..\..\..\src\Basic\Texture.h" />
     <ClInclude Include="..\..\..\src\Basic\TextureManager.h" />
     <ClInclude Include="..\..\..\src\Basic\Uniform.h" />

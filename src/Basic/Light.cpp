@@ -32,5 +32,10 @@ namespace Basic
 		_quatricAttenuaion = 0.0f;
 		_spotExponet = 0.0f;
 		_spotCosCutoff = 0.3;
+		has_Shadow = false;
+	}
+	bool Light::enableShadow()
+	{
+		has_Shadow = true;
 	}
 }

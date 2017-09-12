@@ -1,9 +1,14 @@
 #ifndef FRAMEBUFFER_H
 #define FRAMEBUFFER_H
 #include <glew\glew.h>
+#include <memory>
 namespace Basic {
 
 	class FrameBuffer {//Õâ¸ö
+	public:
+		typedef std::shared_ptr<FrameBuffer> ptr;
+		FrameBuffer() = default;
+		~FrameBuffer() = default;
 
 	public:
 		bool createFrameBufferWithTexture(int width, int height);

@@ -9,6 +9,7 @@ namespace Basic {
 	public:
 		virtual bool init() = 0;
 		virtual bool setCamera() = 0;
+		virtual void render() = 0;
 
 	};
 }

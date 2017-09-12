@@ -22,6 +22,9 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{eae47f79-b034-4ff5-9d45-1fbf645635e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{8b23745c-9c86-49b2-9c0a-d02aa67f8fad}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Basic\FrameBuffer.cpp">
@@ -69,6 +72,9 @@
     <ClCompile Include="..\..\..\src\Basic\utils\CameraControl.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Basic\ShadowEffect.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Basic\Effect.h">
@@ -104,9 +110,6 @@
     <ClInclude Include="..\..\..\src\Basic\Shader.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\Texture.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\TextureManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -139,6 +142,12 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\utils\InputDefine.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Texture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\ShadowEffect.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
