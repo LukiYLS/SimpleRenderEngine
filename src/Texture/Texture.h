@@ -16,7 +16,7 @@ namespace Core {
 		TEX_TYPE_2D_RECT = 6
 	};
 	class Texture 
-		:public Resource{
+		:public Resource{//所有的纹理继承这个
 	public:
 		typedef std::shared_ptr<Texture> ptr;
 	public:
@@ -40,13 +40,12 @@ namespace Core {
 		virtual uint32_t getDepth(void) const { return _depth; }
 		virtual void setDepth(uint32_t depth) { _depth = depth; }
 	private:
-		uint32_t _height;
-		uint32_t _width;
-		uint32_t _depth;
 		TextureType _type;
 		uint8_t _mipmaps;
 		//GLuint _texID;
-
+		uint32_t _height;
+		uint32_t _width;
+		uint32_t _depth
 	};
 }
 #endif // !TEXTURE_H

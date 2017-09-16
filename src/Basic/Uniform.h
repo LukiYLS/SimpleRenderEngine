@@ -2,7 +2,7 @@
 #define UNIFORM_H
 #include <glew\glew.h>
 #include <memory>
-namespace Basic {
+namespace Core {
 	//这个类有必要吗？？
 	/*enum Type {
 		FLOAT = GL_FLOAT,

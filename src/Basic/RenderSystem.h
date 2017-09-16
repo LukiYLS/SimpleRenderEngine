@@ -3,7 +3,7 @@
 
 #include "data_structure.h"
 
-namespace Basic {
+namespace Core {
 	class RenderSystem {//后期扩展成一个组件，专门做渲染的工作
 	public:
 		static RenderSystem* Inst();

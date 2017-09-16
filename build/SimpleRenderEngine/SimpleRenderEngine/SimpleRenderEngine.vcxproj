@@ -137,6 +137,8 @@
     <ClCompile Include="..\..\..\src\Basic\utils\Event.cpp" />
     <ClCompile Include="..\..\..\src\Basic\Win.cpp" />
     <ClCompile Include="..\..\..\src\Example\DrawCube.cpp" />
+    <ClCompile Include="..\..\..\src\Texture\Resource.cpp" />
+    <ClCompile Include="..\..\..\src\Texture\ResourceManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Basic\Camera\Camera.h" />
@@ -146,6 +148,7 @@
     <ClInclude Include="..\..\..\src\Basic\Entity.h" />
     <ClInclude Include="..\..\..\src\Basic\FrameBuffer.h" />
     <ClInclude Include="..\..\..\src\Basic\Light.h" />
+    <ClInclude Include="..\..\..\src\Basic\Loader.h" />
     <ClInclude Include="..\..\..\src\Basic\Mesh.h" />
     <ClInclude Include="..\..\..\src\Basic\ParticleSytem.h" />
     <ClInclude Include="..\..\..\src\Basic\PickTool.h" />
@@ -154,6 +157,7 @@
     <ClInclude Include="..\..\..\src\Basic\Scene.h" />
     <ClInclude Include="..\..\..\src\Basic\Shader.h" />
     <ClInclude Include="..\..\..\src\Basic\ShadowEffect.h" />
+    <ClInclude Include="..\..\..\src\Basic\Singleton.h" />
     <ClInclude Include="..\..\..\src\Basic\Texture.h" />
     <ClInclude Include="..\..\..\src\Basic\TextureManager.h" />
     <ClInclude Include="..\..\..\src\Basic\Uniform.h" />
@@ -162,7 +166,13 @@
     <ClInclude Include="..\..\..\src\Basic\utils\data_structure.h" />
     <ClInclude Include="..\..\..\src\Basic\utils\Event.h" />
     <ClInclude Include="..\..\..\src\Basic\utils\InputDefine.h" />
+    <ClInclude Include="..\..\..\src\Basic\ViewPort.h" />
     <ClInclude Include="..\..\..\src\Basic\Win.h" />
+    <ClInclude Include="..\..\..\src\Texture\Resource.h" />
+    <ClInclude Include="..\..\..\src\Texture\ResourceFactory.h" />
+    <ClInclude Include="..\..\..\src\Texture\ResourceManager.h" />
+    <ClInclude Include="..\..\..\src\Texture\TextureManager_.h" />
+    <ClInclude Include="..\..\..\src\Type.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

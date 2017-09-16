@@ -9,7 +9,7 @@
 
 
 
-namespace Basic {
+namespace Core {
 
 	Mesh::Mesh()
 	{
@@ -18,46 +18,46 @@ namespace Basic {
 	void Mesh::setProgram(Shader::ptr shader)
 	{
 		_shader = shader;
-		_shader->use();
+		//_shader->use();
 
 		//if (_material)
 	}
 	void Mesh::setupLights(std::vector<Light::ptr> lights)
 	{
 		for (auto it = lights.begin(); it != lights.end(); it++)
-		{
-			//有必要区分多少个点光源，多少个方向关光源，多少个聚光灯吗？
-			//这里应该支持数组，考虑如何设计
+		{			
 			if ((*it)->getType() == DirectLight)
 			{
 				_shader->setVec3("DirLight.direction", (*it)->getDirection());
-				_shader->setFloat("pointLight.ambientIntensity", (*it)->getAmbientIntensity());
-				_shader->setFloat("pointLight.diffuseIntensity", (*it)->getDiffuseIntensity());
+				_shader->setVec3("DirLight.ambient", (*it)->getAmbient());
+				_shader->setVec3("DirLight.diffuse", (*it)->getDiffuse());
+				_shader->setVec3("DirLight.specular", (*it)->getSpecular());
 			}
 			else if ((*it)->getType() == PointLight)
-			{
-				_shader->setVec3("pointLight.color", (*it)->getColor());
+			{				
 				_shader->setVec3("pointLight.position", (*it)->getPosition());
-				_shader->setFloat("pointLight.ambientIntensity", (*it)->getAmbientIntensity());
-				_shader->setFloat("pointLight.diffuseIntensity", (*it)->getDiffuseIntensity());				
-
-				_shader->setFloat("pointLight.shiness", (*it)->getShiness());
-				_shader->setFloat("pointLight.strength", (*it)->getStrength());
+				_shader->setVec3("pointLight.ambient", (*it)->getAmbient());
+				_shader->setVec3("pointLight.diffuse", (*it)->getDiffuse());
+				_shader->setVec3("pointLight.specular", (*it)->getSpecular());
+			
 				_shader->setFloat("pointLight.constant", (*it)->getConstantAttenuation());
 				_shader->setFloat("pointLight.linear", (*it)->getLinearAttenuation());
 				_shader->setFloat("pointLight.quadratic", (*it)->getQuadraticAttenuation());
 			}
 			else if ((*it)->getType() == SpotLight)
 			{
-				_shader->setVec3("spotLight.pointLight.position", (*it)->getPosition());
+				_shader->setVec3("spotLight.position", (*it)->getPosition());
 				_shader->setVec3("spotLight.direction", (*it)->getDirection());
-				_shader->setFloat("spotLight.cutoff", (*it)->getSpotCutoff());
-				_shader->setFloat("spotLight.pointLight.ambientIntensity", (*it)->getAmbientIntensity());
-				_shader->setFloat("spotLight.pointLight.diffuseIntensity", (*it)->getDiffuseIntensity());
+				_shader->setVec3("spotLight.ambient", (*it)->getAmbient());
+				_shader->setVec3("spotLight.diffuse", (*it)->getDiffuse());
+				_shader->setVec3("spotLight.specular", (*it)->getSpecular());
 
-				_shader->setFloat("spotLight.pointLight.constant", (*it)->getConstantAttenuation());
-				_shader->setFloat("spotLight.pointLight.linear", (*it)->getLinearAttenuation());
-				_shader->setFloat("spotLight.pointLight.quadratic", (*it)->getQuadraticAttenuation());
+				_shader->setFloat("spotLight.constant", (*it)->getConstantAttenuation());
+				_shader->setFloat("spotLight.linear", (*it)->getLinearAttenuation());
+				_shader->setFloat("spotLight.quadratic", (*it)->getQuadraticAttenuation());
+
+				_shader->setFloat("spotLight.innerCutoff", (*it)->getInnerCutoff());
+				_shader->setFloat("spotLight.outerCutoff", (*it)->getOuterCutoff());
 			}
 		}
 	}
@@ -146,17 +146,19 @@ namespace Basic {
 					{
 
 						ivtn >> posindex >> normalindex;
+						glm::vec3 pos = positions[posindex - 1];
+						glm::vec3 normal = normals[normalindex - 1];
+						vertex = Vertex(pos.x, pos.y, pos.z, normal.x, normal.y, normal.z);
 
-						vertex.Position = positions[posindex - 1];
-						vertex.Normal = normals[normalindex - 1];
 					}
 					else
 					{
 						ivtn >> posindex >> uvindex >> normalindex;
 
-						vertex.Position = positions[posindex - 1];
-						vertex.TexCoords = uvs[uvindex - 1];
-						vertex.Normal = normals[normalindex - 1];
+						glm::vec3 pos = positions[posindex - 1];
+						glm::vec3 normal = normals[normalindex - 1];
+						glm::vec2 uv = uvs[uvindex - 1];
+						vertex = Vertex(pos.x, pos.y, pos.z, normal.x, normal.y, normal.z, uv.x, uv.y);
 
 					}
 					vertices.push_back(vertex);
@@ -172,36 +174,30 @@ namespace Basic {
 		}
 		this->setVertices(vertices);
 	}
-	void Mesh::draw(Camera::ptr camera)
+	void Mesh::draw(Shader::ptr shader)
 	{
-		//shader赋值
-		_shader->use();
-		//_shader->setMat4("modelMatrix", _modelMatrix);
-		//glm::mat4 pjM = camera->getProjectMatrix();
-		//glm::mat4 vM = camera->getProjectMatrix();
-		//_shader->setMat4("projectionMatrix", camera->getProjectMatrix());
-		//_shader->setMat4("viewMatrix", camera->getViewMatrix());
-		//_shader->setVec3("EyeDirection", camera->Eye);
-		_shader->setMat4("modelMatrix",_modelMatrix);
-		_shader->setMat4("projectionMatrix", ((PerspectiveCamera::ptr)camera)->getProjectMatrix());
-		_shader->setMat4("viewMatrix", params->v());
-		_shader->setVec3("EyeDirection", params->eye());
+	
+		shader->use();
+		//_shader->setMat4("modelMatrix",_modelMatrix);
+		//_shader->setMat4("projectionMatrix", _camera->getProjectMatrix());
+		//_shader->setMat4("viewMatrix", _camera->getViewMatrix());
+		//_shader->setVec3("EyeDirection", _camera->getPosition());
 
-		if (_hasMaterial)
-		{
-			_shader->setVec3("ambientMt", _material.ambient);
-			_shader->setVec3("diffuseMt", _material.diffuse);
-			_shader->setVec3("specularMt", _material.specular);
-			_shader->setFloat("shininessMt", _material.shininess);
-		}
-		if (!_textures.empty())
-		{
-			for (int i = 0; i < _textures.size(); i++)
-			{
-				TextureManager::Inst()->bindTexture(_textures[i], i);
-				_shader->setInt(_textures[i], i);
-			}
-		}
+		//if (_hasMaterial)
+		//{
+		//	_shader->setVec3("ambientMt", _material.ambient);
+		//	_shader->setVec3("diffuseMt", _material.diffuse);
+		//	_shader->setVec3("specularMt", _material.specular);
+		//	_shader->setFloat("shininessMt", _material.shininess);
+		//}
+		//if (!_textures.empty())
+		//{
+		//	for (int i = 0; i < _textures.size(); i++)
+		//	{
+		//		TextureManager::Inst()->bindTexture(_textures[i], i);
+		//		_shader->setInt(_textures[i], i);
+		//	}
+		//}
 
 		glBindVertexArray(_vao);
 		if (_indices.empty())

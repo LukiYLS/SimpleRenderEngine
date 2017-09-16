@@ -3,7 +3,7 @@
 #include  <iostream>
 #include "RenderSystem.h"
 using namespace Utils;
-namespace Basic {
+namespace Core {
 	std::vector<mouse_event> mouse_events;
 	bool button_down = false;
 	Win* Win::m_Inst(0);

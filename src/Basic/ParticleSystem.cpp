@@ -1,6 +1,6 @@
 #include "ParticleSytem.h"
 
-namespace Basic {
+namespace Core {
 
 	ParticleSystem::ParticleSystem(int count)
 	{

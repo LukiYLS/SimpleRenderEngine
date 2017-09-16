@@ -2,7 +2,7 @@
 #define RENDERSTATE_H
 #include <glew\glew.h>
 #include <glm\glm.hpp>
-namespace Basic {
+namespace Core {
 	class RenderState {//¿¼ÂÇÖÐ
 		enum DepthFunc
 		{

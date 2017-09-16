@@ -5,7 +5,7 @@
 #include <glm\glm.hpp>
 #include <vector>
 #include <memory>
-namespace Basic {
+namespace Core {
 	class Shader {//还需要扩展。。。。
 	public:
 		typedef std::shared_ptr<Shader> ptr;

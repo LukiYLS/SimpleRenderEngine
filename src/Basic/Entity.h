@@ -3,9 +3,10 @@
 #include <memory>
 //#include <glm\glm.hpp>
 #include "Light.h"
+#include "Shader.h"
 #include "data_structure.h"
 
-namespace Basic {
+namespace Core {
 
 
 	struct Vertex
@@ -65,7 +66,7 @@ namespace Basic {
 			return (*this);
 		}
 	};
-	class Entity {//所有的模型都必须继承这个类
+	class Entity {
 	public:
 		typedef std::shared_ptr<Entity> ptr;
 	public:
@@ -73,12 +74,13 @@ namespace Basic {
 		virtual ~Entity() {}
 	public:
 		virtual void createBuffer() = 0;
-		virtual void draw(RenderParams* params) = 0;
+		virtual void draw() = 0;
 		virtual void setVertices(std::vector<Vertex> vertices) = 0;
 		virtual void setIndex(std::vector<unsigned int> indices) = 0;
 		virtual void setupLights(std::vector<Light::ptr> lights) = 0;
 		virtual void addTexture(const char* texName) = 0;		
 		virtual void setModelMatrix(glm::mat4x4& matrix) = 0;
+		virtual void setProgram(Shader::ptr shader){}
 	};
 }
 #endif // !ENTITY_H

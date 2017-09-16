@@ -53,8 +53,8 @@ private:
 
 };*/
 
-using namespace Basic;
-namespace Basic {
+using namespace Core;
+namespace Core {
 	struct Material//材质应该和纹理封装在一块吧？
 	{
 		glm::vec3 ambient;   // 环境光
@@ -70,7 +70,7 @@ namespace Basic {
 		virtual ~Mesh() {}
 		Mesh(const Mesh& mesh) {}
 	public:	
-		virtual void draw(RenderParams* params);
+		virtual void draw(Shader::ptr shader);
 		//virtual void render(Shader::ptr shader);
 		virtual void setVertices(std::vector<Vertex> vertices) { _vertices = vertices; }
 		virtual void setIndex(std::vector<unsigned int> indices) { _indices = indices; }		
@@ -78,6 +78,7 @@ namespace Basic {
 		virtual void setupLights(std::vector<Light::ptr> lights);
 		virtual void setModelMatrix(glm::mat4x4& matrix) { _modelMatrix = matrix; }
 		virtual void addTexture(const char* texName) { _textures.push_back(texName); }
+		void setCamera(PerspectiveCamera::ptr camera) { _camera = camera; }
 		void setMaterial(Material material) { _material = material; }
 		void setProgram(Shader::ptr shader);
 		
@@ -92,7 +93,7 @@ namespace Basic {
 		Shader::ptr _shader;
 		Material _material;
 		glm::mat4x4 _modelMatrix;
-
+		PerspectiveCamera::ptr _camera;
 		bool _hasMaterial;
 
 		//std::map<const char*, Texture::ptr> _texture_map;

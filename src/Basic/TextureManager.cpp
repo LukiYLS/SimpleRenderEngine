@@ -1,7 +1,7 @@
 
 #include "TextureManager.h"
 
-namespace Basic {
+namespace Core {
 	TextureManager* TextureManager::m_inst(0);
 
 	TextureManager* TextureManager::Inst()

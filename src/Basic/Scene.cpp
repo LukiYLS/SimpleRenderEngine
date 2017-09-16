@@ -2,7 +2,7 @@
 #include "PickTool.h"
 #include "FrameBuffer.h"
 #include "Shader.h"
-namespace Basic {
+namespace Core {
 	Scene* Scene::m_Inst(0);
 	Scene* Scene::Inst()
 	{
@@ -21,8 +21,7 @@ namespace Basic {
 			_entity_map.erase(name);
 	}
 	void Scene::render(RenderParams* params)
-	{
-		//遍历所有的灯光，作用于所有的mesh，后期考虑defer render加入	
+	{		
 		update(params->currTime());
 		for (auto it = _entity_map.begin(); it != _entity_map.end(); it++)
 		{
@@ -33,7 +32,7 @@ namespace Basic {
 	}
 	void Scene::update(float time)
 	{
-		//场景有哪些需要更新的？
+		
 	}
 
 	void Scene::pickRender(int width, int height)

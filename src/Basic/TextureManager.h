@@ -10,7 +10,7 @@
 #include "FreeImage.h"
 #include <map>
 #include <vector>
-namespace Basic {
+namespace Core {
 	class TextureManager//这个一定要重构，所有的纹理怎么可能只用一个manager啊！怎么改？？
 	{
 	public:

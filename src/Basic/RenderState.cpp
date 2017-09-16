@@ -1,6 +1,6 @@
 #include "RenderState.h"
 
-namespace Basic {
+namespace Core {
 
 	RenderState* RenderState::m_Inst(0);
 	RenderState* RenderState::Inst() {

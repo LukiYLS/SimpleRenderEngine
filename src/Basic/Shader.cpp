@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-namespace Basic {
+namespace Core {
 
 
 	Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath)

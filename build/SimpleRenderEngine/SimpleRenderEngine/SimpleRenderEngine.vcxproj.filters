@@ -22,7 +22,7 @@
     <Filter Include="Utils">
       <UniqueIdentifier>{eae47f79-b034-4ff5-9d45-1fbf645635e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="Texture">
+    <Filter Include="AllResource">
       <UniqueIdentifier>{8b23745c-9c86-49b2-9c0a-d02aa67f8fad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -75,6 +75,12 @@
     <ClCompile Include="..\..\..\src\Basic\ShadowEffect.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Texture\ResourceManager.cpp">
+      <Filter>AllResource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Texture\Resource.cpp">
+      <Filter>AllResource</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Basic\Effect.h">
@@ -110,9 +116,6 @@
     <ClInclude Include="..\..\..\src\Basic\Shader.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\TextureManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\Win.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -144,10 +147,37 @@
       <Filter>Utils</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\Texture.h">
-      <Filter>Texture</Filter>
+      <Filter>AllResource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\ShadowEffect.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Texture\Resource.h">
+      <Filter>AllResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Texture\ResourceManager.h">
+      <Filter>AllResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Type.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Texture\ResourceFactory.h">
+      <Filter>AllResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\TextureManager.h">
+      <Filter>AllResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Singleton.h">
+      <Filter>AllResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\ViewPort.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Loader.h">
+      <Filter>AllResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Texture\TextureManager_.h">
+      <Filter>AllResource</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

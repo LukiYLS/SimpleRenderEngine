@@ -5,7 +5,7 @@
 
 #define RGB_WHITE (0xFF | (0xFF<<8) | (0xFF<<16))
 
-namespace Basic
+namespace Core
 {
 	glm::vec4 GetColorByIndex(int index)
 	{

@@ -5,7 +5,7 @@
 #include <map>
 #include <string>
 #include "Camera\PerspectiveCamera.h"
-namespace Basic {
+namespace Core {
 	class Scene {//场景目前可以管理所有的渲染对象，后期引入osg节点管理方式
 	public:
 		static Scene* Inst();

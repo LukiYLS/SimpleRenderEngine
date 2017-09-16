@@ -1,7 +1,7 @@
 #include "RenderSystem.h"
 #include "RenderState.h"
 #include "Scene.h"
-namespace Basic {
+namespace Core {
 	RenderSystem* RenderSystem::m_Inst(0);
 	RenderSystem* RenderSystem::Inst() {
 		if (m_Inst)

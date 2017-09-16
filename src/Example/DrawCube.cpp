@@ -1,19 +1,18 @@
-#include "../Basic/TextureManager.h"
-#include "../Basic/Shader.h"
-#include "../Basic/Camera/PerspectiveCamera.h"
-#include "../Basic/Mesh.h"
-#include "../Basic/Light.h"
-#include "../Basic/Win.h"
-#include "../Basic/Scene.h"
-#include "../Basic/utils/CamerControl.h"
-#include "../Basic/utils/Event.h"
+#include "../Core/TextureManager.h"
+#include "../Core/Shader.h"
+#include "../Core/Camera/PerspectiveCamera.h"
+#include "../Core/Mesh.h"
+#include "../Core/Light.h"
+#include "../Core/Win.h"
+#include "../Core/Scene.h"
+#include "../Core/utils/CamerControl.h"
+#include "../Core/utils/Event.h"
 #include <vector>
 #include <iostream>
-using namespace Basic;
+using namespace Core;
 using namespace std;
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
-using namespace Core;
 using namespace Utils;
 int main()
 {
@@ -48,7 +47,7 @@ int main()
 
 
 
-	Shader::ptr shader = std::make_shared<Shader>("../../../src/Data/shader/basic.vs", "../../../src/Data/shader/basic.fs");	
+	Shader::ptr shader = std::make_shared<Shader>("../../../src/Data/shader/Core.vs", "../../../src/Data/shader/Core.fs");	
 	mesh->setProgram(shader);	
 
 	mesh->addTexture("texture3");
@@ -63,7 +62,7 @@ int main()
 	params->setP(camera->getProjectMatrix());
 
 	CameraControl::ptr cc = make_shared<CameraControl>((Core::Camera::ptr)camera);
-	EventManager::Inst()->registerReceiver("mouse.event", cc);
+	EventManager::Inst()->registerReceiver("mouse.event", cc);//new完之后应该自动注册
 
 	
 	Win::Inst()->starup(params);

@@ -2,7 +2,7 @@
 #include <glm\glm.hpp>
 #include "Texture.h"
 #include "Effect.h"
-namespace Basic {
+namespace Core {
 	enum TYPE { PARTICLE_TYPE_LAUNCHER };
 	struct Particle{
 		TYPE type;

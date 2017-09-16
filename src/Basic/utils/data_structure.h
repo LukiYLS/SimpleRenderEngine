@@ -2,7 +2,7 @@
 #define __DATA_STRUCTURE_H__
 #include "glm\glm.hpp"
 
-namespace Basic 
+namespace Core 
 {
 	class RenderParams
 	{

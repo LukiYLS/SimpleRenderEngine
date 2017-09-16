@@ -5,7 +5,7 @@
 #include "data_structure.h"
 #include "utils\Event.h"
 #include "utils\InputDefine.h"
-namespace Basic {
+namespace Core {
 	
 	
 	class Win {

@@ -1,6 +1,6 @@
 #include "Light.h"
 
-namespace Basic
+namespace Core
 {
 	Light::Light(void)
 	{
@@ -20,22 +20,16 @@ namespace Basic
 	void Light::init(void)
 	{
 		_lightnum = 0;
-		_lightColor = glm::vec3(1.0f, 1.0f, 1.0f);
-		_ambientIntensity = 0.1f;
-		_diffuseIntensity = 0.1f;		
-		_lightPosition = glm::vec3(0.0f, 0.0f, -1.0f);
-		_lightDirection = glm::vec3(0.0f, 0.0f, -1.0f);
-		_shiness = 80;
-		_strength = 10;
-		_constantAttenuation = 1.0f;
-		_linearAttenuation = 0.0f;
-		_quatricAttenuaion = 0.0f;
-		_spotExponet = 0.0f;
-		_spotCosCutoff = 0.3;
-		has_Shadow = false;
-	}
-	bool Light::enableShadow()
-	{
-		has_Shadow = true;
+		_ambient = glm::vec3(0.05f, 0.05f, 0.05f);
+		_diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
+		_specular = glm::vec3(0.05f, 0.05f, 0.05f);
+		_position = glm::vec3(0.0f, 0.0f, 1.0f);
+		_direction = glm::vec3(0.0f, 0.0f, -1.0f);
+		_innerCutOff = glm::radians(10.0f);
+		_outerCutOff = glm::radians(30.0f);
+		_constant = 1.0f;
+		_linear = 0.0f;
+		_quadratic = 0.0f;
+		_isShadow = false;
 	}
 }
