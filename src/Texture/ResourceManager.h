@@ -1,7 +1,7 @@
 #pragma once
 #include "Resource.h"
 #include "ResourceFactory.h"
-#include <unordered_map>
+#include <map>
 #include "../Basic/Loader.h"
 namespace Core {
 
@@ -9,17 +9,17 @@ namespace Core {
 	public:
 
 		virtual Resource::ptr createResource(const string& name, bool isManual = false, Loader::ptr loader = 0);
-		virtual Resource::ptr getResourceByName(const char* name) { return _resource_map[name]; }
-		virtual void addResource(const char* name, Resource::ptr resource) { _resource_map[name] = resource; }
-		virtual void remove(const char* name) { _resource_map.erase(name); }
+		virtual Resource::ptr getResourceByName(const char* name);
+		virtual void addResource(const char* name, Resource::ptr resource);
+		virtual void remove(const char* name);
 		virtual void remove(Resource::ptr resource);
-		virtual void removeAll() { _resource_map.clear(); }
+		virtual void removeAll();
 		virtual void load();
 		virtual void unLoad();
 
 	private:
 
-		typedef std::unordered_map<const char*, Resource::ptr> ResourceMap;
-		ResourceMap _resource_map;
+		typedef std::map<const char*, Resource::ptr> ResourceMap;
+		ResourceMap _load_resource_map, _unload_resource_map;
 	};
-}
+}БъЭЗ

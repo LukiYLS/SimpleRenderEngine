@@ -32,4 +32,11 @@ namespace Core
 		_quadratic = 0.0f;
 		_isShadow = false;
 	}
+
+	Light::ptr Light::createLight(Parameter::ptr paras)
+	{
+		LightType type = paras->getValue("type");
+		glm::vec3 ambient = paras->getValue("ambient");
+
+	}
 }

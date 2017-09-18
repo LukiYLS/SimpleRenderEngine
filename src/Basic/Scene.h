@@ -1,28 +1,42 @@
 #ifndef SCENE_H
 #define SCENE_H
-#include "Entity.h"
+#include "Mesh.h"
 #include "Light.h"
+#include "Plugin.h"
+#include "Parameter.h"
 #include <map>
+#include <vector>
 #include <string>
 #include "Camera\PerspectiveCamera.h"
+using namespace std;
 namespace Core {
-	class Scene {//场景目前可以管理所有的渲染对象，后期引入osg节点管理方式
+	class Plugin;
+	class Scene {
 	public:
-		static Scene* Inst();
-		void addEntity(std::string name, Entity::ptr entity);
-		void removeEntity(std::string name);
-		void addLight(Light::ptr light) { _lights.push_back(light); }
+		typedef shared_ptr<Scene> ptr;
+	public:		
+		void addRenderMesh(const string& shader_name, const string& mesh_name);
+		void removeRenderMesh(const string& name);
+
+		vector<Light::ptr> getLights(const string& name, Parameter::ptr paras);
+		vector<Light::ptr> getLights();
+		void removeLight(const string& name);
+
+		vector<Mesh::ptr> getMeshs();
+		void addPlugin(Plugin::ptr plugin);
+		void removePlugin();
+
 		void update(float time);//
 		void pickRender(int width, int height);//设置color，render to buffer，read buffer，
-		void setCamera();
-		void render(RenderParams* params);
-	private:
-		static Scene* m_Inst;
-		std::map<std::string, Entity::ptr> _entity_map;
-		//std::map<LightType, Light::ptr> _light_map;
-		std::vector<Light::ptr> _lights;
-		//std::vector<Entity::ptr> _entity_vec;
-		//std::vector<glm::vec4> _color_vec;
+		Camera::ptr crateCamera(Parameter::ptr paras);
+		Camera::ptr getCamera() { return _camera; }
+		void render();
+	private:		
+		map<string, vector<string>> _shader_mesh;	
+		vector<Light::ptr> _lights;
+		map<string, Light::ptr> _light_map;
+		map<string, Plugin::ptr> _plugin_map;
+		Camera::ptr _camera;
 	};
 }
 #endif // !SCENEH

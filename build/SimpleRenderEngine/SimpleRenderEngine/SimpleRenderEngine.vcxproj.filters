@@ -25,15 +25,30 @@
     <Filter Include="AllResource">
       <UniqueIdentifier>{8b23745c-9c86-49b2-9c0a-d02aa67f8fad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Mesh">
+      <UniqueIdentifier>{168670a6-8d28-436a-a240-8bff9f29c88a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\MeshLoader">
+      <UniqueIdentifier>{a6724ebd-e934-4e33-8cbe-fe6dd9556fa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Mesh\MeshFactory">
+      <UniqueIdentifier>{0f5b30b2-c548-4db9-8785-9c56fbc61c68}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Texture">
+      <UniqueIdentifier>{1f4e8c55-30ec-4f9d-9a81-e12809867333}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Scene">
+      <UniqueIdentifier>{72026659-514a-4223-a3d5-d2a2b0d56a4c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin">
+      <UniqueIdentifier>{25d851ff-1267-4092-899e-4e9968efdc62}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Basic\FrameBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Basic\Light.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Basic\Mesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Basic\ParticleSystem.cpp">
@@ -54,9 +69,6 @@
     <ClCompile Include="..\..\..\src\Basic\Shader.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Basic\TextureManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Basic\Win.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -72,30 +84,33 @@
     <ClCompile Include="..\..\..\src\Basic\utils\CameraControl.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Basic\ShadowEffect.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Texture\ResourceManager.cpp">
       <Filter>AllResource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Texture\Resource.cpp">
       <Filter>AllResource</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\Basic\RenderObject.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Basic\Mesh.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Basic\MeshManager.cpp">
+      <Filter>Mesh</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Basic\TextureManager.cpp">
+      <Filter>Texture</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Basic\ShadowMapPlugin.cpp">
+      <Filter>Plugin</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\src\Basic\Effect.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\Entity.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\FrameBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\Light.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\Mesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\ParticleSytem.h">
@@ -117,9 +132,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\Win.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\Uniform.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Basic\utils\data_structure.h">
@@ -146,20 +158,11 @@
     <ClInclude Include="..\..\..\src\Basic\utils\InputDefine.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\Texture.h">
-      <Filter>AllResource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\ShadowEffect.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Texture\Resource.h">
       <Filter>AllResource</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Texture\ResourceManager.h">
       <Filter>AllResource</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Type.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Texture\ResourceFactory.h">
       <Filter>AllResource</Filter>
@@ -170,14 +173,50 @@
     <ClInclude Include="..\..\..\src\Basic\Singleton.h">
       <Filter>AllResource</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\ViewPort.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Basic\Loader.h">
-      <Filter>AllResource</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Texture\TextureManager_.h">
       <Filter>AllResource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Parameter.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\RenderObject.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Effect.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\ObjLoader.h">
+      <Filter>Mesh\MeshLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Loader.h">
+      <Filter>Mesh\MeshLoader</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\BoundingBox.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Mesh.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\MeshManager.h">
+      <Filter>Mesh</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\MeshFactory.h">
+      <Filter>Mesh\MeshFactory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Texture.h">
+      <Filter>Texture</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\Plugin.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\ShaderManager.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\ViewPort.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Basic\ShadowMapPlugin.h">
+      <Filter>Plugin</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

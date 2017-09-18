@@ -6,7 +6,7 @@
 #include <vector>
 #include <memory>
 namespace Core {
-	class Shader {//还需要扩展。。。。
+	class Shader {
 	public:
 		typedef std::shared_ptr<Shader> ptr;
 	public:

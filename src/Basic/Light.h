@@ -7,6 +7,7 @@
 #include <string>
 #include <map>
 #include <memory>
+#include "Parameter.h"
 namespace Core
 {
 	enum LightType { DirectLight, PointLight, SpotLight };
@@ -45,6 +46,8 @@ namespace Core
 		//Light(const Light* light);
 		virtual ~Light();
 	public:
+
+		static Light::ptr createLight(Parameter::ptr paras);
 
 		void setLightNum(int num) { _lightnum = num; }
 		int getLightNum() const { return _lightnum; }

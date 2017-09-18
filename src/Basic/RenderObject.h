@@ -1,10 +1,6 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#pragma once
 #include <memory>
-//#include <glm\glm.hpp>
-#include "Light.h"
 #include "Shader.h"
-#include "data_structure.h"
 
 namespace Core {
 
@@ -66,21 +62,46 @@ namespace Core {
 			return (*this);
 		}
 	};
-	class Entity {
+	enum PrimitiveType {
+		/// A list of points, 1 vertex per point
+		POINT_LIST = 1,
+		/// A list of lines, 2 vertices per line
+		LINE_LIST = 2,
+		/// A strip of connected lines, 1 vertex per line plus 1 start vertex
+		LINE_STRIP = 3,
+		/// A list of triangles, 3 vertices per triangle
+		TRIANGLE_LIST = 4,
+		/// A strip of triangles, 3 vertices for the first triangle, and 1 per triangle after that 
+		TRIANGLE_STRIP = 5,
+		/// A fan of triangles, 3 vertices for the first triangle, and 1 per triangle after that
+		TRIANGLE_FAN = 6
+	};
+
+
+
+	class RenderObject {
 	public:
-		typedef std::shared_ptr<Entity> ptr;
+		typedef std::shared_ptr<RenderObject> ptr;
 	public:
-		Entity() {}
-		virtual ~Entity() {}
+		RenderObject() {}
+		virtual ~RenderObject() {}
+	public:		
+		void draw(Shader::ptr shader);
+		void setVertices(std::vector<Vertex> vertices) { vertices = vertices; }
+		void setIndex(std::vector<unsigned int> indices) { _indices = indices; }
+		void setPrimitive(PrimitiveType type) { _type = type; }
 	public:
-		virtual void createBuffer() = 0;
-		virtual void draw() = 0;
-		virtual void setVertices(std::vector<Vertex> vertices) = 0;
-		virtual void setIndex(std::vector<unsigned int> indices) = 0;
-		virtual void setupLights(std::vector<Light::ptr> lights) = 0;
-		virtual void addTexture(const char* texName) = 0;		
-		virtual void setModelMatrix(glm::mat4x4& matrix) = 0;
-		virtual void setProgram(Shader::ptr shader){}
+		virtual void setPosition(glm::vec3 position){}
+		
+	protected:
+		void createBuffer();
+		virtual void setShaderUniform(Shader::ptr shader) = 0;
+
+		PrimitiveType _type;
+		uint32_t _vao, _vbo, _ebo;
+		std::vector<Vertex> _vertices;
+		std::vector<uint32_t> _indices;
+
 	};
 }
-#endif // !ENTITY_H
+
