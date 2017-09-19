@@ -48,6 +48,14 @@ namespace Core {
 		}
 	}
 	
+	vector<Mesh::ptr> Scene::getMeshs()
+	{
+		vector<Mesh::ptr> meshs;
+		for (auto it : _shader_mesh)
+		{
+			meshs.push_back
+		}
+	}
 
 	void Scene::pickRender(int width, int height)
 	{

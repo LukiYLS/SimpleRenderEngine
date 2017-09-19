@@ -24,8 +24,7 @@ namespace Core {
 	public:			
 		void setLights(std::vector<Light::ptr> lights) { _lights = lights; }
 		void setPostion(glm::vec3 position) { _position = position; }
-		void addTexture(const char* texName) { _textures.push_back(texName); }	
-		
+		void addTexture(const char* texName) { _textures.push_back(texName); }			
 		void setMaterial(Material material) { _material = material; }
 		
 		void calculateBounding();

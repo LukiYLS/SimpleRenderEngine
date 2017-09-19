@@ -19,7 +19,7 @@ namespace Core {
 		void removeRenderMesh(const string& name);
 
 		vector<Light::ptr> getLights(const string& name, Parameter::ptr paras);
-		vector<Light::ptr> getLights();
+		vector<Light::ptr> getLights() { return _lights; }
 		void removeLight(const string& name);
 
 		vector<Mesh::ptr> getMeshs();

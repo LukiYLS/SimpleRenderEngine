@@ -15,12 +15,13 @@ namespace Core {
 
 		//Shader::ptr createMesh(const string& fileName, Loader::ptr loader, const string& name);
 		//Shader::ptr createMesh(Pararmeter::ptr paras, MeshFactory::ptr factory, const string& name);
+		Shader::ptr loadFromFile(const string& vs);
 		void remove(const string& name);
 		void removeAll();
 		Shader::ptr getByName(const string& name);
 	private:
 
-		typedef map<string, Mesh::ptr> Mesh_Map;
-		Mesh_Map _mesh_map;
+		typedef map<string, Shader::ptr> ShaderMap;
+		ShaderMap _shader_map;
 	};
 }

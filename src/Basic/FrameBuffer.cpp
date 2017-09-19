@@ -41,8 +41,8 @@ namespace Core {
 
 	void FrameBuffer::bindFrameBufferTexture(int units, bool isMipMap)
 	{
-		TextureManager::Inst()->addTexture("framebufferTex", _texture);
-		TextureManager::Inst()->bindTexture("framebufferTex", units);
+		glActiveTexture(units);
+		glBindTexture(GL_TEXTURE_2D, _texture);
 		if(isMipMap)glGenerateMipmap(GL_TEXTURE_2D);
 	}
 }

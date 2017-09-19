@@ -9,8 +9,8 @@ namespace Core {
 
 	void ShadowMapPlugin::render(Scene* scene)
 	{
-		Shader::ptr shader_depth = std::make_shared<Shader>("shader_map_depth.vs", "shader_map_depth.fs");
-		Shader::ptr shader_map = std::make_shared<Shader>("shader_map.vs", "shader_map.vs");
+		Shader::ptr shader_depth = std::make_shared<Shader>("../Data/shader/shader_map_depth.vs", "../Data/shader/shader_map_depth.fs");
+		Shader::ptr shader_map = std::make_shared<Shader>("../Data/shader/shader_map.vs", "../Data/shader/shader_map.fs");
 		glm::mat4 viewMatrix, projectMatrix;
 
 		FrameBuffer::ptr fb = std::make_shared<FrameBuffer>();
@@ -35,7 +35,7 @@ namespace Core {
 			shader_depth->setMat4("viewMatrix", viewMatrix);
 			shader_depth->setMat4("projectMatrix", projectMatrix);
 			glClear(GL_DEPTH_BUFFER_BIT);
-			vector<Mesh::ptr> meshs;
+			vector<Mesh::ptr> meshs = scene->getMeshs();
 			for (auto m : meshs)
 			{
 				m->draw(shader_depth);
