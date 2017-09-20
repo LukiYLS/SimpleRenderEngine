@@ -18,6 +18,69 @@
       <Platform>x64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\..\src\Core\Camera.h" />
+    <ClInclude Include="..\..\..\src\Core\Effect.h" />
+    <ClInclude Include="..\..\..\src\Core\FrameBuffer.h" />
+    <ClInclude Include="..\..\..\src\Core\Light.h" />
+    <ClInclude Include="..\..\..\src\Core\Loader.h" />
+    <ClInclude Include="..\..\..\src\Core\Mesh.h" />
+    <ClInclude Include="..\..\..\src\Core\MeshFactory.h" />
+    <ClInclude Include="..\..\..\src\Core\MeshManager.h" />
+    <ClInclude Include="..\..\..\src\Core\ObjLoader.h" />
+    <ClInclude Include="..\..\..\src\Core\OrthographicCamera.h" />
+    <ClInclude Include="..\..\..\src\Core\ParticleSytem.h" />
+    <ClInclude Include="..\..\..\src\Core\PerspectiveCamera.h" />
+    <ClInclude Include="..\..\..\src\Core\PickTool.h" />
+    <ClInclude Include="..\..\..\src\Core\Plugin.h" />
+    <ClInclude Include="..\..\..\src\Core\RenderObject.h" />
+    <ClInclude Include="..\..\..\src\Core\RenderState.h" />
+    <ClInclude Include="..\..\..\src\Core\RenderSystem.h" />
+    <ClInclude Include="..\..\..\src\Core\Resource.h" />
+    <ClInclude Include="..\..\..\src\Core\ResourceFactory.h" />
+    <ClInclude Include="..\..\..\src\Core\ResourceManager.h" />
+    <ClInclude Include="..\..\..\src\Core\Scene.h" />
+    <ClInclude Include="..\..\..\src\Core\Shader.h" />
+    <ClInclude Include="..\..\..\src\Core\ShaderManager.h" />
+    <ClInclude Include="..\..\..\src\Core\ShadowMapPlugin.h" />
+    <ClInclude Include="..\..\..\src\Core\SimpleRenderEngine.h" />
+    <ClInclude Include="..\..\..\src\Core\Texture.h" />
+    <ClInclude Include="..\..\..\src\Core\TextureManager.h" />
+    <ClInclude Include="..\..\..\src\Core\TextureManager_.h" />
+    <ClInclude Include="..\..\..\src\Core\ViewPort.h" />
+    <ClInclude Include="..\..\..\src\Core\Win.h" />
+    <ClInclude Include="..\..\..\src\Utils\AnyValue.h" />
+    <ClInclude Include="..\..\..\src\Utils\BoundingBox.h" />
+    <ClInclude Include="..\..\..\src\Utils\CamerControl.h" />
+    <ClInclude Include="..\..\..\src\Utils\data_structure.h" />
+    <ClInclude Include="..\..\..\src\Utils\Event.h" />
+    <ClInclude Include="..\..\..\src\Utils\InputDefine.h" />
+    <ClInclude Include="..\..\..\src\Utils\Parameter.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\..\src\Core\Camera.cpp" />
+    <ClCompile Include="..\..\..\src\Core\FrameBuffer.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Light.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
+    <ClCompile Include="..\..\..\src\Core\MeshManager.cpp" />
+    <ClCompile Include="..\..\..\src\Core\ParticleSystem.cpp" />
+    <ClCompile Include="..\..\..\src\Core\PickTool.cpp" />
+    <ClCompile Include="..\..\..\src\Core\RenderObject.cpp" />
+    <ClCompile Include="..\..\..\src\Core\RenderState.cpp" />
+    <ClCompile Include="..\..\..\src\Core\RenderSystem.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Resource.cpp" />
+    <ClCompile Include="..\..\..\src\Core\ResourceManager.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Scene.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Shader.cpp" />
+    <ClCompile Include="..\..\..\src\Core\ShaderManager.cpp" />
+    <ClCompile Include="..\..\..\src\Core\ShadowMapPlugin.cpp" />
+    <ClCompile Include="..\..\..\src\Core\SimpleRenderEngine.cpp" />
+    <ClCompile Include="..\..\..\src\Core\TextureManager.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Win.cpp" />
+    <ClCompile Include="..\..\..\src\Example\DrawCube.cpp" />
+    <ClCompile Include="..\..\..\src\Utils\CameraControl.cpp" />
+    <ClCompile Include="..\..\..\src\Utils\Event.cpp" />
+  </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0BF797B4-8A67-48BB-A960-5D351CEE102D}</ProjectGuid>
     <RootNamespace>SimleRenderEngine</RootNamespace>
@@ -120,67 +183,6 @@
       <OptimizeReferences>true</OptimizeReferences>
     </Link>
   </ItemDefinitionGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\..\src\Basic\Camera\Camera.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\FrameBuffer.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\Light.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\Mesh.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\MeshManager.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\ParticleSystem.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\PickTool.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\RenderObject.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\RenderState.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\RenderSystem.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\Scene.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\Shader.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\ShadowMapPlugin.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\TextureManager.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\utils\CameraControl.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\utils\Event.cpp" />
-    <ClCompile Include="..\..\..\src\Basic\Win.cpp" />
-    <ClCompile Include="..\..\..\src\Example\DrawCube.cpp" />
-    <ClCompile Include="..\..\..\src\Texture\Resource.cpp" />
-    <ClCompile Include="..\..\..\src\Texture\ResourceManager.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\..\src\Basic\BoundingBox.h" />
-    <ClInclude Include="..\..\..\src\Basic\Camera\Camera.h" />
-    <ClInclude Include="..\..\..\src\Basic\Camera\OrthographicCamera.h" />
-    <ClInclude Include="..\..\..\src\Basic\Camera\PerspectiveCamera.h" />
-    <ClInclude Include="..\..\..\src\Basic\Effect.h" />
-    <ClInclude Include="..\..\..\src\Basic\ObjLoader.h" />
-    <ClInclude Include="..\..\..\src\Basic\Plugin.h" />
-    <ClInclude Include="..\..\..\src\Basic\RenderObject.h" />
-    <ClInclude Include="..\..\..\src\Basic\FrameBuffer.h" />
-    <ClInclude Include="..\..\..\src\Basic\Light.h" />
-    <ClInclude Include="..\..\..\src\Basic\Loader.h" />
-    <ClInclude Include="..\..\..\src\Basic\Mesh.h" />
-    <ClInclude Include="..\..\..\src\Basic\MeshFactory.h" />
-    <ClInclude Include="..\..\..\src\Basic\MeshManager.h" />
-    <ClInclude Include="..\..\..\src\Basic\Parameter.h" />
-    <ClInclude Include="..\..\..\src\Basic\ParticleSytem.h" />
-    <ClInclude Include="..\..\..\src\Basic\PickTool.h" />
-    <ClInclude Include="..\..\..\src\Basic\RenderState.h" />
-    <ClInclude Include="..\..\..\src\Basic\RenderSystem.h" />
-    <ClInclude Include="..\..\..\src\Basic\Scene.h" />
-    <ClInclude Include="..\..\..\src\Basic\Shader.h" />
-    <ClInclude Include="..\..\..\src\Basic\ShaderManager.h" />
-    <ClInclude Include="..\..\..\src\Basic\ShadowMapPlugin.h" />
-    <ClInclude Include="..\..\..\src\Basic\Singleton.h" />
-    <ClInclude Include="..\..\..\src\Basic\Texture.h" />
-    <ClInclude Include="..\..\..\src\Basic\TextureManager.h" />
-    <ClInclude Include="..\..\..\src\Basic\utils\AnyValue.h" />
-    <ClInclude Include="..\..\..\src\Basic\utils\CamerControl.h" />
-    <ClInclude Include="..\..\..\src\Basic\utils\data_structure.h" />
-    <ClInclude Include="..\..\..\src\Basic\utils\Event.h" />
-    <ClInclude Include="..\..\..\src\Basic\utils\InputDefine.h" />
-    <ClInclude Include="..\..\..\src\Basic\ViewPort.h" />
-    <ClInclude Include="..\..\..\src\Basic\Win.h" />
-    <ClInclude Include="..\..\..\src\Texture\Resource.h" />
-    <ClInclude Include="..\..\..\src\Texture\ResourceFactory.h" />
-    <ClInclude Include="..\..\..\src\Texture\ResourceManager.h" />
-    <ClInclude Include="..\..\..\src\Texture\TextureManager_.h" />
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>

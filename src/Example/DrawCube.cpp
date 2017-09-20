@@ -1,12 +1,14 @@
 #include "../Core/TextureManager.h"
-#include "../Core/Shader.h"
-#include "../Core/Camera/PerspectiveCamera.h"
+#include "../Core/ShaderManager.h"
+#include "../Core/PerspectiveCamera.h"
 #include "../Core/Mesh.h"
 #include "../Core/Light.h"
 #include "../Core/Win.h"
 #include "../Core/Scene.h"
-#include "../Core/utils/CamerControl.h"
-#include "../Core/utils/Event.h"
+#include "../Utils/CamerControl.h"
+#include "../Utils/Event.h"
+#include "../Core/MeshManager.h"
+#include "../Core/SimpleRenderEngine.h"
 #include <vector>
 #include <iostream>
 using namespace Core;
@@ -28,17 +30,16 @@ int main()
 	
 	Mesh::ptr mesh = std::make_shared<Mesh>();
 	mesh->setVertices(vertices);
-	mesh->setIndex(indices);
-	
-	mesh->createBuffer();
-	
+	mesh->setIndex(indices);	
+	MeshManager::getSingleton()->addMesh("cube", mesh);
+
 	Light::ptr light = std::make_shared<Light>();
 	light->setType(PointLight);
 
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/1.jpg", "texture1");
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/2.jpg", "texture2");
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/3.jpg", "texture3");
-
+	mesh->addTexture("texture3");
 	//Camera::ptr camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
 	//camera->setPerspectiveFovLHMatrix(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
 
@@ -46,25 +47,21 @@ int main()
 	camera->setPosition(glm::vec3(0.0f, 0.0f, -2.0f));	
 
 
+	Shader::ptr shader = ShaderManager::getSingleton()->createShader("light", "../../../src/Data/shader/light.vs", "../../../src/Data/shader/light.fs");
+	
+	Scene::ptr scene = SimpleRenderEngine::getSingleton()->craeteScene("test");
+	scene->addRenderMesh("light", "cube");
+	scene->addLight(light);
+	
+	SimpleRenderEngine::getSingleton()->startRender();
+	
 
-	Shader::ptr shader = std::make_shared<Shader>("../../../src/Data/shader/Core.vs", "../../../src/Data/shader/Core.fs");	
-	mesh->setProgram(shader);	
 
-	mesh->addTexture("texture3");
 
-	Scene::Inst()->addEntity("test", (Entity::ptr)mesh);
-	Scene::Inst()->addLight(light);
-
-	RenderParams * params = new RenderParams();
-	params->setEye(camera->getPosition());
-	params->setM(glm::mat4());
-	params->setV(camera->getViewMatrix());
-	params->setP(camera->getProjectMatrix());
-
-	CameraControl::ptr cc = make_shared<CameraControl>((Core::Camera::ptr)camera);
-	EventManager::Inst()->registerReceiver("mouse.event", cc);//new完之后应该自动注册
+	//CameraControl::ptr cc = make_shared<CameraControl>((Core::Camera::ptr)camera);
+	//EventManager::Inst()->registerReceiver("mouse.event", cc);//new完之后应该自动注册
 
 	
-	Win::Inst()->starup(params);
+	//Win::Inst()->starup(params);
 	
 }
