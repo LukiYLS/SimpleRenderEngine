@@ -2,10 +2,18 @@
 
 namespace Core {
 
+	SimpleRenderEngine* SimpleRenderEngine::instance(0);
+	SimpleRenderEngine* SimpleRenderEngine::getSingleton() {
+		if (!instance)
+			instance = new SimpleRenderEngine();
+		return instance;
+	}
 	Scene::ptr SimpleRenderEngine::craeteScene(const string& name)
 	{
 		Scene::ptr scene = make_shared<Scene>();
+		_scene = scene;
 		_scene_map.insert(make_pair(name, scene));
+		return scene;
 	}
 	void SimpleRenderEngine::createWindow(int width, int height)
 	{

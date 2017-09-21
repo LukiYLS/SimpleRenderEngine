@@ -10,6 +10,7 @@ namespace Core {
 	public:
 		typedef std::shared_ptr<Shader> ptr;
 	public:
+		Shader(uint32_t shaderID):shader_ID(shaderID){}
 		Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 		Shader(const Shader& shader) {}
 		~Shader() {}

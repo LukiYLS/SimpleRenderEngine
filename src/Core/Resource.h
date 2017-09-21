@@ -44,7 +44,7 @@ namespace Core
 		virtual void postLoadImpl() {}		
 		virtual void postUnloadImpl() {}
 
-		virtual void prepareImpl(){}
+//		virtual void prepareImpl(){}
 		virtual void unPrepareImpl() {}
 
 		virtual void loadImpl() = 0;

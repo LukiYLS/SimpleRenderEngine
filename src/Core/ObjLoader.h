@@ -5,11 +5,13 @@
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+#include <string>
 namespace Core {
 
-	class ObjLoader {
+	class ObjLoader 
+		:public Loader{
 	public:
-		virtual Mesh::ptr load(const string& fileName) {
+		virtual Mesh::ptr load(const std::string& fileName) {
 			Mesh::ptr mesh;
 
 			std::ifstream file(fileName);

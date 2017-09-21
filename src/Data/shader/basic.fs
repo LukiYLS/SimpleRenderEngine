@@ -75,5 +75,5 @@ void main()
 {	
 	vec4 lightColor = CalcPointLight(pointLight, Position, Normal);
 	vec4 Color = texture(texture1, uv);	
-	gl_FragColor = Color * lightColor;
+	gl_FragColor = vec4(1.0,0.0,0.0,1.0);//Color * lightColor;
 }

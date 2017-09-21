@@ -1,5 +1,5 @@
 #pragma once
-#include "../ViewPort.h"
+#include "ViewPort.h"
 #include <glm\glm.hpp>
 #include <glm\gtc\quaternion.hpp>
 #include <glm\gtc\matrix_transform.hpp>
@@ -41,7 +41,7 @@ namespace Core {
 		void roll(float angle) { rotate(angle, _orientation*glm::vec3(0, 0, 1)); }
 
 		glm::mat4 getViewMatrix()const { return (glm::translate(glm::mat4_cast(_orientation), _position)); }
-		virtual glm::mat4 getProjectionMatrix(){}
+		virtual glm::mat4 getProjectionMatrix() { return glm::mat4(); }
 	private:
 		glm::quat RotationBetweenVectors(const glm::vec3& start, const glm::vec3& dest);
 

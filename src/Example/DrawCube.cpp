@@ -19,8 +19,8 @@ using namespace Utils;
 int main()
 {
 	
-	Win::Inst()->createWindow();	
-	
+	//Win::Inst()->createWindow();	
+	SimpleRenderEngine::getSingleton()->createWindow(SCR_WIDTH, SCR_HEIGHT);
 	vector<Vertex> vertices;
 	vertices.push_back(Vertex(0.5f, 0.5f, 0.0f, 0, 0, -1, 1, 1));
 	vertices.push_back(Vertex(0.5f, -0.5f, 0.0f, 0, 0, -1, 1, 0));
@@ -47,9 +47,9 @@ int main()
 	camera->setPosition(glm::vec3(0.0f, 0.0f, -2.0f));	
 
 
-	Shader::ptr shader = ShaderManager::getSingleton()->createShader("light", "../../../src/Data/shader/light.vs", "../../../src/Data/shader/light.fs");
+	Shader::ptr shader = ShaderManager::getSingleton()->createShader("basic", "../../../src/Data/shader/basic.vs", "../../../src/Data/shader/basic.fs");
 	
-	Scene::ptr scene = SimpleRenderEngine::getSingleton()->craeteScene("test");
+	Scene::ptr scene = SimpleRenderEngine::getSingleton()->craeteScene("test");	
 	scene->addRenderMesh("light", "cube");
 	scene->addLight(light);
 	

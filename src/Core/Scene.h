@@ -21,7 +21,7 @@ namespace Core {
 
 
 		Light::ptr createLight(const string& name, Parameter::ptr paras);
-		void addLight(Light::ptr light);
+		void addLight(Light::ptr light) { _lights.push_back(light); }
 		vector<Light::ptr> getLights() { return _lights; }
 		void removeLight(const string& name);
 

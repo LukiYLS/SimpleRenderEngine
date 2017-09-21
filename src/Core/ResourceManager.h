@@ -22,4 +22,4 @@ namespace Core {
 		typedef std::map<const char*, Resource::ptr> ResourceMap;
 		ResourceMap _load_resource_map, _unload_resource_map;
 	};
-}БъЭЗ
+}

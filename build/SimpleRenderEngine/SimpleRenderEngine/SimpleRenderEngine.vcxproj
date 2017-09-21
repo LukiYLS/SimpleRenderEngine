@@ -36,9 +36,7 @@
     <ClInclude Include="..\..\..\src\Core\RenderObject.h" />
     <ClInclude Include="..\..\..\src\Core\RenderState.h" />
     <ClInclude Include="..\..\..\src\Core\RenderSystem.h" />
-    <ClInclude Include="..\..\..\src\Core\Resource.h" />
     <ClInclude Include="..\..\..\src\Core\ResourceFactory.h" />
-    <ClInclude Include="..\..\..\src\Core\ResourceManager.h" />
     <ClInclude Include="..\..\..\src\Core\Scene.h" />
     <ClInclude Include="..\..\..\src\Core\Shader.h" />
     <ClInclude Include="..\..\..\src\Core\ShaderManager.h" />
@@ -52,7 +50,6 @@
     <ClInclude Include="..\..\..\src\Utils\AnyValue.h" />
     <ClInclude Include="..\..\..\src\Utils\BoundingBox.h" />
     <ClInclude Include="..\..\..\src\Utils\CamerControl.h" />
-    <ClInclude Include="..\..\..\src\Utils\data_structure.h" />
     <ClInclude Include="..\..\..\src\Utils\Event.h" />
     <ClInclude Include="..\..\..\src\Utils\InputDefine.h" />
     <ClInclude Include="..\..\..\src\Utils\Parameter.h" />
@@ -68,8 +65,6 @@
     <ClCompile Include="..\..\..\src\Core\RenderObject.cpp" />
     <ClCompile Include="..\..\..\src\Core\RenderState.cpp" />
     <ClCompile Include="..\..\..\src\Core\RenderSystem.cpp" />
-    <ClCompile Include="..\..\..\src\Core\Resource.cpp" />
-    <ClCompile Include="..\..\..\src\Core\ResourceManager.cpp" />
     <ClCompile Include="..\..\..\src\Core\Scene.cpp" />
     <ClCompile Include="..\..\..\src\Core\Shader.cpp" />
     <ClCompile Include="..\..\..\src\Core\ShaderManager.cpp" />

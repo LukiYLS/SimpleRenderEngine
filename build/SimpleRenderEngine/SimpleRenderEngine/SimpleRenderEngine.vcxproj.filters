@@ -72,13 +72,7 @@
     <ClInclude Include="..\..\..\src\Core\RenderSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\Resource.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Core\ResourceFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\ResourceManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\Scene.h">
@@ -114,9 +108,6 @@
     <ClInclude Include="..\..\..\src\Utils\CamerControl.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Utils\data_structure.h">
-      <Filter>Utils</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Utils\Event.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -147,12 +138,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Scene.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\ResourceManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\Resource.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\RenderSystem.cpp">

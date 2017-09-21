@@ -10,31 +10,7 @@
 namespace Core
 {
 	enum LightType { DirectLight, PointLight, SpotLight };
-	/*class Light {
-	public:
-		virtual void setAmbient(const glm::vec3& ambient) = 0;
-		virtual void setDiffuse(const glm::vec3& diffuse) = 0;
-		virtual void setSpecular(const glm::vec3& specular) = 0;
-		virtual void setPosition(const glm::vec3& position) = 0;
-		virtual void setDirection(const glm::vec3& direction) = 0;
-		virtual void setConstantAttenuation(float constant_attenuation) = 0;
-		virtual void setLinearAttenuation(float linear_attenuation) = 0;
-		virtual void setQuadraticAttenuation(float quadratic_attenuation) = 0;
-		virtual void setSpotCutoff(float spot_cutoff) = 0;
-
-	};
-	class DirectionLight 
-		:public Light{
-
-	};
-	class PointLight
-		:public Light {
-
-	};
-	class SpotLight
-		:public Light{
-	};*/
-	 
+		 
 	
 	class Light {//有没有必要设计成抽象类？
 	public:
@@ -44,9 +20,7 @@ namespace Core
 		Light(unsigned int num);
 		//Light(const Light* light);
 		virtual ~Light();
-	public:
-
-		static Light::ptr createLight(Parameter::ptr paras);
+	public:		
 
 		void setLightNum(int num) { _lightnum = num; }
 		int getLightNum() const { return _lightnum; }

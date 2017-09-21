@@ -71,11 +71,29 @@ namespace Core {
 		return light;
 	}
 	void Scene::render()
-	{		
-		if (_plugin_map.size() != 0)
+	{
+		if (_camera == nullptr)
+		{
+			printf("This scene has not camera");
+			return;
+		}
+		//this.updateMatrix---> for updata matrix while form farther node
+		//camera.updateMatrix
+		//frustum.setFromMatrix();
+		//projectObject();---->for differ type of object
+		//shadowMap.render()
+		//setupLights()------>light to shader
+		//setRenderTarget()
+		//if(background==null || ==Color)setClearColor
+		//else renderBackgound
+		//render opaqueobjects
+		//render transparentObjects
+		//render spriteplugin
+		//after render 
+		if (!_plugin_map.empty())
 		{
 			for (auto p : _plugin_map)
-				p.second->render((ptr)this);
+				p.second->render(this);
 		}
 		else 
 		{
@@ -104,8 +122,9 @@ namespace Core {
 		vector<Mesh::ptr> meshs;
 		for (auto it : _shader_mesh)
 		{
-			meshs.push_back
+			//meshs.push_back(it.second);
 		}
+		return meshs;
 	}
 
 	void Scene::pickRender(int width, int height)

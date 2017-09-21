@@ -1,5 +1,6 @@
 #pragma once
 #include "Mesh.h"
+#include <string>
 namespace Core {
 	/*
 	resource loader basic class
@@ -8,6 +9,6 @@ namespace Core {
 	public:
 		typedef std::shared_ptr<Loader> ptr;
 	public:
-		virtual Mesh::ptr load(const string& name) = 0;
+		virtual Mesh::ptr load(const std::string& name) = 0;
 	};
 }
