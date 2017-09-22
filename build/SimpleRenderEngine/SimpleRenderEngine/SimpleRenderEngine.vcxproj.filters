@@ -19,6 +19,9 @@
     <Filter Include="Examples">
       <UniqueIdentifier>{3bafafdd-9718-41f8-b316-c0afe8f9a4a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Node">
+      <UniqueIdentifier>{e1eeafe0-0427-4e7d-a8b6-530d5de23ae6}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Core\Camera.h">
@@ -122,6 +125,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Utils\Parameter.h">
       <Filter>Utils</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Node\Node.h">
+      <Filter>Node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Node\Group.h">
+      <Filter>Node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Node\NodeVistor.h">
+      <Filter>Node</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\Skybox.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\Frustum.h">
+      <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
