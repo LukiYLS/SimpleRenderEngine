@@ -6,9 +6,8 @@
 #include "../Utils/BoundingBox.h"
 #include <vector>
 using namespace Utils;
-namespace Core {
-	class Mesh;
-	class RenderObject
+namespace Core {	
+	class SubMesh;
 	class Node {
 	public:
 		typedef std::shared_ptr<Node> ptr;
@@ -18,6 +17,9 @@ namespace Core {
 
 		virtual RenderObject* asRenderObject() { return 0; }
 		virtual const RenderObject* asRenderObject()const { return 0; }
+
+		virtual SubMesh* asSubMesh() { return 0; }
+		virtual const SubMesh* asSubMesh() const { return 0; }
 
 		virtual Mesh* asMesh() { return 0; }
 		virtual const Mesh* asMesh() const { return 0; }
@@ -49,6 +51,17 @@ namespace Core {
 		const BoundingSphere& getInitialBound() const { return _initialBound; }
 		void dirtyBound();
 		virtual BoundingSphere computeBound() const;
+
+		void updateMatrixWorld() {
+			if (_parents.size() == 0)
+			{
+
+			}
+			else {
+				//parenct.getmatrx.multiply
+			}
+			//for(children)update
+		}
 	public:
 
 		

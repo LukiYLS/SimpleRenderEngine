@@ -23,11 +23,14 @@
     <ClInclude Include="..\..\..\src\Core\Effect.h" />
     <ClInclude Include="..\..\..\src\Core\FrameBuffer.h" />
     <ClInclude Include="..\..\..\src\Core\Frustum.h" />
+    <ClInclude Include="..\..\..\src\Core\Group.h" />
     <ClInclude Include="..\..\..\src\Core\Light.h" />
     <ClInclude Include="..\..\..\src\Core\Loader.h" />
     <ClInclude Include="..\..\..\src\Core\Mesh.h" />
     <ClInclude Include="..\..\..\src\Core\MeshFactory.h" />
     <ClInclude Include="..\..\..\src\Core\MeshManager.h" />
+    <ClInclude Include="..\..\..\src\Core\Node.h" />
+    <ClInclude Include="..\..\..\src\Core\NodeVisitor.h" />
     <ClInclude Include="..\..\..\src\Core\ObjLoader.h" />
     <ClInclude Include="..\..\..\src\Core\OrthographicCamera.h" />
     <ClInclude Include="..\..\..\src\Core\ParticleSytem.h" />
@@ -44,16 +47,15 @@
     <ClInclude Include="..\..\..\src\Core\ShadowMapPlugin.h" />
     <ClInclude Include="..\..\..\src\Core\SimpleRenderEngine.h" />
     <ClInclude Include="..\..\..\src\Core\Skybox.h" />
+    <ClInclude Include="..\..\..\src\Core\SubMesh.h" />
     <ClInclude Include="..\..\..\src\Core\Texture.h" />
     <ClInclude Include="..\..\..\src\Core\TextureManager.h" />
     <ClInclude Include="..\..\..\src\Core\TextureManager_.h" />
     <ClInclude Include="..\..\..\src\Core\ViewPort.h" />
     <ClInclude Include="..\..\..\src\Core\Win.h" />
-    <ClInclude Include="..\..\..\src\Node\Group.h" />
-    <ClInclude Include="..\..\..\src\Node\Node.h" />
-    <ClInclude Include="..\..\..\src\Node\NodeVistor.h" />
     <ClInclude Include="..\..\..\src\Utils\AnyValue.h" />
     <ClInclude Include="..\..\..\src\Utils\BoundingBox.h" />
+    <ClInclude Include="..\..\..\src\Utils\BoundingSphere.h" />
     <ClInclude Include="..\..\..\src\Utils\CamerControl.h" />
     <ClInclude Include="..\..\..\src\Utils\Event.h" />
     <ClInclude Include="..\..\..\src\Utils\InputDefine.h" />
@@ -62,9 +64,12 @@
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\Camera.cpp" />
     <ClCompile Include="..\..\..\src\Core\FrameBuffer.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Group.cpp" />
     <ClCompile Include="..\..\..\src\Core\Light.cpp" />
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
     <ClCompile Include="..\..\..\src\Core\MeshManager.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Node.cpp" />
+    <ClCompile Include="..\..\..\src\Core\NodeVisitor.cpp" />
     <ClCompile Include="..\..\..\src\Core\ParticleSystem.cpp" />
     <ClCompile Include="..\..\..\src\Core\PickTool.cpp" />
     <ClCompile Include="..\..\..\src\Core\RenderObject.cpp" />
@@ -78,6 +83,7 @@
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp" />
     <ClCompile Include="..\..\..\src\Core\Win.cpp" />
     <ClCompile Include="..\..\..\src\Example\DrawCube.cpp" />
+    <ClCompile Include="..\..\..\src\Utils\BoundingSphere.cpp" />
     <ClCompile Include="..\..\..\src\Utils\CameraControl.cpp" />
     <ClCompile Include="..\..\..\src\Utils\Event.cpp" />
   </ItemGroup>

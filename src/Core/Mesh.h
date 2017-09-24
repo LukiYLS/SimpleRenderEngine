@@ -6,6 +6,7 @@
 #include "Light.h"
 #include "Group.h"
 #include <vector>
+#include <string>
 #include <map>
 namespace Core {
 	struct Material//
@@ -15,9 +16,9 @@ namespace Core {
 		glm::vec3 specular;   // 镜面光
 		float shininess; //镜面高光系数
 	};	
-	//Mesh应该是由很多个renderobject组成
+	
 	class Mesh
-		:public RenderObject ,public Node{
+		:public RenderObject ,public Group{
 	public:
 		typedef std::shared_ptr<Mesh> ptr;
 		Mesh();
@@ -39,9 +40,9 @@ namespace Core {
 		virtual void setShaderUniform(Shader::ptr shader);
 
 	public:
-		std::vector<Vertex> _vertices;
-		std::vector<unsigned int> _indices;
+
 		std::vector<const char*> _textures;
+		std::map<std::string, std::string> _shader_submesh;
 		std::vector<Light::ptr> _lights;
 		Material _material;	
 		glm::vec3 _position;		

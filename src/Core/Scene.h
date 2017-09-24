@@ -8,6 +8,7 @@
 #include <vector>
 #include <string>
 #include "Camera.h"
+#include "Group.h"
 using namespace std;
 using namespace Utils;
 namespace Core {
@@ -18,8 +19,9 @@ namespace Core {
 	public:		
 		void addRenderMesh(const string& shader_name, const string& mesh_name);
 		void removeRenderMesh(const string& name);
-		void setSceneRoot(/*Group::ptr root*/);
-		void addMeshGroup();
+		void setSceneRoot(Group::ptr root) { _root = root; }
+		Group::ptr const getSceneRoot()const { return _root; }
+		
 		//
 
 		Light::ptr createLight(const string& name, Parameter::ptr paras);
@@ -45,6 +47,7 @@ namespace Core {
 		map<string, Light::ptr> _light_map;
 		map<string, Plugin::ptr> _plugin_map;
 		Camera::ptr _camera;
+		Group::ptr _root;
 	};
 }
 #endif // !SCENEH

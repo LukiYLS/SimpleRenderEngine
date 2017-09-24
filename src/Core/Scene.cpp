@@ -6,6 +6,7 @@
 #include "ShaderManager.h"
 namespace Core {
 	
+
 	void Scene::addRenderMesh(const string& shader_name, const string& mesh_name)
 	{
 		if (ShaderManager::getSingleton()->getByName(shader_name) == NULL || MeshManager::getSingleton()->getByName(shader_name) == NULL)

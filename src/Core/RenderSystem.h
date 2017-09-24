@@ -10,7 +10,8 @@ namespace Core {
 		void beginRender();//渲染之前设置renderstate
 		void render();
 		void render(Scene::ptr scene, Camera::ptr camera);
-
+		void renderObjects(Group::ptr objects);
+		void renderObject(Node::ptr node);
 		void endRender();//一帧结束
 	protected:
 		RenderSystem() {}

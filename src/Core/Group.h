@@ -22,8 +22,8 @@ namespace Core {
 		virtual unsigned int getNumChildren() const;
 
 		virtual bool setChild(unsigned  int i, Node* node);		
-		inline Node* getChild(unsigned  int i) { return _children[i].get(); }		
-		inline const Node* getChild(unsigned  int i) const { return _children[i].get(); }
+		inline Node::ptr getChild(unsigned  int i) { return _children[i].get(); }		
+		inline const Node::ptr getChild(unsigned  int i) const { return _children[i].get(); }
 
 		inline bool removeChild(unsigned int pos, unsigned int numChildrenToRemove = 1)
 		{

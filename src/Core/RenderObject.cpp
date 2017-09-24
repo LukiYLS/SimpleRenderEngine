@@ -1,7 +1,12 @@
 #include "RenderObject.h"
-
+#include <glm\gtc\quaternion.hpp>
 namespace Core {
 
+	glm::mat4 RenderObject::computerMatrixWorld()
+	{
+		glm::mat4 matrix = glm::translate(glm::scale(glm::mat4_cast(_quat), _scale), _position);
+		return matrix;
+	}
 	void RenderObject::createBuffer()
 	{
 		glGenVertexArrays(1, &_vao);
@@ -61,7 +66,6 @@ namespace Core {
 		default:
 			prim_type = GL_TRIANGLES;
 		}
-
 		shader->use();
 		glBindVertexArray(_vao);
 		if (_indices.empty())
