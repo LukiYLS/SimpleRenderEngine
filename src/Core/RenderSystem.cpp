@@ -18,6 +18,12 @@ namespace Core {
 	{
 		//Scene::Inst()->render(params);
 	}
+
+	void RenderSystem::render(Scene::ptr scene, Camera::ptr camera)
+	{
+		if (scene->autoUpdate)scene->updateMatrixWorld();
+
+	}
 	void RenderSystem::endRender()
 	{
 

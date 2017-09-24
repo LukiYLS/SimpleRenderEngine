@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "Shader.h"
-
+#include "Node.h"
 namespace Core {
 
 
@@ -79,13 +79,17 @@ namespace Core {
 
 
 
-	class RenderObject {
+	class RenderObject :
+		public Node{
 	public:
 		typedef std::shared_ptr<RenderObject> ptr;
 	public:
 		RenderObject() {}
 		virtual ~RenderObject() {}
 	public:		
+		virtual RenderObject* asRenderObject() { return this; }
+		virtual const RenderObject* asRenderObject()const { return this; }
+
 		void draw(Shader::ptr shader);
 		void setVertices(std::vector<Vertex> vertices) { vertices = vertices; }
 		void setIndex(std::vector<unsigned int> indices) { _indices = indices; }

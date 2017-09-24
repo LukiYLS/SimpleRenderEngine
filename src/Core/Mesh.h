@@ -4,6 +4,7 @@
 #include "Shader.h"
 #include "Uniform.h"
 #include "Light.h"
+#include "Group.h"
 #include <vector>
 #include <map>
 namespace Core {
@@ -13,15 +14,19 @@ namespace Core {
 		glm::vec3 diffuse;    // 漫反射光
 		glm::vec3 specular;   // 镜面光
 		float shininess; //镜面高光系数
-	};
+	};	
+	//Mesh应该是由很多个renderobject组成
 	class Mesh
-		:public RenderObject {
+		:public RenderObject ,public Node{
 	public:
 		typedef std::shared_ptr<Mesh> ptr;
 		Mesh();
 		virtual ~Mesh() {}
 		Mesh(const Mesh& mesh) {}
 	public:			
+		virtual Mesh* asMesh() { return this; }
+		virtual const Mesh* asMesh() const { return this; }
+
 		void setLights(std::vector<Light::ptr> lights) { _lights = lights; }
 		void setPostion(glm::vec3 position) { _position = position; }
 		void addTexture(const char* texName) { _textures.push_back(texName); }			

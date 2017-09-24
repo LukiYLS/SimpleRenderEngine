@@ -12,13 +12,15 @@ using namespace std;
 using namespace Utils;
 namespace Core {
 	class Plugin;
-	class Scene {
+	class Scene {//:Group
 	public:
 		typedef shared_ptr<Scene> ptr;
 	public:		
 		void addRenderMesh(const string& shader_name, const string& mesh_name);
 		void removeRenderMesh(const string& name);
-
+		void setSceneRoot(/*Group::ptr root*/);
+		void addMeshGroup();
+		//
 
 		Light::ptr createLight(const string& name, Parameter::ptr paras);
 		void addLight(Light::ptr light) { _lights.push_back(light); }
@@ -34,6 +36,9 @@ namespace Core {
 		Camera::ptr crateCamera(Parameter::ptr paras);
 		Camera::ptr getCamera() { return _camera; }
 		void render();
+		void updateMatrixWorld();
+	public:
+		bool autoUpdate;
 	private:		
 		map<string, vector<string>> _shader_mesh;	
 		vector<Light::ptr> _lights;
