@@ -9,7 +9,7 @@ namespace Core {
 
 	Mesh::Mesh()
 	{
-		_hasMaterial = false;
+		//_hasMaterial = false;
 	}
 	void Mesh::setShaderUniform(Shader::ptr shader)
 	{

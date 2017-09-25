@@ -9,11 +9,11 @@ namespace Core {
 		typedef std::shared_ptr<Group> ptr;
 
 		Group();
-		virtual Group::ptr asGroup() { return (ptr)this; }
-		virtual const Group::ptr asGroup() const { return (ptr)this; }
+		virtual Group* asGroup() { return this; }
+		virtual const Group* asGroup() const { return this; }
 
 		virtual void traverse(NodeVisitor& nv);
-		virtual bool addChild(Node::ptr child);
+		virtual bool addChild(Node* child);
 		virtual bool insertChild(unsigned int index, Node::ptr child);
 		virtual bool removeChild(Node::ptr child);
 
@@ -51,20 +51,3 @@ namespace Core {
 
 	};
 }
-/*
-Node *a = new Node
-Group *g = new Group;
-g.addChild(a);
-Group *g1 = new Group;
-g1.addChild(g);
-
-Group scene = new Group;
-scnee.addChid(gl);
-
-update(){
-
-for(children)
-update;
-scene.add
-
-*/

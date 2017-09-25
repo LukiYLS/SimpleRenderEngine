@@ -1,5 +1,6 @@
 #pragma once
 #include "Mesh.h"
+#include "SubMesh.h"
 #include "Loader.h"
 #include "MeshFactory.h"
 #include "../Utils/Parameter.h"
@@ -18,6 +19,7 @@ namespace Core {
 	public:
 
 		Mesh::ptr createMesh(const string& fileName, Loader::ptr loader, const string& name);
+		SubMesh::ptr createSubMesh(const string& fileName, Loader::ptr, const string& name);
 		Mesh::ptr createMesh(Parameter::ptr paras, MeshFactory::ptr factory, const string& name);
 		void addMesh(const string& name, Mesh::ptr mesh);
 		void remove(const string& name);

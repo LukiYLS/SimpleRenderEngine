@@ -83,8 +83,7 @@ namespace Core {
 	这是最小的绘制单元，所有可绘制的对象都必须继承这个类，而这个类应该包含最基本的绘制所需要的信息
 	继承Node，以节点的形式组成更高一级的绘制对象（比如Mesh）
 	*/
-	class RenderObject :
-		public Node{
+	class RenderObject{
 	public:
 		typedef std::shared_ptr<RenderObject> ptr;
 	public:

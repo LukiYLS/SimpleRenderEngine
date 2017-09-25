@@ -33,7 +33,7 @@ namespace Core {
 				itr != _parents.end();
 				++itr)
 			{
-				(*itr)->dirtyBound();
+				//(*itr)->dirtyBound();
 			}
 
 		}

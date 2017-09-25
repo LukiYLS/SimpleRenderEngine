@@ -9,6 +9,7 @@
 #include "../Utils/Event.h"
 #include "../Core/MeshManager.h"
 #include "../Core/SimpleRenderEngine.h"
+#include "../Core/Group.h"
 #include <vector>
 #include <iostream>
 using namespace Core;
@@ -16,6 +17,34 @@ using namespace std;
 const unsigned int SCR_WIDTH = 800;
 const unsigned int SCR_HEIGHT = 600;
 using namespace Utils;
+
+
+
+Scene::ptr createScene()
+{
+	
+	Scene::ptr scene = make_shared<Scene>();
+
+	Mesh::ptr mesh = MeshManager::getSingleton()->createMesh("", , );
+
+	SubMesh::ptr subMesh1 = MeshManager::getSingleton()->createSubMesh("", , );	
+	SubMesh::ptr subMesh2 = MeshManager::getSingleton()->createSubMesh("", , );
+	SubMesh::ptr subMesh3 = MeshManager::getSingleton()->createSubMesh("", , );
+	SubMesh::ptr subMesh4 = MeshManager::getSingleton()->createSubMesh("", , );
+	mesh->addChild(subMesh1);
+	mesh->addChild(subMesh2);
+	mesh->addChild(subMesh3);
+	mesh->addChild(subMesh4);
+
+	//root->addChild(mesh);
+
+	Group* root = new Group;
+	Group* test = new Group;
+	root->addChild(test);
+
+
+	scene->setSceneRoot(root);
+}
 int main()
 {
 	

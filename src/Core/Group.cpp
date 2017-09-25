@@ -39,9 +39,9 @@ namespace Core {
 	}
 
 
-	bool Group::addChild(Node::ptr child)
+	bool Group::addChild(Node* child)
 	{
-		return Group::insertChild(_children.size(), child);
+		//return Group::insertChild(_children.size(), child);
 	}
 	unsigned int Group::getNumChildren() const
 	{

@@ -15,8 +15,8 @@ namespace Core {
 		Node();
 		Node(const Node&);
 
-		virtual RenderObject* asRenderObject() { return 0; }
-		virtual const RenderObject* asRenderObject()const { return 0; }
+		virtual Group* asGroup() { return 0; }
+		virtual const Group* asGroup() const { return 0; }
 
 		virtual SubMesh* asSubMesh() { return 0; }
 		virtual const SubMesh* asSubMesh() const { return 0; }
@@ -24,11 +24,10 @@ namespace Core {
 		virtual Mesh* asMesh() { return 0; }
 		virtual const Mesh* asMesh() const { return 0; }
 
-		virtual Node::ptr asNode() { return (ptr)this; }	
-		virtual const Node::ptr asNode() const { return (ptr)this; }
+		virtual Node* asNode() { return this; }	
+		virtual const Node* asNode() const { return this; }
 
-		virtual Group::ptr asGroup() { return 0; }
-		virtual const Group::ptr asGroup() const { return 0; }
+		
 
 		//virtual TransformObject* asTransformObject() { return 0; }	
 		//virtual const TransformObject* asTransformObject() const { return 0; }

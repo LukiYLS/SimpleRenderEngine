@@ -19,8 +19,8 @@ namespace Core {
 	public:		
 		void addRenderMesh(const string& shader_name, const string& mesh_name);
 		void removeRenderMesh(const string& name);
-		void setSceneRoot(Group::ptr root) { _root = root; }
-		Group::ptr const getSceneRoot()const { return _root; }
+		void setSceneRoot(Group* root) { _root = root; }
+		Group* const getSceneRoot()const { return _root; }
 		
 		//
 
@@ -47,7 +47,7 @@ namespace Core {
 		map<string, Light::ptr> _light_map;
 		map<string, Plugin::ptr> _plugin_map;
 		Camera::ptr _camera;
-		Group::ptr _root;
+		Group* _root;
 	};
 }
 #endif // !SCENEH
