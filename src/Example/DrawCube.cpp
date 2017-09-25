@@ -31,7 +31,7 @@ Scene::ptr createScene()
 	SubMesh::ptr subMesh2 = MeshManager::getSingleton()->createSubMesh("", , );
 	SubMesh::ptr subMesh3 = MeshManager::getSingleton()->createSubMesh("", , );
 	SubMesh::ptr subMesh4 = MeshManager::getSingleton()->createSubMesh("", , );
-	mesh->addChild(subMesh1);
+	mesh->addChild(subMesh1.get());
 	mesh->addChild(subMesh2);
 	mesh->addChild(subMesh3);
 	mesh->addChild(subMesh4);

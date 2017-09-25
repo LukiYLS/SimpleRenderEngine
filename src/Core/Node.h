@@ -25,9 +25,7 @@ namespace Core {
 		virtual const Mesh* asMesh() const { return 0; }
 
 		virtual Node* asNode() { return this; }	
-		virtual const Node* asNode() const { return this; }
-
-		
+		virtual const Node* asNode() const { return this; }		
 
 		//virtual TransformObject* asTransformObject() { return 0; }	
 		//virtual const TransformObject* asTransformObject() const { return 0; }
@@ -39,8 +37,8 @@ namespace Core {
 		typedef std::vector<Group::ptr> ParentList;
 		inline const ParentList& getParents() const { return _parents; }	
 		inline ParentList getParents() { return _parents; }
-		inline Group::ptr getParent(unsigned int i) { return _parents[i]; }
-		inline const Group::ptr getParent(unsigned int i) const { return _parents[i]; }
+		inline Group* getParent(unsigned int i) { return _parents[i].get(); }
+		inline const Group* getParent(unsigned int i) const { return _parents[i].get(); }
 		inline unsigned int getNumParents() const { return static_cast<unsigned int>(_parents.size()); }
 		
 		

@@ -18,9 +18,9 @@ namespace Core {
 		static MeshManager* getSingleton();
 	public:
 
-		Mesh::ptr createMesh(const string& fileName, Loader::ptr loader, const string& name);
-		SubMesh::ptr createSubMesh(const string& fileName, Loader::ptr, const string& name);
-		Mesh::ptr createMesh(Parameter::ptr paras, MeshFactory::ptr factory, const string& name);
+		Mesh* createMesh(const string& fileName, Loader::ptr loader, const string& name);
+		SubMesh* createSubMesh(const string& fileName, Loader::ptr, const string& name);
+		Mesh* createMesh(Parameter::ptr paras, MeshFactory::ptr factory, const string& name);
 		void addMesh(const string& name, Mesh::ptr mesh);
 		void remove(const string& name);
 		void removeAll();

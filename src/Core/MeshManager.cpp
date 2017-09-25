@@ -8,11 +8,11 @@ namespace Core {
 			instance = new MeshManager();
 		return instance;
 	}
-	Mesh::ptr MeshManager::createMesh(const string& fileName, Loader::ptr loader, const string& name)
+	Mesh* MeshManager::createMesh(const string& fileName, Loader::ptr loader, const string& name)
 	{
 		if (getByName(name) != NULL)
 			remove(name);
-		Mesh::ptr mesh = loader->load(fileName);
+		Mesh* mesh = loader->load(fileName);
 		_mesh_map.insert(make_pair(name, mesh));
 		return mesh;
 	}

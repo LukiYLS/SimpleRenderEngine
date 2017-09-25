@@ -11,8 +11,8 @@ namespace Core {
 	class ObjLoader 
 		:public Loader{
 	public:
-		virtual Mesh::ptr load(const std::string& fileName) {
-			Mesh::ptr mesh;
+		virtual Mesh* load(const std::string& fileName) {
+			Mesh* mesh;
 
 			std::ifstream file(fileName);
 			if (!file)

@@ -9,6 +9,6 @@ namespace Core {
 	public:
 		typedef std::shared_ptr<Loader> ptr;
 	public:
-		virtual Mesh::ptr load(const std::string& name) = 0;
+		virtual Mesh* load(const std::string& name) = 0;
 	};
 }
