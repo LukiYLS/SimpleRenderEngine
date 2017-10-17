@@ -1,76 +1,62 @@
 #include "Mesh.h"
 #include "TextureManager.h"
-#include <glew\glew.h>
-#include <glm\gtc\matrix_transform.hpp>
-
-
-
+#include "../Math/Vector2D.h"
 namespace Core {
 
-	Mesh::Mesh()
-	{
-		//_hasMaterial = false;
-	}
-	void Mesh::setShaderUniform(Shader::ptr shader)
+	void Mesh::setupUniform(Shader* shader)
 	{
 		shader->use();
-		//lights
-		for (auto it = _lights.begin(); it != _lights.end(); it++)
+		//_uniforms
+		for (auto uniform : _uniforms)
 		{
-			if ((*it)->getType() == DirectLight)
+			switch (uniform->getType())
 			{
-				shader->setVec3("dirLight.direction", (*it)->getDirection());
-				shader->setVec3("dirLight.ambient", (*it)->getAmbient());
-				shader->setVec3("dirLight.diffuse", (*it)->getDiffuse());
-				shader->setVec3("dirLight.specular", (*it)->getSpecular());
-			}
-			else if ((*it)->getType() == PointLight)
+			case FLOAT:
 			{
-				shader->setVec3("pointLight.position", (*it)->getPosition());
-				shader->setVec3("pointLight.ambient", (*it)->getAmbient());
-				shader->setVec3("pointLight.diffuse", (*it)->getDiffuse());
-				shader->setVec3("pointLight.specular", (*it)->getSpecular());
-
-				shader->setFloat("pointLight.constant", (*it)->getConstantAttenuation());
-				shader->setFloat("pointLight.linear", (*it)->getLinearAttenuation());
-				shader->setFloat("pointLight.quadratic", (*it)->getQuadraticAttenuation());
-			}
-			else if ((*it)->getType() == SpotLight)
+				float value = uniform->getValue();
+				shader->setFloat(uniform->getName(), value);
+				break;
+			}				
+			case FLOAT_VEC2:
 			{
-				shader->setVec3("spotLight.position", (*it)->getPosition());
-				shader->setVec3("spotLight.direction", (*it)->getDirection());
-				shader->setVec3("spotLight.ambient", (*it)->getAmbient());
-				shader->setVec3("spotLight.diffuse", (*it)->getDiffuse());
-				shader->setVec3("spotLight.specular", (*it)->getSpecular());
-
-				shader->setFloat("spotLight.constant", (*it)->getConstantAttenuation());
-				shader->setFloat("spotLight.linear", (*it)->getLinearAttenuation());
-				shader->setFloat("spotLight.quadratic", (*it)->getQuadraticAttenuation());
-
-				shader->setFloat("spotLight.innerCutoff", (*it)->getInnerCutoff());
-				shader->setFloat("spotLight.outerCutoff", (*it)->getOuterCutoff());
+				Vector2D value = uniform->getValue();
+				shader->setVec2(uniform->getName(), value);
+				break;
+			}				
+			case FLOAT_VEC3:
+			{
+				Vector3D value = uniform->getValue();
+				shader->setVec3(uniform->getName(), value);
+				break;
+			}				
+			case FLOAT_VEC4:
+			{
+				Vector4D value = uniform->getValue();
+				shader->setVec4(uniform->getName(), value);
+				break;
+			}				
+			default:
+				break;
 			}
 		}
 		//material
-		if (_hasMaterial)
+		if (_material)
 		{
-			shader->setVec3("ambientMt", _material.ambient);
-			shader->setVec3("diffuseMt", _material.diffuse);
-			shader->setVec3("specularMt", _material.specular);
-			shader->setFloat("shininessMt", _material.shininess);
+			shader->setVec3("ambientMt", _material->ambient);
+			shader->setVec3("diffuseMt", _material->diffuse);
+			shader->setVec3("specularMt", _material->specular);
+			shader->setFloat("shininessMt", _material->shininess);
 		}
 		//texture
 		if (!_textures.empty())
 		{
 			for (int i = 0; i < _textures.size(); i++)
 			{
-				TextureManager::Inst()->bindTexture(_textures[i], i);
-				shader->setInt(_textures[i], i);
+				TextureManager::Inst()->bindTexture(_textures[i].c_str(), i);
+				shader->setInt(_textures[i].c_str(), i);
 			}
 		}
-		//modelmatrix
-		shader->setMat4("modelMatrix", glm::translate(glm::mat4(), _position));
-
+		
 	}
 	
 }

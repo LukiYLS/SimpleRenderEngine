@@ -140,8 +140,7 @@ namespace Core {
 	void Win::starup()
 	{
 		while (!glfwWindowShouldClose(window))
-		{
-			//我希望这里应该有个整个场景的update，加入场景中的entity必须重载update?
+		{			
 			processInput();
 			float currentFrame = glfwGetTime();
 			RenderSystem::RenderSystem::Inst()->beginRender();

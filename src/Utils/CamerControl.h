@@ -11,7 +11,7 @@ namespace Utils
 	{
 	public:
 		typedef shared_ptr<CameraControl> ptr;
-		CameraControl(Camera::ptr camera);
+		CameraControl(Camera* camera);
 		~CameraControl() {}
 	public:
 		virtual void receive(Event::ptr event);

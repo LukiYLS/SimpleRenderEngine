@@ -1,32 +1,31 @@
 #include "Camera.h"
-
+#include "../math/MathHelper.h"
 namespace Core {
 
-	glm::quat Camera::RotationBetweenVectors(const glm::vec3& start, const glm::vec3& dest)
+	Quaternion Camera::RotationBetweenVectors(const Vector3D& start, const Vector3D& dest)
 	{
-		glm::vec3 start_normal = normalize(start);
-		glm::vec3 dest_normal = normalize(dest);
+		Quaternion quat;
+		Vector3D start_normal = start; start_normal.normalize();
+		Vector3D dest_normal = dest; dest_normal.normalize();
 
-		float cosTheta = glm::dot(start_normal, dest_normal);
-		glm::vec3 rotationAxis;
+		float cosTheta = start_normal.dot(dest_normal);
+		Vector3D rotationAxis;
 
 		if (cosTheta < -1 + 0.001f) {
-			// special case when vectors in opposite directions:
-			// there is no "ideal" rotation axis
-			// So guess one; any will do as long as it's perpendicular to start
-			rotationAxis = glm::cross(glm::vec3(0.0f, 0.0f, 1.0f), start_normal);
-			if (glm::length(rotationAxis) < 0.01) // bad luck, they were parallel, try again!
-				rotationAxis = glm::cross(glm::vec3(1.0f, 0.0f, 0.0f), start_normal);
-			rotationAxis = -normalize(rotationAxis);
-			return glm::angleAxis(glm::radians(180.0f), rotationAxis);
+			rotationAxis = Vector3D(0.0f, 0.0f, 1.0f).cross(start_normal);
+			if (rotationAxis.length() < 0.01)
+				rotationAxis = Vector3D(1.0f, 0.0f, 0.0f).cross(start_normal);
+			rotationAxis = -rotationAxis.normalize();
+			quat.fromAngleAxis(MathHelper::radian(180.0), rotationAxis);
+			return quat;
 		}
 
-		rotationAxis = cross(start_normal, dest_normal);
+		rotationAxis = start_normal.cross(dest_normal);
 
 		float s = sqrt((1 + cosTheta) * 2);
 		float invs = 1 / s;
 
-		return glm::quat(
+		return Quaternion(
 			s * 0.5f,
 			rotationAxis.x * invs,
 			rotationAxis.y * invs,
@@ -61,18 +60,24 @@ namespace Core {
 
 		return viewMatrix;
 	}*/
-	void Camera::setDirection(const glm::vec3& vec)
+	void Camera::rotate(float angle, const Vector3D &axis)
+	{
+		Quaternion quat;
+		quat.fromAngleAxis(angle, _orientation.Inverse() * axis);
+		_orientation = _orientation * quat;	
+	}
+	void Camera::setDirection(const Vector3D& vec)
 	{
 		//glm::vec3 axis[3] = quatToAxis(_orientation);
-		glm::vec3 direction = getDirection();
-		glm::quat q = RotationBetweenVectors(direction, vec);
-		_orientation *= q;			
+		Vector3D direction = getDirection();
+		Quaternion q = RotationBetweenVectors(direction, vec);
+		_orientation = _orientation * q;
 	}
 
 	void Camera::ProcessKeyboard(float xoffset, float yoffset)
 	{	
-		glm::vec3 direction = getDirection();
-		glm::vec3 right = getRight();
+		Vector3D direction = getDirection();
+		Vector3D right = getRight();
 		_position += direction * _movementSpeed * xoffset;		
 		_position += right * _movementSpeed * yoffset;
 	}

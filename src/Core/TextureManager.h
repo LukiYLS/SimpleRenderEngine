@@ -4,15 +4,14 @@
 
 #ifndef TextureManager_H
 #define TextureManager_H
-
-#include <windows.h>
 #include <glew\glew.h>
+#include <windows.h>
 #include "FreeImage.h"
 #include <map>
 #include <vector>
 #include "Texture.h"
 namespace Core {
-	class TextureManager//这个一定要重构，所有的纹理怎么可能只用一个manager啊！怎么改？？
+	class TextureManager
 	{
 	public:
 		static TextureManager* Inst();

@@ -1,6 +1,5 @@
 #pragma once
-#include <glm\glm.hpp>
-#include <glm\gtc\matrix_transform.hpp>
+
 #include <memory>
 namespace Core {
 
@@ -46,10 +45,7 @@ namespace Core {
 
 		inline bool valid() const { return _width>0 && _height>0; }		
 		inline double aspectRatio() const { if (_height != 0) return (double)_width / (double)_height; else return 1.0; }
-		inline const glm::mat4 computeWindowMatrix() const
-		{
-			return glm::translate(glm::mat4(), glm::vec3(1.0, 1.0, 1.0))*glm::scale(glm::mat4(), glm::vec3(0.5*width(), 0.5*height(), 0.5f))*glm::translate(glm::mat4(), glm::vec3(x(), y(), 0.0f));
-		}
+		
 	protected:
 		int _x;
 		int _y;

@@ -19,6 +19,9 @@
     <Filter Include="Examples">
       <UniqueIdentifier>{3bafafdd-9718-41f8-b316-c0afe8f9a4a0}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{2ada7e64-85af-45b1-aca0-4f9e2e4862fb}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Core\Camera.h">
@@ -51,13 +54,7 @@
     <ClInclude Include="..\..\..\src\Core\OrthographicCamera.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\ParticleSytem.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Core\PerspectiveCamera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\PickTool.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\Plugin.h">
@@ -70,9 +67,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\RenderSystem.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\ResourceFactory.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\Scene.h">
@@ -99,9 +93,6 @@
     <ClInclude Include="..\..\..\src\Core\ViewPort.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\Win.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Utils\AnyValue.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -113,9 +104,6 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Utils\InputDefine.h">
       <Filter>Utils</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\SimpleRenderEngine.h">
-      <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Utils\BoundingBox.h">
       <Filter>Utils</Filter>
@@ -132,23 +120,35 @@
     <ClInclude Include="..\..\..\src\Utils\BoundingSphere.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\Group.h">
+    <ClInclude Include="..\..\..\src\math\MathHelper.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\math\Matrix3D.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\math\Matrix4D.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\math\Quaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\math\Vector2D.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\math\Vector3D.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\math\Vector4D.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\Object.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\Node.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\NodeVisitor.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\SubMesh.h">
+    <ClInclude Include="..\..\..\src\Core\Uniform.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\src\Core\Win.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -170,22 +170,10 @@
     <ClCompile Include="..\..\..\src\Core\RenderObject.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\PickTool.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\ParticleSystem.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\MeshManager.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Light.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\FrameBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Camera.cpp">
@@ -203,19 +191,31 @@
     <ClCompile Include="..\..\..\src\Example\DrawCube.cpp">
       <Filter>Examples</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\SimpleRenderEngine.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Utils\BoundingSphere.cpp">
       <Filter>Utils</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\Node.cpp">
+    <ClCompile Include="..\..\..\src\Core\Texture.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\NodeVisitor.cpp">
-      <Filter>源文件</Filter>
+    <ClCompile Include="..\..\..\src\math\MathHelper.cpp">
+      <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\Group.cpp">
+    <ClCompile Include="..\..\..\src\math\Matrix3D.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\math\Matrix4D.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\math\Quaternion.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\math\Vector3D.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\math\Vector4D.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\Object.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

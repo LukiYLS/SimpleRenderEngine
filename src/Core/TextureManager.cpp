@@ -56,9 +56,9 @@ namespace Core {
 		if (!dib)
 			return false;
 		dib = FreeImage_ConvertTo24Bits(dib);
-
+		
 		BYTE *pixels = (BYTE*)FreeImage_GetBits(dib);
-
+		
 		width = FreeImage_GetWidth(dib);
 		height = FreeImage_GetHeight(dib);
 

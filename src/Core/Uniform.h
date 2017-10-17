@@ -1,10 +1,12 @@
-#ifndef UNIFORM_H
-#define UNIFORM_H
+#pragma
 #include <glew\glew.h>
 #include <memory>
+#include "../Utils/AnyValue.h"
+#include <string>
+using namespace Utils;
 namespace Core {
-	//这个类有必要吗？？
-	/*enum Type {
+
+	enum ValueType {
 		FLOAT = GL_FLOAT,
 		FLOAT_VEC2 = GL_FLOAT_VEC2,
 		FLOAT_VEC3 = GL_FLOAT_VEC3,
@@ -68,19 +70,25 @@ namespace Core {
 		SAMPLER_BUFFER = GL_SAMPLER_BUFFER_EXT,
 		SAMPLER_2D_RECT = GL_SAMPLER_2D_RECT,
 		SAMPLER_2D_RECT_SHADOW = GL_SAMPLER_2D_RECT_SHADOW,
-	};*/
-	/*template<class T>
+	};
 	class Uniform {
 	public:		
+		typedef std::shared_ptr<Uniform> ptr;
 	public:
-		Uniform(const char* name, T value, Type type) :
-			name(name), value(value), type(type) {}
-	public:
-		const char* name;
-		Type type;
-		T value;
+		Uniform(const char* name, AnyValue value, ValueType type) :
+			_name(name), _value(value), _type(type) {}
+		void setName(std::string name) { _name = name; }
+		const char* getName() { return _name.c_str(); }
+		AnyValue getValue() { return _value; }
+		void setValue(AnyValue value) { _value = value; }
+		void setType(ValueType type) { _type = type; }
+		ValueType getType() { return _type; }
+	protected:
+		std::string _name;
+		ValueType _type;
+		AnyValue _value;
 
-	};*/
+	};
 }
-#endif // !UNIFORM_H
+
 

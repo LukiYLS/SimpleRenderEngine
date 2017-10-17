@@ -16,7 +16,7 @@ namespace Core {
 		virtual bool addChild(Node* child);
 
 		virtual bool insertChild(unsigned int index, Node* child);
-		virtual bool removeChild(Node::ptr child);
+		virtual bool removeChild(Node* child);
 
 		virtual bool removeChildren(unsigned int pos, unsigned int numChildrenToRemove);
 		virtual bool replaceChild(Node *origChild, Node* newChild);		
@@ -31,7 +31,7 @@ namespace Core {
 			if (pos<_children.size()) return removeChildren(pos, numChildrenToRemove);
 			else return false;
 		}
-		inline unsigned int getChildIndex(const Node::ptr node) const
+		inline unsigned int getChildIndex(const Node* node) const
 		{
 			for (unsigned int childNum = 0; childNum<_children.size(); ++childNum)
 			{

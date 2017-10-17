@@ -1,19 +1,22 @@
 #pragma once
 #include "NodeVisitor.h"
 #include "Group.h"
-
 #include "../Utils/BoundingSphere.h"
 #include "../Utils/BoundingBox.h"
 #include <vector>
 using namespace Utils;
 namespace Core {	
 	class SubMesh;
+	class Light;
 	class Node {
 	public:
 		typedef std::shared_ptr<Node> ptr;
 	public:
 		Node();
 		Node(const Node&);
+
+		virtual Light* asLight() { return 0; }
+		virtual const Light* asLight() const { return 0; }
 
 		virtual Group* asGroup() { return 0; }
 		virtual const Group* asGroup() const { return 0; }
@@ -25,7 +28,10 @@ namespace Core {
 		virtual const Mesh* asMesh() const { return 0; }
 
 		virtual Node* asNode() { return this; }	
-		virtual const Node* asNode() const { return this; }		
+		virtual const Node* asNode() const { return this; }	
+
+		inline Group* getParent(){}
+		inline const Group* getParent()const{}
 
 		//virtual TransformObject* asTransformObject() { return 0; }	
 		//virtual const TransformObject* asTransformObject() const { return 0; }
@@ -49,16 +55,6 @@ namespace Core {
 		void dirtyBound();
 		virtual BoundingSphere computeBound() const;
 
-		void updateMatrixWorld() {
-			if (_parents.size() == 0)
-			{
-
-			}
-			else {
-				//parenct.getmatrx.multiply
-			}
-			//for(children)update
-		}
 	public:
 
 		
@@ -71,5 +67,6 @@ namespace Core {
 		BoundingSphere _initialBound;
 		BoundingSphere _boundingSphere;
 		bool     _boundingSphereComputed;
+
 	};
 }

@@ -1,7 +1,5 @@
-#ifndef TEXTURE_H
-#define TEXTURE_H
+#pragma once
 #include <glew\glew.h>
-#include <glm\glm.hpp>
 #include <memory>
 
 namespace Core {
@@ -14,6 +12,16 @@ namespace Core {
 		TEX_TYPE_2D_ARRAY = 5,	
 		TEX_TYPE_2D_RECT = 6
 	};
+	enum TextureFiltering
+	{
+		TEXTURE_FILTER_MAG_NEAREST = 0,
+		TEXTURE_FILTER_MAG_BILINEAR,
+		TEXTURE_FILTER_MIN_NEAREST, 
+		TEXTURE_FILTER_MIN_BILINEAR, 
+		TEXTURE_FILTER_MIN_NEAREST_MIPMAP, 
+		TEXTURE_FILTER_MIN_BILINEAR_MIPMAP,
+		TEXTURE_FILTER_MIN_TRILINEAR, 
+	};
 	class Texture 
 		{
 	public:
@@ -22,13 +30,20 @@ namespace Core {
 		Texture();
 		~Texture();
 	public:
-		virtual void setTextureType(TextureType type) { _type = type; }
+		void createEmpty2DTexture(int width, int height, GLenum fromat);
+		void createEmpty3DTexture(int width, int height, int detph, GLenum fromat);
+		void createEmpty2DTextureArray(int width, int height, int detph, GLenum fromat);
 		
+		virtual void setTextureType(TextureType type) { _type = type; }		
 		virtual TextureType getTextureType(void) const { return _type; }
 		
-		virtual uint8_t getNumMipmaps(void) const { return _mipmaps; }
-		
-		virtual void setNumMipmaps(uint8_t num) { _mipmaps = num; }
+		virtual bool getNumMipmaps(void) const { return _mipmaps; }		
+		virtual void setNumMipmaps(bool num) { _mipmaps = num; }
+
+		void setFiltering(int magnification, int minification);	
+
+		void bindTexture(int unit);
+		void deleteTexture();
 
 		virtual uint32_t getHeight() const { return _height; }
 		virtual void setHeight(uint32_t height) { _height = height; }
@@ -39,14 +54,12 @@ namespace Core {
 		virtual uint32_t getDepth(void) const { return _depth; }
 		virtual void setDepth(uint32_t depth) { _depth = depth; }
 	private:
-		uint32_t _height;
-		uint32_t _width;
-		uint32_t _depth;
+		int _height, _width, _depth;
+		GLuint _textureID; // Texture name
+		GLuint _sampler; // Sampler name
 		TextureType _type;
-		uint8_t _mipmaps;
-		//GLuint _texID;
-
+		bool _mipmaps;
 	};
 }
-#endif // !TEXTURE_H
+
 

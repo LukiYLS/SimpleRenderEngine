@@ -1,45 +1,49 @@
-#ifndef RENDERSTATE_H
-#define RENDERSTATE_H
+#pragma once
 #include <glew\glew.h>
-#include <glm\glm.hpp>
+#include <memory>
+#include <map>
 namespace Core {
 	class RenderState {//¿¼ÂÇÖÐ
-		enum DepthFunc
+		enum CompareFunc
 		{
-			NeverDepth,
-			AlwaysDepth,
-			LessDepth,
-			LessEqualDepth,
-			GreaterEqualDepth,
-			GreaterDepth,
-			NotEqualDepth
+			NeverDepth = GL_NEVER,
+			AlwaysDepth = GL_ALWAYS,
+			LessDepth = GL_LESS,
+			LessEqualDepth = GL_LEQUAL,
+			GreaterEqualDepth = GL_GEQUAL,
+			GreaterDepth = GL_GREATER,
+			NotEqualDepth = GL_NOTEQUAL
 		};
-		enum CullFace
+		enum CullFaceMode
 		{
-			Front,
-			Back,
-			DoubleSide
+			Front = GL_FRONT,
+			Back = GL_BACK,
+			DoubleSide = GL_FRONT_AND_BACK
 		};
-	public:
-		static RenderState* Inst();
-		//void setClearColor(glm::vec4 color);
-		void setDepthTest(bool depthTest);
-		void setDepthFunc(DepthFunc func);
-		void setStencilTest(bool stencilTest);
-		void setStencilFunc();
-		//cull face
-		void setCullFace(CullFace face);
-		void setBlending();
-		void init();
-	protected:
-		RenderState() {};
-		RenderState(const RenderState&) {};
-		RenderState& operator = (const RenderState&) {};
-		//depth test
-		//stencil test
-	private:
-		static RenderState* m_Inst;
+		enum StateList {
+			DepthTest = GL_DEPTH_TEST,
+			Blend = GL_BLEND,
+			CullFace = GL_CULL_FACE,
+			StencilTest = GL_STENCIL_TEST,
+			ScissorTest = GL_SCISSOR_TEST
+		};		
+	public:		
+		typedef std::shared_ptr<RenderState> ptr;
+		RenderState();
+		void use();
+		void enable(StateList state) { _state_map[state] = true; }
+		void disable(StateList state) { _state_map[state] = false; }
+		void setDepthFunc(CompareFunc func) { depthFunc = func; }
+		void setStencilFunc(CompareFunc func) { stencilFunc = func; }
+		void setCullFace(CullFaceMode face);
+		void setBlendingFunc();
+		void init();	
+	protected:		
+		typedef std::map<StateList, bool> StateMap;
+		StateMap _state_map;
+		CullFaceMode mode;
+		CompareFunc depthFunc;
+		CompareFunc stencilFunc;
 	};
 }
-#endif // RENDERSTATE_H
 

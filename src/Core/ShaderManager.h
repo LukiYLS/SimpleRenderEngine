@@ -15,6 +15,7 @@ namespace Core {
 		void remove(const string& name);
 		void removeAll();
 		Shader::ptr getByName(const string& name);
+		void add(const string& name, Shader* shader);
 	private:
 		void checkCompileErrors(GLuint shader, const char* type);
 		typedef map<string, Shader::ptr> ShaderMap;

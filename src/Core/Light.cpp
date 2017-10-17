@@ -1,5 +1,5 @@
 #include "Light.h"
-
+#include "../Math/MathHelper.h"
 namespace Core
 {
 	Light::Light(void)
@@ -20,13 +20,13 @@ namespace Core
 	void Light::init(void)
 	{
 		_lightnum = 0;
-		_ambient = glm::vec3(0.05f, 0.05f, 0.05f);
-		_diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
-		_specular = glm::vec3(0.05f, 0.05f, 0.05f);
-		_position = glm::vec3(0.0f, 0.0f, 1.0f);
-		_direction = glm::vec3(0.0f, 0.0f, -1.0f);
-		_innerCutOff = glm::radians(10.0f);
-		_outerCutOff = glm::radians(30.0f);
+		_ambient = Vector3D(0.05f, 0.05f, 0.05f);
+		_diffuse = Vector3D(0.8f, 0.8f, 0.8f);
+		_specular = Vector3D(0.05f, 0.05f, 0.05f);
+		_position = Vector3D(0.0f, 0.0f, 1.0f);
+		_direction = Vector3D(0.0f, 0.0f, -1.0f);
+		_innerCutOff = MathHelper::radian(10.0f);
+		_outerCutOff = MathHelper::radian(30.0f);
 		_constant = 1.0f;
 		_linear = 0.0f;
 		_quadratic = 0.0f;

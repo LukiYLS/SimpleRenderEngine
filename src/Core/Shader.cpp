@@ -91,7 +91,6 @@ namespace Core {
 	void Shader::use()
 	{
 		glUseProgram(shader_ID);
-
 	}
 	void Shader::setBool(const char* name, bool value)const
 	{
@@ -105,30 +104,25 @@ namespace Core {
 	{
 		glUniform1f(glGetUniformLocation(shader_ID, name), value);
 	}
-	void Shader::setVec2(const char* name, const glm::vec2& value)const
+	void Shader::setVec2(const char* name, const Vector2D& value)const
 	{
-		glUniform2fv(glGetUniformLocation(shader_ID, name), 1, &value[0]);
+		glUniform2fv(glGetUniformLocation(shader_ID, name), 1, (GLfloat*)value.ptr());
 	}
-	void Shader::setVec3(const char* name, const glm::vec3& value)const
-	{
-		GLint loc = glGetUniformLocation(shader_ID, name);
-		glUniform3fv(glGetUniformLocation(shader_ID, name), 1, &value[0]);
+	void Shader::setVec3(const char* name, const Vector3D& value)const
+	{		
+		glUniform3fv(glGetUniformLocation(shader_ID, name), 1, (GLfloat*)value.ptr());
 	}
-	void Shader::setVec4(const char* name, const glm::vec4& value)const
+	void Shader::setVec4(const char* name, const Vector4D& value)const
 	{
-		glUniform4fv(glGetUniformLocation(shader_ID, name), 1, &value[0]);
+		glUniform4fv(glGetUniformLocation(shader_ID, name), 1, (GLfloat*)value.ptr());
+	}	
+	void Shader::setMat3(const char* name, const Matrix3D& value)const
+	{
+		glUniformMatrix3fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, (GLfloat*)value.getMatrix());
 	}
-	void Shader::setMat2(const char* name, const glm::mat2& value)const
+	void Shader::setMat4(const char* name, const Matrix4D& value)const
 	{
-		glUniformMatrix2fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, &value[0][0]);
-	}
-	void Shader::setMat3(const char* name, const glm::mat3& value)const
-	{
-		glUniformMatrix3fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, &value[0][0]);
-	}
-	void Shader::setMat4(const char* name, const glm::mat4& value)const
-	{
-		glUniformMatrix4fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, &value[0][0]);
+		glUniformMatrix4fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, (GLfloat*)value.getMatrix());
 	}
 	void Shader::checkCompileErrors(GLuint shader, const char* type)
 	{

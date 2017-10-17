@@ -1,15 +1,15 @@
 #include "ShadowMapPlugin.h"
 #include "Shader.h"
-#include <glm/gtc/matrix_transform.hpp>
-#include "FrameBuffer.h"
+
+
 #include "Mesh.h"
 #include "Scene.h"
 namespace Core {
 
 
-	void ShadowMapPlugin::render(Scene* scene)
+	void ShadowMapPlugin::render()
 	{
-		Shader::ptr shader_depth = std::make_shared<Shader>("../Data/shader/shader_map_depth.vs", "../Data/shader/shader_map_depth.fs");
+		/*Shader::ptr shader_depth = std::make_shared<Shader>("../Data/shader/shader_map_depth.vs", "../Data/shader/shader_map_depth.fs");
 		Shader::ptr shader_map = std::make_shared<Shader>("../Data/shader/shader_map.vs", "../Data/shader/shader_map.fs");
 		glm::mat4 viewMatrix, projectMatrix;
 
@@ -47,7 +47,7 @@ namespace Core {
 				m->draw(shader_depth);
 			}			
 				
-		}
+		}*/
 
 	}
 }

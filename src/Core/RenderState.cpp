@@ -2,16 +2,24 @@
 
 namespace Core {
 
-	RenderState* RenderState::m_Inst(0);
-	RenderState* RenderState::Inst() {
-		if (m_Inst)
-			m_Inst = new RenderState();
-		return m_Inst;
+
+	RenderState::RenderState()
+	{
+
 	}
 
-	//void RenderState::setClearColor(glm::vec4 color)
-	//{
-	//glClearColor(color.r, color.g, color.b,color.a);
-	//glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-	//}
+	void RenderState::use()
+	{		
+		for (auto it = _state_map.begin(); it != _state_map.end(); it++)
+		{
+			if (it->second)
+				glEnable(it->first);
+			else
+				glDisable(it->first);
+		}
+
+		glCullFace(mode);
+		glDepthFunc(depthFunc);
+		//glStencilFunc(stencilFunc);
+	}
 }

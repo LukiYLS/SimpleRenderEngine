@@ -1,8 +1,6 @@
 #pragma once
-#include <memory>
-#include <glm\gtc\matrix_transform.hpp>
 #include "Shader.h"
-#include "Node.h"
+#include "Object.h"
 namespace Core {
 
 
@@ -83,7 +81,8 @@ namespace Core {
 	这是最小的绘制单元，所有可绘制的对象都必须继承这个类，而这个类应该包含最基本的绘制所需要的信息
 	继承Node，以节点的形式组成更高一级的绘制对象（比如Mesh）
 	*/
-	class RenderObject{
+	class RenderObject
+		:public Object{
 	public:
 		typedef std::shared_ptr<RenderObject> ptr;
 	public:
@@ -91,36 +90,20 @@ namespace Core {
 		virtual ~RenderObject() {}
 	public:	
 
-		void draw(Shader::ptr shader);
+		void draw();
 		void setVertices(std::vector<Vertex> vertices) { vertices = vertices; }
 		void setIndex(std::vector<unsigned int> indices) { _indices = indices; }
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
-		void setVisible(bool isVisible) { _isVisible = isVisible; }
-
-		void setPosition(glm::vec3 position) { _position = position; }
-		glm::vec3 const getPosition() const { return _position; }
-		void setScale(glm::vec3 scale) { _scale = scale; }
-		glm::vec3 getScale() const { return _scale; }
-		void setQuaternion(glm::quat quat) { _quat = quat; }
-		glm::quat const getQuaternion() const { return _quat; }
-
-		glm::mat4 computerMatrixWorld();		
-	
-		
-		
+		void setVisible(bool isVisible) { _isVisible = isVisible; }		
+		virtual void setShaderUniform(Shader::ptr shader) {}
 	protected:
-		void createBuffer();
-		virtual void setShaderUniform(Shader::ptr shader) = 0;
+		void createBuffer();		
 
 		PrimitiveType _type;
 		bool _isVisible;
 		uint32_t _vao, _vbo, _ebo;
 		std::vector<Vertex> _vertices;
 		std::vector<uint32_t> _indices;
-		glm::vec3 _position;
-		glm::quat _quat;
-		glm::vec3 _scale;
-
 	};
 }
 

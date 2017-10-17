@@ -6,6 +6,6 @@ namespace Core {
 
 	public:
 		typedef std::shared_ptr<Plugin> ptr;
-		virtual void render(Scene* scene) = 0;
+		virtual void render() = 0;
 	};
 }

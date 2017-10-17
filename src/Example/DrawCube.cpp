@@ -1,15 +1,13 @@
+#include "../Core/RenderSystem.h"
 #include "../Core/TextureManager.h"
 #include "../Core/ShaderManager.h"
 #include "../Core/PerspectiveCamera.h"
 #include "../Core/Mesh.h"
 #include "../Core/Light.h"
-#include "../Core/Win.h"
 #include "../Core/Scene.h"
 #include "../Utils/CamerControl.h"
 #include "../Utils/Event.h"
-#include "../Core/MeshManager.h"
-#include "../Core/SimpleRenderEngine.h"
-#include "../Core/Group.h"
+#include "../Math/MathHelper.h"
 #include <vector>
 #include <iostream>
 using namespace Core;
@@ -19,78 +17,60 @@ const unsigned int SCR_HEIGHT = 600;
 using namespace Utils;
 
 
-
-Scene::ptr createScene()
+Mesh* createQuad()
 {
-	
-	Scene::ptr scene = make_shared<Scene>();
-
-	Mesh::ptr mesh = MeshManager::getSingleton()->createMesh("", , );
-
-	SubMesh::ptr subMesh1 = MeshManager::getSingleton()->createSubMesh("", , );	
-	SubMesh::ptr subMesh2 = MeshManager::getSingleton()->createSubMesh("", , );
-	SubMesh::ptr subMesh3 = MeshManager::getSingleton()->createSubMesh("", , );
-	SubMesh::ptr subMesh4 = MeshManager::getSingleton()->createSubMesh("", , );
-	mesh->addChild(subMesh1.get());
-	mesh->addChild(subMesh2);
-	mesh->addChild(subMesh3);
-	mesh->addChild(subMesh4);
-
-	//root->addChild(mesh);
-
-	Group* root = new Group;
-	Group* test = new Group;
-	root->addChild(test);
-
-
-	scene->setSceneRoot(root);
-}
-int main()
-{
-	
-	//Win::Inst()->createWindow();	
-	SimpleRenderEngine::getSingleton()->createWindow(SCR_WIDTH, SCR_HEIGHT);
 	vector<Vertex> vertices;
 	vertices.push_back(Vertex(0.5f, 0.5f, 0.0f, 0, 0, -1, 1, 1));
 	vertices.push_back(Vertex(0.5f, -0.5f, 0.0f, 0, 0, -1, 1, 0));
 	vertices.push_back(Vertex(-0.5f, -0.5f, 0.0f, 0, 0, -1, 0, 0));
 	vertices.push_back(Vertex(-0.5f, 0.5f, 0.0f, 0, 0, -1, 0, 1));
 	vector<unsigned int> indices = { 0, 3, 1, 1, 3, 2 };
-	
+
 	Mesh::ptr mesh = std::make_shared<Mesh>();
 	mesh->setVertices(vertices);
-	mesh->setIndex(indices);	
-	MeshManager::getSingleton()->addMesh("cube", mesh);
+	mesh->setIndex(indices);
+	mesh->addTexture("texture1");
+	mesh->setShaderName("basic_shader");
+
+	return mesh.get();
+}
+Scene* createScene()
+{
+	
+	Scene::ptr scene = make_shared<Scene>();
+	Object::ptr root = make_shared<Object>();
+	root->add(createQuad());
 
 	Light::ptr light = std::make_shared<Light>();
 	light->setType(PointLight);
 
+	root->add(light.get());
+	scene->setSceneRoot(root);
+
+	return scene.get();
+}
+void initResource()
+{
+
+
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/1.jpg", "texture1");
-	TextureManager::Inst()->loadTexture("../../../src/Data/texture/2.jpg", "texture2");
-	TextureManager::Inst()->loadTexture("../../../src/Data/texture/3.jpg", "texture3");
-	mesh->addTexture("texture3");
-	//Camera::ptr camera = std::make_shared<Camera>(glm::vec3(0.0f, 0.0f, 3.0f));
-	//camera->setPerspectiveFovLHMatrix(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+//	TextureManager::Inst()->loadTexture("../../../src/Data/texture/2.jpg", "texture2");
+//	TextureManager::Inst()->loadTexture("../../../src/Data/texture/3.jpg", "texture3");
 
-	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	camera->setPosition(glm::vec3(0.0f, 0.0f, -2.0f));	
+	Shader::ptr shader_basic = make_shared<Shader>("basic", "../../../src/Data/shader/basic.vs", "../../../src/Data/shader/basic.fs");
+	ShaderManager::getSingleton()->add("basic_shader", shader_basic.get());
 
-
-	Shader::ptr shader = ShaderManager::getSingleton()->createShader("basic", "../../../src/Data/shader/basic.vs", "../../../src/Data/shader/basic.fs");
+}
+int main()
+{
+	RenderSystem* rs = new RenderSystem;
+	rs->createWindow();
+	initResource();
+	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+	camera->setPosition(Vector3D(0.0f, 0.0f, -2.0f));
 	
-	Scene::ptr scene = SimpleRenderEngine::getSingleton()->craeteScene("test");	
-	scene->addRenderMesh("light", "cube");
-	scene->addLight(light);
-	
-	SimpleRenderEngine::getSingleton()->startRender();
-	
-
-
-
-	//CameraControl::ptr cc = make_shared<CameraControl>((Core::Camera::ptr)camera);
-	//EventManager::Inst()->registerReceiver("mouse.event", cc);//new完之后应该自动注册
-
-	
-	//Win::Inst()->starup(params);
-	
+	CameraControl::ptr cc = make_shared<CameraControl>(camera.get());
+	EventManager::Inst()->registerReceiver("mouse_event", cc);
+	Scene* scene = createScene();
+	rs->render(createScene(), camera.get());
 }

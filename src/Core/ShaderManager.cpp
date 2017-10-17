@@ -138,4 +138,8 @@ namespace Core {
 			}
 		}
 	}
+	void ShaderManager::add(const string& name, Shader* shader)
+	{
+		_shader_map[name] = (Shader::ptr)shader;
+	}
 }

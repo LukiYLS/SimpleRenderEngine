@@ -3,9 +3,9 @@
 
 namespace Utils
 {
-	CameraControl::CameraControl(Camera::ptr camera)
+	CameraControl::CameraControl(Camera* camera)
 	{
-		_camera = camera;
+		_camera = (Camera::ptr)camera;
 		
 		_last_x_pos = 0;
 		_last_y_pos = 0;

@@ -1,8 +1,6 @@
-#ifndef LIGHT_H
-#define LIGHT_H
-
-
-#include <glm\glm.hpp>
+#pragma once
+#include "../Math/Vector3D.h"
+#include "Object.h"
 #include <vector>
 #include <string>
 #include <map>
@@ -12,7 +10,8 @@ namespace Core
 	enum LightType { DirectLight, PointLight, SpotLight };
 		 
 	
-	class Light {//有没有必要设计成抽象类？
+	class Light 
+		: public Object{
 	public:
 		typedef std::shared_ptr<Light> ptr;
 	public:
@@ -22,23 +21,26 @@ namespace Core
 		virtual ~Light();
 	public:		
 
+		virtual Light* asLight() { return this; }
+		virtual const Light* asLight() const { return this; }
+
 		void setLightNum(int num) { _lightnum = num; }
 		int getLightNum() const { return _lightnum; }
 
-		inline void setAmbient(const glm::vec3& ambient) { _ambient = ambient; }
-		inline const glm::vec3& getAmbient() const { return _ambient; }
+		inline void setAmbient(const Vector3D& ambient) { _ambient = ambient; }
+		inline const Vector3D& getAmbient() const { return _ambient; }
 
-		inline void setDiffuse(const glm::vec3& diffuse) { _diffuse = diffuse; }
-		inline const glm::vec3& getDiffuse() const { return _diffuse; }
+		inline void setDiffuse(const Vector3D& diffuse) { _diffuse = diffuse; }
+		inline const Vector3D& getDiffuse() const { return _diffuse; }
 
-		inline void setSpecular(const glm::vec3& specular) { _specular = specular; }
-		inline const glm::vec3& getSpecular() const { return _specular; }		
+		inline void setSpecular(const Vector3D& specular) { _specular = specular; }
+		inline const Vector3D& getSpecular() const { return _specular; }		
 
-		inline void setPosition(const glm::vec3& position) { _position = position; }
-		inline const glm::vec3& getPosition() const { return _position; }
+		inline void setPosition(const Vector3D& position) { _position = position; }
+		inline const Vector3D& getPosition() const { return _position; }
 
-		inline void setDirection(const glm::vec3& direction) { _direction = direction; }
-		inline const glm::vec3& getDirection() const { return _direction; }
+		inline void setDirection(const Vector3D& direction) { _direction = direction; }
+		inline const Vector3D& getDirection() const { return _direction; }
 
 		inline void setConstantAttenuation(float constant) { _constant = constant; }
 		inline const float& getConstantAttenuation() const { return _constant; }
@@ -80,11 +82,11 @@ namespace Core
 		
 	private:
 		int _lightnum;
-		glm::vec3 _ambient;
-		glm::vec3 _diffuse;
-		glm::vec3 _specular;		
-		glm::vec3 _position;
-		glm::vec3 _direction;
+		Vector3D _ambient;
+		Vector3D _diffuse;
+		Vector3D _specular;		
+		Vector3D _position;
+		Vector3D _direction;
 
 		float _innerCutOff;
 		float _outerCutOff;
@@ -99,4 +101,4 @@ namespace Core
 	};
 
 }
-#endif // !LIGHT_H
+

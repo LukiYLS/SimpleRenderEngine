@@ -8,7 +8,7 @@ namespace Core {
 		PerspectiveCamera(float fovy, float aspect, float zNear, float zFar):
 		_fovy(fovy), _aspect(aspect), _near(zNear), _far(zFar) {}
 
-		glm::mat4 getProjectMatrix() const { return glm::perspective(_fovy, _aspect, _near, _far); }
+		Matrix4D getProjectMatrix() const { return Matrix4D::makeProjectionMatrix(_fovy, _aspect, _near, _far); }
 
 	private:
 		float _fovy;

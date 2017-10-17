@@ -2,11 +2,29 @@
 #include "PickTool.h"
 #include "FrameBuffer.h"
 #include "Shader.h"
-#include "MeshManager.h"
-#include "ShaderManager.h"
 namespace Core {
 	
+	/*void update(Group* group)
+	{
+		if()
+	}
+	void Scene::update()
+	{
+		for (int i = 0; i < _root->getNumChildren(); i++)
+		{
+			if (_root->getChild(i)->asGroup() != 0)
+			{
 
+				update();
+			}
+			else if (_root->getChild(i)->asNode() != 0)
+			{
+				SubMesh* sub = _root->getChild(i)->asSubMesh();
+				
+			}
+			
+		}
+	}
 	void Scene::addRenderMesh(const string& shader_name, const string& mesh_name)
 	{
 		if (ShaderManager::getSingleton()->getByName(shader_name) == NULL || MeshManager::getSingleton()->getByName(shader_name) == NULL)
@@ -162,5 +180,5 @@ namespace Core {
 
 
 
-	}
+	
 }
