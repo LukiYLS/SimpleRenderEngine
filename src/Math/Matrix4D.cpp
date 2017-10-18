@@ -117,7 +117,7 @@ namespace Core {
 
 	const double* Matrix4D::getMatrix() const
 	{
-		return _m;
+		return &m[0][0];
 	}
 
 	Matrix3D Matrix4D::getMatrix3() const
@@ -396,19 +396,19 @@ namespace Core {
 		);
 	}
 
-	Matrix4D Matrix4D::makeProjectionMatrix(double view_degree_rad_, double aspect_ratio_, double near_distance_, double far_distance_)
+	Matrix4D Matrix4D::makeProjectionMatrix(double fovy, double aspect, double zNear, double zFar)
 	{
-		double f_n = 1.0 / (far_distance_ - near_distance_);
-		double theta = view_degree_rad_ * 0.5;
+		double f_n = 1.0 / (zFar - zNear);
+		double theta = fovy * 0.5;
 
 		double divisor = tan(theta);
 		double factor = 1.0 / divisor;
 
 		return Matrix4D(
-			(1.0 / aspect_ratio_) * factor, 0, 0, 0,
+			(1.0 / aspect) * factor, 0, 0, 0,
 			0, factor, 0, 0,
-			0, 0, (-(far_distance_ + near_distance_)) * f_n, -1.0,
-			0, 0, -2.0 * far_distance_ * near_distance_ * f_n, 0
+			0, 0, (-(zFar + zNear)) * f_n, -1.0,
+			0, 0, -2.0 * zFar * zNear * f_n, 0
 		);
 	}
 

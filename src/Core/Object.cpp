@@ -39,7 +39,7 @@ namespace Core {
 	{
 		if (!object)return false;
 		Object* parent = object->getParent();
-		if (!parent)
+		if (parent)
 			parent->remove(object);
 		object->setParent(this);
 		_children.push_back(object);
@@ -58,6 +58,12 @@ namespace Core {
 		}
 		return false;
 	}
+	Object* Object::getChild(int index)
+	{
+		if (index < _children.size())
+			return _children[index];
+		return nullptr;
+	}
 	void Object::updateMatrixLocal()
 	{
 		_matrix_local = Matrix4D::makeTransformMatrix(_position, _scale, _orientation);
@@ -71,20 +77,18 @@ namespace Core {
 		{
 			_matrix_world = _matrix_local * this->getParent()->getWorldMatrix();
 		}
-
+		if (_children.size() == 0)return;
 		for (auto child : _children)
 			child->updateMatrixWorld();
 	}
 
 	Matrix4D Object::getLocalMatrix()
-	{
-		this->updateMatrixLocal();
+	{		
 		return _matrix_local;
 	}
 
 	Matrix4D Object::getWorldMatrix()
-	{
-		this->updateMatrixWorld();
+	{		
 		return _matrix_world;
 	}
 

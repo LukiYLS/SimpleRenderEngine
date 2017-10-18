@@ -39,7 +39,7 @@ namespace Core {
 		void pitch(float angle) { rotate(angle, _orientation.yAxis()); }
 		void roll(float angle) { rotate(angle, _orientation.zAxis()); }
 
-		Matrix4D getViewMatrix()const { return Matrix4D::makeTransformMatrix(_position, Vector3D(1.0), _orientation); }
+		Matrix4D getViewMatrix()const { return Matrix4D::makeViewMatrix(_position, _position + getDirection(), getUp()); }
 		virtual Matrix4D getProjectionMatrix() { return Matrix4D(); }
 	private:
 		Quaternion RotationBetweenVectors(const Vector3D& start, const Vector3D& dest);

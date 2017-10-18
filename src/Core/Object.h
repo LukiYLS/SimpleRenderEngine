@@ -60,6 +60,9 @@ namespace Core {
 		//
 		bool add(Object* object);
 		bool remove(Object* object);
+		Object* getChild(int index);	
+		typedef std::vector<Object*> Children;
+		Children getChildren() { return _children; }
 		void updateMatrixLocal();
 		void updateMatrixWorld();
 		//
@@ -69,13 +72,14 @@ namespace Core {
 		Quaternion getWorldQuaternion();
 		Vector3D getWorldScale();
 	public:
+		
 		bool visible;
 	protected:
 		Object* _parent;
 		Vector3D _position;
 		Vector3D _scale;
 		Quaternion _orientation;		
-		typedef std::vector<Object*> Children;
+		
 		Children _children;
 
 		Matrix4D _matrix_local;

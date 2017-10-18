@@ -6,6 +6,7 @@
 #include "../Math/Vector4D.h"
 #include "../Math/Matrix3D.h"
 #include "../Math/Matrix4D.h"
+#include <glm\glm.hpp>
 #include <vector>
 #include <memory>
 namespace Core {
@@ -28,6 +29,7 @@ namespace Core {
 		//void setMat2(const char* name, const Matrix2D& value)const;
 		void setMat3(const char* name, const Matrix3D& value)const;
 		void setMat4(const char* name, const Matrix4D& value)const;		
+		void setMat4(const char* name, const glm::mat4& value)const;
 		
 	private:
 		void checkCompileErrors(GLuint shader, const char* type);

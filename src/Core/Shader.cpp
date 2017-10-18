@@ -122,7 +122,12 @@ namespace Core {
 	}
 	void Shader::setMat4(const char* name, const Matrix4D& value)const
 	{
-		glUniformMatrix4fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, (GLfloat*)value.getMatrix());
+		GLint loc = glGetUniformLocation(shader_ID, name);
+		glUniformMatrix4dv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, value.getMatrix());
+	}
+	void Shader::setMat4(const char* name, const glm::mat4& value)const
+	{
+		glUniformMatrix4fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, &value[0][0]);
 	}
 	void Shader::checkCompileErrors(GLuint shader, const char* type)
 	{

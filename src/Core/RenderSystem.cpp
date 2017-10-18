@@ -4,6 +4,8 @@
 #include "ShadowMapPlugin.h"
 #include "ShaderManager.h"
 #include <iostream>
+#include <glm\glm.hpp>
+#include <glm\gtc\matrix_transform.hpp>
 namespace Core {
 	
 	std::vector<mouse_event> mouse_events;
@@ -187,12 +189,22 @@ namespace Core {
 		{
 			Shader* shader = ShaderManager::getSingleton()->getByName(mesh->getShaderName()).get();
 			shader->use();
-			shader->setMat4("worldMatrix", mesh->getWorldMatrix());
-			shader->setMat4("viewMatrix", camera->getViewMatrix());
-			shader->setMat4("projectionMatrix", camera->getProjectionMatrix());
-			setupLights(shader);
-			mesh->setShaderUniform((Shader::ptr)shader);
-			mesh->draw();
+			shader->setMat4("modelMatrix", mesh->getWorldMatrix());
+			//shader->setMat4("viewMatrix", camera->getViewMatrix());
+			//shader->setMat4("projectionMatrix", camera->getProjectionMatrix());
+			shader->setVec3("EyeDirection", camera->getPosition());
+			Matrix4D view = camera->getViewMatrix();
+			Matrix4D proj = camera->getProjectionMatrix();
+		
+			Vector4D v = camera->getProjectionMatrix() * camera->getViewMatrix() * Vector4D(0.5f, -0.5f, 0.0f, 1.0);
+			glm::mat4 view1 = glm::lookAt(glm::vec3(0.0, 0.0, -2.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
+			glm::mat4 proj1 = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
+			glm::vec4 v1 = proj1 * view1 * glm::vec4(0.5, -0.5, 0.0, 1.0);
+			shader->setMat4("viewMatrix", view.getTranspose());
+			shader->setMat4("projectionMatrix", proj.getTranspose());
+			//setupLights(shader);
+			mesh->setupUniform(shader);
+			mesh->draw(shader);
 		}
 		
 		for (auto plugin : _plugins)
@@ -207,38 +219,42 @@ namespace Core {
 	}
 	void RenderSystem::projectObject(Object* object)
 	{
-		if (object->visible = false)return;
-		if (!object->asMesh())
+		//if (object->visible = false)return;
+		if (object->asMesh())
 		{
 			Mesh* mesh = object->asMesh();
 			_render_mesh.push_back((Mesh::ptr)mesh);
 
 		}
-		else if (!object->asLight())
+		else if (object->asLight())
 		{
 			Light* light = object->asLight();
 			_lights.push_back((Light::ptr)light);
 		}
-		else if (!object->asPlugin())
+		else if (object->asPlugin())
 		{
 
 		}
-		else if (!object->asSprite())
+		else if (object->asSprite())
 		{
 
 		}
-		else if (!object->asBillboard())
+		else if (object->asBillboard())
 		{
 
 		}
-		else if (!object->asParticleSystem())
+		else if (object->asParticleSystem())
 		{
 
 		}
 		else
 		{
 
-		}
+		}		
+		vector<Object*> children = object->getChildren();
+		if (children.size() == 0)return;
+		for (auto child : children)
+			projectObject(child);
 	}
 	void RenderSystem::setupLights(Shader* shader)
 	{

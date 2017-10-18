@@ -33,8 +33,8 @@ namespace Core {
 		glBindVertexArray(0);
 	}
 
-	void RenderObject::draw()
-	{
+	void RenderObject::draw(Shader* shader)
+	{		
 		createBuffer();		
 		GLint prim_type;
 		switch (_type)
@@ -60,6 +60,7 @@ namespace Core {
 		default:
 			prim_type = GL_TRIANGLES;
 		}		
+		shader->use();
 		glBindVertexArray(_vao);
 		if (_indices.empty())
 			glDrawArrays(prim_type, 0, _vertices.size());

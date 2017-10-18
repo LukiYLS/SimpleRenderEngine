@@ -34,6 +34,7 @@ namespace Core {
 		void setRenderState(RenderState* renderstate) { _renderState = (RenderState::ptr)renderstate; }
 		RenderState* getRenderState() { return _renderState.get(); }
 		void setupUniform(Shader* shader);
+		virtual void setShaderUniform(Shader* shader) {}
 	protected:		
 		std::vector<std::string> _textures;
 		Material::ptr _material;	

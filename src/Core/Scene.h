@@ -19,7 +19,9 @@ namespace Core {
 	public:		
 		//void addRenderMesh(const string& shader_name, const string& mesh_name);
 		//void removeRenderMesh(const string& name);
+
 		void setSceneRoot(Object::ptr root) { _root = root; }
+
 		Object* const getSceneRoot()const { return _root.get(); }
 		
 		void setSkybox(Skybox* skybox) {}

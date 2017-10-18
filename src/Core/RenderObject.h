@@ -90,12 +90,12 @@ namespace Core {
 		virtual ~RenderObject() {}
 	public:	
 
-		void draw();
-		void setVertices(std::vector<Vertex> vertices) { vertices = vertices; }
+		void draw(Shader* shader);
+		void setVertices(std::vector<Vertex> vertices) { _vertices = vertices; }
 		void setIndex(std::vector<unsigned int> indices) { _indices = indices; }
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
-		virtual void setShaderUniform(Shader::ptr shader) {}
+		virtual void setShaderUniform(Shader* shader) {}
 	protected:
 		void createBuffer();		
 
