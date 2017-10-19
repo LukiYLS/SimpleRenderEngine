@@ -2,8 +2,7 @@
 //从freeimage移植过来
 //**********************************************
 
-#ifndef TextureManager_H
-#define TextureManager_H
+#pragma once
 #include <glew\glew.h>
 #include <windows.h>
 #include "FreeImage.h"
@@ -18,20 +17,20 @@ namespace Core {
 		virtual ~TextureManager();
 
 		Texture::ptr createFromFile(const char* filename);
-		bool loadTexture(const char* filename, const char* texName, GLenum image_format = GL_RGB, GLint internal_format = GL_RGB, GLint level = 0, GLint border = 0);
+		bool loadTexture(const char* filename, const std::string texName, GLenum image_format = GL_RGB, GLint internal_format = GL_RGB, GLint level = 0, GLint border = 0);
 
-		bool unloadTexture(const char* texName);
+		bool unloadTexture(std::string texName);
 
 		bool loadCubeMap(std::vector<const char*> flies);
 
-		bool bindTexture(const char* texName, int units);
-		bool bindTexture(const char* texName, bool isCube);
+		bool bindTexture(const std::string texName, int units);
+		bool bindTexture(const std::string texName, bool isCube);
 
-		GLuint getTextureUnit(const char* texName);
+		GLuint getTextureUnit(const std::string texName);
 
 		void unloadAllTextures();
 
-		void addTexture(const char* texName, GLuint textureID);
+		void addTexture(const std::string texName, GLuint textureID);
 
 	protected:
 		TextureManager();//阻止构造
@@ -39,10 +38,9 @@ namespace Core {
 		TextureManager& operator=(const TextureManager& tm);//阻止赋值
 
 		static TextureManager* m_inst;
-		std::map<const char*, GLuint> m_texID;
+		std::map<std::string, GLuint> m_texID;
 		unsigned int m_cubeMap;
 	};
 
 }
 
-#endif

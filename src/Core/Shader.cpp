@@ -106,29 +106,35 @@ namespace Core {
 	}
 	void Shader::setVec2(const char* name, const Vector2D& value)const
 	{
-		glUniform2fv(glGetUniformLocation(shader_ID, name), 1, (GLfloat*)value.ptr());
+		glUniform2f(glGetUniformLocation(shader_ID, name), value.x, value.y);
 	}
 	void Shader::setVec3(const char* name, const Vector3D& value)const
 	{		
-		glUniform3fv(glGetUniformLocation(shader_ID, name), 1, (GLfloat*)value.ptr());
+		glUniform3f(glGetUniformLocation(shader_ID, name), value.x,value.y,value.z);
 	}
 	void Shader::setVec4(const char* name, const Vector4D& value)const
 	{
-		glUniform4fv(glGetUniformLocation(shader_ID, name), 1, (GLfloat*)value.ptr());
+		glUniform4f(glGetUniformLocation(shader_ID, name), value.x, value.y, value.z, value.w);
 	}	
 	void Shader::setMat3(const char* name, const Matrix3D& value)const
 	{
-		glUniformMatrix3fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, (GLfloat*)value.getMatrix());
+		GLfloat matrix_gl[9];
+		for (unsigned int i = 0; i < 3; i++)	
+			for (unsigned int j = 0; j < 3; j++)
+			{
+				matrix_gl[i] = value[i][j];
+			}			
+		glUniformMatrix3fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, matrix_gl);
 	}
 	void Shader::setMat4(const char* name, const Matrix4D& value)const
-	{
-		GLint loc = glGetUniformLocation(shader_ID, name);
-		glUniformMatrix4dv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, value.getMatrix());
-	}
-	void Shader::setMat4(const char* name, const glm::mat4& value)const
-	{
-		glUniformMatrix4fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, &value[0][0]);
-	}
+	{		
+		GLfloat matrix_gl[16];
+		for (unsigned int i = 0; i < 16; i++)
+		{
+			matrix_gl[i] = value[i];
+		}
+		glUniformMatrix4fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, matrix_gl);//传到glsl中自动转置，GL_TRUE不会转置
+	}	
 	void Shader::checkCompileErrors(GLuint shader, const char* type)
 	{
 		GLint success;

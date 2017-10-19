@@ -14,6 +14,9 @@ namespace Core {
 	class Object {
 	public:
 		typedef std::shared_ptr<Object> ptr;
+		Object() = default;
+		Object(const Vector3D& pos):_position(pos) {}
+		Object(const Vector3D& pos, const Quaternion& quat) :_position(pos), _orientation(quat) {}
 	public:
 		virtual Mesh* asMesh() { return 0; }
 		virtual const Mesh* asMesh() const { return 0; }
@@ -50,10 +53,10 @@ namespace Core {
 		void applyMatrix(const Matrix4D& matrix);
 		//_orientation set
 		void setRotationFromAxisAngle(const Vector3D& axis, double angle);
-		void setRotationFromMatrix(const Matrix3D& rotate);
+		void setRotationFromMatrix(const Matrix4D& rotate);
 		//_orientation change
 		void rotateOnAxis(const Vector3D& axis, double angle);
-		void translateOnAxis(const Vector3D& axis, double distance);
+		void translateOnAxis(const Vector3D& axis, double distance);		
 		//useful function
 		void localToWorld(Vector3D& vector);
 		void worldToLocal(Vector3D& vector);

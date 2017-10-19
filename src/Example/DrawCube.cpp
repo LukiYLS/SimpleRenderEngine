@@ -8,7 +8,7 @@
 #include "../Utils/CamerControl.h"
 #include "../Utils/Event.h"
 #include "../Math/MathHelper.h"
-
+#include "../Core/GeometryFactory.h"
 #include <vector>
 #include <iostream>
 using namespace Core;
@@ -20,16 +20,14 @@ using namespace Utils;
 
 Mesh* createQuad()
 {
-	vector<Vertex> vertices;
-	vertices.push_back(Vertex(0.5f, 0.5f, 0.0f, 0, 0, -1, 1, 1));
-	vertices.push_back(Vertex(0.5f, -0.5f, 0.0f, 0, 0, -1, 1, 0));
-	vertices.push_back(Vertex(-0.5f, -0.5f, 0.0f, 0, 0, -1, 0, 0));
-	vertices.push_back(Vertex(-0.5f, 0.5f, 0.0f, 0, 0, -1, 0, 1));
-	vector<unsigned int> indices = { 0, 3, 1, 1, 3, 2 };
+	//vector<Vertex> vertices;
+	//vertices.push_back(Vertex(0.5f, 0.5f, 0.0f, 0, 0, -1, 1, 1));
+	//vertices.push_back(Vertex(0.5f, -0.5f, 0.0f, 0, 0, -1, 1, 0));
+	//vertices.push_back(Vertex(-0.5f, -0.5f, 0.0f, 0, 0, -1, 0, 0));
+	//vertices.push_back(Vertex(-0.5f, 0.5f, 0.0f, 0, 0, -1, 0, 1));
+	//vector<unsigned int> indices = { 0, 3, 1, 1, 3, 2 };
 
-	Mesh* mesh = new Mesh();
-	mesh->setVertices(vertices);
-	mesh->setIndex(indices);
+	Mesh* mesh = GeometryFactory::MakeBox(2, 2, 2);	
 	mesh->addTexture("texture1");
 	mesh->setShaderName("basic_shader");
 
@@ -39,6 +37,7 @@ Scene::ptr createScene()
 {	
 	Scene::ptr scene = make_shared<Scene>();
 	Object::ptr root = make_shared<Object>();
+	
 	root->add(createQuad());
 
 	Light* light = new Light();
@@ -63,11 +62,15 @@ int main()
 	rs->createWindow();
 	initResource();
 	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-	camera->setPosition(Vector3D(0.0f, 0.0f, -2.0f));
-	
+	camera->setPosition(Vector3D(0.0f,0.0f, -5.0f));
+	Vector3D dir = camera->getDirection();
+	Vector3D up = camera->getUp();
+	camera->lookAt(0.0, 0.0, 0.0);
+	//dir = camera->getDirection();
+	//up = camera->getUp();
 	CameraControl::ptr cc = make_shared<CameraControl>(camera.get());
-	EventManager::Inst()->registerReceiver("mouse_event", cc);
-
+	EventManager::Inst()->registerReceiver("mouse.event", cc);
+	
 	Scene::ptr scene = createScene();
 	rs->render(scene.get(), camera.get());
 }

@@ -9,16 +9,16 @@ namespace Core {
 	}
 	void Object::setRotationFromAxisAngle(const Vector3D& axis, double angle)
 	{
-		_orientation.fromAngleAxis(angle, axis);
+		_orientation.setFromAxisAngle(angle, axis);
 	}
-	void Object::setRotationFromMatrix(const Matrix3D& rotate)
+	void Object::setRotationFromMatrix(const Matrix4D& rotate)
 	{
-		_orientation.fromRotationMatrix(rotate);
+		_orientation.setFromRotationMatrix(rotate);
 	}
 	void Object::rotateOnAxis(const Vector3D& axis, double angle)
 	{
 		Quaternion quat;
-		quat.fromAngleAxis(angle, axis);
+		quat.setFromAxisAngle(angle, axis);
 		_orientation = _orientation * quat;
 	}
 	void Object::translateOnAxis(const Vector3D& axis, double distance)

@@ -4,33 +4,35 @@ namespace Core {
 	class Vector3D;
 	class Matrix3D;
 	class Quaternion;
-	class Matrix4D
+	class Matrix4D//column first
 	{
 	public:
+		
 		Matrix4D();
-		Matrix4D(const Vector4D& a0_, const Vector4D& a1_, const Vector4D& a2_, const Vector4D& a3_);
-		Matrix4D(double a00_, double a10_, double a20_, double a30_, double a01_, double a11_, double a21_, double a31_, double a02_, double a12_, double a22_, double a32_, double a03_, double a13_, double a23_, double a33_);
+		Matrix4D(const Vector4D& v0, const Vector4D& v1, const Vector4D& v2, const Vector4D& v3);
+		Matrix4D(double a00, double a01, double a02, double a03,
+			double a10, double a11, double a12, double a13,
+			double a20, double a21, double a22, double a23,
+			double a30, double a31, double a32, double a33);
 		~Matrix4D();
 
 	public:
-		static const Matrix4D Zero;
-		static const Matrix4D Identity;
 		Matrix4D(const Matrix3D& m3x3)
 		{
 			operator=(Identity);
 			operator=(m3x3);
 		}
-		double& operator[] (int index_) {
-			return _m[index_];
+		double& operator[] (int index) {
+			return _m[index];
 		}
-		const double& operator[] (int index_) const {
-			return _m[index_];
+		const double& operator[] (int index) const {
+			return _m[index];
 		}
-		double& operator() (int row_, int col_) {
-			return _m[col_ * 4 + row_];
+		double& operator() (int row, int col) {
+			return _m[col * 4 + row];
 		}
-		const double& operator() (int row_, int col_) const {
-			return _m[col_ * 4 + row_];
+		const double& operator() (int row, int col) const {
+			return _m[col * 4 + row];
 		}
 
 		Matrix4D operator*(double scalar_) const {
@@ -123,23 +125,30 @@ namespace Core {
 			
 
 	public:
-		Matrix4D     getTranspose(void) const;
-		Matrix4D     getInverse() const;
-		double       determinant() const;		
-		const double* Matrix4D::getMatrix() const;	
-		Matrix3D     getMatrix3() const ;
-		void		decompose(Vector3D& position, Vector3D& scale, Quaternion& orientation);
+		Matrix4D  getTranspose(void) const;
+		Matrix4D  getInverse() const;
+		Matrix3D  getMatrix3x3() const;
+		double    determinant() const;	
+		void	  decompose(Vector3D& position, Vector3D& scale, Quaternion& orientation);
+		void	  scale(const Vector3D& scale);
+		void	  setPosition(const Vector3D& pos);
 
 	public:		
+		static const Matrix4D Identity;
+		static Matrix4D makeIdentity();
+		static Matrix4D makeRotationFromQuaternion(const Quaternion& orientation);
 		static Matrix4D makeTransformMatrix(const Vector3D& position, const Vector3D& scale, const Quaternion& orientation);		
-		static Matrix4D makeTranslateMatrix(const Vector3D& trans_);
-		static Matrix4D makeScaleMatrix(const Vector3D& scale_);
-		static Matrix4D makeRotationMatrix(const Vector3D& axis, double angle_in_rad_);
-		static Matrix4D createReflection(const Vector3D& normal_, double dist_to_origin_);
-		static Matrix4D makeViewMatrix(const Vector3D& pos_, const Vector3D& target_, const Vector3D& up_);
-		static Matrix4D makeProjectionMatrix(double view_degree_rad_, double aspect_ratio_, double near_distance_, double far_distance_);
-		static Matrix4D makeOrthoMatrix(double width_, double height_, double near_dist_, double far_dist_);
-		static Matrix4D makeOrthoMatrix(double left, double right, double bottom, double top, double n, double f);		
+		static Matrix4D makeTranslation(const Vector3D& trans);
+		static Matrix4D makeScale(const Vector3D& scale);
+		static Matrix4D makeRotationAxis(const Vector3D& axis, double angle_in_rad);
+		static Matrix4D makeRotationX(const double& angle_in_rad);
+		static Matrix4D makeRotationY(const double& angle_in_rad);
+		static Matrix4D makeRotationZ(const double& angle_in_rad);
+		static Matrix4D createReflection(const Vector3D& normal, double dist_to_origin);
+		static Matrix4D lookAt(const Vector3D& pos, const Vector3D& target, const Vector3D& up);
+		static Matrix4D makePerspective(double fovy, double aspect, double zNear, double zFar);
+		static Matrix4D makeOrthographic(double width, double height, double near_dist, double far_dist);
+		static Matrix4D makeOrthographic(double left, double right, double bottom, double top, double n, double f);
 	protected:
 		union {
 			double m[4][4];

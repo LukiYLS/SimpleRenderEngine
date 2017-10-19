@@ -1,18 +1,20 @@
 #pragma once
 #include "ViewPort.h"
+#include "Object.h"
 #include "../Math/Matrix4D.h"
 #include "../Math/Quaternion.h"
 #include "../Math/Vector3D.h"
 #include <memory>
 namespace Core {
 
-	class Camera {
+	class Camera 
+		:public Object{
 	public:
 		typedef std::shared_ptr<Camera> ptr;
 		Camera() = default;
 		Camera(const Camera&) = default;
-		Camera(const Vector3D& pos) :_position(pos) {}
-		Camera(const Vector3D& pos, const Quaternion& quat) :_position(pos), _orientation(quat) {}
+		Camera(const Vector3D& pos) :Object(pos) {}
+		Camera(const Vector3D& pos, const Quaternion& quat) :Object(pos, quat) {}
 	public:
 
 		const Quaternion& getOrientation(void) const { return _orientation; }
@@ -20,29 +22,26 @@ namespace Core {
 		const Vector3D& getPosition(void) const { return _position; }
 		void setPosition(const Vector3D& pos) { _position = pos; }
 
-		void setDirection(float x, float y, float z) { setDirection(Vector3D(x, y, z)); }
-		void setDirection(const Vector3D& vec);
 		Vector3D getDirection(void) const { return _orientation * Vector3D(0, 0, 1); }
 		Vector3D getUp(void) const { return _orientation * Vector3D(0, 1, 0); }
 		Vector3D getRight(void) const { return _orientation * Vector3D(1, 0, 0); }
-		void lookAt(const Vector3D& target) { setDirection(target - _position); }
-		void lookAt(float x, float y, float z) { lookAt(Vector3D(x, y, z)); }
 
+		void lookAt(const Vector3D& target);
+		void lookAt(float x, float y, float z) { lookAt(Vector3D(x, y, z)); }
+		void lookAt(const Vector3D& position, const Vector3D target, const Vector3D& up);
 		void translate(const Vector3D &v) { _position += _orientation.Inverse() * v; }
 		void translate(float x, float y, float z) { _position += _orientation.Inverse() * Vector3D(x, y, z); }
 
 
-		void rotate(float angle, const Vector3D &axis);
-		void rotate(float angle, float x, float y, float z) { rotate(angle, Vector3D(x, y, z)); }
+		//void rotate(float angle, const Vector3D &axis);
+		//void rotate(float angle, float x, float y, float z) { rotate(angle, Vector3D(x, y, z)); }
 
-		void yaw(float angle) { rotate(angle, _orientation.xAxis()); }
-		void pitch(float angle) { rotate(angle, _orientation.yAxis()); }
-		void roll(float angle) { rotate(angle, _orientation.zAxis()); }
+		//void yaw(float angle) { rotate(angle, _orientation.xAxis()); }
+		//void pitch(float angle) { rotate(angle, _orientation.yAxis()); }
+		//void roll(float angle) { rotate(angle, _orientation.zAxis()); }
 
-		Matrix4D getViewMatrix()const { return Matrix4D::makeViewMatrix(_position, _position + getDirection(), getUp()); }
-		virtual Matrix4D getProjectionMatrix() { return Matrix4D(); }
-	private:
-		Quaternion RotationBetweenVectors(const Vector3D& start, const Vector3D& dest);
+		Matrix4D getViewMatrix()const;
+		virtual Matrix4D getProjectionMatrix() { return Matrix4D::makeIdentity(); }	
 
 		//for mouse and keyboard control
 	public:
@@ -55,9 +54,6 @@ namespace Core {
 		float _movementSpeed;
 		float _mouseSensitivity;
 		ViewPort::ptr _view_port;
-	private:
-		Vector3D _position;
-		Quaternion _orientation;
 	};
 
 }

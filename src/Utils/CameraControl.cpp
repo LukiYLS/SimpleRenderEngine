@@ -42,8 +42,8 @@ namespace Utils
 						int dx = mouse_work.xpos - _last_x_pos;
 						int dy = mouse_work.ypos - _last_y_pos;
 						_camera->translate(1, 1, 1);
-						_camera->yaw(100);
-						_camera->pitch(100);
+						//_camera->yaw(100);
+						//_camera->pitch(100);
 					}
 					else if (_mb_pressing)
 					{

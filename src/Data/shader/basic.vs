@@ -10,13 +10,7 @@ uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
 
 out vec2 uv;
-out vec3 Position;
-out vec3 Normal;
 void main(){
-	gl_Position = vec4(position.xyz,1.0);
-	Position = gl_Position.xyz;
-	gl_Position = viewMatrix * gl_Position;	
-	gl_Position = projectionMatrix * gl_Position;	
-	Normal = normal;
+	gl_Position = projectionMatrix * viewMatrix * modelMatrix *vec4(position.xyz,1.0);
 	uv = tex;
 }

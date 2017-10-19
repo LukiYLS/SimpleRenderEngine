@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\..\src\Core\Mesh.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\MeshFactory.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Core\MeshManager.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -147,6 +144,9 @@
     <ClInclude Include="..\..\..\src\Core\Uniform.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\GeometryFactory.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -216,6 +216,9 @@
       <Filter>Math</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Object.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\GeometryFactory.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

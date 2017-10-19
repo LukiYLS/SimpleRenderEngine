@@ -189,20 +189,11 @@ namespace Core {
 		{
 			Shader* shader = ShaderManager::getSingleton()->getByName(mesh->getShaderName()).get();
 			shader->use();
-			shader->setMat4("modelMatrix", mesh->getWorldMatrix());
-			//shader->setMat4("viewMatrix", camera->getViewMatrix());
-			//shader->setMat4("projectionMatrix", camera->getProjectionMatrix());
+			shader->setMat4("modelMatrix", Matrix4D::makeIdentity());
+			shader->setMat4("viewMatrix", camera->getViewMatrix());
+			shader->setMat4("projectionMatrix", camera->getProjectionMatrix());
 			shader->setVec3("EyeDirection", camera->getPosition());
-			Matrix4D view = camera->getViewMatrix();
-			Matrix4D proj = camera->getProjectionMatrix();
-		
-			Vector4D v = camera->getProjectionMatrix() * camera->getViewMatrix() * Vector4D(0.5f, -0.5f, 0.0f, 1.0);
-			glm::mat4 view1 = glm::lookAt(glm::vec3(0.0, 0.0, -2.0), glm::vec3(0.0, 0.0, 0.0), glm::vec3(0.0, 1.0, 0.0));
-			glm::mat4 proj1 = glm::perspective(glm::radians(45.0f), (float)800 / (float)600, 0.1f, 100.0f);
-			glm::vec4 v1 = proj1 * view1 * glm::vec4(0.5, -0.5, 0.0, 1.0);
-			shader->setMat4("viewMatrix", view.getTranspose());
-			shader->setMat4("projectionMatrix", proj.getTranspose());
-			//setupLights(shader);
+			setupLights(shader);
 			mesh->setupUniform(shader);
 			mesh->draw(shader);
 		}

@@ -33,7 +33,7 @@ namespace Core {
 		m_inst = 0;
 	}
 
-	bool TextureManager::loadTexture(const char* fileName, const char* texName, GLenum image_format, GLint internal_format, GLint level, GLint border)
+	bool TextureManager::loadTexture(const char* fileName, const std::string texName, GLenum image_format, GLint internal_format, GLint level, GLint border)
 	{
 
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -131,7 +131,7 @@ namespace Core {
 		glBindTexture(GL_TEXTURE_2D, 0);
 	}
 
-	bool TextureManager::unloadTexture(const char* texName)
+	bool TextureManager::unloadTexture(const std::string texName)
 	{
 		bool result(true);
 		if (m_texID.find(texName) != m_texID.end())
@@ -147,11 +147,11 @@ namespace Core {
 		return result;
 	}
 
-	bool TextureManager::bindTexture(const char* texName,int units)
+	bool TextureManager::bindTexture(const std::string texName,int units)
 	{
 		bool result(true);
 
-		if (m_texID.find(texName) != m_texID.end())
+		if (m_texID.find("texture1") != m_texID.end())
 		{
 			glActiveTexture(GL_TEXTURE0 + units);
 			glBindTexture(GL_TEXTURE_2D, m_texID[texName]);			
@@ -161,14 +161,14 @@ namespace Core {
 
 		return result;
 	}
-	unsigned int TextureManager::getTextureUnit(const char* texName)
+	unsigned int TextureManager::getTextureUnit(const std::string texName)
 	{
 		if (m_texID.find(texName) != m_texID.end())
 			return m_texID[texName];
 		return 0;
 	}
 
-	void TextureManager::addTexture(const char* texName, GLuint textureID)
+	void TextureManager::addTexture(const std::string texName, GLuint textureID)
 	{
 		if (m_texID.find(texName) != m_texID.end())
 			glDeleteTextures(1, &(m_texID[texName]));
@@ -177,7 +177,7 @@ namespace Core {
 
 	void TextureManager::unloadAllTextures()
 	{
-		std::map<const char*, GLuint>::iterator it = m_texID.begin();
+		std::map<std::string, GLuint>::iterator it = m_texID.begin();
 		while (it != m_texID.end())
 			unloadTexture(it->first);
 

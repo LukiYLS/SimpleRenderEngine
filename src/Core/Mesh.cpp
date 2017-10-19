@@ -52,7 +52,7 @@ namespace Core {
 		{
 			for (int i = 0; i < _textures.size(); i++)
 			{
-				TextureManager::Inst()->bindTexture(_textures[i].c_str(), i);
+				TextureManager::Inst()->bindTexture(_textures[i], i);
 				shader->setInt(_textures[i].c_str(), i);
 			}
 		}

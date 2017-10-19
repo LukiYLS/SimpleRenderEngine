@@ -26,7 +26,7 @@
     <ClInclude Include="..\..\..\src\Core\Light.h" />
     <ClInclude Include="..\..\..\src\Core\Loader.h" />
     <ClInclude Include="..\..\..\src\Core\Mesh.h" />
-    <ClInclude Include="..\..\..\src\Core\MeshFactory.h" />
+    <ClInclude Include="..\..\..\src\Core\GeometryFactory.h" />
     <ClInclude Include="..\..\..\src\Core\MeshManager.h" />
     <ClInclude Include="..\..\..\src\Core\Object.h" />
     <ClInclude Include="..\..\..\src\Core\ObjLoader.h" />
@@ -63,6 +63,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\Camera.cpp" />
+    <ClCompile Include="..\..\..\src\Core\GeometryFactory.cpp" />
     <ClCompile Include="..\..\..\src\Core\Light.cpp" />
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
     <ClCompile Include="..\..\..\src\Core\Object.cpp" />

@@ -1,8 +1,8 @@
 #pragma once
 
 namespace Core {
-	class Vector3D;
-	class Matrix3D;
+	class Vector3D;	
+	class Matrix4D;
 	class Quaternion {
 	public:
 		double x, y, z, w;
@@ -23,17 +23,19 @@ namespace Core {
 		{
 			return *(&x + i);
 		}
-		
-		void fromRotationMatrix(const Matrix3D& kRot);
-		void toRotationMatrix(Matrix3D& kRot) const;	
 
-		void fromAngleAxis(const double& rfAngle, const Vector3D& rkAxis);
-		void toAngleAxis(double& rfAngle, Vector3D& rkAxis) const;
+		void setFromRotationMatrix(const Matrix4D& rot);
+		void setFromAxisAngle(const double& angle, const Vector3D axis);
+
+		//void fromRotationMatrix(const Matrix3D& kRot);
+		void toRotationMatrix(Matrix4D& rot) const;
 		
-		void fromAxes(const Vector3D* akAxis);
+		void toAngleAxis(double& angle, Vector3D& axis) const;
+		
+		void fromAxes(const Vector3D* axis);
 		void fromAxes(const Vector3D& xAxis, const Vector3D& yAxis, const Vector3D& zAxis);
 		
-		void toAxes(Vector3D* akAxis) const;
+		void toAxes(Vector3D* axis) const;
 		void toAxes(Vector3D& xAxis, Vector3D& yAxis, Vector3D& zAxis) const;
 		
 		Vector3D xAxis(void) const;		

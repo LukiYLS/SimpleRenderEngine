@@ -1,49 +1,67 @@
 #include "Quaternion.h"
 #include "Matrix3D.h"
+#include "Matrix4D.h"
 #include "Vector3D.h"
 #include <math.h>
 namespace Core {
 
-	void Quaternion::fromRotationMatrix(const Matrix3D& rot)
+	void Quaternion::setFromRotationMatrix(const Matrix4D& rot)
 	{
-		// Algorithm in Ken Shoemake's article in 1987 SIGGRAPH course notes
-		// article "Quaternion Calculus and Fast Animation".
+		// http://www.euclideanspace.com/maths/geometry/rotations/conversions/matrixToQuaternion/index.htm
 
-		double fTrace = rot[0][0] + rot[1][1] + rot[2][2];
-		double fRoot;
+		// assumes the upper 3x3 of m is a pure rotation matrix (i.e, unscaled)
 
-		if (fTrace > 0.0)
-		{
-			// |w| > 1/2, may as well choose w > 1/2
-			fRoot = sqrt(fTrace + 1.0f);  // 2w
-			w = 0.5f*fRoot;
-			fRoot = 0.5f / fRoot;  // 1/(4w)
-			x = (rot[2][1] - rot[1][2])*fRoot;
-			y = (rot[0][2] - rot[2][0])*fRoot;
-			z = (rot[1][0] - rot[0][1])*fRoot;
+
+		double	m11 = rot[0], m12 = rot[1], m13 = rot[2];
+		double	m21 = rot[4], m22 = rot[5], m23 = rot[6];
+		double	m31 = rot[8], m32 = rot[9], m33 = rot[10];
+
+		double trace = m11 + m22 + m33;
+		double s;
+
+		if (trace > 0.0) {
+
+			s = 0.5 / sqrt(trace + 1.0);
+
+			w = 0.25 / s;
+			x = (m32 - m23) * s;
+			y = (m13 - m31) * s;
+			z = (m21 - m12) * s;
+
 		}
-		else
-		{
-			// |w| <= 1/2
-			static size_t s_iNext[3] = { 1, 2, 0 };
-			size_t i = 0;
-			if (rot[1][1] > rot[0][0])
-				i = 1;
-			if (rot[2][2] > rot[i][i])
-				i = 2;
-			size_t j = s_iNext[i];
-			size_t k = s_iNext[j];
+		else if (m11 > m22 && m11 > m33) {
 
-			fRoot = sqrt(rot[i][i] - rot[j][j] - rot[k][k] + 1.0f);
-			double* apkQuat[3] = { &x, &y, &z };
-			*apkQuat[i] = 0.5f*fRoot;
-			fRoot = 0.5f / fRoot;
-			w = (rot[k][j] - rot[j][k])*fRoot;
-			*apkQuat[j] = (rot[j][i] + rot[i][j])*fRoot;
-			*apkQuat[k] = (rot[k][i] + rot[i][k])*fRoot;
-		}		
+			s = 2.0 * sqrt(1.0 + m11 - m22 - m33);
+
+			w = (m32 - m23) / s;
+			x = 0.25 * s;
+			y = (m12 + m21) / s;
+			z = (m13 + m31) / s;
+
+		}
+		else if (m22 > m33) {
+
+			s = 2.0 * sqrt(1.0 + m22 - m11 - m33);
+
+			w = (m13 - m31) / s;
+			x = (m12 + m21) / s;
+			y = 0.25 * s;
+			z = (m23 + m32) / s;
+
+		}
+		else {
+
+			s = 2.0 * sqrt(1.0 + m33 - m11 - m22);
+
+			w = (m21 - m12) / s;
+			x = (m13 + m31) / s;
+			y = (m23 + m32) / s;
+			z = 0.25 * s;
+
+		}
 	}
-	void Quaternion::toRotationMatrix(Matrix3D& rot) const
+
+	void Quaternion::toRotationMatrix(Matrix4D& rot) const
 	{
 		double fTx = x + x;
 		double fTy = y + y;
@@ -58,20 +76,21 @@ namespace Core {
 		double fTyz = fTz*y;
 		double fTzz = fTz*z;
 
-		rot[0][0] = 1.0f - (fTyy + fTzz);
-		rot[0][1] = fTxy - fTwz;
-		rot[0][2] = fTxz + fTwy;
-		rot[1][0] = fTxy + fTwz;
-		rot[1][1] = 1.0f - (fTxx + fTzz);
-		rot[1][2] = fTyz - fTwx;
-		rot[2][0] = fTxz - fTwy;
-		rot[2][1] = fTyz + fTwx;
-		rot[2][2] = 1.0f - (fTxx + fTyy);
+		rot[0] = 1.0f - (fTyy + fTzz);
+		rot[1] = fTxy - fTwz;
+		rot[2] = fTxz + fTwy;
+		rot[4] = fTxy + fTwz;
+		rot[5] = 1.0f - (fTxx + fTzz);
+		rot[6] = fTyz - fTwx;
+		rot[8] = fTxz - fTwy;
+		rot[9] = fTyz + fTwx;
+		rot[10] = 1.0f - (fTxx + fTyy);
 	}
-	void Quaternion::fromAngleAxis(const double& angle, const Vector3D& axis)
+
+	void Quaternion::setFromAxisAngle(const double& angle, const Vector3D axis)
 	{
 		double fHalfAngle(0.5*angle);
-		double fSin =sin(fHalfAngle);
+		double fSin = sin(fHalfAngle);
 		w = cos(fHalfAngle);
 		x = fSin*axis.x;
 		y = fSin*axis.y;
@@ -88,7 +107,7 @@ namespace Core {
 		x = x*(1.5f - xhalf*x*x);
 		return x;
 	}
-	void Quaternion::toAngleAxis(double& angle, Vector3D& rkAxis) const
+	void Quaternion::toAngleAxis(double& angle, Vector3D& axis) const
 	{
 		// The quaternion representing the rotation is
 		//   q = cos(A/2)+sin(A/2)*(x*i+y*j+z*k)
@@ -98,68 +117,66 @@ namespace Core {
 		{
 			angle = 2.0*acos(w);
 			double fInvLength = InvSqrt(fSqrLength);
-			rkAxis.x = x*fInvLength;
-			rkAxis.y = y*fInvLength;
-			rkAxis.z = z*fInvLength;
+			axis.x = x*fInvLength;
+			axis.y = y*fInvLength;
+			axis.z = z*fInvLength;
 		}
 		else
 		{
 			// angle is 0 (mod 2*pi), so any axis will do
 			angle = double(0.0);
-			rkAxis.x = 1.0;
-			rkAxis.y = 0.0;
-			rkAxis.z = 0.0;
+			axis.x = 1.0;
+			axis.y = 0.0;
+			axis.z = 0.0;
 		}
 	}
-	//-----------------------------------------------------------------------
+
 	void Quaternion::fromAxes(const Vector3D* axis)
 	{
-		Matrix3D kRot;
+		Matrix4D rot;
+		for (size_t iCol = 0; iCol < 3; iCol++)
+		{
+			rot[iCol] = axis[iCol].x;
+			rot[iCol + 4] = axis[iCol].y;
+			rot[iCol + 8] = axis[iCol].z;
+		}
+		setFromRotationMatrix(rot);
+	}
+	
+	void Quaternion::fromAxes(const Vector3D& xAxis, const Vector3D& yAxis, const Vector3D& zAxis)
+	{
+		Matrix4D rot;
+
+		rot[0] = xAxis.x;
+		rot[4] = xAxis.y;
+		rot[8] = xAxis.z;
+
+		rot[1] = yAxis.x;
+		rot[5] = yAxis.y;
+		rot[12] = yAxis.z;
+
+		rot[2] = zAxis.x;
+		rot[6] = zAxis.y;
+		rot[13] = zAxis.z;
+
+		setFromRotationMatrix(rot);
+
+	}
+	
+	void Quaternion::toAxes(Vector3D* axis) const
+	{
+		Matrix4D rot;
+
+		toRotationMatrix(rot);
 
 		for (size_t iCol = 0; iCol < 3; iCol++)
 		{
-			kRot[0][iCol] = axis[iCol].x;
-			kRot[1][iCol] = axis[iCol].y;
-			kRot[2][iCol] = axis[iCol].z;
-		}
-
-		fromRotationMatrix(kRot);
-	}
-	//-----------------------------------------------------------------------
-	void Quaternion::fromAxes(const Vector3D& xaxis, const Vector3D& yaxis, const Vector3D& zaxis)
-	{
-		Matrix3D kRot;
-
-		kRot[0][0] = xaxis.x;
-		kRot[1][0] = xaxis.y;
-		kRot[2][0] = xaxis.z;
-
-		kRot[0][1] = yaxis.x;
-		kRot[1][1] = yaxis.y;
-		kRot[2][1] = yaxis.z;
-
-		kRot[0][2] = zaxis.x;
-		kRot[1][2] = zaxis.y;
-		kRot[2][2] = zaxis.z;
-
-		fromRotationMatrix(kRot);
-
-	}
-	//-----------------------------------------------------------------------
-	void Quaternion::toAxes(Vector3D* akAxis) const
-	{
-		Matrix3D kRot;
-
-		toRotationMatrix(kRot);
-
-		for (size_t iCol = 0; iCol < 3; iCol++)
-		{
-			akAxis[iCol].x = kRot[0][iCol];
-			akAxis[iCol].y = kRot[1][iCol];
-			akAxis[iCol].z = kRot[2][iCol];
+			axis[iCol].x = rot[iCol];
+			axis[iCol].y = rot[iCol + 4];
+			axis[iCol].z = rot[iCol + 8];
 		}
 	}
-	//-----------------------------------------------------------------------
+	
 	Vector3D Quaternion::xAxis(void) const
 	{
 		//double fTx  = 2.0*x;
@@ -174,7 +191,7 @@ namespace Core {
 
 		return Vector3D(1.0f - (fTyy + fTzz), fTxy + fTwz, fTxz - fTwy);
 	}
-	//-----------------------------------------------------------------------
+	
 	Vector3D Quaternion::yAxis(void) const
 	{
 		double fTx = 2.0f*x;
@@ -189,7 +206,7 @@ namespace Core {
 
 		return Vector3D(fTxy - fTwz, 1.0f - (fTxx + fTzz), fTyz + fTwx);
 	}
-	//-----------------------------------------------------------------------
+	
 	Vector3D Quaternion::zAxis(void) const
 	{
 		double fTx = 2.0f*x;
@@ -204,37 +221,37 @@ namespace Core {
 
 		return Vector3D(fTxz + fTwy, fTyz - fTwx, 1.0f - (fTxx + fTyy));
 	}
-	//-----------------------------------------------------------------------
+	
 	void Quaternion::toAxes(Vector3D& xaxis, Vector3D& yaxis, Vector3D& zaxis) const
 	{
-		Matrix3D kRot;
+		Matrix4D rot;
 
-		toRotationMatrix(kRot);
+		toRotationMatrix(rot);
 
-		xaxis.x = kRot[0][0];
-		xaxis.y = kRot[1][0];
-		xaxis.z = kRot[2][0];
+		xaxis.x = rot[0];
+		xaxis.y = rot[4];
+		xaxis.z = rot[8];
 
-		yaxis.x = kRot[0][1];
-		yaxis.y = kRot[1][1];
-		yaxis.z = kRot[2][1];
+		yaxis.x = rot[1];
+		yaxis.y = rot[5];
+		yaxis.z = rot[9];
 
-		zaxis.x = kRot[0][2];
-		zaxis.y = kRot[1][2];
-		zaxis.z = kRot[2][2];
+		zaxis.x = rot[2];
+		zaxis.y = rot[6];
+		zaxis.z = rot[10];
 	}
 
-	//-----------------------------------------------------------------------
+	
 	Quaternion Quaternion::operator+ (const Quaternion& rkQ) const
 	{
 		return Quaternion(w + rkQ.w, x + rkQ.x, y + rkQ.y, z + rkQ.z);
 	}
-	//-----------------------------------------------------------------------
+	
 	Quaternion Quaternion::operator- (const Quaternion& rkQ) const
 	{
 		return Quaternion(w - rkQ.w, x - rkQ.x, y - rkQ.y, z - rkQ.z);
 	}
-	//-----------------------------------------------------------------------
+	
 	Quaternion Quaternion::operator* (const Quaternion& rkQ) const
 	{
 		// NOTE:  Multiplication is not generally commutative, so in most
@@ -287,7 +304,7 @@ namespace Core {
 			return double(atan2(2 * (x*y + w*z), w*w + x*x - y*y - z*z));
 		}
 	}
-	//-----------------------------------------------------------------------
+
 	double Quaternion::getPitch(bool reprojectAxis) const
 	{
 		if (reprojectAxis)
@@ -311,7 +328,7 @@ namespace Core {
 			return double(atan2(2 * (y*z + w*x), w*w - x*x - y*y + z*z));
 		}
 	}
-	//-----------------------------------------------------------------------
+	
 	double Quaternion::getYaw(bool reprojectAxis) const
 	{
 		if (reprojectAxis)
