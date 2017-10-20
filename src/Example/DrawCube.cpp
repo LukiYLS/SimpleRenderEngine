@@ -66,7 +66,8 @@ int main()
 	Vector3D dir = camera->getDirection();
 	Vector3D up = camera->getUp();
 	camera->lookAt(0.0, 0.0, 0.0);
-	//dir = camera->getDirection();
+	dir = camera->getDirection();
+	dir = camera->zAxis();
 	//up = camera->getUp();
 	CameraControl::ptr cc = make_shared<CameraControl>(camera.get());
 	EventManager::Inst()->registerReceiver("mouse.event", cc);

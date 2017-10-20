@@ -21,7 +21,7 @@ namespace Core {
 		//Matrix4D m1 = Matrix4D::lookAt(_position, _position + getDirection(), getUp()).getInverse();
 		//Matrix4D t = m * m1;
 		//return m;
-		return Matrix4D::makeTransformMatrix(_position, Vector3D(1.0), _orientation).getInverse();
+		return Matrix4D::makeTransformMatrix(_position, Vector3D(1.0), _orientation.Inverse()).getInverse();
 
 	}
 	void Camera::ProcessKeyboard(float xoffset, float yoffset)

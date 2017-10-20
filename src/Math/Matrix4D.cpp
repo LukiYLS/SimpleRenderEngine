@@ -113,10 +113,10 @@ namespace Core {
 
 		
 
-		double	n11 = _m[0], n21 = _m[4], n31 = _m[8], n41 = _m[12];
-		double	n12 = _m[1], n22 = _m[5], n32 = _m[9], n42 = _m[13];
-		double	n13 = _m[2], n23 = _m[6], n33 = _m[10], n43 = _m[14];
-		double	n14 = _m[3], n24 = _m[7], n34 = _m[11], n44 = _m[15];
+		double	n11 = _m[0], n21 = _m[1], n31 = _m[2], n41 = _m[3];
+		double	n12 = _m[4], n22 = _m[5], n32 = _m[6], n42 = _m[7];
+		double	n13 = _m[8], n23 = _m[9], n33 = _m[10], n43 = _m[11];
+		double	n14 = _m[12], n24 = _m[13], n34 = _m[14], n44 = _m[15];
 
 		double	t11 = n23 * n34 * n42 - n24 * n33 * n42 + n24 * n32 * n43 - n22 * n34 * n43 - n23 * n32 * n44 + n22 * n33 * n44;
 		double  t12 = n14 * n33 * n42 - n13 * n34 * n42 - n14 * n32 * n43 + n12 * n34 * n43 + n13 * n32 * n44 - n12 * n33 * n44;
@@ -133,23 +133,23 @@ namespace Core {
 		double detInv = 1 / det;
 		Matrix4D mat;
 		mat[0] = t11 * detInv;
-		mat[4] = (n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 + n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44) * detInv;
-		mat[8] = (n22 * n34 * n41 - n24 * n32 * n41 + n24 * n31 * n42 - n21 * n34 * n42 - n22 * n31 * n44 + n21 * n32 * n44) * detInv;
-		mat[12] = (n23 * n32 * n41 - n22 * n33 * n41 - n23 * n31 * n42 + n21 * n33 * n42 + n22 * n31 * n43 - n21 * n32 * n43) * detInv;
+		mat[1] = (n24 * n33 * n41 - n23 * n34 * n41 - n24 * n31 * n43 + n21 * n34 * n43 + n23 * n31 * n44 - n21 * n33 * n44) * detInv;
+		mat[2] = (n22 * n34 * n41 - n24 * n32 * n41 + n24 * n31 * n42 - n21 * n34 * n42 - n22 * n31 * n44 + n21 * n32 * n44) * detInv;
+		mat[3] = (n23 * n32 * n41 - n22 * n33 * n41 - n23 * n31 * n42 + n21 * n33 * n42 + n22 * n31 * n43 - n21 * n32 * n43) * detInv;
 
-		mat[1] = t12 * detInv;
+		mat[4] = t12 * detInv;
 		mat[5] = (n13 * n34 * n41 - n14 * n33 * n41 + n14 * n31 * n43 - n11 * n34 * n43 - n13 * n31 * n44 + n11 * n33 * n44) * detInv;
-		mat[9] = (n14 * n32 * n41 - n12 * n34 * n41 - n14 * n31 * n42 + n11 * n34 * n42 + n12 * n31 * n44 - n11 * n32 * n44) * detInv;
-		mat[13] = (n12 * n33 * n41 - n13 * n32 * n41 + n13 * n31 * n42 - n11 * n33 * n42 - n12 * n31 * n43 + n11 * n32 * n43) * detInv;
+		mat[6] = (n14 * n32 * n41 - n12 * n34 * n41 - n14 * n31 * n42 + n11 * n34 * n42 + n12 * n31 * n44 - n11 * n32 * n44) * detInv;
+		mat[7] = (n12 * n33 * n41 - n13 * n32 * n41 + n13 * n31 * n42 - n11 * n33 * n42 - n12 * n31 * n43 + n11 * n32 * n43) * detInv;
 
-		mat[2] = t13 * detInv;
-		mat[6] = (n14 * n23 * n41 - n13 * n24 * n41 - n14 * n21 * n43 + n11 * n24 * n43 + n13 * n21 * n44 - n11 * n23 * n44) * detInv;
+		mat[8] = t13 * detInv;
+		mat[9] = (n14 * n23 * n41 - n13 * n24 * n41 - n14 * n21 * n43 + n11 * n24 * n43 + n13 * n21 * n44 - n11 * n23 * n44) * detInv;
 		mat[10] = (n12 * n24 * n41 - n14 * n22 * n41 + n14 * n21 * n42 - n11 * n24 * n42 - n12 * n21 * n44 + n11 * n22 * n44) * detInv;
-		mat[14] = (n13 * n22 * n41 - n12 * n23 * n41 - n13 * n21 * n42 + n11 * n23 * n42 + n12 * n21 * n43 - n11 * n22 * n43) * detInv;
+		mat[11] = (n13 * n22 * n41 - n12 * n23 * n41 - n13 * n21 * n42 + n11 * n23 * n42 + n12 * n21 * n43 - n11 * n22 * n43) * detInv;
 
-		mat[3] = t14 * detInv;
-		mat[7] = (n13 * n24 * n31 - n14 * n23 * n31 + n14 * n21 * n33 - n11 * n24 * n33 - n13 * n21 * n34 + n11 * n23 * n34) * detInv;
-		mat[11] = (n14 * n22 * n31 - n12 * n24 * n31 - n14 * n21 * n32 + n11 * n24 * n32 + n12 * n21 * n34 - n11 * n22 * n34) * detInv;
+		mat[12] = t14 * detInv;
+		mat[13] = (n13 * n24 * n31 - n14 * n23 * n31 + n14 * n21 * n33 - n11 * n24 * n33 - n13 * n21 * n34 + n11 * n23 * n34) * detInv;
+		mat[14] = (n14 * n22 * n31 - n12 * n24 * n31 - n14 * n21 * n32 + n11 * n24 * n32 + n12 * n21 * n34 - n11 * n22 * n34) * detInv;
 		mat[15] = (n12 * n23 * n31 - n13 * n22 * n31 + n13 * n21 * n32 - n11 * n23 * n32 - n12 * n21 * n33 + n11 * n22 * n33) * detInv;
 
 		return mat;
@@ -173,16 +173,16 @@ namespace Core {
 
 	void Matrix4D::decompose(Vector3D& position, Vector3D& scale, Quaternion& orientation)
 	{
-		double lx = Vector3D(_m[0], _m[4], _m[8]).length();
-		double ly = Vector3D(_m[1], _m[5], _m[9]).length();
-		double lz = Vector3D(_m[2], _m[6], _m[10]).length();
+		double lx = Vector3D(_m[0], _m[1], _m[2]).length();
+		double ly = Vector3D(_m[4], _m[5], _m[6]).length();
+		double lz = Vector3D(_m[8], _m[9], _m[10]).length();
 
 		double det = determinant();
 		if (det < 0)
 			lx = -lx;
-		position.x = _m[3];
-		position.y = _m[7];
-		position.z = _m[11];		
+		position.x = _m[12];
+		position.y = _m[13];
+		position.z = _m[14];		
 		
 		double invLx = 1 / lx;
 		double invLy = 1 / ly;
@@ -214,10 +214,10 @@ namespace Core {
 	{		
 		double x = scale.x, y = scale.y, z = scale.z;
 
-		_m[0] *= x; _m[1] *= y; _m[2] *= z;
-		_m[4] *= x; _m[5] *= y; _m[6] *= z;
-		_m[8] *= x; _m[9] *= y; _m[10] *= z;
-		_m[12] *= x; _m[13] *= y; _m[14] *= z;		
+		_m[0] *= x; _m[4] *= y; _m[8] *= z;
+		_m[1] *= x; _m[5] *= y; _m[9] *= z;
+		_m[2] *= x; _m[6] *= y; _m[10] *= z;
+		_m[3] *= x; _m[7] *= y; _m[11] *= z;		
 	}
 	void Matrix4D::setPosition(const Vector3D& pos)
 	{
@@ -332,23 +332,24 @@ namespace Core {
 		mat[0] = 1 - (yy + zz);
 		mat[4] = xy - wz;
 		mat[8] = xz + wy;
-		mat[12] = 0;
 
 		mat[1] = xy + wz;
 		mat[5] = 1 - (xx + zz);
 		mat[9] = yz - wx;
-		mat[13] = 0;
 
 		mat[2] = xz - wy;
 		mat[6] = yz + wx;
 		mat[10] = 1 - (xx + yy);
-		mat[14] = 0;
 
 		// last column
 		mat[3] = 0;
 		mat[7] = 0;
-		mat[11] = 0;		
-		
+		mat[11] = 0;
+
+		// bottom row
+		mat[12] = 0;
+		mat[13] = 0;
+		mat[14] = 0;
 		mat[15] = 1;
 
 		return mat;
@@ -399,8 +400,8 @@ namespace Core {
 		double c = cos(angle_in_rad), s = sin(angle_in_rad);
 		return Matrix4D(
 			1, 0, 0, 0,
-			0, c, -s, 0,
-			0, s, c, 0,
+			0, c, s, 0,
+			0, -s, c, 0,
 			0, 0, 0, 1
 
 		);	
@@ -410,9 +411,9 @@ namespace Core {
 		double c = cos(angle_in_rad), s = sin(angle_in_rad);
 
 		return Matrix4D(
-			c, 0, s, 0,
+			c, 0, -s, 0,
 			0, 1, 0, 0,
-			-s, 0, c, 0,
+			s, 0, c, 0,
 			0, 0, 0, 1
 		);
 	}
@@ -421,7 +422,7 @@ namespace Core {
 		double c = cos(angle_in_rad), s = sin(angle_in_rad);
 
 		return Matrix4D(
-			c, s, s, 0,
+			c, s, 0, 0,
 			-s, c, 0, 0,
 			0, 0, 1, 0,
 			0, 0, 0, 1
@@ -431,10 +432,10 @@ namespace Core {
 	Matrix4D Matrix4D::makeTranslation(const Vector3D& trans)
 	{
 		Matrix4D r;
-		r.m[0][0] = 1.0; r.m[0][1] = 0.0; r.m[0][2] = 0.0; r.m[0][3] = trans.x;
-		r.m[1][0] = 0.0; r.m[1][1] = 1.0; r.m[1][2] = 0.0; r.m[1][3] = trans.y;
-		r.m[2][0] = 0.0; r.m[2][1] = 0.0; r.m[2][2] = 1.0; r.m[2][3] = trans.z;
-		r.m[3][0] = 0.0; r.m[3][1] = 0.0; r.m[3][2] = 0.0; r.m[3][3] = 1.0;
+		r.m[0][0] = 1.0; r.m[0][1] = 0.0; r.m[0][2] = 0.0; r.m[0][3] = 0.0;
+		r.m[1][0] = 0.0; r.m[1][1] = 1.0; r.m[1][2] = 0.0; r.m[1][3] = 0.0;
+		r.m[2][0] = 0.0; r.m[2][1] = 0.0; r.m[2][2] = 1.0; r.m[2][3] = 0.0;
+		r.m[3][0] = trans.x; r.m[3][1] = trans.y; r.m[3][2] = trans.z; r.m[3][3] = 1.0;
 
 		return r;
 	}
