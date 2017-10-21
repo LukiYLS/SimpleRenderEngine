@@ -286,7 +286,7 @@ namespace Core {
 		{
 			return x * vec.x + y * vec.y + z * vec.z;
 		}
-		double normalize()
+		Vector3D normalize()
 		{
 			double length = sqrt(x * x + y * y + z * z);			
 			if (length > double(0.0f))
@@ -297,7 +297,7 @@ namespace Core {
 				z *= fInvLength;
 			}
 
-			return length;
+			return *this;
 		}
 		Vector3D cross(const Vector3D& rhs) const
 		{

@@ -15,14 +15,10 @@ namespace Core {
 
 	}	
 	Matrix4D Camera::getViewMatrix()const
-	{
-		Vector3D dir = getDirection();
-		//return Matrix4D::lookAt(_position, _position + getDirection(), getUp());
-		//Matrix4D m1 = Matrix4D::lookAt(_position, _position + getDirection(), getUp()).getInverse();
-		//Matrix4D t = m * m1;
-		//return m;
-		return Matrix4D::makeTransformMatrix(_position, Vector3D(1.0), _orientation.Inverse()).getInverse();
-
+	{	
+		//要对四元数求逆：因为相机坐标系的xyz和当前根据四元数建立的坐标系相反,那为什么直接让四元数与相机坐标系一致呢
+		return Matrix4D::lookAt(_position, _position + getDirection(), getUp());
+		//return Matrix4D::makeTransformMatrix(_position, Vector3D(1.0), _orientation.Inverse());
 	}
 	void Camera::ProcessKeyboard(float xoffset, float yoffset)
 	{	

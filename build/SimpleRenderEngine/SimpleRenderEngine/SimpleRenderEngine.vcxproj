@@ -46,6 +46,7 @@
     <ClInclude Include="..\..\..\src\Core\TextureManager_.h" />
     <ClInclude Include="..\..\..\src\Core\Uniform.h" />
     <ClInclude Include="..\..\..\src\Core\ViewPort.h" />
+    <ClInclude Include="..\..\..\src\Core\Win.h" />
     <ClInclude Include="..\..\..\src\math\MathHelper.h" />
     <ClInclude Include="..\..\..\src\math\Matrix3D.h" />
     <ClInclude Include="..\..\..\src\math\Matrix4D.h" />
@@ -63,6 +64,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\Camera.cpp" />
+    <ClCompile Include="..\..\..\src\Core\FrameBuffer.cpp" />
     <ClCompile Include="..\..\..\src\Core\GeometryFactory.cpp" />
     <ClCompile Include="..\..\..\src\Core\Light.cpp" />
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
@@ -76,6 +78,7 @@
     <ClCompile Include="..\..\..\src\Core\ShadowMapPlugin.cpp" />
     <ClCompile Include="..\..\..\src\Core\Texture.cpp" />
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Win.cpp" />
     <ClCompile Include="..\..\..\src\Example\DrawCube.cpp" />
     <ClCompile Include="..\..\..\src\math\MathHelper.cpp" />
     <ClCompile Include="..\..\..\src\math\Matrix3D.cpp" />

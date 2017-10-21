@@ -22,7 +22,10 @@ typedef struct mouse_event_vector
 	mouse_event_ptr  _mouse_events;
 	unsigned int		_event_num;
 }mouse_event_vector;
-
+//keyboard
+typedef struct {
+	bool keyDown[256];
+} Keys;
 #define MOUSE_NONE 0x0
 #define LB_DOWN  0x01
 #define RB_DOWN  0x02

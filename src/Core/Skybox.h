@@ -3,6 +3,7 @@
 namespace Core {
 	class Skybox {
 	public:
+
 		void render() {}
 	};
 }

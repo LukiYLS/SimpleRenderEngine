@@ -257,12 +257,14 @@ namespace Core {
 		// NOTE:  Multiplication is not generally commutative, so in most
 		// cases p*q != q*p.
 
-		return Quaternion
-		(
-			w * rkQ.w - x * rkQ.x - y * rkQ.y - z * rkQ.z,
-			w * rkQ.x + x * rkQ.w + y * rkQ.z - z * rkQ.y,
-			w * rkQ.y + y * rkQ.w + z * rkQ.x - x * rkQ.z,
-			w * rkQ.z + z * rkQ.w + x * rkQ.y - y * rkQ.x
+		double qax = rkQ.x, qay = rkQ.y, qaz = rkQ.z, qaw = rkQ.w;
+		double qbx = x, qby = y, qbz = z, qbw = w;
+
+		return Quaternion(
+			qax * qbw + qaw * qbx + qay * qbz - qaz * qby,
+			qay * qbw + qaw * qby + qaz * qbx - qax * qbz,
+			qaz * qbw + qaw * qbz + qax * qby - qay * qbx,
+			qaw * qbw - qax * qbx - qay * qby - qaz * qbz
 		);
 	}
 

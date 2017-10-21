@@ -96,8 +96,8 @@ namespace Core {
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
 		virtual void setShaderUniform(Shader* shader) {}
-	protected:
-		void createBuffer();		
+		void createBuffer();
+	protected:		
 
 		PrimitiveType _type;
 		bool _isVisible;

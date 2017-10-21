@@ -147,6 +147,9 @@
     <ClInclude Include="..\..\..\src\Core\GeometryFactory.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\Win.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -219,6 +222,12 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\GeometryFactory.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\Win.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\FrameBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

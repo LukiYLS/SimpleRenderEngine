@@ -32,13 +32,14 @@ namespace Core {
 		void translate(const Vector3D &v) { _position += _orientation.Inverse() * v; }
 		void translate(float x, float y, float z) { _position += _orientation.Inverse() * Vector3D(x, y, z); }
 
+		void rotate(float angle, float x, float y, float z) { rotateOnAxis(Vector3D(x, y, z), angle); }
 
-		//void rotate(float angle, const Vector3D &axis);
-		//void rotate(float angle, float x, float y, float z) { rotate(angle, Vector3D(x, y, z)); }
-
-		//void yaw(float angle) { rotate(angle, _orientation.xAxis()); }
-		//void pitch(float angle) { rotate(angle, _orientation.yAxis()); }
-		//void roll(float angle) { rotate(angle, _orientation.zAxis()); }
+		void yaw(float angle) {
+			rotateOnAxis(_orientation.xAxis(), angle);
+			Vector3D dir = getDirection();
+		}
+		void pitch(float angle) { rotateOnAxis(_orientation.yAxis(), angle); }
+		void roll(float angle) { rotateOnAxis(_orientation.zAxis(),angle); }
 
 		Matrix4D getViewMatrix()const;
 		virtual Matrix4D getProjectionMatrix() { return Matrix4D::makeIdentity(); }	

@@ -35,23 +35,38 @@ namespace Utils
 					_lb_pressing = false;
 					break;
 				}
+				case M_WHEEL:
+				{
+
+				}
+				case RB_DOWN:
+				{
+					_rb_pressing = true;
+					break;
+				}
+				case RB_UP:
+				{
+					_rb_pressing = false;
+					break;
+				}
 				case M_MOVE:
 				{
 					if (_lb_pressing)
 					{
 						int dx = mouse_work.xpos - _last_x_pos;
 						int dy = mouse_work.ypos - _last_y_pos;
-						_camera->translate(1, 1, 1);
-						//_camera->yaw(100);
-						//_camera->pitch(100);
+						_camera->yaw(-dy*0.001);
+						_camera->pitch(dx*0.001);
 					}
 					else if (_mb_pressing)
 					{
+						int dx = mouse_work.xpos - _last_x_pos;
 
 					}
 					else if (_rb_pressing)
 					{
-
+						int dx = mouse_work.xpos - _last_x_pos;
+						_camera->roll(dx * 0.001);
 					}
 					break;
 				}
@@ -61,9 +76,34 @@ namespace Utils
 				_last_y_pos = mouse_work.ypos;
 			}
 		}
-		else if (strcmp(event->getName(), "keyboard_event") == 0)
+		else if (strcmp(event->getName(), "keyboard.event") == 0)
 		{
-
+			char key = event->getValue("keyboard.event");
+			switch (key)
+			{
+			case 'W':
+			{
+				_camera->translateOnAxis(_camera->getDirection(), 0.1);
+				break;
+			}
+			case 'A':
+			{
+				_camera->translateOnAxis(_camera->getRight(), -0.1);
+				break;
+			}
+			case 'S':
+			{
+				_camera->translateOnAxis(_camera->getDirection(), -0.1);
+				break;
+			}
+			case 'D':
+			{
+				_camera->translateOnAxis(_camera->getRight(), 0.1);
+				break;
+			}
+			default:
+				break;
+			}
 		}
 	}
 }

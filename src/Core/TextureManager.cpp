@@ -151,7 +151,7 @@ namespace Core {
 	{
 		bool result(true);
 
-		if (m_texID.find("texture1") != m_texID.end())
+		if (m_texID.find(texName) != m_texID.end())
 		{
 			glActiveTexture(GL_TEXTURE0 + units);
 			glBindTexture(GL_TEXTURE_2D, m_texID[texName]);			

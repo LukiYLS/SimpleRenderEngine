@@ -71,7 +71,7 @@ namespace Core {
 	void Object::updateMatrixWorld()
 	{
 		this->updateMatrixLocal();
-		if (!this->getParent())
+		if (this->getParent() == NULL)
 			_matrix_world = _matrix_local;
 		else
 		{

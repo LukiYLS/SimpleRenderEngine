@@ -9,11 +9,11 @@ namespace Core {
 	class ShadowMapPlugin
 		:public Plugin{		
 	public:		
-		ShadowMapPlugin(std::vector<Light::ptr> lights, std::vector<Mesh::ptr> meshs)
+		ShadowMapPlugin(std::vector<Light*> lights, std::vector<Mesh*> meshs)
 			:_lights(lights), _meshs(meshs) {}
-		virtual void  render();		
+		virtual void  render(Camera* camera);		
 	private:
-		std::vector<Light::ptr> _lights;
-		std::vector<Mesh::ptr> _meshs;
+		std::vector<Light*> _lights;
+		std::vector<Mesh*> _meshs;
 	};
 }

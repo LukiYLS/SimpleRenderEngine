@@ -34,8 +34,8 @@ namespace Core {
 	}
 
 	void RenderObject::draw(Shader* shader)
-	{		
-		createBuffer();		
+	{
+		if (!_vao)createBuffer();
 		GLint prim_type;
 		switch (_type)
 		{
