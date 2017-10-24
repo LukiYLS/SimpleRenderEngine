@@ -34,7 +34,13 @@ namespace Core {
 				Vector4D value = uniform->getValue();
 				shader->setVec4(uniform->getName(), value);
 				break;
-			}				
+			}	
+			case FLOAT_MAT4:
+			{
+				Matrix4D value = uniform->getValue();
+				shader->setMat4(uniform->getName(), value);
+				break;
+			}
 			default:
 				break;
 			}

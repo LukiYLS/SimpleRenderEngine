@@ -12,8 +12,9 @@ namespace Core {
 
 	public:
 		bool createFrameBufferWithTexture(int width, int height);
-
-		void bindFrameBuffer(bool isFullViewPort = true);
+		void bindForReading(int units);		
+		void bingForWriting(bool isFullViewPort = true);
+		void saveShadowMap();
 		void bindFrameBufferTexture(int units, bool isMipMap = true);
 	private:
 		int _width, _height;

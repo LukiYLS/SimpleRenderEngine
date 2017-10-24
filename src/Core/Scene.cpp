@@ -63,8 +63,8 @@ namespace Core {
 		if (_enable_shadow)
 		{
 			ShadowMapPlugin* sp = new ShadowMapPlugin(_lights, _render_mesh);
-			sp->render(camera);
-		}
+			sp->render(camera);			
+		}		
 		//render mesh
 		for (auto mesh : _render_mesh)
 		{
@@ -75,6 +75,7 @@ namespace Core {
 			shader->setMat4("projectionMatrix", camera->getProjectionMatrix());
 			shader->setVec3("viewPos", camera->getPosition());
 			setupLights(shader);
+			if (_enable_shadow)mesh->addTexture("shadowMap");
 			mesh->setupUniform(shader);
 			mesh->draw(shader);
 		}

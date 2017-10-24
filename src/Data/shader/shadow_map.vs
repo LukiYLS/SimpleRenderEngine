@@ -12,13 +12,13 @@ uniform mat4 lightPV;
 out vec3 Position;
 out vec3 Normal;
 out vec2 Uv;
-out vec4 lightSpacePos;
+out vec4 LightSpacePos;
 
 void main()
 {
 	Position = vec3(modelMatrix * vec4(position, 1.0));
 	Normal = transpose(inverse(mat3(modelMatrix))) * normal;
 	Uv = tex;
-	lightSpacePos = lightPV * vec4(Position, 1.0);
+	LightSpacePos = lightPV * vec4(Position, 1.0);
 	gl_Position = projectionMatrix * viewMatrix * modelMatrix * vec4(position, 1.0);
 }

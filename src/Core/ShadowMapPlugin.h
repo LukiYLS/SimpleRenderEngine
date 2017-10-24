@@ -1,5 +1,5 @@
 #pragma once
-
+#include "FrameBuffer.h"
 #include "Plugin.h"
 #include "Light.h"
 #include "Mesh.h"
@@ -11,9 +11,11 @@ namespace Core {
 	public:		
 		ShadowMapPlugin(std::vector<Light*> lights, std::vector<Mesh*> meshs)
 			:_lights(lights), _meshs(meshs) {}
-		virtual void  render(Camera* camera);		
+		virtual void  render(Camera* camera);	
+		FrameBuffer* getFB() { return _fb.get(); }
 	private:
 		std::vector<Light*> _lights;
 		std::vector<Mesh*> _meshs;
+		FrameBuffer::ptr _fb;
 	};
 }

@@ -25,7 +25,7 @@ Mesh* createQuad()
 
 	Mesh* mesh = GeometryFactory::MakeBox(2, 2, 2);	
 	mesh->addTexture("box");
-	mesh->setShaderName("basic_shader");
+	mesh->setShaderName("shadow_map");
 
 	return mesh;
 }
@@ -36,27 +36,42 @@ Scene::ptr createScene()
 	
 
 	vector<Vertex> vertices;
-	vertices.push_back(Vertex(5.f,0.0f, 5.f, 0, 1, 0, 1, 1));
-	vertices.push_back(Vertex(5.f, 0.0f,-5.f, 0, 1, 0, 1, 0));
-	vertices.push_back(Vertex(-5.f,0.0f, -5.f, 0, 1, 0, 0, 0));
-	vertices.push_back(Vertex(-5.f,0.0f ,5.f,   0, 1, 0, 0, 1));
+	vertices.push_back(Vertex(25.0f, -0.5f, 25.0f, 0.0f, 1.0f, 0.0f, 1.0f, 0.0f));
+	vertices.push_back(Vertex(-25.0f, -0.5f, 25.0f, 0.0f, 1.0f, 0.0f, 0.0f, 0.0f));
+	vertices.push_back(Vertex(-25.0f, -0.5f, -25.0f, 0.0f, 1.0f, 0.0f, 0.0f, 1.0f));
+	vertices.push_back(Vertex(25.0f, -0.5f, -25.0f, 0.0f, 1.0f, 0.0f, 1.0f, 1.0f));
 	vector<unsigned int> indices = { 0, 3, 1, 1, 3, 2 };
 
 	Mesh* floor = new Mesh();
 	floor->setVertices(vertices);
 	floor->setIndex(indices);
 	floor->addTexture("floor");
-	floor->setShaderName("basic_shader");
+	floor->setShaderName("shadow_map");
 	root->add(floor);
 
-	Mesh* mesh1 = createQuad();
-	mesh1->setPosition(Vector3D(-2.0, 0.0, 0.0));
-	root->add(mesh1);
-	Mesh* mesh2 = createQuad();
-	mesh2->setPosition(Vector3D(2.0, 0.0, 0.0));
-	root->add(mesh2);
+	vector<Vertex> vertices1;
+	vertices1.push_back(Vertex(20.f, 5.0f, 0.f, 0, 0, -1, 1, 1));
+	vertices1.push_back(Vertex(20.f, -5.0f, 0.f, 0, 0, -1, 1, 0));
+	vertices1.push_back(Vertex(-20.f, -5.0f, 0.f, 0, 0, -1, 0, 0));
+	vertices1.push_back(Vertex(-20.f, 5.0f, 0.f, 0, 0, -1, 0, 1));
+	vector<unsigned int> indices1 = { 0, 3, 1, 1, 3, 2 };
 
-	Vector3D light_pos = Vector3D(1.0, 2.0, 0.0);
+	Mesh* wall = new Mesh();
+	wall->setVertices(vertices1);
+	wall->setIndex(indices1);
+	wall->addTexture("box");
+	wall->setShaderName("shadow_map");
+	root->add(wall);
+
+
+	Mesh* mesh1 = createQuad();
+	//mesh1->setPosition(Vector3D(-2.0, 0.0, 0.0));
+	//root->add(mesh1);
+	//Mesh* mesh2 = createQuad();
+	//mesh2->setPosition(Vector3D(2.0, 0.0, 0.0));
+	//root->add(mesh2);
+
+	Vector3D light_pos = Vector3D(5.0, 5.0, 10.0);
 	Light* point_light = new Light();
 	point_light->setType(PointLight);
 	point_light->setPosition(light_pos);
@@ -70,12 +85,12 @@ Scene::ptr createScene()
 	Light* dir_light2 = new Light();
 	dir_light2->setType(DirectLight);
 	dir_light2->setPosition(light_pos);
-	dir_light2->setDirection((mesh2->getPosition() - light_pos).normalize());
+	//dir_light2->setDirection((mesh2->getPosition() - light_pos).normalize());
 	//root->add(dir_light2);
 	Light* spot_light = new Light();
 	spot_light->setType(SpotLight);
-	spot_light->setPosition(Vector3D(0,5,0));
-	spot_light->setDirection(-light_pos.normalize());
+	spot_light->setPosition(light_pos);
+	spot_light->setDirection((Vector3D(15.0,0.0,0.0)-light_pos).normalize());
 	//root->add(spot_light);
 
 	scene->setSceneRoot(root);	
@@ -87,7 +102,9 @@ void initResource()
 	TextureManager::Inst()->loadTexture("../../../src/Data/texture/box.jpg", "box");
 	//TextureManager::Inst()->loadTexture("../../../src/Data/texture/3.jpg", "texture3");
 	Shader::ptr shader_basic = make_shared<Shader>("../../../src/Data/shader/multi_lighting.vs", "../../../src/Data/shader/multi_lighting.fs");
-	ShaderManager::getSingleton()->add("basic_shader", shader_basic);
+	Shader::ptr shadow_map = make_shared<Shader>("../../../src/Data/shader/shadow_map.vs", "../../../src/Data/shader/shadow_map.fs");
+	ShaderManager::getSingleton()->add("basic", shader_basic);
+	ShaderManager::getSingleton()->add("shadow_map", shadow_map);
 }
 int main()
 {	
@@ -95,7 +112,7 @@ int main()
 	Win::getSingleton()->create();	
 	initResource();
 	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 1.0f, 100.0f);
-	camera->setPosition(Vector3D(0.0f,10.0f, -10.0f));	
+	camera->setPosition(Vector3D(0.0f,35.0f, -35.0f));	
 	camera->lookAt(0.0, 0.0, 0.0);
 	camera->setViewPort(vp);
 	CameraControl::ptr cc = make_shared<CameraControl>(camera.get());

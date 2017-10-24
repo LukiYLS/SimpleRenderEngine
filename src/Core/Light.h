@@ -70,7 +70,7 @@ namespace Core
 
 		inline LightType getType() const{ return _type; }
 		inline void setType(LightType type) { _type = type; }
-
+		inline bool shadowEffect() { return _isShadow; }
 		bool enableShadow() { _isShadow = true; }
 		bool disableShadow() { _isShadow = false; }
 		
