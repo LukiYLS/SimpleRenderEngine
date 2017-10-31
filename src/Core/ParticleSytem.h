@@ -1,13 +1,14 @@
 #include <glew\glew.h>
-#include <glm\glm.hpp>
+#include "../Math/Vector3D.h"
+#include "Camera.h"
 #include "Texture.h"
 #include "Effect.h"
 namespace Core {
 	enum TYPE { PARTICLE_TYPE_LAUNCHER };
 	struct Particle{
 		TYPE type;
-		glm::vec3 pos;
-		glm::vec3 vel;//velocity
+		Vector3D pos;
+		Vector3D vel;//velocity
 		float lifetime;
 	};
 	class ParticleSystem {//用transfrom feedback实现的粒子还没测试
@@ -15,11 +16,11 @@ namespace Core {
 		ParticleSystem(int count);
 		~ParticleSystem();
 	public:
-		bool initParitcleSystem(const glm::vec3& start);
+		bool initParitcleSystem(const Vector3D& start);
 		void render(int detlaTime);
 	private:
 		void updateParticles(int detlaTime);
-		void renderParticles();
+		void renderParticles(Camera* camera);
 	private:
 		int _count;
 		bool _isFrist;
