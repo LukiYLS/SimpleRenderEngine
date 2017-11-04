@@ -1,18 +1,34 @@
-#include "ParticleSytem.h"
+#include "ParticleSystem.h"
 
+#define MAX_PARTICLES 1000
+#define PARTICLE_LIFETIME 10.0f
+#define PARTICLE_TYPE_LAUNCHER 0.0f
+#define PARTICLE_TYPE_SHELL 1.0f
+#define PARTICLE_TYPE_SECONDARY_SHELL 2.0f
 namespace Core {
 
 	ParticleSystem::ParticleSystem(int count)
 	{
 		_count = count;
+		_time = 0.0;
 	}
+	void ParticleSystem::render(Camera* camera, int deltaTime)
+	{
+		// update render;
+		_time += deltaTime;
+		updateParticles(deltaTime);
+		renderParticles(camera);
 
-	bool ParticleSystem::initParitcleSystem(const Vector3D& start)
+		_currVB = _currTFB;
+		_currTFB = (_currTFB + 1) & 0x1;
+
+	}
+	void ParticleSystem::init()
 	{
 		Particle particles[10000];
 
 		particles[0].type = PARTICLE_TYPE_LAUNCHER;
-		particles[0].pos = start;
+		particles[0].pos = _position;
 		particles[0].vel = Vector3D(0.0f, 0.0001f, 0.0f);
 		particles[0].lifetime = 0.0f;
 
@@ -29,13 +45,20 @@ namespace Core {
 
 		}
 		//update shader
-		return true;
+		_update_shader = std::make_shared<Shader>("../Shader/", "", "");
+		_render_shader = std::make_shared<Shader>("", "", "");
+		
 	}
 
 	void ParticleSystem::updateParticles(int deltaTime)
 	{
 		//effect set
-
+		_update_shader->use();
+		_update_shader->setFloat("deltaTime", deltaTime);
+		_update_shader->setFloat("time", _time);
+		_update_shader->setFloat("launcherLifeTime", 100.0f);
+		_update_shader->setFloat("shellLifetime", 10000.0f);
+		_update_shader->setFloat("secondaryShellLifetime", 2000.0f);
 		//shader set
 		glEnable(GL_RASTERIZER_DISCARD);
 
@@ -72,6 +95,14 @@ namespace Core {
 	void ParticleSystem::renderParticles(Camera* camera)
 	{
 		//billborad shader
+		_render_shader->use();
+		_render_shader->setMat4("VP", camera->getProjectionMatrix() * camera->getViewMatrix());
+		_render_shader->setVec3("cameraPos", camera->getPosition());
+		if (!_texture)
+		{
+			_texture->bindTexture(0);
+			_render_shader->setInt("texture", 0);
+		}
 		glDisable(GL_RASTERIZER_DISCARD);
 
 		glBindBuffer(GL_ARRAY_BUFFER, _particleBuffer[_currTFB]);

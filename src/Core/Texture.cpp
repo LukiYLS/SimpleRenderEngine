@@ -1,9 +1,57 @@
 #include "Texture.h"
-
+#include <FreeImage.h>
 
 namespace Core {
 
+	Texture::Texture(GLenum textureTarget, const std::string& fileName)
+	{
+		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+		FIBITMAP *dib(0);
+		unsigned int width(0), height(0);
+		GLuint gl_texID;
 
+		fif = FreeImage_GetFileType(fileName.c_str(), 0);
+
+		if (fif == FIF_UNKNOWN)
+			fif = FreeImage_GetFIFFromFilename(fileName.c_str());
+
+		if (fif == FIF_UNKNOWN)
+			return;
+
+
+		if (FreeImage_FIFSupportsReading(fif))
+			dib = FreeImage_Load(fif, fileName.c_str());
+
+		if (!dib)
+			return;
+		dib = FreeImage_ConvertTo24Bits(dib);
+
+		BYTE *pixels = (BYTE*)FreeImage_GetBits(dib);
+
+		width = FreeImage_GetWidth(dib);
+		height = FreeImage_GetHeight(dib);
+
+		if ((pixels == 0) || (width == 0) || (height == 0))
+			return;
+
+		glGenTextures(1, &_textureID);
+		glBindTexture(textureTarget, _textureID);
+
+		glTexParameteri(textureTarget, GL_TEXTURE_WRAP_S, GL_CLAMP);
+		glTexParameteri(textureTarget, GL_TEXTURE_WRAP_T, GL_CLAMP);
+		glTexParameteri(textureTarget, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(textureTarget, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		glTexImage2D(textureTarget, 0, GL_RGBA, width, height,
+			0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
+		glBindTexture(textureTarget, 0);
+		_textureTarget = textureTarget;
+	}
+
+	Texture::~Texture()
+	{
+		glDeleteTextures(1, &_textureID);
+		glDeleteSamplers(1, &_sampler);
+	}
 
 	void Texture::setFiltering(int magnification, int minification)
 	{
@@ -29,29 +77,7 @@ namespace Core {
 	void Texture::bindTexture(int unit)
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
-		switch (_type)
-		{
-		case Core::TEX_TYPE_1D:
-			glBindTexture(GL_TEXTURE_1D, _textureID);
-			break;
-		case Core::TEX_TYPE_2D:
-			glBindTexture(GL_TEXTURE_2D, _textureID);
-			break;
-		case Core::TEX_TYPE_3D:
-			glBindTexture(GL_TEXTURE_3D, _textureID);
-			break;
-		case Core::TEX_TYPE_CUBE_MAP:
-			glBindTexture(GL_TEXTURE_CUBE_MAP, _textureID);
-			break;
-		case Core::TEX_TYPE_2D_ARRAY:
-			glBindTexture(GL_TEXTURE_2D_ARRAY, _textureID);
-			break;
-		case Core::TEX_TYPE_2D_RECT:
-			glBindTexture(GL_TEXTURE_2D_ARRAY_EXT, _textureID);
-			break;
-		default:
-			break;
-		}
+		glBindTexture(_textureTarget, _textureID);		
 		glBindSampler(unit, _sampler);
 	}
 

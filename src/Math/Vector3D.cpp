@@ -2,7 +2,7 @@
 #include "Vector4D.h"
 #include "Matrix4D.h"
 #include "Quaternion.h"
-namespace Core {	
+namespace Math {
 
 
 	Vector3D::Vector3D(const Vector4D& v4)

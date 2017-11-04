@@ -1,6 +1,6 @@
 #include "Matrix3D.h"
 #include "Vector3D.h"
-namespace Core {
+namespace Math {
 
 	const Matrix3D Matrix3D::Zero(0, 0, 0, 0, 0, 0, 0, 0, 0);
 	const Matrix3D Matrix3D::Identity(1, 0, 0, 0, 1, 0, 0, 0, 1);

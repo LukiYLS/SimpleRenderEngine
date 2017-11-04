@@ -77,7 +77,7 @@ namespace Core {
 		//std::map<std::string, std::string> _shader_submesh;
 		//std::vector<Light::ptr> _lights;
 		//Material _material;	
-		//glm::vec3 _position;		
+		//Vector3D _position;		
 		//bool _hasMaterial;
 		//float _boundRadius;
 		//std::map<const char*, Texture::ptr> _texture_map;

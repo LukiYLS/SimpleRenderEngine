@@ -1,7 +1,7 @@
 #pragma once
 #include <glew\glew.h>
 #include <memory>
-
+#include <string>
 namespace Core {
 	enum TextureType
 	{	
@@ -27,15 +27,11 @@ namespace Core {
 	public:
 		typedef std::shared_ptr<Texture> ptr;
 	public:
-		Texture();
+		Texture(GLenum textureTarget, const std::string& fileName);
 		~Texture();
-	public:
-		void createEmpty2DTexture(int width, int height, GLenum fromat);
-		void createEmpty3DTexture(int width, int height, int detph, GLenum fromat);
-		void createEmpty2DTextureArray(int width, int height, int detph, GLenum fromat);
-		
-		virtual void setTextureType(TextureType type) { _type = type; }		
-		virtual TextureType getTextureType(void) const { return _type; }
+	public:		
+		//virtual void setTextureType(TextureType type) { _type = type; }		
+		//virtual TextureType getTextureType(void) const { return _type; }
 		
 		virtual bool getNumMipmaps(void) const { return _mipmaps; }		
 		virtual void setNumMipmaps(bool num) { _mipmaps = num; }
@@ -43,7 +39,7 @@ namespace Core {
 		void setFiltering(int magnification, int minification);	
 
 		void bindTexture(int unit);
-		void deleteTexture();
+		
 
 		virtual uint32_t getHeight() const { return _height; }
 		virtual void setHeight(uint32_t height) { _height = height; }
@@ -57,7 +53,7 @@ namespace Core {
 		int _height, _width, _depth;
 		GLuint _textureID; // Texture name
 		GLuint _sampler; // Sampler name
-		TextureType _type;
+		GLenum _textureTarget;
 		bool _mipmaps;
 	};
 }

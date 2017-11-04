@@ -2,6 +2,9 @@
 #include "RenderState.h"
 #include "ShadowMapPlugin.h"
 #include "ShaderManager.h"
+#include "../Utils/CamerControl.h"
+#include "../Utils/Event.h"
+using namespace Utils;
 #include <iostream>
 namespace Core {
 	
@@ -9,6 +12,10 @@ namespace Core {
 	{
 		_scene = (Scene::ptr)scene;
 		_camera = (Camera::ptr)camera;
+		//注册鼠标键盘事件，放在哪里？
+		CameraControl::ptr cc = make_shared<CameraControl>(camera);
+		EventManager::Inst()->registerReceiver("mouse.event", cc);
+		EventManager::Inst()->registerReceiver("keyboard.event", cc);
 	}
 	
 	void RenderSystem::render()

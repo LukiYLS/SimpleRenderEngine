@@ -4,12 +4,13 @@
 #include "../Math/Matrix4D.h"
 #include <memory>
 #include <vector>
+using namespace Math;
 namespace Core {
 	class Mesh;
 	class Light;
 	class Plugin;
 	class Sprite;
-	class Billboard;
+	class BillboardCollection;
 	class ParticleSystem;
 	class Object {
 	public:
@@ -30,8 +31,8 @@ namespace Core {
 		virtual Sprite* asSprite() { return 0; }
 		virtual const Sprite* asSprite() const { return 0; }
 
-		virtual Billboard* asBillboard() { return 0; }
-		virtual const Billboard* asBillboard() const { return 0; }
+		virtual BillboardCollection* asBillboardCollection() { return 0; }
+		virtual const BillboardCollection* asBillboardCollection() const { return 0; }
 
 		virtual ParticleSystem* asParticleSystem() { return 0; }
 		virtual const ParticleSystem* asParticleSystem() const { return 0; }

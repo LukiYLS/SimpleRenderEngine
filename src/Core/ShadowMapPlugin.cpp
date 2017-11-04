@@ -4,6 +4,8 @@
 #include "Scene.h"
 #include "../Math/Matrix4D.h"
 #include "../Math/MathHelper.h"
+#include <glm\gtc\matrix_transform.hpp>
+#include <glm\glm.hpp>
 namespace Core {
 
 
@@ -18,17 +20,24 @@ namespace Core {
 		{
 			//if (!light->shadowEffect())continue;
 			//只处理一个光源
+			
 			if (light->getType() == DirectLight)
 			{			
-				projectMatrix = Matrix4D::makeOrthographic(-30.0f, 30.0f, -30.0f, 30.0f, 0.1f, 75.f);
+				projectMatrix = Matrix4D::makeOrthographic(-30.0f, 30.0f, -30.0f, 30.0f, 0.1f, 100.f);
 				viewMatrix = Matrix4D::lookAt(light->getPosition(), Vector3D(), Vector3D(0, 1, 0));//当方向光源需要产生阴影时，要设置position
 			}
 			else if (light->getType() == SpotLight)
 			{
 				viewMatrix = Matrix4D::lookAt(light->getPosition(), Vector3D(0.0), Vector3D(0, 1, 0));
-				projectMatrix = Matrix4D::makePerspective(MathHelper::radian(45.0f),(float)camera->getViewPort()->aspectRatio() , 0.1f, 50.0f);
+				projectMatrix = Matrix4D::makePerspective(MathHelper::radian(45.0f),(float)camera->getViewPort()->aspectRatio() , 1.f, 100.0);
 			}
-
+			
+			Matrix4D m = projectMatrix * viewMatrix;
+			Vector4D v = m.getTranspose()*Vector4D(0.0, 0.0, -20.0, 1.0);
+			glm::mat4 view = glm::lookAt(Vector3D(light->getPosition().x, light->getPosition().y, light->getPosition().z), Vector3D(0, 0, 0), Vector3D(0, 1, 0));
+			glm::mat4 proj = glm::perspectiveFov((float)glm::radians(45.0), (float)camera->getViewPort()->width(), (float)camera->getViewPort()->height(), 1.0f, 100.0f);
+			glm::mat4 v1 = proj* view ;
+			glm::vec4 vv = glm::transpose(v1) * glm::vec4(0.0, 0.0, -20.0, 1.0);
 			_fb->bingForWriting();			
 			shader_depth->use();
 			shader_depth->setMat4("viewMatrix", viewMatrix);
@@ -54,7 +63,7 @@ namespace Core {
 			//shader_map->setVec3("viewPos", camera->getPosition());
 			for (auto m : _meshs)
 			{
-				m->addUniform(new Uniform("lightPV", viewMatrix * projectMatrix, FLOAT_MAT4));
+				m->addUniform(new Uniform("lightPV", projectMatrix * viewMatrix, FLOAT_MAT4));
 			}			
 				
 		}

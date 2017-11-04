@@ -1,6 +1,6 @@
 #pragma once
 
-namespace Core {
+namespace Math {
 	class Vector3D;	
 	class Matrix4D;
 	class Quaternion {

@@ -2,9 +2,9 @@
 
 namespace Utils {
 
-	void BoundingSphere::expandBy(const glm::vec3& v)
+	void BoundingSphere::expandBy(const Vector3D& v)
 	{
-		glm::vec3 toCenter = v - _center;
+		Vector3D toCenter = v - _center;
 		float length = toCenter.length();
 		if (length > _radius)
 		{
@@ -13,7 +13,7 @@ namespace Utils {
 			_radius += halfLength;
 		}		
 	}
-	void BoundingSphere::expandRadiusBy(const glm::vec3& v)
+	void BoundingSphere::expandRadiusBy(const Vector3D& v)
 	{
 		float toCenterLength = (v - _center).length();
 		if (toCenterLength > _radius) _radius = toCenterLength;

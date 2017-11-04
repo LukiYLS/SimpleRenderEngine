@@ -1,5 +1,6 @@
 #pragma once
 #include <string.h>
+#include "RenderObject.h"
 #include "../Utils/BoundingSphere.h"
 using namespace Utils;
 namespace Core {
@@ -35,13 +36,21 @@ namespace Core {
 			int mData[3];
 		};
 	};
-	class TerrianTile {
-
+	class TerrianTile
+		:public RenderObject {
+	public:
+		TerrianTile();
+		~TerrianTile();
+		void createFromRandomHeght(int width, int height);
+		void loadFromHeightMap(const char* fileName);
 	protected:
-
+		void generateVertex();
+		void computerNormal();
+	protected:
+		int _width, _height;		
 		Code _code;
 		BoundingSphere _bounding_shpere;	
-		TerrianTile * _child[4];
+		//TerrianTile * _child[4];
 	};
 	
 }

@@ -2,6 +2,7 @@
 #include "PickTool.h"
 #include "FrameBuffer.h"
 #include "ShaderManager.h"
+#include "BillboardCollection.h"
 #include "ShadowMapPlugin.h"
 namespace Core {
 
@@ -27,9 +28,11 @@ namespace Core {
 		{
 
 		}
-		else if (object->asBillboard())
+		else if (object->asBillboardCollection())
 		{
-
+			BillboardCollection* bbc = object->asBillboardCollection();
+			bbc->init();
+			_plugins.push_back(bbc);
 		}
 		else if (object->asParticleSystem())
 		{
@@ -66,6 +69,7 @@ namespace Core {
 			sp->render(camera);			
 		}		
 		//render mesh
+
 		for (auto mesh : _render_mesh)
 		{
 			Shader* shader = ShaderManager::getSingleton()->getByName(mesh->getShaderName()).get();
@@ -79,10 +83,9 @@ namespace Core {
 			mesh->setupUniform(shader);
 			mesh->draw(shader);
 		}
-
 		for (auto plugin : _plugins)
 		{
-			//plugin->render();
+			plugin->render(camera);
 		}
 	}
 	void Scene::clearTemp()

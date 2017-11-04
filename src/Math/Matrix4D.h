@@ -1,5 +1,5 @@
 #pragma once
-namespace Core {	
+namespace Math {
 	class Vector4D;
 	class Vector3D;
 	class Matrix3D;

@@ -4,7 +4,7 @@
 #include "Vector2D.h"
 #define math_tolerance 1e-14
 #define math_tolerancef 1e-6
-namespace Core {
+namespace Math {
 
 	class Vector4D;
 	class Matrix4D;

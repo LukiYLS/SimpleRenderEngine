@@ -1,5 +1,5 @@
 #include "MathHelper.h"
 
-namespace Core {
+namespace Math {
 
 }

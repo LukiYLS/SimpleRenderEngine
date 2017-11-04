@@ -3,22 +3,26 @@
 #include "Camera.h"
 #include "Texture.h"
 #include "Effect.h"
+#include "Shader.h"
+#include "BillboardCollection.h"
+using namespace Math;
 namespace Core {
-	enum TYPE { PARTICLE_TYPE_LAUNCHER };
+	
 	struct Particle{
-		TYPE type;
+		float type;
 		Vector3D pos;
 		Vector3D vel;//velocity
 		float lifetime;
 	};
-	class ParticleSystem {//用transfrom feedback实现的粒子还没测试
+	class ParticleSystem 
+		:public Object,public Effect{//用transfrom feedback实现的粒子还没测试
 	public:
 		ParticleSystem(int count);
 		~ParticleSystem();
 	public:
-		bool initParitcleSystem(const Vector3D& start);
-		void render(int detlaTime);
-	private:
+		virtual void init();
+		virtual void render(Camera* camera, int deltaTime);		
+	protected:
 		void updateParticles(int detlaTime);
 		void renderParticles(Camera* camera);
 	private:
@@ -29,7 +33,11 @@ namespace Core {
 		
 		GLuint _particleBuffer[2];
 		GLuint _transfromFeedBack[2];
+
+		Shader::ptr _update_shader;
+		Shader::ptr _render_shader;
 		Texture::ptr _texture;
+		BillboardCollection::ptr _billboard;
 		int _time;
 	};
 }

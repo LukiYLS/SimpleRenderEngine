@@ -1,7 +1,7 @@
 #pragma once
 #include "Vector2D.h"
 #include <algorithm>
-namespace Core {
+namespace Math {
 
 	class Vector3D;
 	class Matrix4D;

@@ -1,9 +1,15 @@
 #pragma once
-
+#include <vector>
+#include <string>
+#include "Camera.h"
 namespace Core {
-	class Skybox {
+	class Skybox
+		:public Object{
 	public:
-
-		void render() {}
+		Skybox(std::vector<std::string> fileNames);
+		~Skybox();
+		void render(Camera* camera) {}
+	private:
+		GLuint _textureID;
 	};
 }

@@ -30,8 +30,8 @@ struct SpotLight
 
 uniform sampler2D shadowMap;
 uniform sampler2D texture;
-//uniform SpotLight spotLight;
-uniform DirLight dirLight;
+uniform SpotLight spotLight;
+//uniform DirLight dirLight;
 uniform vec3 viewPos;
 
 float CalcShadowFactor(vec4 lightspacePos)
@@ -42,7 +42,7 @@ float CalcShadowFactor(vec4 lightspacePos)
 	float nearDepth = texture(shadowMap, projectCoords.xy).r;
 	float currentDepth = projectCoords.z;
 	
-	return currentDepth > nearDepth ? 1.0 : 0.0; //1.0 means in the shadow
+	return nearDepth;//currentDepth > nearDepth ? 1.0 : 0.0; //1.0 means in the shadow
 }
 vec3 CalcDirLight( DirLight light, vec3 normal, vec3 viewDir, float shadowFactor )
 {
@@ -101,7 +101,7 @@ void main()
 	float shadowFactor = CalcShadowFactor(LightSpacePos); 
 	vec3 norm = normalize( Normal );
     vec3 viewDir = normalize( viewPos - Position );
-    vec3 light = CalcDirLight( dirLight, norm, viewDir, shadowFactor );
+    vec3 light = CalcSpotLight( spotLight, norm, Position, viewDir, shadowFactor );
 	vec3 color = texture(texture, Uv).rgb;
-    gl_FragColor = vec4(color * light, 1.0);   
+    gl_FragColor = vec4(vec3(shadowFactor), 1.0);   
 }

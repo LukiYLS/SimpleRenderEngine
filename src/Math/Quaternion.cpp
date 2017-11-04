@@ -3,7 +3,7 @@
 #include "Matrix4D.h"
 #include "Vector3D.h"
 #include <math.h>
-namespace Core {
+namespace Math {
 
 	void Quaternion::setFromRotationMatrix(const Matrix4D& rot)
 	{

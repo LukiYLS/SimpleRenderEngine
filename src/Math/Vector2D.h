@@ -1,6 +1,6 @@
 #pragma once
 #include <assert.h>
-namespace Core {
+namespace Math {
 	class Vector2D
 	{
 	public:

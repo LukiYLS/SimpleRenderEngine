@@ -1,6 +1,8 @@
 #pragma once
 #include "Shader.h"
 #include "Object.h"
+#include "../Utils/BoundingBox.h"
+using namespace Utils;
 namespace Core {
 
 
@@ -96,6 +98,8 @@ namespace Core {
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
 		virtual void setShaderUniform(Shader* shader) {}
+		void computeBoundingBox();
+		void computeBoundingSphere();
 		void createBuffer();
 	protected:		
 
@@ -104,6 +108,9 @@ namespace Core {
 		uint32_t _vao, _vbo, _ebo;
 		std::vector<Vertex> _vertices;
 		std::vector<uint32_t> _indices;
+		BoundingBox _bbx;
+		BoundingSphere _sphere;
+
 	};
 }
 
