@@ -68,4 +68,18 @@ namespace Core {
 			glDrawElements(prim_type, _indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
+	void RenderObject::computeBoundingBox()
+	{
+
+	}
+	void RenderObject::computeBoundingSphere()
+	{
+
+	}
+	void RenderObject::raycast(RayCaster* raycaster, AnyValue& intersects)
+	{
+		//with boundingbox intersect
+
+		if (_sphere == NULL)computeBoundingSphere();
+	}
 }

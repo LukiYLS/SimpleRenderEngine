@@ -7,6 +7,7 @@ namespace Utils {
 	class BoundingBox {	
 
 	public:
+		typedef std::shared_ptr<BoundingBox> ptr;
 		inline BoundingBox():_min(FLT_MAX, FLT_MAX, FLT_MAX),_max(-FLT_MAX,	-FLT_MAX, -FLT_MAX){}
 		inline BoundingBox(const BoundingBox& bb) :	_min(bb._min), _max(bb._max){}
 		inline BoundingBox(float xmin, float ymin, float zmin, float xmax, float ymax, float zmax) :

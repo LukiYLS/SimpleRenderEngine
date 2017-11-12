@@ -1,4 +1,5 @@
 #pragma once
+#include <glew\glew.h>
 #include <vector>
 #include <string>
 #include "Camera.h"
@@ -8,7 +9,7 @@ namespace Core {
 	public:
 		Skybox(std::vector<std::string> fileNames);
 		~Skybox();
-		void render(Camera* camera) {}
+		void render(Camera* camera);
 	private:
 		GLuint _textureID;
 	};

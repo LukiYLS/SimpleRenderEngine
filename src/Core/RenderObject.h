@@ -98,6 +98,7 @@ namespace Core {
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
 		virtual void setShaderUniform(Shader* shader) {}
+		virtual void raycast(RayCaster* raycaster, AnyValue& intersects);
 		void computeBoundingBox();
 		void computeBoundingSphere();
 		void createBuffer();
@@ -108,8 +109,8 @@ namespace Core {
 		uint32_t _vao, _vbo, _ebo;
 		std::vector<Vertex> _vertices;
 		std::vector<uint32_t> _indices;
-		BoundingBox _bbx;
-		BoundingSphere _sphere;
+		BoundingBox::ptr _bbx;
+		BoundingSphere::ptr _sphere;
 
 	};
 }

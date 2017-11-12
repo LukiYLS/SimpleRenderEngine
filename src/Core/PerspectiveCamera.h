@@ -6,7 +6,9 @@ namespace Core {
 	public:
 		typedef std::shared_ptr<PerspectiveCamera> ptr;
 		PerspectiveCamera(float fovy, float aspect, float zNear, float zFar):
-		_fovy(fovy), _aspect(aspect), _near(zNear), _far(zFar) {}
+			_fovy(fovy), _aspect(aspect), _near(zNear), _far(zFar) {
+			type = Perspective;
+		}
 
 		virtual Matrix4D getProjectionMatrix() { return Matrix4D::makePerspective(_fovy, _aspect, _near, _far); }
 

@@ -76,10 +76,12 @@ int main()
 	Win::getSingleton()->create();	
 	initResource();
 	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 1.0f, 100.0f);
-	camera->setPosition(Vector3D(0.0f,35.0f, -35.0f));	
+	camera->setPosition(Vector3D(0.0f,0.0f, -35.0f));	
 	camera->lookAt(0.0, 0.0, 0.0);
-	camera->setViewPort(vp);
-
+	//camera->setViewPort(vp);
+	Matrix4D m = camera->getViewMatrix();
+	Vector3D dir = camera->getDirection();
+	Vector3D z = camera->zAxis();
 	Scene::ptr scene = createScene();
 	
 	RenderSystem *rs = new RenderSystem(scene.get(), camera.get());

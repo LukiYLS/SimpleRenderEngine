@@ -1,13 +1,15 @@
 #pragma once
 #include "Camera.h"
-
+#include "../Math/Matrix4D.h"
 namespace Core {
 	class OrthographicCamera :public Camera {
 	public:
 		OrthographicCamera(float left, float right, float bottom, float top, float near, float far) :
-			_left(left), _right(right), _bottom(bottom), _top(top), _near(near), _far(far) {}
+			_left(left), _right(right), _bottom(bottom), _top(top), _near(near), _far(far) {
+			type = Orthographic;
+		}
 
-		glm::mat4 getProjectMatrix() const { return glm::ortho(_left, _right, _bottom, _top, _near, _far); }
+		Matrix4D getProjectMatrix() const { return Matrix4D::makeOrthographic(_left, _right, _bottom, _top, _near, _far); }
 	private:
 		float _left;
 		float _right;

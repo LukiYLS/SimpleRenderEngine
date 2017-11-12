@@ -54,8 +54,7 @@ namespace Math {
 			}
 			return false;
 		}
-		static Matrix4D PerspectiveFovH(float angle, float aspect, float near, float far);
-		static Matrix4D LookAt(Vector3D pos, Vector3D target, Vector3D up);
-		static Matrix4D ViewPort(int x, int y, int width, int height);		
+		static Vector3D unProject(const Matrix4D& view, const Matrix4D& projection, const Vector3D& vec);
+		static Vector3D project(const Matrix4D& view, const Matrix4D& projection, const Vector3D& vec);		
 	};
 }

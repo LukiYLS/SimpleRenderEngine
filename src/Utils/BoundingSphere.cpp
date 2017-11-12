@@ -47,4 +47,10 @@ namespace Utils {
 		float distance = (sh._center - _center).length() + sh._radius;
 		if (distance > _radius) _radius = distance;
 	}
+
+	void BoundingSphere::applyMatrix(const Matrix4D& matrix)
+	{
+		//center *= matrix;
+
+	}
 }

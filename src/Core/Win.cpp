@@ -14,6 +14,7 @@ namespace Core {
 	std::vector<mouse_event> mouse_events;
 	Keys keyboard_events;
 	bool button_down = false;
+	bool isKeyBoardDown = false;
 	bool Win::create(const int& width, const int& height, const char* name)
 	{
 		glfwInit();
@@ -104,10 +105,6 @@ namespace Core {
 		if (event.mouse_status != MOUSE_NONE)
 			mouse_events.push_back(event);
 
-		glfwSwapBuffers(window);
-
-
-
 	}
 	void Win::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
@@ -115,8 +112,19 @@ namespace Core {
 		Event::ptr event = EventManager::Inst()->createEvent();
 		event->setName(event_name);
 		event->setValue(event_name, '0');
-		if (key == GLFW_KEY_W && action == GLFW_PRESS)
+		if ((key >= 0) && (key <= 255)&&(action = GLFW_PRESS))
 		{
+			isKeyBoardDown = true;
+			keyboard_events.keyDown[key] = true;
+		}
+		else if (action = GLFW_RELEASE)
+		{
+			isKeyBoardDown = false;
+			keyboard_events.keyDown[key] = false;
+		}
+		if (key == GLFW_KEY_W && action == GLFW_RELEASE)
+		{
+			keyboard_events[]
 			event->setValue(event_name, 'W');
 			EventManager::Inst()->sendEvent(event);
 
@@ -155,6 +163,12 @@ namespace Core {
 			EventManager::Inst()->sendEvent(event);
 		}
 		mouse_events.clear();
+
+		//keyboard
+		if (isKeyBoardDown == true) {
+			//only traversal register keyboard
+
+		}
 	}
 	void Win::startRenderLoop()
 	{

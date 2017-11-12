@@ -274,7 +274,7 @@ namespace Math {
 		);
 	}
 
-	inline void Matrix4D::operator = (const Matrix3D& mat3)
+	void Matrix4D::operator = (const Matrix3D& mat3)
 	{
 		m[0][0] = mat3.m[0][0]; m[0][1] = mat3.m[0][1]; m[0][2] = mat3.m[0][2];
 		m[1][0] = mat3.m[1][0]; m[1][1] = mat3.m[1][1]; m[1][2] = mat3.m[1][2];

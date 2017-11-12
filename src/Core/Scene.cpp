@@ -58,15 +58,15 @@ namespace Core {
 		clearTemp();
 		projectObject(_root.get());	
 		if (!skybox)
-			skybox->render();
+			skybox->render(camera);
 		else
 		{
 			//clear color
 		}
 		if (_enable_shadow)
 		{
-			ShadowMapPlugin* sp = new ShadowMapPlugin(_lights, _render_mesh);
-			sp->render(camera);			
+			//ShadowMapPlugin* sp = new ShadowMapPlugin(_lights, _render_mesh);
+			//sp->render(camera);			
 		}		
 		//render mesh
 

@@ -2,6 +2,8 @@
 #include "../Math/Vector3D.h"
 #include "../Math/Quaternion.h"
 #include "../Math/Matrix4D.h"
+#include "../Utils/AnyValue.h"
+#include "RayCaster.h"
 #include <memory>
 #include <vector>
 using namespace Math;
@@ -39,6 +41,8 @@ namespace Core {
 
 		virtual Object* asObject() { return this; }
 		virtual const Object* asObject() const { return this; }
+
+		virtual void raycast(RayCaster* raycaster, AnyValue& intersects) { return; }
 
 	public:
 		inline Object* getParent() {

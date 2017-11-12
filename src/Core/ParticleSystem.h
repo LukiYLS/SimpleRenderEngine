@@ -18,7 +18,7 @@ namespace Core {
 		:public Object,public Effect{//用transfrom feedback实现的粒子还没测试
 	public:
 		ParticleSystem(int count);
-		~ParticleSystem();
+		~ParticleSystem() {};
 	public:
 		virtual void init();
 		virtual void render(Camera* camera, int deltaTime);		

@@ -23,7 +23,7 @@ namespace Core {
 	}
 	void Object::translateOnAxis(const Vector3D& axis, double distance)
 	{
-		Vector3D new_axis = axis * _orientation;
+		Vector3D new_axis = axis * _orientation;//得到旋转后的向量
 		_position += (distance * new_axis);		
 	}
 	void Object::localToWorld(Vector3D& vector)

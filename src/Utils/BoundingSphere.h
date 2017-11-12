@@ -1,10 +1,12 @@
 #pragma once
 #include "../Math/Vector3D.h"
+#include "../Math/Matrix4D.h"
 using namespace Math;
 namespace Utils {
 
 	class BoundingSphere {
 	public:
+		typedef std::shared_ptr<BoundingSphere> ptr;
 		BoundingSphere():_center(0.0, 0.0, 0.0), _radius(-1.0) {}
 		BoundingSphere(Vector3D center, float radius):_center(center), _radius(radius){}
 
@@ -27,6 +29,8 @@ namespace Utils {
 		void expandRadiusBy(const Vector3D& v);
 		void expandBy(const BoundingSphere& sh);
 		void expandRadiusBy(const BoundingSphere& sh);
+
+		void applyMatrix(const Matrix4D& matrix);
 	protected:
 		Vector3D _center;
 		float _radius;
