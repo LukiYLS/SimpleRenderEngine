@@ -39,6 +39,12 @@ namespace Core {
 		}		
 		_scene->render(_camera.get());
 	}
+
+	void RenderSystem::resize(int x, int y, int width, int height)
+	{
+		ViewPort::ptr vp = _camera->getViewPort();
+		vp->setViewport(x, y, width, height);
+	}
 	void RenderSystem::afterRender()
 	{
 		//_render_mesh.clear();

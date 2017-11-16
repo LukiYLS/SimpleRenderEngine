@@ -37,7 +37,8 @@ namespace Utils
 				}
 				case M_WHEEL:
 				{
-
+					int value = mouse_work.wheelvalue;
+					_camera->translateOnZ(value);
 				}
 				case RB_DOWN:
 				{

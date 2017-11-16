@@ -17,6 +17,7 @@ namespace Utils
 		virtual void receive(Event::ptr event);
 	private:
 		Camera::ptr _camera;
+		Object::ptr _obect;
 		int  _last_x_pos;
 		int  _last_y_pos;
 

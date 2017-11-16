@@ -47,6 +47,7 @@ namespace Core {
 		glfwSetMouseButtonCallback(window, mouseButtonCallback);
 		glfwSetKeyCallback(window, keyCallback);
 		glfwSetFramebufferSizeCallback(window, framebufferSizeCallback);	
+		glfwSetScrollCallback(window, scrollCallback);
 
 		
 	}
@@ -56,6 +57,24 @@ namespace Core {
 		mouse_event event;
 		double seconds = glfwGetTime();
 		event.mouse_status = M_MOVE;
+		event.time = seconds;
+		event.xpos = xpos;
+		event.ypos = ypos;
+		mouse_events.push_back(event);
+	}
+
+	void Win::scrollCallback(GLFWwindow* window, double xoffset, double yoffset)
+	{
+		mouse_event event;
+		double xpos, ypos;
+		event.mouse_status = M_WHEEL;
+		//event.wheelvalue = xoffset;
+		if (yoffset > 0.0)
+			event.wheelvalue = 10.0;
+		else
+			event.wheelvalue = -10.0;
+		double seconds = glfwGetTime();
+		glfwGetCursorPos(window, &xpos, &ypos);
 		event.time = seconds;
 		event.xpos = xpos;
 		event.ypos = ypos;
@@ -147,6 +166,7 @@ namespace Core {
 	}
 	void Win::framebufferSizeCallback(GLFWwindow* window, int width, int height)
 	{
+		
 		glViewport(0, 0, width, height);
 	}
 	void Win::processInput()

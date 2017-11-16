@@ -14,7 +14,8 @@ namespace Core {
 	protected:
 		void beforeRender();//渲染之前设置renderstate		
 		void renderImpl();
-		void afterRender();//一帧结束		
+		void afterRender();//一帧结束	
+		void resize(int x, int y, int width, int height);
 	private:	
 		Scene::ptr _scene;
 		Camera::ptr _camera;	
