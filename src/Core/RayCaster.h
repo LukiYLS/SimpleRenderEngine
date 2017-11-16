@@ -8,8 +8,8 @@ namespace Core {
 	class RayCaster {
 
 	public:
-		RayCaster(Ray* ray);
-		RayCaster(Ray* ray, double near, double far);
+		RayCaster(Ray* ray) {};
+		RayCaster(Ray* ray, double near, double far) {};
 
 	public:
 		void setFromCamera(const Vector2D& coords, Camera* camera);

@@ -54,10 +54,9 @@ namespace Core {
 
 	void Scene::render(Camera* camera)
 	{	
-		_root->updateMatrixWorld();
-		clearTemp();
+		_root->updateMatrixWorld();		
 		projectObject(_root.get());	
-		if (!skybox)
+		if (skybox)
 			skybox->render(camera);
 		else
 		{
@@ -69,24 +68,39 @@ namespace Core {
 			//sp->render(camera);			
 		}		
 		//render mesh
-
+		//如何处理mesh有多个renderpass
+		bool first = true;
 		for (auto mesh : _render_mesh)
 		{
+			//multi_mesh
 			Shader* shader = ShaderManager::getSingleton()->getByName(mesh->getShaderName()).get();
 			shader->use();
-			shader->setMat4("modelMatrix", mesh->getWorldMatrix());
-			shader->setMat4("viewMatrix", camera->getViewMatrix());
-			shader->setMat4("projectionMatrix", camera->getProjectionMatrix());
-			shader->setVec3("viewPos", camera->getPosition());
+			shader->setMat4("model", mesh->getWorldMatrix());
+			shader->setMat4("view", camera->getViewMatrix());
+			shader->setMat4("projection", camera->getProjectionMatrix());
+			shader->setVec3("v3CameraPos", camera->getPosition());
+			shader->setFloat("fCameraHeight", camera->getPosition().length());
+			shader->setFloat("fCameraHeight2", camera->getPosition().length()*camera->getPosition().length());
 			setupLights(shader);
-			if (_enable_shadow)mesh->addTexture("shadowMap");
+			//if (_enable_shadow)mesh->addTexture("shadowMap");
 			mesh->setupUniform(shader);
+			glEnable(GL_CULL_FACE);
+			if (first)
+			{
+				first = false;
+
+				glCullFace(GL_BACK);
+			}
+			else
+				glCullFace(GL_FRONT);
+			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			mesh->draw(shader);
 		}
 		for (auto plugin : _plugins)
 		{
 			plugin->render(camera);
 		}
+		clearTemp();
 	}
 	void Scene::clearTemp()
 	{

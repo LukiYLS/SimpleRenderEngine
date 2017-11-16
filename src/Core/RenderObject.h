@@ -2,12 +2,37 @@
 #include "Shader.h"
 #include "Object.h"
 #include "../Utils/BoundingBox.h"
+#include "../Utils/BoundingSphere.h"
 using namespace Utils;
 namespace Core {
 
 
 	struct Vertex
 	{
+		void setPosition(float x,float y, float z){
+			position_x = x;
+			position_y = y;
+			position_z = z;
+		}
+		void setPosition(const Vector3D& position) {
+			position_x = position.x;
+			position_y = position.y;
+			position_z = position.z;
+		}
+		void setNormal(float nx, float ny, float nz) {
+			normal_x = nx;
+			normal_y = ny;
+			normal_z = nz;
+		}
+		void setNormal(const Vector3D& normal) {
+			normal_x = normal.x;
+			normal_y = normal.y;
+			normal_z = normal.z;
+		}
+		void setTex(float u, float v){
+			texcoord_x = u;
+			texcoord_y = v;
+		}
 		float position_x, position_y, position_z;
 		float normal_x, normal_y, normal_z;
 		float texcoord_x, texcoord_y;
@@ -99,6 +124,7 @@ namespace Core {
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
 		virtual void setShaderUniform(Shader* shader) {}
 		virtual void raycast(RayCaster* raycaster, AnyValue& intersects);
+		void computeNormals();
 		void computeBoundingBox();
 		void computeBoundingSphere();
 		void createBuffer();

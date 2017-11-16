@@ -1,6 +1,7 @@
 #pragma once
 #include "../Math/Vector3D.h"
 #include <vector>
+#include <memory>
 using namespace Math;
 namespace Utils {
 

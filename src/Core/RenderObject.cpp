@@ -68,6 +68,36 @@ namespace Core {
 			glDrawElements(prim_type, _indices.size(), GL_UNSIGNED_INT, 0);
 		glBindVertexArray(0);
 	}
+	void RenderObject::computeNormals()
+	{
+		if (_vertices.size() == 0)
+			return;
+		if (_indices.size() > 0)
+		{
+			for (int i = 0; i < _indices.size(); i += 3)
+			{
+				int index = _indices[i];
+				Vector3D v1 = Vector3D(_vertices[index].position_x, _vertices[index].position_y, _vertices[index].position_z);
+				index = _indices[i + 1];
+				Vector3D v2 = Vector3D(_vertices[index].position_x, _vertices[index].position_y, _vertices[index].position_z);
+				index = _indices[i + 2];
+				Vector3D v3 = Vector3D(_vertices[index].position_x, _vertices[index].position_y, _vertices[index].position_z);
+
+				Vector3D v12 = v1 - v2;
+				Vector3D v23 = v2 - v3;
+				Vector3D normal = v23.cross(v12);
+				normal.normalize();
+				_vertices[_indices[i]].setNormal(normal);
+				_vertices[_indices[i + 1]].setNormal(normal);
+				_vertices[_indices[i + 2]].setNormal(normal);
+
+			}
+		}
+		else
+		{
+
+		}
+	}
 	void RenderObject::computeBoundingBox()
 	{
 

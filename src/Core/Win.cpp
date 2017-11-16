@@ -124,15 +124,15 @@ namespace Core {
 		}
 		if (key == GLFW_KEY_W && action == GLFW_RELEASE)
 		{
-			keyboard_events[]
-			event->setValue(event_name, 'W');
-			EventManager::Inst()->sendEvent(event);
+			keyboard_events.keyDown[key] = false;
+			//event->setValue(event_name, 'W');
+			//EventManager::Inst()->sendEvent(event);
 
 		}
 		if (key == GLFW_KEY_A && action == GLFW_PRESS)
 		{
-			event->setValue(event_name, 'A');
-			EventManager::Inst()->sendEvent(event);
+			//event->setValue(event_name, 'A');
+			//EventManager::Inst()->sendEvent(event);
 		}
 		if (key == GLFW_KEY_S && action == GLFW_PRESS)
 		{

@@ -180,6 +180,9 @@
     <ClInclude Include="..\..\..\src\Core\RayCaster.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Example\CommonHead.h">
+      <Filter>Examples</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -220,9 +223,6 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Utils\Event.cpp">
       <Filter>Utils</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Example\DrawCube.cpp">
-      <Filter>Examples</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Utils\BoundingSphere.cpp">
       <Filter>Utils</Filter>
@@ -289,6 +289,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\RayCaster.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Example\earth_test.cpp">
+      <Filter>Examples</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

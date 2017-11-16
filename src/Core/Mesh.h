@@ -59,7 +59,7 @@ namespace Core {
 
 		//void setLights(std::vector<Light::ptr> lights) { _lights = lights; }
 		//void setPostion(
-		::vec3 position) { _position = position; }
+		::Vector3D position) { _position = position; }
 		//void addTexture(const char* texName) { _textures.push_back(texName); }			
 		//void setMaterial(Material material) { _material = material; }
 		SubMesh::ptr createSubMesh();

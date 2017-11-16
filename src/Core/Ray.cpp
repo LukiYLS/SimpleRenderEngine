@@ -24,7 +24,7 @@ namespace Core {
 			return _origin.squaredDistance(point);
 
 		Vector3D result = _direction * directionDistance + _origin;
-		return result.squaredDistance;
+		return _origin.squaredDistance(result);
 	}
 	double Ray::distanceToPlane(const Plane3D& plane)
 	{
@@ -33,7 +33,7 @@ namespace Core {
 		{
 			if (fabs(plane.distance_to_point(_origin)) < math_tolerance)
 			{
-				return 0.0
+				return 0.0;
 			}
 			//
 		}
@@ -143,9 +143,9 @@ namespace Core {
 
 		if ((tmin > tzmax) || (tzmin > tmax)) return false;
 
-		if (tzmin > tmin || tmin != = tmin) tmin = tzmin;
+		if (tzmin > tmin || tmin != tmin) tmin = tzmin;
 
-		if (tzmax < tmax || tmax != = tmax) tmax = tzmax;
+		if (tzmax < tmax || tmax != tmax) tmax = tzmax;
 
 		//return point closest to the ray (positive side)
 
@@ -226,7 +226,7 @@ namespace Core {
 		}
 
 		// Ray intersects triangle.
-		intersect = at(QdN / DdN)
+		intersect = at(QdN / DdN);
 			return true;
 	}
 

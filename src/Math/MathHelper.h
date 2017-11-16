@@ -3,8 +3,16 @@
 #include "Vector3D.h"
 #include "Vector4D.h"
 #include "Matrix4D.h"
+
+#define math_tolerance 1e-14
+#define math_tolerancef 1e-6
+#define math_pi     3.14159265358979323846
+#define math_two_pi     6.28318530717958647692
+#define math_half_pi     (math_pi*0.5)
+#define math_quarter_pi     (math_pi*0.25)
 namespace Math {
 
+	
 	class MathHelper {
 
 	public:		

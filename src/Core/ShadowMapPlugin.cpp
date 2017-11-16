@@ -59,8 +59,8 @@ namespace Core {
 			//shader_map->use();
 			//shader_map->setMat4("lightVP", viewMatrix * projectMatrix);
 			//shader_map->setInt("shadowMap", 0);
-			//shader_map->setVec3("lightPos", light->getPosition());
-			//shader_map->setVec3("viewPos", camera->getPosition());
+			//shader_map->setVector3D("lightPos", light->getPosition());
+			//shader_map->setVector3D("viewPos", camera->getPosition());
 			for (auto m : _meshs)
 			{
 				m->addUniform(new Uniform("lightPV", projectMatrix * viewMatrix, FLOAT_MAT4));

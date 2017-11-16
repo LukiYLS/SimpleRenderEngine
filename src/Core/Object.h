@@ -3,7 +3,6 @@
 #include "../Math/Quaternion.h"
 #include "../Math/Matrix4D.h"
 #include "../Utils/AnyValue.h"
-#include "RayCaster.h"
 #include <memory>
 #include <vector>
 using namespace Math;
@@ -14,6 +13,7 @@ namespace Core {
 	class Sprite;
 	class BillboardCollection;
 	class ParticleSystem;
+	class RayCaster;
 	class Object {
 	public:
 		typedef std::shared_ptr<Object> ptr;
@@ -42,7 +42,7 @@ namespace Core {
 		virtual Object* asObject() { return this; }
 		virtual const Object* asObject() const { return this; }
 
-		virtual void raycast(RayCaster* raycaster, AnyValue& intersects) { return; }
+		virtual void raycast(RayCaster* raycaster, Utils::AnyValue& intersects) { }
 
 	public:
 		inline Object* getParent() {

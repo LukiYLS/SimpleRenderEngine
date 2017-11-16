@@ -7,8 +7,8 @@ namespace Core {
 
 	public:		
 		static Mesh* MakeBox(int width, int height, int depth);
-		static Mesh* MakeSphere(int radius);
-		static Mesh* MakeCone();
-		static Mesh* MakeTube();
+		static Mesh* MakeSphere(double radius, int widthSegments, int heightSegments);		
+		//static Mesh* MakeCone();
+		//static Mesh* MakeTube();
 	};
 }

@@ -54,37 +54,37 @@ namespace Core {
 			dib = FreeImage_Load(fif, fileName);
 
 		if (!dib)
-			return false;
-		dib = FreeImage_ConvertTo24Bits(dib);
-		
-		BYTE *pixels = (BYTE*)FreeImage_GetBits(dib);
-		
+			return false;		
+		dib = FreeImage_ConvertTo32Bits(dib);
 		width = FreeImage_GetWidth(dib);
 		height = FreeImage_GetHeight(dib);
-
+		BYTE *pixels = (BYTE*)FreeImage_GetBits(dib);
 		if ((pixels == 0) || (width == 0) || (height == 0))
 			return false;
 
-
+		
+		int bit_count_ = FreeImage_GetLine(dib)*height;
+		int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
+		for (long index = 0; index < bit_count_; index += bytespp)
+		{
+			unsigned char temp_color_ = pixels[index];
+			pixels[index] = pixels[index + 2];
+			pixels[index + 2] = temp_color_;
+		}	
 
 		if (m_texID.find(texName) != m_texID.end())
 			glDeleteTextures(1, &(m_texID[texName]));
 
-
 		glGenTextures(1, &gl_texID);
-
 		m_texID[texName] = gl_texID;
 
 		glBindTexture(GL_TEXTURE_2D, gl_texID);
-
-
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
-		glTexImage2D(GL_TEXTURE_2D, level, internal_format, width, height,
-			border, image_format, GL_UNSIGNED_BYTE, pixels);
-
+		glTexImage2D(GL_TEXTURE_2D, level, GL_RGBA, width, height,
+			border, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
