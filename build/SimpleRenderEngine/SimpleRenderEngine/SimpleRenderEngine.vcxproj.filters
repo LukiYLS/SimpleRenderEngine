@@ -22,6 +22,9 @@
     <Filter Include="Math">
       <UniqueIdentifier>{2ada7e64-85af-45b1-aca0-4f9e2e4862fb}</UniqueIdentifier>
     </Filter>
+    <Filter Include="HardwareBuffer">
+      <UniqueIdentifier>{e97f106e-ca0c-4aa8-96db-ea45edc541cc}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Core\Camera.h">
@@ -183,6 +186,18 @@
     <ClInclude Include="..\..\..\src\Example\CommonHead.h">
       <Filter>Examples</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\Image.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\HardwareBuffer.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\HardwareVertexBuffer.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\HardwareBufferManager.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -292,6 +307,15 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Example\earth_test.cpp">
       <Filter>Examples</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\Image.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\HardwareBufferManager.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\HardwareVertexBuffer.cpp">
+      <Filter>HardwareBuffer</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

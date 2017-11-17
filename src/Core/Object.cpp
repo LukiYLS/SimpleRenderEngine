@@ -20,6 +20,13 @@ namespace Core {
 		Quaternion quat;
 		quat.setFromAxisAngle(angle, axis);
 		_orientation = _orientation * quat;
+		//_position = _position * quat;//
+	}
+	void Object::rotateOnAxisFixedPosition(const Vector3D& axis, double angle)
+	{
+		Quaternion quat;
+		quat.setFromAxisAngle(angle, axis);
+		_orientation = _orientation * quat;
 		_position = _position * quat;//
 	}
 	void Object::translateOnAxis(const Vector3D& axis, double distance)

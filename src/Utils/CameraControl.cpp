@@ -37,7 +37,8 @@ namespace Utils
 				}
 				case M_WHEEL:
 				{
-					int value = mouse_work.wheelvalue;
+					int value = mouse_work.wheelvalue * _camera->getPosition().length()*0.001;
+
 					_camera->translateOnZ(value);
 				}
 				case RB_DOWN:
@@ -56,8 +57,8 @@ namespace Utils
 					{
 						int dx = mouse_work.xpos - _last_x_pos;
 						int dy = mouse_work.ypos - _last_y_pos;
-						_camera->rotateOnAxis(Vector3D(1.0,0.0,0.0),-dy*0.001);
-						_camera->rotateOnAxis(Vector3D(0.0,1.0,0.0),-dx*0.001);
+						_camera->rotateOnAxisFixedPosition(Vector3D(1.0,0.0,0.0),-dy*0.001);
+						_camera->rotateOnAxisFixedPosition(Vector3D(0.0,1.0,0.0),-dx*0.001);
 						//_camera->yaw(-dy*0.001);
 						//_camera->pitch(dx*0.001);
 					}
@@ -69,7 +70,9 @@ namespace Utils
 					else if (_rb_pressing)
 					{
 						int dx = mouse_work.xpos - _last_x_pos;
+						int dy = mouse_work.ypos - _last_y_pos;
 						_camera->roll(dx * 0.001);
+						_camera->yaw(dy*0.001);
 					}
 					break;
 				}
@@ -86,7 +89,7 @@ namespace Utils
 			{
 			case 'W':
 			{
-				_camera->translateOnAxis(_camera->getDirection(), 0.1);
+				_camera->translateOnAxis(_camera->getDirection(), 0.0001*_camera->getPosition().length());
 				break;
 			}
 			case 'A':

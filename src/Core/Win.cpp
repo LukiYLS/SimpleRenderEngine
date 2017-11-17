@@ -2,6 +2,7 @@
 #include "Win.h"
 #include  <iostream>
 #include "RenderSystem.h"
+#include <list>
 using namespace Utils;
 namespace Core {
 	
@@ -15,6 +16,8 @@ namespace Core {
 	Keys keyboard_events;
 	bool button_down = false;
 	bool isKeyBoardDown = false;
+	std::list<char> key_press;
+
 	bool Win::create(const int& width, const int& height, const char* name)
 	{
 		glfwInit();
@@ -127,23 +130,34 @@ namespace Core {
 	}
 	void Win::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		char* event_name = "keyboard.event";
-		Event::ptr event = EventManager::Inst()->createEvent();
-		event->setName(event_name);
-		event->setValue(event_name, '0');
+		//get register keyboard,
+		
+		int state = glfwGetKey(window, GLFW_KEY_W);
+		if (state == GLFW_PRESS)
+		{
+			key_press.push_back(key);
+		}
+		else if(state == GLFW_RELEASE)
+		{
+			key_press.remove(key);
+		}
 		if ((key >= 0) && (key <= 255)&&(action = GLFW_PRESS))
 		{
-			isKeyBoardDown = true;
-			keyboard_events.keyDown[key] = true;
+			//key_press.push_back(key);
+			//isKeyBoardDown = true;
+			//keyboard_events.keyDown[key] = true;
 		}
-		else if (action = GLFW_RELEASE)
+		if ((key >= 0) && (key <= 255) && (action = GLFW_RELEASE))
 		{
-			isKeyBoardDown = false;
-			keyboard_events.keyDown[key] = false;
+			//key_press.remove(key);
+			//isKeyBoardDown = false;
+			//keyboard_events.keyDown[key] = false;
 		}
 		if (key == GLFW_KEY_W && action == GLFW_RELEASE)
 		{
-			keyboard_events.keyDown[key] = false;
+			//key_press.remove(key);
+			//key_press.push_back(key);
+			//keyboard_events.keyDown[key] = false;
 			//event->setValue(event_name, 'W');
 			//EventManager::Inst()->sendEvent(event);
 
@@ -155,13 +169,13 @@ namespace Core {
 		}
 		if (key == GLFW_KEY_S && action == GLFW_PRESS)
 		{
-			event->setValue(event_name, 'S');
-			EventManager::Inst()->sendEvent(event);
+			//event->setValue(event_name, 'S');
+			//EventManager::Inst()->sendEvent(event);
 		}
 		if (key == GLFW_KEY_D && action == GLFW_PRESS)
 		{
-			event->setValue(event_name, 'D');
-			EventManager::Inst()->sendEvent(event);
+			//event->setValue(event_name, 'D');
+			//EventManager::Inst()->sendEvent(event);
 		}
 	}
 	void Win::framebufferSizeCallback(GLFWwindow* window, int width, int height)
@@ -185,6 +199,14 @@ namespace Core {
 		mouse_events.clear();
 
 		//keyboard
+		for (auto key : key_press)
+		{
+			char* event_name = "keyboard.event";
+			Event::ptr event = EventManager::Inst()->createEvent();		
+			event->setName("keyboard.event");
+			event->setValue("keyboard.event", key);
+			EventManager::Inst()->sendEvent(event);
+		}
 		if (isKeyBoardDown == true) {
 			//only traversal register keyboard
 

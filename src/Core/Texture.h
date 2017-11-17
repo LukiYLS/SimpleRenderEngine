@@ -2,6 +2,8 @@
 #include <glew\glew.h>
 #include <memory>
 #include <string>
+#include <vector>
+#include "Image.h"
 namespace Core {
 	enum TextureType
 	{	
@@ -27,34 +29,39 @@ namespace Core {
 	public:
 		typedef std::shared_ptr<Texture> ptr;
 	public:
+		Texture(TextureType type) {}
 		Texture(GLenum textureTarget, const std::string& fileName);
 		~Texture();
 	public:		
 		//virtual void setTextureType(TextureType type) { _type = type; }		
 		//virtual TextureType getTextureType(void) const { return _type; }
-		
+		void upLoad();
 		virtual bool getNumMipmaps(void) const { return _mipmaps; }		
 		virtual void setNumMipmaps(bool num) { _mipmaps = num; }
-
 		void setFiltering(int magnification, int minification);	
-
 		void bindTexture(int unit);
 		
+		void setTextureType(TextureType type) { _textureType = type; }
+		TextureType getTextureType(void) const { return _textureType; }
+		size_t getNumFaces()const { return _textureType == TEX_TYPE_CUBE_MAP ? 6 : 1; }
 
-		virtual uint32_t getHeight() const { return _height; }
-		virtual void setHeight(uint32_t height) { _height = height; }
-
-		virtual uint32_t getWidth(void) const { return _width; }
-		virtual void setWidth(uint32_t width) { _width = width; }
-
-		virtual uint32_t getDepth(void) const { return _depth; }
-		virtual void setDepth(uint32_t depth) { _depth = depth; }
-	private:
-		int _height, _width, _depth;
-		GLuint _textureID; // Texture name
+		void loadImage(Image* image);
+		//virtual uint32_t getHeight() const { return _height; }
+		//virtual void setHeight(uint32_t height) { _height = height; }
+		//virtual uint32_t getWidth(void) const { return _width; }
+		//virtual void setWidth(uint32_t width) { _width = width; }
+		//virtual uint32_t getDepth(void) const { return _depth; }
+		//virtual void setDepth(uint32_t depth) { _depth = depth; }
+	protected:
+		GLenum getTextureTarget()const;
+		std::vector<Image::ptr> _image_list;
+		//int _height, _width, _depth;
+		GLuint _texture_id; // Texture name
 		GLuint _sampler; // Sampler name
-		GLenum _textureTarget;
-		bool _mipmaps;
+		//GLenum _textureTarget;
+		unsigned int _mipmaps;
+		bool _autoGenerateMipMap;
+		TextureType _textureType;
 	};
 }
 

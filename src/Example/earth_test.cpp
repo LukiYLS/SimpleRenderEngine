@@ -4,7 +4,7 @@
 #define radius 6378137.f
 Mesh* createSphere()
 {
-	Mesh* mesh = GeometryFactory::MakeSphere(10.25f * 25.0f, 128, 64);
+	Mesh* mesh = GeometryFactory::MakeSphere(1.025*radius, 128, 64);
 //	mesh->addTexture("earth");
 //	mesh->addRenderPass("atmosphere");
 //	mesh->addRenderPass("earth");
@@ -19,7 +19,7 @@ Scene::ptr createScene()
 	Object::ptr root = make_shared<Object>();
 	Mesh* mesh = createSphere();
 
-	Mesh* mesh1 = GeometryFactory::MakeSphere(10.0f * 25.0f, 128, 64);
+	Mesh* mesh1 = GeometryFactory::MakeSphere(radius, 128, 64);
 	mesh1->addTexture("earth");
 	mesh1->addTexture("cloud");
 	mesh1->addTexture("light");
@@ -43,10 +43,10 @@ void initResource()
 	Shader::ptr shader_groundfromatmosphere = make_shared<Shader>("../../../src/Data/shader/groundfromatmosphere.vs", "../../../src/Data/shader/groundfromatmosphere.fs");
 	float Kr = 0.0030f;
 	float Km = 0.0015f;
-	float ESun = 200.0f;
+	float ESun = .0f;
 	float g = -0.75f;
-	float InnerRadius = 10.0f * 25.0f;;
-	float OuterRadius = 10.25f * 25.0f;
+	float InnerRadius = radius;;
+	float OuterRadius = 1.025*radius;
 	float Scale = 1.0f / (OuterRadius - InnerRadius);
 	float ScaleDepth = 0.25f;
 	float ScaleOverScaleDepth = Scale / ScaleDepth;
@@ -83,8 +83,8 @@ int main()
 {
 	Win::getSingleton()->create();
 	initResource();
-	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.125f, 4096.0f);
-	camera->setPosition(Vector3D(0.0f, 0.0f, 768.0f));
+	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, radius*0.5, radius*3);
+	camera->setPosition(Vector3D(0.0f, 0.0f, radius*3));
 	camera->lookAt(0.0, 0.0, 0.0);
 
 	Scene::ptr scene = createScene();

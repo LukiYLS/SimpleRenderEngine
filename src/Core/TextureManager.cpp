@@ -93,6 +93,8 @@ namespace Core {
 	}
 	bool TextureManager::loadCubeMap(std::vector<const char*> files)
 	{
+		//Texture::ptr cube = std::shared_ptr<Texture>(TEX_TYPE_CUBE_MAP);
+		Texture* cube = new Texture(TEX_TYPE_CUBE_MAP);
 		glGenTextures(1, &m_cubeMap);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_cubeMap);
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;

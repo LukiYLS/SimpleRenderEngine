@@ -65,6 +65,7 @@ namespace Core {
 		void setRotationFromMatrix(const Matrix4D& rotate);
 		//_orientation change
 		void rotateOnAxis(const Vector3D& axis, double angle);
+		void rotateOnAxisFixedPosition(const Vector3D& axis, double angle);
 		void rotateOnX(double angle) { rotateOnAxis(Vector3D(1.0, 0.0, 0.0), angle); }
 		void rotateOnY(double angle) { rotateOnAxis(Vector3D(0.0, 1.0, 0.0), angle); }
 		void rotateOnZ(double angle) { rotateOnAxis(Vector3D(0.0, 0.0, 1.0), angle); }

@@ -52,7 +52,40 @@ namespace Core {
 		glDeleteTextures(1, &_textureID);
 		glDeleteSamplers(1, &_sampler);
 	}
+	void Texture::upLoad()
+	{
+		GLenum target = getTextureTarget();;
+		
+		glGenTextures(1, &_texture_id);
+		glBindTexture(target, _texture_id);
 
+		if (_autoGenerateMipMap)
+		{
+			//如果是cubemap，目前imagelist存储6张纹理（当_autoGenerateMipMap为false，这种情况？？）
+			if (_textureType == TEX_TYPE_CUBE_MAP)
+			{
+				for (int i = 0; i < 6; ++i)
+				{
+					Image::ptr image = _image_list[i];
+					glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
+						0, GL_RGB, image->width(), image->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->data());
+				}
+			}
+			else
+			{
+				Image::ptr image = _image_list[0];
+
+			}
+			glGenerateMipmap(target);
+		}
+		for (size_t mip = 0; mip < _mipmaps; mip++)
+		{
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, _mipmaps);
+			//glTexImage2D(GL_TEXTURE_2D, mip, format, width, height, 0, data_format, data_type, 0);
+		}
+
+	}
 	void Texture::setFiltering(int magnification, int minification)
 	{
 		glBindSampler(0, _sampler);
@@ -79,6 +112,24 @@ namespace Core {
 		glActiveTexture(GL_TEXTURE0 + unit);
 		glBindTexture(_textureTarget, _textureID);		
 		glBindSampler(unit, _sampler);
+	}
+	GLenum Texture::getTextureTarget()const
+	{
+		switch (_textureType)
+		{
+		case TEX_TYPE_1D:
+			return GL_TEXTURE_1D;
+		case TEX_TYPE_2D:
+			return GL_TEXTURE_2D;
+		case TEX_TYPE_3D:
+			return GL_TEXTURE_3D;
+		case TEX_TYPE_CUBE_MAP:
+			return GL_TEXTURE_CUBE_MAP;
+		case TEX_TYPE_2D_ARRAY:
+			return GL_TEXTURE_2D_ARRAY_EXT;
+		default:
+			return 0;
+		};
 	}
 
 }
