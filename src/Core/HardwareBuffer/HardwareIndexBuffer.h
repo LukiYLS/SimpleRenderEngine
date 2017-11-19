@@ -4,14 +4,10 @@
 #include<memory>
 namespace SRE {
 
-	class HardwareVertexBuffer : public HardwareBuffer
+	class HardwareIndexBuffer : public HardwareBuffer
 	{
 	public:
-		typedef std::shared_ptr<HardwareVertexBuffer> ptr;
-		HardwareVertexBuffer(size_t vertex_size, size_t num_vertices, HardwareBuffer::Usage usage, bool use_shadow_buffer);
-		~HardwareVertexBuffer();
-	public:
-
+		typedef std::shared_ptr<HardwareIndexBuffer> ptr;
 		virtual void*	lock(size_t offset, size_t length, LockOptions options);
 		virtual void*	lock(LockOptions options);
 		virtual void	unlock(void);
@@ -19,19 +15,19 @@ namespace SRE {
 		virtual void	readData(size_t offset, size_t length, void* dest);
 		virtual void	writeData(size_t offset, size_t length, const void* source, bool discardWholeBuffer = false);
 
-		//virtual void	copyData(HardwareBuffer& src_buffer, size_t src_offset, size_t dst_offset, size_t length, bool discardWholeBuffer = false);
-		//virtual void	copyData(HardwareBuffer& src_buffer);
+		virtual void	copyData(HardwareBuffer& src_buffer, size_t src_offset, size_t dst_offset, size_t length, bool discardWholeBuffer = false);
+		virtual void	copyData(HardwareBuffer& src_buffer);
 
-		virtual size_t	getSizeInBytes(void) const { return _sizeInBytes; }
-		virtual Usage	getUsage(void) const { return _usage; }
+		virtual size_t	getSizeInBytes(void) const;
+		virtual Usage	getUsage(void) const;
 
-		virtual bool    isLocked(void) const { return _isLocked; }
+		virtual bool    isLocked(void) const;
 		virtual bool	isSystemMemory(void) const;
 
 		virtual void    upload(void);
 	protected:
 		GLuint _bufferID;
-		size_t _numVertices;
+		size_t _numVertex;
 		size_t _vertexSize;
 
 		size_t _sizeInBytes;
