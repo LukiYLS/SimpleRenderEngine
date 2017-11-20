@@ -7,30 +7,30 @@ namespace SRE {
 
 	void VertexBufferBinding::setBinding(unsigned short index, const HardwareVertexBuffer::ptr buffer)
 	{
-		_binding_map[index] = buffer;
+		_bindingMap[index] = buffer;
 	}
 	void VertexBufferBinding::unsetBinding(unsigned short index)
 	{
-		VertexBufferBindingMap::iterator iter = _binding_map.find(index);
-		if (iter == _binding_map.end())
+		VertexBufferBindingMap::iterator iter = _bindingMap.find(index);
+		if (iter == _bindingMap.end())
 		{
 			//没找到
 		}
-		_binding_map.erase(iter);
+		_bindingMap.erase(iter);
 	}
 	void VertexBufferBinding::unsetAllBindings(void)
 	{
-		_binding_map.clear();
-		_high_index = 0;
+		_bindingMap.clear();
+		_highIndex = 0;
 	}
 	const VertexBufferBindingMap& VertexBufferBinding::getBindings(void) const
 	{
-		return _binding_map;
+		return _bindingMap;
 	}
 	const HardwareVertexBuffer::ptr& VertexBufferBinding::getBuffer(unsigned short index) const
 	{
-		VertexBufferBindingMap::const_iterator iter = _binding_map.find(index);
-		if (iter == _binding_map.end())
+		VertexBufferBindingMap::const_iterator iter = _bindingMap.find(index);
+		if (iter == _bindingMap.end())
 		{
 			//没找到
 		}
@@ -39,18 +39,18 @@ namespace SRE {
 	}
 	bool VertexBufferBinding::isBufferBound(unsigned short index) const
 	{
-		return _binding_map.find(index) != _binding_map.end();
+		return _bindingMap.find(index) != _bindingMap.end();
 	}
 	unsigned int VertexBufferBinding::getBufferCount(void) const
 	{
-		return _binding_map.size();
+		return _bindingMap.size();
 	}
 	unsigned short VertexBufferBinding::getNextIndex(void) const
 	{
-		return _high_index++;
+		return _highIndex++;
 	}
 	unsigned short VertexBufferBinding::getLastBoundIndex(void) const
 	{
-		return _binding_map.empty() ? 0 : _binding_map.rbegin()->first + 1;
+		return _bindingMap.empty() ? 0 : _bindingMap.rbegin()->first + 1;
 	}
 }

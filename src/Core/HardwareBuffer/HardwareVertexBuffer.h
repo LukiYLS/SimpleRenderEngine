@@ -1,6 +1,6 @@
 #pragma once
 #include "HardwareBuffer.h"
-
+#include <glew\glew.h>
 #include<memory>
 namespace SRE {
 
@@ -26,12 +26,11 @@ namespace SRE {
 		virtual Usage	getUsage(void) const { return _usage; }
 
 		virtual bool    isLocked(void) const { return _isLocked; }
-		virtual bool	isSystemMemory(void) const;
-
+		virtual bool	isUseShadowBuffer(void) const { return _useShadowBuffer; }
 		virtual void    upload(void);
 	protected:
-		GLuint _bufferID;
-		size_t _numVertices;
+		GLuint _verexBufferID;//vbo
+		size_t _numVertices;//
 		size_t _vertexSize;
 
 		size_t _sizeInBytes;
@@ -41,12 +40,14 @@ namespace SRE {
 		unsigned char* _data;
 
 		//从内存池取数据
-		bool          _locked_to_scratch;
-		size_t        _scratch_offset;
-		size_t        _scratch_size;
-		size_t        _locked_start;
-		size_t        _locked_size;
-		void *        _scratch_ptr;
-		bool          _scratch_upload_on_unlock;
+		bool   _lockFromPool;
+		size_t _scrachSize;
+		size_t _scrachOffset;
+		void * _scrachPtr;
+
+		size_t _lockSize;
+		size_t _lockStart;
+		
+		bool _scratchNeedUpload;
 	};
 }

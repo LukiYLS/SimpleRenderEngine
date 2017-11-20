@@ -79,17 +79,17 @@ namespace SRE {
 		virtual void	readData(size_t offset, size_t length, void* dest) = 0;
 		virtual void	writeData(size_t offset, size_t length, const void* source,	bool discardWholeBuffer = false) = 0;
 
-		virtual void	copyData(HardwareBuffer& src_buffer_, size_t src_offset, size_t dst_offset, size_t length, bool discardWholeBuffer = false) = 0;
-		virtual void	copyData(HardwareBuffer& src_buffer) = 0;
+		//virtual void	copyData(HardwareBuffer& src_buffer_, size_t src_offset, size_t dst_offset, size_t length, bool discardWholeBuffer = false) = 0;
+		//virtual void	copyData(HardwareBuffer& src_buffer) = 0;
 
 		virtual size_t	getSizeInBytes(void) const = 0;
 		virtual Usage	getUsage(void) const = 0;
 
 		virtual bool    isLocked(void) const = 0;
-		virtual bool	isSystemMemory(void) const = 0;
+		virtual bool	isUseShadowBuffer(void) const = 0;
 
 		virtual void    upload(void) = 0;
 	};
 
-	};
+	
 }

@@ -1,5 +1,6 @@
 #pragma once
 #include <memory>
+
 namespace SRE {
 
 	/// Vertex element semantics, used to identify the meaning of vertex buffer contents

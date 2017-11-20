@@ -139,6 +139,8 @@ namespace SRE {
 	class PixelBox{
 	public:
 		typedef std::shared_ptr<PixelBox> ptr;
+		PixelBox(unsigned int width, unsigned int height, unsigned int depth, PixelFormat PixelFormat, void *data);
+		~PixelBox();
 	public:
 		/**
 		* Get colour value from a certain location in the PixelBox. The z coordinate
@@ -239,9 +241,7 @@ namespace SRE {
 		unsigned int getSlicePitch() const { return _slicePitch; }
 		void setSlicePitch(unsigned int slice_pitch) { _slicePitch = slice_pitch; }
 	public:
-		PixelBox(unsigned int width, unsigned int height, unsigned int depth_, PixelFormat pixel_format, void *pixel_data);
-
-		~PixelBox() {}
+	
 
 		void setConsecutive();
 		size_t getConsecutive()const;

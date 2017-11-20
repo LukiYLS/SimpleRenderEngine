@@ -198,6 +198,33 @@
     <ClInclude Include="..\..\..\src\Core\HardwareBuffer\HardwareBufferManager.h">
       <Filter>HardwareBuffer</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\ColorValue.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\HardwareIndexBuffer.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\HardwareTextureBuffer.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\PixelBox.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\PixelUtil.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\PrimitiveData.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\VertexBufferBinding.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\VertexDeclaration.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\HardwareBuffer\VertexElement.h">
+      <Filter>HardwareBuffer</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -315,6 +342,33 @@
       <Filter>HardwareBuffer</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\HardwareBuffer\HardwareVertexBuffer.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\ColorValue.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\HardwareIndexBuffer.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\HardwareTextureBuffer.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\PixelBox.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\PixelUtil.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\PrimitiveData.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\VertexBufferBinding.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\VertexDeclaration.cpp">
+      <Filter>HardwareBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\HardwareBuffer\VertexElement.cpp">
       <Filter>HardwareBuffer</Filter>
     </ClCompile>
   </ItemGroup>

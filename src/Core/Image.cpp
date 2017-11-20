@@ -125,7 +125,8 @@ namespace Core {
 
 	FIBITMAP* Image::rescale(FIBITMAP* dib, int width, int height)
 	{
-
+		//ûд
+		return NULL;
 	}
 
 	FIBITMAP* Image::toBitMap()

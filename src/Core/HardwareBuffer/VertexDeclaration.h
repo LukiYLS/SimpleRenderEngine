@@ -3,21 +3,21 @@
 #include "VertexElement.h"
 #include <list>
 namespace SRE {
-
+	typedef std::list<VertexElement::ptr> VertexElementList;
 	class VertexDeclaration {
 	public:
 		typedef std::shared_ptr<VertexDeclaration> ptr;
-		typedef std::list<VertexElement::ptr> VertexElementList;
+		//typedef std::list<VertexElement::ptr> VertexElementList;
 		VertexDeclaration() = default;
 		~VertexDeclaration()
 		{
-			_vertex_elements.clear();
+			_vertexElements.clear();
 		}
 
 	public:
 		static bool vertexElementLess(VertexElement::ptr e1, VertexElement::ptr e2);
-		unsigned int getElementCount()const { return _vertex_elements.size(); }
-		const VertexElementList& getElements() const { return _vertex_elements; }
+		unsigned int getElementCount()const { return _vertexElements.size(); }
+		const VertexElementList& getElements() const { return _vertexElements; }
 		VertexElement::ptr getElement(unsigned int index);
 		void sort();
 		const VertexElement::ptr addElement(unsigned short source, unsigned int offset, Vertex_Element_Type type,
@@ -36,6 +36,6 @@ namespace SRE {
 
 	protected:
 
-		VertexElementList _vertex_elements;
+		VertexElementList _vertexElements;
 	};
 }

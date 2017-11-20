@@ -12,7 +12,7 @@ namespace SRE {
 		static size_t PixelUtil::getNumElemBytes(PixelFormat format);
 
 		static void packColor(ColorValue::ptr colour, const PixelFormat pf, void* dest);
-		//static void packColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a_, PixelFormat pf, void *dest);
+		static void packColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a_, PixelFormat pf, void *dest);
 		static void packColor(float r, float g, float b, float a, PixelFormat pf, void *dest);
 		static ColorValue::ptr unpackColor(PixelFormat pf, const void* src);
 		static void unpackColor(unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a, PixelFormat pf, const void* src);

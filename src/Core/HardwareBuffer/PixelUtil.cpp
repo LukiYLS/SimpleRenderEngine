@@ -647,6 +647,13 @@ namespace SRE {
 		}
 		return 0;
 	}
+	inline const PixelFormatDescription &getDescriptionFor(const PixelFormat fmt)
+	{
+		const int ord = (int)fmt;
+		//assert(ord >= 0 && ord<PF_COUNT);
+
+		return _pixelFormats[ord];
+	}
 	unsigned int PixelUtil::getFlags(PixelFormat format)
 	{
 		return getDescriptionFor(format).flags;
@@ -655,13 +662,7 @@ namespace SRE {
 	{
 		return (PixelUtil::getFlags(format) & PFF_COMPRESSED) > 0;
 	}
-	static inline const PixelFormatDescription &getDescriptionFor(const PixelFormat fmt)
-	{
-		const int ord = (int)fmt;
-		//assert(ord >= 0 && ord<PF_COUNT);
-
-		return _pixelFormats[ord];
-	}
+	
 	size_t PixelUtil::getNumElemBytes(PixelFormat format)
 	{
 		return getDescriptionFor(format).elemBytes;
@@ -811,7 +812,7 @@ namespace SRE {
 			return 0;
 		}
 	}
-	GLenum PixelUtil::getGLInternalFormat(PixelFormat format, bool hwGamma = false)
+	GLenum PixelUtil::getGLInternalFormat(PixelFormat format, bool hwGamma)
 	{
 		switch (format)
 		{
@@ -878,8 +879,11 @@ namespace SRE {
 		}
 	}
 
-
 	void PixelUtil::packColor(ColorValue::ptr color, const PixelFormat pf, void* dest)
+	{
+		packColor(color->r(), color->g(), color->b(), color->a(), pf, dest);
+	}
+	void PixelUtil::packColor(unsigned char r, unsigned char g, unsigned char b, unsigned char a, const PixelFormat pf, void* dest)
 	{
 		//Ìî³äÊý¾Ý
 		unsigned int odr = (unsigned int)pf;
@@ -889,15 +893,15 @@ namespace SRE {
 		}
 		if (_pixelFormats[odr].flags & PFF_NATIVEENDIAN)
 		{
-			unsigned int value = ((fixedToFixed(color->r(), 8, _pixelFormats[odr].rbits) << _pixelFormats[odr].rshift) & _pixelFormats[odr].rmask) |
-				((fixedToFixed(color->g(), 8, _pixelFormats[odr].gbits) << _pixelFormats[odr].gshift) & _pixelFormats[odr].gmask) |
-				((fixedToFixed(color->b(), 8, _pixelFormats[odr].bbits) << _pixelFormats[odr].bshift) & _pixelFormats[odr].bmask) |
-				((fixedToFixed(color->a(), 8, _pixelFormats[odr].abits) << _pixelFormats[odr].ashift) & _pixelFormats[odr].amask);
+			unsigned int value = ((fixedToFixed(r, 8, _pixelFormats[odr].rbits) << _pixelFormats[odr].rshift) & _pixelFormats[odr].rmask) |
+				((fixedToFixed(g, 8, _pixelFormats[odr].gbits) << _pixelFormats[odr].gshift) & _pixelFormats[odr].gmask) |
+				((fixedToFixed(b, 8, _pixelFormats[odr].bbits) << _pixelFormats[odr].bshift) & _pixelFormats[odr].bmask) |
+				((fixedToFixed(a, 8, _pixelFormats[odr].abits) << _pixelFormats[odr].ashift) & _pixelFormats[odr].amask);
 			int_write(dest, _pixelFormats[odr].elemBytes, value);
 		}
 		else
 		{
-			packColor((float)color->r() / 255.0f, (float)color->g() / 255.0f, (float)color->b() / 255.0f, (float)color->a() / 255.0f, pf, dest);
+			packColor((float)r / 255.0f, (float)g / 255.0f, (float)b / 255.0f, (float)a / 255.0f, pf, dest);
 		}
 	}
 
@@ -907,16 +911,16 @@ namespace SRE {
 	}
 
 	ColorValue::ptr PixelUtil::unpackColor(PixelFormat pf, const void* src)
-	{
-		ColorValue *colour_ = new ColorValue;
+	{		
 		float r, g, b, a;
 		unpackColor(&r, &g, &b, &a, pf, src);
-		colour_->r = r;
-		colour_->g = g;
-		colour_->b = b;
-		colour_->a = a;
-		ColorValue::ptr colour_ptr(colour_);
+		ColorValue *color_ = new ColorValue(r, g, b, a);
+		ColorValue::ptr colour_ptr(color_);
 		return colour_ptr;
+	}
+	void PixelUtil::unpackColor(float *r, float *g, float *b, float *a, PixelFormat pf, const void* src)
+	{
+
 	}
 	void PixelUtil::unpackColor(unsigned char *r, unsigned char *g, unsigned char *b, unsigned char *a, PixelFormat pf, const void* src)
 	{

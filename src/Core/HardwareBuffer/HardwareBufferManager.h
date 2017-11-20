@@ -1,14 +1,14 @@
 #pragma once
 #include <glew\glew.h>
 #include "HardwareBuffer.h"
-#include "HardwareIndexBuffer.h"
-#include "HardwareVertexBuffer.h"
+//#include "HardwareIndexBuffer.h"
+//#include "HardwareVertexBuffer.h"
 #include "VertexDeclaration.h"
 #include "VertexBufferBinding.h"
 namespace SRE {
 
 
-	#define DefaultMapBufferThreshold (1024 * 32)//
+	#define DefaultMapBufferThreshold (1024 * 32)//向内存池申请阈值
 	//32位结构（位域）
 	struct BufferAlloc
 	{
@@ -28,8 +28,7 @@ namespace SRE {
 	public:
 		static HardwareBufferManager& getSingleton(void);
 		static HardwareBufferManager* getSingletonPtr(void);
-		HardwareVertexBuffer::ptr
-			createVertexBuffer(unsigned int vertex_size_, unsigned int num_verts_, HardwareBuffer::Usage usage,
+		HardwareVertexBuffer::ptr createVertexBuffer(unsigned int vertex_size_, unsigned int num_verts_, HardwareBuffer::Usage usage,
 				bool use_shadow_buffer = false);
 
 		//HardwareIndexBuffer::ptr
@@ -43,13 +42,14 @@ namespace SRE {
 		VertexBufferBinding::ptr createVertexBufferBinding(void);
 
 		void destroyVertexBufferBinding(VertexBufferBinding::ptr binding);
-	
-	public:
+
 		size_t getMapBufferThreshold() { return DefaultMapBufferThreshold; }
 		void* allocate(size_t size);
 		void deallocate(void* ptr);
 		static GLenum getGLUsege(unsigned int usage);
 		static GLenum getGLType(unsigned int type);
+	
+		
 	protected:
 		static HardwareBufferManager* _singleton;
 		char* _bufferpool;

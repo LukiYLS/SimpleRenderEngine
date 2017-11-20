@@ -2,17 +2,17 @@
 #include "HardwareVertexBuffer.h"
 #include <map>
 namespace SRE {
-
+	typedef std::map<unsigned short, HardwareVertexBuffer::ptr> VertexBufferBindingMap;
 	class VertexBufferBinding
 	{
 	public:
 		typedef std::shared_ptr<VertexBufferBinding> ptr;
-		typedef std::map<unsigned short, HardwareVertexBuffer::ptr> VertexBufferBindingMap;
+		//typedef std::map<unsigned short, HardwareVertexBuffer::ptr> VertexBufferBindingMap;
 	public:
 		VertexBufferBinding()
-			:_high_index(0)
+			:_highIndex(0)
 		{}
-		~VertexBufferBinding() { _binding_map.clear(); }
+		~VertexBufferBinding() { _bindingMap.clear(); }
 	public:
 		void setBinding(unsigned short index, const HardwareVertexBuffer::ptr buffer);
 		void unsetBinding(unsigned short index);
@@ -24,7 +24,7 @@ namespace SRE {
 		unsigned short getNextIndex(void) const;
 		unsigned short getLastBoundIndex(void) const;
 	private:
-		VertexBufferBindingMap _binding_map;
-		mutable unsigned short _high_index;;
+		VertexBufferBindingMap _bindingMap;
+		mutable unsigned short _highIndex;;
 	};
 }

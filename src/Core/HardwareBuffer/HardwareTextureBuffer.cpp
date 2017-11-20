@@ -33,30 +33,31 @@ namespace SRE {
 
 		glGetTexLevelParameteriv(_faceTarget, level, GL_TEXTURE_INTERNAL_FORMAT, &value);
 		_internalFormat = value;
-		//_format = GLPixelUtil::getClosestOGREFormat(value);
+		_format = PixelUtil::getClosestOGREFormat(value);
 
-		// Default
+		// 
 		_rowPitch = _width;
 		_slicePitch = _height*_width;
-		//_sizeInBytes = PixelUtil::getMemorySize(mWidth, mHeight, mDepth, mFormat);
-
-		_buffer = std::make_shared<PixelBox>(_width, _height, _depth, _format, 0);
+		_sizeInBytes = PixelUtil::getMemorySize(_width, _height, _depth, _format);
+		PixelBox* box = new PixelBox(_width, _height, _depth, _format, 0);
+		_buffer = (PixelBox::ptr)box;//std::make_shared<PixelBox>(_width, _height, _depth, _format, 0);
 
 	}
 
-	void HardwareTextureBuffer::blitFromMemory(PixelBox::ptr src)
+	void HardwareTextureBuffer::blitFromMemory(PixelBox::ptr data)
 	{
+		//
 		PixelBox *box = new PixelBox(_width, _height, _depth, _format, 0); //只是构造一个框
-		blitFromMemory(src, (PixelBox::ptr)box);
+		blitFromMemory(data, (PixelBox::ptr)box);
 	}
 
-	void HardwareTextureBuffer::blitFromMemory(PixelBox::ptr src, PixelBox::ptr dst)
+	void HardwareTextureBuffer::blitFromMemory(PixelBox::ptr data, PixelBox::ptr dst)
 	{
 		//PixelBox scaled;
 
-		if (src->getWidth() != dst->getWidth() ||
-			src->getHeight() != dst->getHeight() ||
-			src->getDepth() != dst->getDepth())
+		if (data->getWidth() != dst->getWidth() ||
+			data->getHeight() != dst->getHeight() ||
+			data->getDepth() != dst->getDepth())
 		{
 			//需要缩放
 			// Scale to destination size.
@@ -65,7 +66,7 @@ namespace SRE {
 			//scaled = mBuffer.getSubVolume(dstBox);
 			//Image::scale(src, scaled, Image::FILTER_BILINEAR);
 		}
-		else if (PixelUtil::getGLOriginFormat(src->getPixelFormat()) == 0)
+		else if (PixelUtil::getGLOriginFormat(data->getPixelFormat()) == 0)
 		{
 			// Extents match, but format is not accepted as valid source format for GL
 			// do conversion in temporary buffer
@@ -80,7 +81,7 @@ namespace SRE {
 			//scaled = src;
 		}
 
-		upload(src, dst);
+		upload(data, dst);
 		//freeBuffer();
 	}
 	void HardwareTextureBuffer::download(PixelBox::ptr data)
@@ -101,7 +102,7 @@ namespace SRE {
 				glPixelStorei(GL_PACK_ROW_LENGTH, data->getRowPitch());
 			if (data->getTop() != 0 || data->getLeft() != 0)
 				glPixelStorei(GL_PACK_SKIP_PIXELS, data->getLeft() + data->getRowPitch() * data->getTop());
-			if (data->getWidth() * PixelUtil::getNumElemBytes(data->getPixelFormat()) & 3);
+			if (data->getWidth() * PixelUtil::getNumElemBytes(data->getPixelFormat()) & 3)
 				glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
 			glGetTexImage(_faceTarget, _level, PixelUtil::getGLOriginFormat(data->getPixelFormat()), PixelUtil::getGLOriginDataType(data->getPixelFormat()), (GLvoid*)data->getData());
@@ -111,11 +112,10 @@ namespace SRE {
 	{
 		if (PixelUtil::isCompressed(data->getPixelFormat()))
 		{
+			//压缩纹理的还未测试....
 			GLenum format = PixelUtil::getClosestGLInternalFormat(_format);
 			switch (_target) {
 			case GL_TEXTURE_1D:
-				// some systems (e.g. old Apple) don't like compressed subimage calls
-				// so prefer non-sub versions
 				if (dst->getLeft() == 0)
 				{
 					glCompressedTexImage1DARB(GL_TEXTURE_1D, _level,
@@ -135,9 +135,7 @@ namespace SRE {
 				}
 				break;
 			case GL_TEXTURE_2D:
-			case GL_TEXTURE_CUBE_MAP:
-				// some systems (e.g. old Apple) don't like compressed subimage calls
-				// so prefer non-sub versions
+			case GL_TEXTURE_CUBE_MAP:				
 				if (dst->getLeft() == 0 && dst->getTop() == 0)
 				{
 					glCompressedTexImage2DARB(_faceTarget, _level,
@@ -159,8 +157,6 @@ namespace SRE {
 				break;
 			case GL_TEXTURE_3D:
 			case GL_TEXTURE_2D_ARRAY_EXT:
-				// some systems (e.g. old Apple) don't like compressed subimage calls
-				// so prefer non-sub versions
 				if (dst->getLeft() == 0 && dst->getTop() == 0 && dst->getFront() == 0)
 				{
 					glCompressedTexImage3DARB(_target, _level,
@@ -184,6 +180,7 @@ namespace SRE {
 		}
 		else if (_softwareMipmap)
 		{
+			//3.0之后统一采用glGenerateMipmap
 			/*GLenum format = PixelUtil::getClosestGLInternalFormat(_format);
 			if (data->getWidth() != data->getRowPitch())
 				glPixelStorei(GL_UNPACK_ROW_LENGTH, data->getRowPitch());
@@ -244,8 +241,13 @@ namespace SRE {
 		}
 		else
 		{
+			//这里如果考虑三维？
 			if (data->getWidth() != data->getRowPitch())
-				glPixelStorei(GL_UNPACK_ROW_LENGTH, data->getRowPitch());
+				glPixelStorei(GL_UNPACK_ROW_LENGTH, data->getRowPitch());////指定像素数据中原图的宽度
+
+			//glPixelStorei(GL_UNPACK_SKIP_ROWS, data->); //指定纹理起点偏离原点的高度值
+			//glPixelStorei(GL_UNPACK_SKIP_PIXELS, data->);  //指定纹理起点偏离原点的宽度值
+
 			if (data->getHeight()*data->getWidth() != data->getSlicePitch())
 				glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, (data->getSlicePitch() / data->getWidth()));
 			if (data->getLeft() > 0 || data->getTop() > 0 || data->getFront() > 0)
@@ -262,7 +264,7 @@ namespace SRE {
 				glTexSubImage1D(GL_TEXTURE_1D, _level,
 					dst->getLeft(),
 					dst->getWidth(),
-					PixelUtil::getGLOriginFormat(data->getPixelFormat), PixelUtil::getGLOriginDataType(data->getPixelFormat),
+					PixelUtil::getGLOriginFormat(data->getPixelFormat()), PixelUtil::getGLOriginDataType(data->getPixelFormat()),
 					data->getData());
 				break;
 			case GL_TEXTURE_2D:
@@ -270,7 +272,7 @@ namespace SRE {
 				glTexSubImage2D(_faceTarget, _level,
 					dst->getLeft(), dst->getTop(),
 					dst->getWidth(), dst->getHeight(),
-					PixelUtil::getGLOriginFormat(data->getPixelFormat), PixelUtil::getGLOriginDataType(data->getPixelFormat),
+					PixelUtil::getGLOriginFormat(data->getPixelFormat()), PixelUtil::getGLOriginDataType(data->getPixelFormat()),
 					data->getData());
 				break;
 			case GL_TEXTURE_3D:
@@ -279,7 +281,7 @@ namespace SRE {
 					_target, _level,
 					dst->getLeft(), dst->getTop(), dst->getFront(),
 					dst->getWidth(), dst->getHeight(), dst->getDepth(),
-					PixelUtil::getGLOriginFormat(data->getPixelFormat), PixelUtil::getGLOriginDataType(data->getPixelFormat),
+					PixelUtil::getGLOriginFormat(data->getPixelFormat()), PixelUtil::getGLOriginDataType(data->getPixelFormat()),
 					data->getData());
 				break;
 			}
@@ -299,6 +301,7 @@ namespace SRE {
 
 	void* HardwareTextureBuffer::lock(size_t offset, size_t length, LockOptions options)
 	{
+		//锁定纹理缓冲区的目的是？
 		if (isLocked())
 		{
 			//assert or log
@@ -307,7 +310,7 @@ namespace SRE {
 		{
 			//assert or log
 		}
-		PixelBox *box = new PixelBox(_width, _height, 1, _format, 0);
+		PixelBox *box = new PixelBox(_width, _height, _depth, _format, 0);
 		PixelBox::ptr retV = lock((PixelBox::ptr)box, options);
 		return retV->getData();
 	}
@@ -315,24 +318,26 @@ namespace SRE {
 	PixelBox::ptr HardwareTextureBuffer::lock(PixelBox::ptr box, HardwareBuffer::LockOptions options)
 	{
 		PixelBox::ptr  pixel_box = _buffer;
+		//先给当前buffer分配空间
 		pixel_box->allocateBuffer(_sizeInBytes);
 		if (options != HBL_DISCARD)
 		{
+			//从GPU中拿到数据
 			//不能从显卡直接得到部分吗？(不能）
 			download(_buffer);
 		}
-		_current_lock_options = options;
+		_currentLockOptions = options;
 		_isLocked = true;
-		_current_locked_buffer = _buffer->getSubVolume(box);
-		_current_lock_box = box;
+		_currentLockedBuffer = _buffer->getSubVolume(box);
+		_currentLockBox = box;
 
-		return _current_locked_buffer;
+		return _currentLockedBuffer;
 	}
 
 	void HardwareTextureBuffer::unlock(void)
 	{
-		if (_current_lock_options != HBL_READ_ONLY)
-			upload(_current_locked_buffer, _current_lock_box);
+		if (_currentLockOptions != HBL_READ_ONLY)
+			upload(_currentLockedBuffer, _currentLockBox);
 
 		PixelBox::ptr  pixel_box = _buffer;
 		pixel_box->deallocBuffer();

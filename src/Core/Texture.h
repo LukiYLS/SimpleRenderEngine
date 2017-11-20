@@ -56,7 +56,7 @@ namespace Core {
 		GLenum getTextureTarget()const;
 		std::vector<Image::ptr> _image_list;
 		//int _height, _width, _depth;
-		GLuint _texture_id; // Texture name
+		GLuint _textureID; // Texture name
 		GLuint _sampler; // Sampler name
 		//GLenum _textureTarget;
 		unsigned int _mipmaps;

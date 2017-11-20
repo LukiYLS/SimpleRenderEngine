@@ -3,7 +3,7 @@
 
 namespace SRE {
 
-	VertexElement(unsigned short source, size_t offset, Vertex_Element_Type type,
+	VertexElement::VertexElement(unsigned short source, size_t offset, Vertex_Element_Type type,
 		Vertex_Element_Semantic semantic, unsigned short index)
 		: _source(source), _offset(offset), _type(type), _semantic(semantic), _index(index)
 	{
@@ -36,9 +36,9 @@ namespace SRE {
 		return 0;
 	}
 
-	size_t VertexElement::getTypeSize(Vertex_Element_Type etype) const
+	size_t VertexElement::getTypeSize(Vertex_Element_Type type) const
 	{
-		switch (type_)
+		switch (type)
 		{
 		case VET_FLOAT1:
 			return sizeof(float);
@@ -63,11 +63,11 @@ namespace SRE {
 	}
 	unsigned short VertexElement::getTypeCount(Vertex_Element_Type type)
 	{
-		switch (type_)
+		switch (type)
 		{
 		case VET_COLOUR:
-		case VET_COLOUR_ABGR:
-		case VET_COLOUR_ARGB:
+		//case VET_COLOUR_ABGR:
+		//case VET_COLOUR_ARGB:
 			return 1;
 		case VET_FLOAT1:
 			return 1;

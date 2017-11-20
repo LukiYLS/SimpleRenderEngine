@@ -4,16 +4,14 @@
 
 namespace SRE {
 
-
-	HardwareVertexBuffer::HardwareVertexBuffer(size_t vertex_size, size_t num_vertices, HardwareBuffer::Usage usage, bool use_shadow_buffer)
-	: _numVertices(num_vertices),
-		_vertexSize(vertex_size),
+	
+	HardwareVertexBuffer::HardwareVertexBuffer(size_t vertexSize, size_t numVertices, HardwareBuffer::Usage usage, bool useShadowBuffer)
+	: _numVertices(numVertices),
+		_vertexSize(vertexSize),
 		_usage(usage),
-		_useShadowBuffer(use_shadow_buffer),
-		//_memory_need_update_to_video_card(false),
-		//_need_to_delete_from_video_card(false),
-		_locked_start(0),
-		_locked_size(0) 
+		_useShadowBuffer(useShadowBuffer),
+		_lockSize(0),
+		_lockStart(0)
 	{
 		//影子缓冲区的作用是为了在内存当中留一份顶点的备份数据，这样可以读取
 		if (_useShadowBuffer)
@@ -22,8 +20,8 @@ namespace SRE {
 		}
 		else
 		{
-			glGenBuffersARB(1, &_bufferID);
-			if (!_bufferID)
+			glGenBuffersARB(1, &_verexBufferID);
+			if (!_verexBufferID)
 			{
 				//产生缓冲区标示符失败
 			}
@@ -37,23 +35,20 @@ namespace SRE {
 			if (_data)
 				free(_data);
 		}
-		//if (_need_to_delete_from_video_card)
-		{
-		//	glDeleteBuffersARB(1, &_bufferid);
-		//	_need_to_delete_from_video_card = false;
-		}
+		glDeleteBuffersARB(1, &_verexBufferID);		
 	}
 	void* HardwareVertexBuffer::lock(LockOptions options)
 	{
-		lock(0, _sizeInBytes, options);
+		return lock(0, _sizeInBytes, options);
 	}
 	//why lock,what's mean, because we want read or write 
 	void* HardwareVertexBuffer::lock(size_t offset, size_t length, LockOptions options)
 	{
-		if (isLocked())		{
+		//
+		if (isLocked()){
 			//printf("Cannot lock this buffer, it is already locked!");
 			//
-			return;
+			return NULL;
 		}
 
 		void* ret = 0;
@@ -61,38 +56,45 @@ namespace SRE {
 		if ((length + offset) > _sizeInBytes)
 		{
 			//锁定越界
-			return;
+			return ret;
 		}
 		else if (_useShadowBuffer)
 		{
 			if (options != HBL_READ_ONLY)
-				//_memory_need_update_to_video_card = true;
+			{
+
+			}
 			ret = _data + offset;
 			//
 		}
 		else
 		{
-			HardwareBufferManager* hdbm = HardwareBufferManager::getSingletonPtr();
-			if (hdbm->getMapBufferThreshold() > length)
+			
+			HardwareBufferManager* mgr = HardwareBufferManager::getSingletonPtr();
+			//对于小内存，先从内存池中申请空间，避免内存碎片
+			if (mgr->getMapBufferThreshold() > length)
 			{
-				ret = hdbm->allocate((unsigned int)length);
+				
+				ret = mgr->allocate((unsigned int)length);
 				if (ret)
 				{
-					_locked_to_scratch = true;
-					_scratch_offset = offset;
-					_scratch_size = length;
-					_scratch_ptr = ret;
-					_scratch_upload_on_unlock = (options != HBL_READ_ONLY);
+					//保存信息
+					_lockFromPool = true;
+					_scrachOffset = offset;
+					_scrachSize = length;
+					_scrachPtr = ret;
+					//如果不是只读的buffer，需要更新GPU
+					_scratchNeedUpload = (options != HBL_READ_ONLY);
 
-					//需要回读数据
+					//需要回读数据，读取缓冲器的数据
 					if (options != HBL_DISCARD)
 						readData(offset, length, ret);
 				}
 			}
-			if (!ret)
+			if (!ret)//没有申请成功，则直接向GPU申请
 			{
 				GLenum access = 0;
-				glBindBufferARB(GL_ARRAY_BUFFER_ARB, _bufferID);
+				glBindBufferARB(GL_ARRAY_BUFFER_ARB, _verexBufferID);
 				if (options == HBL_DISCARD)
 				{
 					//丢掉原来缓存的内容
@@ -111,6 +113,7 @@ namespace SRE {
 				if (buffer == 0)
 				{
 					//出错
+					return ret;
 				}
 
 				ret = static_cast<void*>(static_cast<unsigned char *>(buffer) + offset);
@@ -119,8 +122,8 @@ namespace SRE {
 			
 		}
 		_isLocked = true;
-		_locked_start = offset;
-		_locked_size = length;
+		_lockStart = offset;
+		_lockSize = length;
 		return ret;
 	}
 
@@ -129,6 +132,7 @@ namespace SRE {
 		if (_isLocked == false)
 		{
 			//assert()
+			return;
 		}
 		if (_useShadowBuffer && _isLocked)
 		{
@@ -138,20 +142,19 @@ namespace SRE {
 		else
 		{
 			//如果是从内存缓冲区分配的
-			if (_locked_to_scratch)
+			if (_lockFromPool)
 			{
-				if (_scratch_upload_on_unlock)
-					writeData(_scratch_offset, _scratch_size, _scratch_ptr, _scratch_offset == 0 && _scratch_size == getSizeInBytes());
-				//释放缓存
-				//hardware_buffermanagerimpl::ptr mgrimpl = _mgr.to_shared_ptr<hardware_buffermanagerimpl>();
+				if (_scratchNeedUpload)
+					writeData(_scrachOffset, _scrachSize, _scrachPtr, _scrachOffset == 0 && _scrachSize == getSizeInBytes());
+				//释放缓存				
 				HardwareBufferManager* hdbm = HardwareBufferManager::getSingletonPtr();
-				hdbm->deallocate(_scratch_ptr);
-				_locked_to_scratch = false;
+				hdbm->deallocate(_scrachPtr);
+				//_locked_to_scratch = false;
 			}
 			else
 			{
-				glBindBufferARB(GL_ARRAY_BUFFER_ARB, _bufferID);
-				glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);
+				glBindBufferARB(GL_ARRAY_BUFFER_ARB, _verexBufferID);
+				glUnmapBufferARB(GL_ARRAY_BUFFER_ARB);//释放缓冲区对象与CPU空间的关系
 			}
 		}
 		_isLocked = false;
@@ -166,13 +169,13 @@ namespace SRE {
 		}
 		else
 		{
-			glBindBufferARB(GL_ARRAY_BUFFER_ARB, _bufferID);
+			glBindBufferARB(GL_ARRAY_BUFFER_ARB, _verexBufferID);
 			glGetBufferSubDataARB(GL_ARRAY_BUFFER_ARB, offset, length, dest);
 		}
 	}
-	void HardwareVertexBuffer::writeData(size_t offset, size_t length, const void* source, bool discardWholeBuffer = false)
+	void HardwareVertexBuffer::writeData(size_t offset, size_t length, const void* source, bool discardWholeBuffer)
 	{
-		glBindBufferARB(GL_ARRAY_BUFFER_ARB, _bufferID);
+		glBindBufferARB(GL_ARRAY_BUFFER_ARB, _verexBufferID);
 
 		//全部提交
 		if (offset == 0 && length == _sizeInBytes)
@@ -189,15 +192,13 @@ namespace SRE {
 	{
 		if (_useShadowBuffer)
 		{
-			glGenBuffersARB(1, &_bufferID);
+			glGenBuffersARB(1, &_verexBufferID);
 
-			glBindBufferARB(GL_ARRAY_BUFFER_ARB, _bufferID);
-			writeData(_locked_start, _locked_size, _data, _locked_start == 0 && _locked_size == _sizeInBytes);
+			glBindBufferARB(GL_ARRAY_BUFFER_ARB, _verexBufferID);
+			writeData(_lockStart, _lockSize, _data, _lockStart == 0 && _lockSize == _sizeInBytes);
 			free(_data);
-			_data = 0;
-			//_memory_need_update_to_video_card = false;
-			_useShadowBuffer = false;
-			//_need_to_delete_from_video_card = true;
+			_data = 0;			
+			_useShadowBuffer = false;			
 
 		}
 	}

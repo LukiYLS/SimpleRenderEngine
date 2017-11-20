@@ -67,7 +67,7 @@ namespace SRE {
 	//读取指定位置的像素
 	ColorValue::ptr PixelBox::getColourAt(unsigned int x, unsigned int y, unsigned int z)
 	{
-		//要理解pixel_box的内存布局
+		//要理解pixelbox的内存布局
 		size_t pixel_size = PixelUtil::getNumElemBytes(_format);
 		size_t pixel_offset = pixel_size * (z * _slicePitch+ y * _rowPitch + x);
 

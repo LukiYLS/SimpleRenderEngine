@@ -44,7 +44,7 @@ namespace Core {
 		glTexImage2D(textureTarget, 0, GL_RGBA, width, height,
 			0, GL_RGBA, GL_UNSIGNED_BYTE, pixels);
 		glBindTexture(textureTarget, 0);
-		_textureTarget = textureTarget;
+		//_textureTarget = textureTarget;
 	}
 
 	Texture::~Texture()
@@ -56,8 +56,8 @@ namespace Core {
 	{
 		GLenum target = getTextureTarget();;
 		
-		glGenTextures(1, &_texture_id);
-		glBindTexture(target, _texture_id);
+		glGenTextures(1, &_textureID);
+		glBindTexture(target, _textureID);
 
 		if (_autoGenerateMipMap)
 		{
@@ -110,7 +110,7 @@ namespace Core {
 	void Texture::bindTexture(int unit)
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(_textureTarget, _textureID);		
+		//glBindTexture(_textureTarget, _textureID);		
 		glBindSampler(unit, _sampler);
 	}
 	GLenum Texture::getTextureTarget()const
