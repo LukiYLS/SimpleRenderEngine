@@ -7,7 +7,7 @@ namespace SRE {
 	{
 		HardwareBufferManager* mgr = HardwareBufferManager::getSingletonPtr();
 		_vertex_declaration = mgr->createVertexDeclaration();
-		_vertex_buffer_binding = mgr->createVertexBufferBinding();
+		_vertex_bufferbinding = mgr->createVertexBufferBinding();
 		_vertex_count = 0;
 		_vertex_start = 0;
 
@@ -23,11 +23,11 @@ namespace SRE {
 
 	VertexBufferBinding::ptr VertexData::getVertexBufferBinding()
 	{
-		return _vertex_buffer_binding;
+		return _vertex_bufferbinding;
 	}
-	void VertexData::setVertexBufferBinding(VertexBufferBinding::ptr vertex_buffer_binding)
+	void VertexData::setVertexBufferBinding(VertexBufferBinding::ptr vertex_bufferbinding)
 	{
-		_vertex_buffer_binding = vertex_buffer_binding;
+		_vertex_bufferbinding = vertex_bufferbinding;
 	}
 
 	unsigned int VertexData::getVertexStart()

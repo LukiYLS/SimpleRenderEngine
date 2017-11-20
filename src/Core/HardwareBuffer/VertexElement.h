@@ -40,9 +40,9 @@ namespace SRE {
 		VET_SHORT4 = 8,
 		VET_UBYTE4 = 9,
 		/// D3D style compact colour
-		VET_COLOUR_ARGB = 10,
+		VET_COLOUrARGB = 10,
 		/// GL style compact colour
-		VET_COLOUR_ABGR = 11
+		VET_COLOUrABGR = 11
 	};
 
 

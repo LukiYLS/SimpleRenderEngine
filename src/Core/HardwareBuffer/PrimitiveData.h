@@ -16,7 +16,7 @@ namespace SRE {
 		void setVertexDeclaration(VertexDeclaration::ptr vertex_declaration);
 
 		VertexBufferBinding::ptr getVertexBufferBinding();
-		void setVertexBufferBinding(VertexBufferBinding::ptr vertex_buffer_binding);
+		void setVertexBufferBinding(VertexBufferBinding::ptr vertex_bufferbinding);
 
 		unsigned int getVertexStart();
 		void setVertexStart(unsigned int start);
@@ -25,7 +25,7 @@ namespace SRE {
 		void setVertexCount(unsigned int count);
 	protected:
 		VertexDeclaration::ptr _vertex_declaration;
-		VertexBufferBinding::ptr _vertex_buffer_binding;
+		VertexBufferBinding::ptr _vertex_bufferbinding;
 		size_t _vertex_start;
 		size_t _vertex_count;
 		
@@ -39,7 +39,7 @@ namespace SRE {
 	public:
 		
 		HardwareIndexBuffer::ptr getHardwareIndexBuffer();
-		void setHardwareIndexBuffer(HardwareIndexBuffer::ptr vertex_buffer_binding);
+		void setHardwareIndexBuffer(HardwareIndexBuffer::ptr vertex_bufferbinding);
 
 		unsigned int getIndexStart();
 		void setIndexStart(unsigned int start);

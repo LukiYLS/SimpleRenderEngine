@@ -34,7 +34,7 @@ namespace SRE {
 
 		//HardwareIndexBuffer::ptr
 		//	createIndexBuffer(HardwareIndexBuffer::index_type itype_, unsigned int num_indexes_,
-		//		hardware_buffer::buffer_usage usage_, bool use_shadow_buffer_ = false);
+		//		hardware_buffer::bufferusage usage_, bool use_shadow_buffer = false);
 
 		VertexDeclaration::ptr createVertexDeclaration(void);
 
@@ -52,6 +52,6 @@ namespace SRE {
 		static GLenum getGLType(unsigned int type);
 	protected:
 		static HardwareBufferManager* _singleton;
-		char* _buffer_pool;
+		char* _bufferpool;
 	};
 }

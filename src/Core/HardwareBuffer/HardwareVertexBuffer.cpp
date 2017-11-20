@@ -6,16 +6,17 @@ namespace SRE {
 
 
 	HardwareVertexBuffer::HardwareVertexBuffer(size_t vertex_size, size_t num_vertices, HardwareBuffer::Usage usage, bool use_shadow_buffer)
-	:	(num_vertices),
-		_vertex_size(vertex_size_),
+	: _numVertices(num_vertices),
+		_vertexSize(vertex_size),
 		_usage(usage),
-		_keepInMemory(use_shadow_buffer),
+		_useShadowBuffer(use_shadow_buffer),
 		//_memory_need_update_to_video_card(false),
 		//_need_to_delete_from_video_card(false),
 		_locked_start(0),
 		_locked_size(0) 
 	{
-		if (_keepInMemory)
+		//影子缓冲区的作用是为了在内存当中留一份顶点的备份数据，这样可以读取
+		if (_useShadowBuffer)
 		{
 			_data = static_cast<unsigned char*>(malloc(_sizeInBytes));
 		}
@@ -31,14 +32,14 @@ namespace SRE {
 
 	HardwareVertexBuffer::~HardwareVertexBuffer()
 	{
-		if (_keepInMemory)
+		if (_useShadowBuffer)
 		{
 			if (_data)
 				free(_data);
 		}
 		//if (_need_to_delete_from_video_card)
 		{
-		//	glDeleteBuffersARB(1, &_buffer_id);
+		//	glDeleteBuffersARB(1, &_bufferid);
 		//	_need_to_delete_from_video_card = false;
 		}
 	}
@@ -46,11 +47,13 @@ namespace SRE {
 	{
 		lock(0, _sizeInBytes, options);
 	}
+	//why lock,what's mean, because we want read or write 
 	void* HardwareVertexBuffer::lock(size_t offset, size_t length, LockOptions options)
 	{
 		if (isLocked())		{
 			//printf("Cannot lock this buffer, it is already locked!");
 			//
+			return;
 		}
 
 		void* ret = 0;
@@ -58,12 +61,14 @@ namespace SRE {
 		if ((length + offset) > _sizeInBytes)
 		{
 			//锁定越界
+			return;
 		}
-		else if (_keepInMemory)
+		else if (_useShadowBuffer)
 		{
 			if (options != HBL_READ_ONLY)
 				//_memory_need_update_to_video_card = true;
 			ret = _data + offset;
+			//
 		}
 		else
 		{
@@ -125,7 +130,7 @@ namespace SRE {
 		{
 			//assert()
 		}
-		if (_keepInMemory && _isLocked)
+		if (_useShadowBuffer && _isLocked)
 		{
 			_isLocked = false;
 			return;
@@ -138,7 +143,7 @@ namespace SRE {
 				if (_scratch_upload_on_unlock)
 					writeData(_scratch_offset, _scratch_size, _scratch_ptr, _scratch_offset == 0 && _scratch_size == getSizeInBytes());
 				//释放缓存
-				//hardware_buffer_manager_impl::ptr mgr_impl = _mgr.to_shared_ptr<hardware_buffer_manager_impl>();
+				//hardware_buffermanagerimpl::ptr mgrimpl = _mgr.to_shared_ptr<hardware_buffermanagerimpl>();
 				HardwareBufferManager* hdbm = HardwareBufferManager::getSingletonPtr();
 				hdbm->deallocate(_scratch_ptr);
 				_locked_to_scratch = false;
@@ -155,7 +160,7 @@ namespace SRE {
 
 	void HardwareVertexBuffer::readData(size_t offset, size_t length, void* dest)
 	{
-		if (_keepInMemory)
+		if (_useShadowBuffer)
 		{
 			memcpy(dest, _data + offset, length);
 		}
@@ -182,7 +187,7 @@ namespace SRE {
 
 	void HardwareVertexBuffer::upload(void)
 	{
-		if (_keepInMemory)
+		if (_useShadowBuffer)
 		{
 			glGenBuffersARB(1, &_bufferID);
 
@@ -191,7 +196,7 @@ namespace SRE {
 			free(_data);
 			_data = 0;
 			//_memory_need_update_to_video_card = false;
-			_keepInMemory = false;
+			_useShadowBuffer = false;
 			//_need_to_delete_from_video_card = true;
 
 		}

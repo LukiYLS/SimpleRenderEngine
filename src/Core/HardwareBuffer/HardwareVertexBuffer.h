@@ -8,7 +8,7 @@ namespace SRE {
 	{
 	public:
 		typedef std::shared_ptr<HardwareVertexBuffer> ptr;
-		HardwareVertexBuffer(size_t vertex_size, size_t num_vertices, HardwareBuffer::Usage usage, bool use_shadow_buffer);
+		HardwareVertexBuffer(size_t vertex_size, size_t num_vertices, HardwareBuffer::Usage usage, bool use_shadow_buffer = false);
 		~HardwareVertexBuffer();
 	public:
 
@@ -37,9 +37,10 @@ namespace SRE {
 		size_t _sizeInBytes;
 		Usage  _usage;
 		bool _isLocked;
-		bool _keepInMemory;
+		bool _useShadowBuffer;
 		unsigned char* _data;
 
+		//从内存池取数据
 		bool          _locked_to_scratch;
 		size_t        _scratch_offset;
 		size_t        _scratch_size;

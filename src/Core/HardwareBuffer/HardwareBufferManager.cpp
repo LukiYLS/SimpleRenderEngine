@@ -18,13 +18,13 @@ namespace SRE {
 
 	HardwareBufferManager::~HardwareBufferManager()
 	{
-		free(_buffer_pool);
+		free(_bufferpool);
 	}
 	HardwareBufferManager::HardwareBufferManager()
 	{
-		_buffer_pool = (char*)malloc(sizeof(char) * POOLSIZE);
+		_bufferpool = (char*)malloc(sizeof(char) * POOLSIZE);
 
-		BufferAlloc *ptr = (BufferAlloc*)_buffer_pool;
+		BufferAlloc *ptr = (BufferAlloc*)_bufferpool;
 		ptr->size = POOLSIZE - sizeof(BufferAlloc);
 		ptr->free = 1;
 	}
@@ -35,18 +35,18 @@ namespace SRE {
 		if (size % 4 != 0)
 			size += 4 - (size % 4);
 
-		size_t buffer_pos = 0;
+		size_t bufferpos = 0;
 
-		while (buffer_pos < POOLSIZE)
+		while (bufferpos < POOLSIZE)
 		{
-			BufferAlloc* next = (BufferAlloc*)(_buffer_pool + buffer_pos);
+			BufferAlloc* next = (BufferAlloc*)(_bufferpool + bufferpos);
 
 			if (next->free && next->size >= size)
 			{
 				if (next->size > size + sizeof(BufferAlloc))
 				{
 					unsigned int offset = (unsigned int)sizeof(BufferAlloc) + size;
-					BufferAlloc* split_alloc = (BufferAlloc*)(_buffer_pool + buffer_pos + offset);
+					BufferAlloc* split_alloc = (BufferAlloc*)(_bufferpool + bufferpos + offset);
 					split_alloc->free = 1;
 					split_alloc->size = next->size - sizeof(BufferAlloc) - size;
 					next->size = size;
@@ -55,7 +55,7 @@ namespace SRE {
 				return ++next;
 			}
 
-			buffer_pos += sizeof(BufferAlloc) + next->size;
+			bufferpos += sizeof(BufferAlloc) + next->size;
 		}
 
 		return 0;
@@ -63,32 +63,32 @@ namespace SRE {
 
 	void HardwareBufferManager::deallocate(void* ptr)	
 	{
-		unsigned int buffer_pos = 0;
+		unsigned int bufferpos = 0;
 		BufferAlloc *last = 0;
 
-		while (buffer_pos < POOLSIZE)
+		while (bufferpos < POOLSIZE)
 		{
-			BufferAlloc* current = (BufferAlloc*)(_buffer_pool + buffer_pos);
-			if ((_buffer_pool + buffer_pos + sizeof(BufferAlloc)) == ptr)
+			BufferAlloc* current = (BufferAlloc*)(_bufferpool + bufferpos);
+			if ((_bufferpool + bufferpos + sizeof(BufferAlloc)) == ptr)
 			{
 				current->free = 1;
 				if (last&& last->free)
 				{
-					buffer_pos -= (last->size + (unsigned int)sizeof(BufferAlloc));
+					bufferpos -= (last->size + (unsigned int)sizeof(BufferAlloc));
 					last->size += current->size + sizeof(BufferAlloc);
 					current = last;
 				}
-				unsigned int offset = buffer_pos + current->size + sizeof(BufferAlloc);
+				unsigned int offset = bufferpos + current->size + sizeof(BufferAlloc);
 				if (offset < POOLSIZE)
 				{
-					BufferAlloc *next = (BufferAlloc*)(_buffer_pool + offset);
+					BufferAlloc *next = (BufferAlloc*)(_bufferpool + offset);
 					if (next->free)
 						current->size += next->size + sizeof(BufferAlloc);
 				}
 
 				return;
 			}
-			buffer_pos += (unsigned int)sizeof(BufferAlloc) + current->size;
+			bufferpos += (unsigned int)sizeof(BufferAlloc) + current->size;
 			last = current;
 		}
 	}
@@ -125,8 +125,8 @@ namespace SRE {
 		case VET_SHORT4:
 			return GL_SHORT;
 		case VET_COLOUR:
-		case VET_COLOUR_ABGR:
-		case VET_COLOUR_ARGB:
+		case VET_COLOUrABGR:
+		case VET_COLOUrARGB:
 		case VET_UBYTE4:
 			return GL_UNSIGNED_BYTE;
 		default:
