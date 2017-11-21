@@ -4,6 +4,9 @@
 #include <string>
 #include <vector>
 #include "Image.h"
+#include "HardwareBuffer\PixelBox.h"
+#include "HardwareBuffer\HardwareTextureBuffer.h"
+using namespace SRE;
 namespace Core {
 	enum TextureType
 	{	
@@ -28,8 +31,9 @@ namespace Core {
 		{
 	public:
 		typedef std::shared_ptr<Texture> ptr;
+		typedef std::vector<HardwareTextureBuffer::ptr> TextureBufferVector;
 	public:
-		Texture(TextureType type) {}
+		Texture(const std::string name,TextureType type = TEX_TYPE_2D);
 		Texture(GLenum textureTarget, const std::string& fileName);
 		~Texture();
 	public:		
@@ -54,12 +58,16 @@ namespace Core {
 		//virtual void setDepth(uint32_t depth) { _depth = depth; }
 	protected:
 		GLenum getTextureTarget()const;
+		std::string _name;
+		unsigned int _numMipMaps;
+		PixelFormat _pixelFormat;
+		TextureBufferVector _surface_list;
 		std::vector<Image::ptr> _image_list;
-		//int _height, _width, _depth;
+		unsigned int _height, _width, _depth;
+		HardwareBuffer::Usage _usage;
 		GLuint _textureID; // Texture name
 		GLuint _sampler; // Sampler name
-		//GLenum _textureTarget;
-		unsigned int _mipmaps;
+		bool _isAlpha;
 		bool _autoGenerateMipMap;
 		TextureType _textureType;
 	};

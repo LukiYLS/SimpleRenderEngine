@@ -16,6 +16,8 @@ namespace Core {
 		static TextureManager* Inst();
 		virtual ~TextureManager();
 	
+		Texture::ptr createTexture(TextureType type, const std::string& name);
+
 		bool loadTexture(const char* filename, const std::string texName, GLenum image_format = GL_RGB, GLint internal_format = GL_RGB, GLint level = 0, GLint border = 0);
 
 		bool unloadTexture(std::string texName);

@@ -1,8 +1,19 @@
 #include "Texture.h"
 #include <FreeImage.h>
-
+#include "HardwareBuffer\HardwareTextureBuffer.h"
+#include "HardwareBuffer\PixelUtil.h"
 namespace Core {
 
+
+	Texture::Texture(const std::string name, TextureType type = TEX_TYPE_2D)
+		:_name(name),
+		_width(0),
+		_height(0),
+		_depth(0),
+		_isAlpha(false)
+	{
+
+	}
 	Texture::Texture(GLenum textureTarget, const std::string& fileName)
 	{
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -58,6 +69,12 @@ namespace Core {
 		
 		glGenTextures(1, &_textureID);
 		glBindTexture(target, _textureID);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, _numMipMaps);
+
+		GLenum format = PixelUtil::getGLInternalFormat(_pixelFormat);
+		GLenum data_format = PixelUtil::getGLOriginFormat(_pixelFormat);
+		GLenum data_type = PixelUtil::getGLOriginDataType(_pixelFormat);
 
 		if (_autoGenerateMipMap)
 		{
@@ -69,6 +86,12 @@ namespace Core {
 					Image::ptr image = _image_list[i];
 					glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 						0, GL_RGB, image->width(), image->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->data());
+
+					HardwareTextureBuffer::ptr buffer = std::make_shared<HardwareTextureBuffer>(
+						GL_TEXTURE_CUBE_MAP, _textureID, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, _usage, false);
+					_surface_list.push_back(buffer);
+					PixelBox::ptr box = std::make_shared<PixelBox>(_image_list[i]->width(),_image_list[i]->height(), _image_list[i]->depth(),_image_list[i]-)
+					buffer->blitFromMemory()
 				}
 			}
 			else
