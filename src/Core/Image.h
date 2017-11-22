@@ -2,6 +2,8 @@
 #include <memory>
 #include <string>
 #include <FreeImage.h>
+#include "HardwareBuffer\PixelBox.h"
+using namespace SRE;
 namespace Core {
 
 	class Image {
@@ -29,6 +31,8 @@ namespace Core {
 		unsigned int height(void) const { return _height; }
 		
 		unsigned int depth(void) const { return _depth; }
+
+		PixelFormat pixelFormat()const { return _pixelFormat; }
 		
 		size_t numFaces(void) const { return 1; }
 		
@@ -44,10 +48,11 @@ namespace Core {
 		
 		//PixelBox getPixelBox(size_t face = 0, size_t mipmap = 0) const;
 		
-		void freeMemory();
-		void resize(int width, int height);
+		
+		//void resize(int width, int height);
 	protected:		
 		bool decode(FIBITMAP* dib);
+		bool decode2(FIBITMAP* dib);
 		FIBITMAP* rescale(FIBITMAP* dib, int width, int height);
 		FIBITMAP* toBitMap();
 		unsigned int _width;		
@@ -57,7 +62,7 @@ namespace Core {
 		unsigned char _numMipMaps;
 		unsigned char _pixelSize;
 		unsigned char* _buffer;
-		FREE_IMAGE_FORMAT _format;
+		PixelFormat _pixelFormat;
 		//std::string _type;
 
 	};

@@ -8,14 +8,15 @@ namespace SRE {
 	class HardwareIndexBuffer : public HardwareBuffer
 	{
 	public:
-		typedef std::shared_ptr<HardwareIndexBuffer> ptr;
-		HardwareIndexBuffer(size_t index_size, size_t num_indices, HardwareBuffer::Usage usage, bool use_shadow_buffer);
-		~HardwareIndexBuffer();
-	public:
 		enum IndexType {
 			IT_16BIT,
 			IT_32BIT
-		};		
+		};
+		typedef std::shared_ptr<HardwareIndexBuffer> ptr;
+		HardwareIndexBuffer(IndexType index_type, size_t num_indices, HardwareBuffer::Usage usage, bool use_shadow_buffer);
+		~HardwareIndexBuffer();
+	public:
+		
 		typedef std::shared_ptr<HardwareIndexBuffer> ptr;
 		virtual void*	lock(size_t offset, size_t length, LockOptions options);
 		virtual void*	lock(LockOptions options);
@@ -33,6 +34,9 @@ namespace SRE {
 		virtual bool    isLocked(void) const { return _isLocked; }
 		virtual bool	isUseShadowBuffer(void) const { return _useShadowBuffer; }
 		virtual void    upload(void);
+		GLuint  getBufferID() { return _indexBufferID; }
+		size_t  getIndexSize() { return _indexSize; }
+		IndexType getIndexType() { return _indexType; }
 	protected:
 
 		GLuint _indexBufferID;

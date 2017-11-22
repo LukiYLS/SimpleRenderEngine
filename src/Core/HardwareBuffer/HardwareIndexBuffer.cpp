@@ -2,18 +2,27 @@
 #include "HardwareBufferManager.h"
 #include <glew\glew.h>
 namespace SRE {
-	HardwareIndexBuffer::HardwareIndexBuffer(size_t indexSize, size_t numIndexes, HardwareBuffer::Usage usage, bool useShadowBuffer)
+	HardwareIndexBuffer::HardwareIndexBuffer(IndexType index_type, size_t numIndexes, HardwareBuffer::Usage usage, bool useShadowBuffer)
 		:_numIndexes(numIndexes),
-		_indexSize(indexSize),
+		_indexType(index_type),
 		_usage(usage),
 		_useShadowBuffer(useShadowBuffer),
 		_lockStart(0),
 		_lockSize(0)
 	{
-		_sizeInBytes = numIndexes * indexSize;
+		switch (index_type)
+		{
+		case IT_16BIT:
+			_indexSize = sizeof(unsigned short);
+			break;
+		case IT_32BIT:
+			_indexSize = sizeof(unsigned int);
+			break;
+		}
+		_sizeInBytes = _numIndexes * _indexSize;
 		if (_useShadowBuffer)
 		{
-			_data = static_cast<unsigned char*>(malloc(_indexSize));
+			_data = static_cast<unsigned char*>(malloc(_sizeInBytes));
 		}
 		else
 		{

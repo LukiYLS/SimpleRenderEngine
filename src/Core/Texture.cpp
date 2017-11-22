@@ -63,51 +63,162 @@ namespace Core {
 		glDeleteTextures(1, &_textureID);
 		glDeleteSamplers(1, &_sampler);
 	}
-	void Texture::upLoad()
+
+	void Texture::loadImage(Image* image)
 	{
-		GLenum target = getTextureTarget();;
-		
-		glGenTextures(1, &_textureID);
-		glBindTexture(target, _textureID);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, _numMipMaps);
+		if (!image)
+			return;
 
-		GLenum format = PixelUtil::getGLInternalFormat(_pixelFormat);
-		GLenum data_format = PixelUtil::getGLOriginFormat(_pixelFormat);
-		GLenum data_type = PixelUtil::getGLOriginDataType(_pixelFormat);
+		_width = image->width();
+		_height = image->height();
+		_depth = image->depth();
 
-		if (_autoGenerateMipMap)
+		_pixelFormat = image->pixelFormat();
+		size_t maxMips = PixelUtil::getMaxMipmaps(_width, _height, _depth, _pixelFormat);
+		if (_numMipMaps > maxMips)
+			_numMipMaps = maxMips;
+
+		size_t width = _width;
+		size_t height = _height;
+		size_t depth = _depth;
+		for (unsigned short mip = 0; mip < _numMipMaps; mip++)
 		{
-			//如果是cubemap，目前imagelist存储6张纹理（当_autoGenerateMipMap为false，这种情况？？）
-			if (_textureType == TEX_TYPE_CUBE_MAP)
+			if (mip == 0)
 			{
-				for (int i = 0; i < 6; ++i)
-				{
-					Image::ptr image = _image_list[i];
-					glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
-						0, GL_RGB, image->width(), image->height(), 0, GL_RGB, GL_UNSIGNED_BYTE, image->data());
-
-					HardwareTextureBuffer::ptr buffer = std::make_shared<HardwareTextureBuffer>(
-						GL_TEXTURE_CUBE_MAP, _textureID, GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, _usage, false);
-					_surface_list.push_back(buffer);
-					PixelBox::ptr box = std::make_shared<PixelBox>(_image_list[i]->width(),_image_list[i]->height(), _image_list[i]->depth(),_image_list[i]-)
-					buffer->blitFromMemory()
-				}
+				_image_list.push_back((Image::ptr)image);
+				if (_autoGenerateMipMap)
+					break;
 			}
 			else
 			{
-				Image::ptr image = _image_list[0];
-
-			}
-			glGenerateMipmap(target);
+				//_image_list.push_back(texture_manager_impl_->rescale_picture(image_information_, width, height));
+			}				
+			if (width > 1)
+				width = width / 2;
+			if (height > 1)
+				height = height / 2;
+			if (depth > 1)
+				depth = depth / 2;
 		}
-		for (size_t mip = 0; mip < _mipmaps; mip++)
+
+		createInternalResources();
+
+
+		size_t faces;
+		bool multiImage; // Load from multiple images?
+		if (_image_list.size() > 1)
 		{
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-			glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, _mipmaps);
-			//glTexImage2D(GL_TEXTURE_2D, mip, format, width, height, 0, data_format, data_type, 0);
+			faces = _image_list.size();
+			multiImage = true;
+		}
+		else
+		{
+			faces = 1;//_image_list[0]->getNumFaces();
+			multiImage = false;
+		}
+		for (size_t mip = 0; mip <= _numMipMaps; ++mip)
+		{
+			for (size_t i = 0; i < faces; ++i)
+			{
+				Image::ptr image = _image_list[i];
+				PixelBox::ptr box = std::make_shared<PixelBox>(image->width(), image->height(), image->depth(), image->pixelFormat(), image->data());
+				getBuffer(i, mip)->blitFromMemory(box);
+			}
+		}
+	}
+	void Texture::upLoad()
+	{
+		
+		
+
+	}
+	void Texture::createInternalResources()
+	{
+		GLenum target = getTextureTarget();;
+		glGenTextures(1, &_textureID);
+		glBindTexture(target, _textureID);
+
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, _numMipMaps);
+		glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+		glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+		unsigned width = _width;
+		unsigned height = _height;
+		unsigned depth = _depth;
+		GLenum format = PixelUtil::getClosestGLInternalFormat(_pixelFormat);
+
+		if (PixelUtil::isCompressed(_pixelFormat))
+		{
+		}
+		else
+		{
+			for (unsigned short mip = 0; mip < _numMipMaps; mip++)
+			{
+				switch (_textureType)
+				{
+				case TEX_TYPE_1D:
+					glTexImage1D(GL_TEXTURE_1D, mip, format,
+						width, 0,
+						GL_RGBA, GL_UNSIGNED_BYTE, 0);
+
+					break;
+				case TEX_TYPE_2D:
+					glTexImage2D(GL_TEXTURE_2D, mip, format,
+						width, height, 0,
+						GL_RGBA, GL_UNSIGNED_BYTE, 0);
+					break;
+				case TEX_TYPE_2D_ARRAY:
+				case TEX_TYPE_3D:
+					glTexImage3D(target, mip, format,
+						width, height, depth, 0,
+						GL_RGBA, GL_UNSIGNED_BYTE, 0);
+					break;
+				case TEX_TYPE_CUBE_MAP:
+					for (int face = 0; face<6; face++) {
+						glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + face, mip, format,
+							width, height, 0,
+							GL_RGBA, GL_UNSIGNED_BYTE, 0);
+					}
+					break;
+				case TEX_TYPE_2D_RECT:
+					break;
+				};
+				if (width>1)
+					width = width / 2;
+				if (height>1)
+					height = height / 2;
+				if (depth>1 && _textureType != TEX_TYPE_2D_ARRAY)
+					depth = depth / 2;
+			}
 		}
 
+		_surface_list.clear();
+
+		for (GLuint face = 0; face < getNumFaces(); face++)
+		{
+			for (unsigned short mip = 0; mip < _numMipMaps; mip++)
+			{
+				HardwareTextureBuffer::ptr buffer = std::make_shared<HardwareTextureBuffer>(target, _textureID, face, mip, _usage, _autoGenerateMipMap);
+				_surface_list.push_back(buffer);
+			}
+		}
+	}
+	HardwareTextureBuffer::ptr Texture::getBuffer(size_t face, size_t mipmap)
+	{
+		if (face > getNumFaces())
+		{
+			return NULL;
+		}
+		if (mipmap > _numMipMaps)
+		{
+			return NULL;
+		}
+		unsigned long idx = face*(_numMipMaps + 1) + mipmap;
+		return idx < _surface_list.size() ? _surface_list[idx] : NULL;
+		
 	}
 	void Texture::setFiltering(int magnification, int minification)
 	{

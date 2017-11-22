@@ -14,6 +14,7 @@ namespace SRE {
 		_lockStart(0)
 	{
 		//影子缓冲区的作用是为了在内存当中留一份顶点的备份数据，这样可以读取
+		_sizeInBytes = numVertices * vertexSize;
 		if (_useShadowBuffer)
 		{
 			_data = static_cast<unsigned char*>(malloc(_sizeInBytes));

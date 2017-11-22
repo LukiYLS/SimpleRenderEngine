@@ -40,15 +40,14 @@ namespace Core {
 		//virtual void setTextureType(TextureType type) { _type = type; }		
 		//virtual TextureType getTextureType(void) const { return _type; }
 		void upLoad();
-		virtual bool getNumMipmaps(void) const { return _mipmaps; }		
-		virtual void setNumMipmaps(bool num) { _mipmaps = num; }
+		virtual bool getNumMipmaps(void) const { return _numMipMaps; }		
+		virtual void setNumMipmaps(bool num) { _numMipMaps = num; }
 		void setFiltering(int magnification, int minification);	
-		void bindTexture(int unit);
-		
+		void bindTexture(int unit);		
 		void setTextureType(TextureType type) { _textureType = type; }
 		TextureType getTextureType(void) const { return _textureType; }
 		size_t getNumFaces()const { return _textureType == TEX_TYPE_CUBE_MAP ? 6 : 1; }
-
+		GLenum getTextureTarget()const;
 		void loadImage(Image* image);
 		//virtual uint32_t getHeight() const { return _height; }
 		//virtual void setHeight(uint32_t height) { _height = height; }
@@ -57,7 +56,9 @@ namespace Core {
 		//virtual uint32_t getDepth(void) const { return _depth; }
 		//virtual void setDepth(uint32_t depth) { _depth = depth; }
 	protected:
-		GLenum getTextureTarget()const;
+		
+		void createInternalResources();
+		HardwareTextureBuffer::ptr getBuffer(size_t face, size_t mipmap);
 		std::string _name;
 		unsigned int _numMipMaps;
 		PixelFormat _pixelFormat;

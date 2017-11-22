@@ -32,7 +32,20 @@ namespace Core {
 		unloadAllTextures();
 		m_inst = 0;
 	}
-
+	Texture::ptr TextureManager::createTexture(TextureType type, const std::string& tex_name,const std::string& file_name)
+	{
+		Texture* texture = new Texture(tex_name, type);
+		Image* image = new Image;
+		image->load(file_name);
+		texture->loadImage(image);
+		_textures[tex_name] = (Texture::ptr)texture;
+		return (Texture::ptr)texture;
+	}
+	Texture::ptr TextureManager::createCubeMap(const std::string& tex_name, std::vector<const std::string> flies)
+	{
+		Texture* texture = new Texture(tex_name, TEX_TYPE_CUBE_MAP);
+		
+	}
 	bool TextureManager::loadTexture(const char* fileName, const std::string texName, GLenum image_format, GLint internal_format, GLint level, GLint border)
 	{
 

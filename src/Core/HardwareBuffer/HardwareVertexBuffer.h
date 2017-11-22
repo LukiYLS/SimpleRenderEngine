@@ -28,6 +28,9 @@ namespace SRE {
 		virtual bool    isLocked(void) const { return _isLocked; }
 		virtual bool	isUseShadowBuffer(void) const { return _useShadowBuffer; }
 		virtual void    upload(void);
+		GLuint  getBufferID() { return _verexBufferID; }
+		unsigned int getVertexSize() { return _vertexSize; }
+		unsigned int getVertexNum() { return _numVertices; }
 	protected:
 		GLuint _verexBufferID;//vbo
 		size_t _numVertices;//

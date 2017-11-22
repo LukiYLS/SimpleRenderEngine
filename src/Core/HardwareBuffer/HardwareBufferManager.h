@@ -1,8 +1,8 @@
 #pragma once
 #include <glew\glew.h>
 #include "HardwareBuffer.h"
-//#include "HardwareIndexBuffer.h"
-//#include "HardwareVertexBuffer.h"
+#include "HardwareIndexBuffer.h"
+#include "HardwareVertexBuffer.h"
 #include "VertexDeclaration.h"
 #include "VertexBufferBinding.h"
 namespace SRE {
@@ -31,10 +31,11 @@ namespace SRE {
 		HardwareVertexBuffer::ptr createVertexBuffer(unsigned int vertex_size_, unsigned int num_verts_, HardwareBuffer::Usage usage,
 				bool use_shadow_buffer = false);
 
-		//HardwareIndexBuffer::ptr
-		//	createIndexBuffer(HardwareIndexBuffer::index_type itype_, unsigned int num_indexes_,
-		//		hardware_buffer::bufferusage usage_, bool use_shadow_buffer = false);
-
+		HardwareIndexBuffer::ptr
+			createIndexBuffer(HardwareIndexBuffer::IndexType itype, unsigned int num_indexes,
+				HardwareBuffer::Usage usage, bool use_shadow_buffer = false);
+		HardwareVertexBuffer::ptr createVertexBuffer(rsize_t vertex_size, rsize_t num_verts, HardwareBuffer::Usage usage,
+			bool use_shadow_buffer = false);
 		VertexDeclaration::ptr createVertexDeclaration(void);
 
 		void destroyVertexDeclaration(VertexDeclaration::ptr decl);

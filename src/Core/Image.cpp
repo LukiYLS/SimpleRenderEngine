@@ -9,10 +9,34 @@ namespace Core {
 		  _depth(0),
 		 _bufSize(0),
 		_numMipMaps(0),
-		_format(),
+		_pixelFormat(PF_UNKNOWN),
 		_buffer(NULL)
 	{
 		FreeImage_Initialise();
+	}
+	Image::Image(const Image& image)
+		:_buffer(NULL)
+	{
+		*this = image;
+	}
+	Image & Image::operator = (const Image &image)
+	{
+		if (_buffer)
+		{
+			free(_buffer);
+			_buffer = 0;
+		}
+		_width = image._width;
+		_height = image._height;
+		_depth = image._depth;
+		//mFormat = image.mFormat;
+		_bufSize = image._bufSize;
+		_numMipMaps = image._numMipMaps;
+		_buffer = (unsigned char*)malloc(sizeof(char) * _bufSize);
+		memcpy(_buffer, image._buffer, _bufSize);			
+		//_buffer = image._buffer;	
+
+		return *this;
 	}
 	Image::~Image()
 	{
@@ -100,12 +124,14 @@ namespace Core {
 			if (!dib)
 				return false;
 			bits = FreeImage_GetBits(dib);
+			
 			_pixelSize = 4;
 		}
 		
 		_width = width;
 		_height = height;
-
+		_depth = 1;
+		_numMipMaps = 0;
 		int bit_count = FreeImage_GetLine(dib)*_height;
 		int bytespp = FreeImage_GetLine(dib) / FreeImage_GetWidth(dib);
 		for (long index = 0; index < bit_count; index += bytespp)
@@ -114,7 +140,7 @@ namespace Core {
 			bits[index] = bits[index + 2];
 			bits[index + 2] = temp_color;
 		}
-
+		_pixelFormat = PF_BYTE_RGBA;
 		_buffer = (unsigned char*)malloc(sizeof(char) * bit_count);
 		memcpy(_buffer, bits, sizeof(char) * bit_count);
 		_bufSize = bit_count;
@@ -122,10 +148,152 @@ namespace Core {
 		return true;
 		
 	}
+	bool Image::decode2(FIBITMAP* dib)
+	{
+		if (!dib)
+		{
+			return false;
+		}
+
+		unsigned int width = FreeImage_GetWidth(dib);
+		unsigned int height = FreeImage_GetHeight(dib);
+		if ((width == 0) || (height == 0))
+		{
+			return false;
+		}
+		_width = width;
+		_height = height;
+		_depth = 1;
+		_numMipMaps = 0;
+
+		FREE_IMAGE_TYPE imageType = FreeImage_GetImageType(dib);
+		FREE_IMAGE_COLOR_TYPE colorType = FreeImage_GetColorType(dib);
+		unsigned bpp = FreeImage_GetBPP(dib);
+
+		switch (imageType)
+		{
+		case FIT_UNKNOWN:
+		case FIT_COMPLEX:
+		case FIT_UINT32:
+		case FIT_INT32:
+		case FIT_DOUBLE:
+		default:
+
+			break;
+		case FIT_BITMAP:
+			// Standard image type
+			// Perform any colour conversions for greyscale
+			if (colorType == FIC_MINISWHITE || colorType == FIC_MINISBLACK)
+			{
+				FIBITMAP* newBitmap = FreeImage_ConvertToGreyscale(dib);
+				// free old bitmap and replace
+				FreeImage_Unload(dib);
+				dib = newBitmap;
+				// get new formats
+				bpp = FreeImage_GetBPP(dib);
+			}
+			// Perform any colour conversions for RGB
+			else if (bpp < 8 || colorType == FIC_PALETTE || colorType == FIC_CMYK)
+			{
+				FIBITMAP* newBitmap = NULL;
+				if (FreeImage_IsTransparent(dib))
+				{
+					// convert to 32 bit to preserve the transparency 
+					// (the alpha byte will be 0 if pixel is transparent)
+					newBitmap = FreeImage_ConvertTo32Bits(dib);
+				}
+				else
+				{
+					// no transparency - only 3 bytes are needed
+					newBitmap = FreeImage_ConvertTo24Bits(dib);
+				}
+
+				// free old bitmap and replace
+				FreeImage_Unload(dib);
+				dib = newBitmap;
+				// get new formats
+				bpp = FreeImage_GetBPP(dib);
+			}
+
+			// by this stage, 8-bit is greyscale, 16/24/32 bit are RGB[A]
+			switch (bpp)
+			{
+			case 8:
+				_pixelFormat = PF_L8;
+				break;
+			case 16:
+				// Determine 555 or 565 from green mask
+				// cannot be 16-bit greyscale since that's FIT_UINT16
+				if (FreeImage_GetGreenMask(dib) == FI16_565_GREEN_MASK)
+				{
+					_pixelFormat = PF_R5G6B5;
+				}
+				else
+				{
+					// FreeImage doesn't support 4444 format so must be 1555
+					_pixelFormat = PF_A1R5G5B5;
+				}
+				break;
+			case 24:
+				// FreeImage differs per platform
+				//     PF_BYTE_BGR[A] for little endian (== PF_ARGB native)
+				//     PF_BYTE_RGB[A] for big endian (== PF_RGBA native)
+#if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_RGB
+				_pixelFormat = PF_BYTE_RGB;
+#else
+				_pixelFormat = PF_BYTE_BGR;
+#endif
+				break;
+			case 32:
+#if FREEIMAGE_COLORORDER == FREEIMAGE_COLORORDER_RGB
+				_pixelFormat = PF_BYTE_RGBA;
+#else
+				_pixelFormat = PF_BYTE_BGRA;
+#endif
+				break;
+
+
+			};
+			break;
+		case FIT_UINT16:
+		case FIT_INT16:
+			// 16-bit greyscale
+			_pixelFormat = PF_L16;
+			break;
+		case FIT_FLOAT:
+			// Single-component floating point data
+			_pixelFormat = PF_FLOAT32_R;
+			break;
+		case FIT_RGB16:
+			_pixelFormat = PF_SHORT_RGB;
+			break;
+		case FIT_RGBA16:
+			_pixelFormat = PF_SHORT_RGBA;
+			break;
+		case FIT_RGBF:
+			_pixelFormat = PF_FLOAT32_RGB;
+			break;
+		case FIT_RGBAF:
+			_pixelFormat = PF_FLOAT32_RGBA;
+			break;
+
+
+		};
+
+		BYTE* bits = FreeImage_GetBits(dib);
+		int bit_count = FreeImage_GetLine(dib)*_height;	
+
+		_buffer = (unsigned char*)malloc(sizeof(char) * bit_count);
+		memcpy(_buffer, bits, sizeof(char) * bit_count);
+		_bufSize = bit_count;
+
+		return true;
+
+	}
 
 	FIBITMAP* Image::rescale(FIBITMAP* dib, int width, int height)
 	{
-		//ûд
+		//
 		return NULL;
 	}
 

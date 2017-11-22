@@ -3,7 +3,9 @@
 #include "Object.h"
 #include "../Utils/BoundingBox.h"
 #include "../Utils/BoundingSphere.h"
+#include "HardwareBuffer\PrimitiveData.h"
 using namespace Utils;
+using namespace SRE;
 namespace Core {
 
 
@@ -118,8 +120,11 @@ namespace Core {
 	public:	
 
 		void draw(Shader* shader);
+		void drawPrimitive();
 		void setVertices(std::vector<Vertex> vertices) { _vertices = vertices; }
 		void setIndex(std::vector<unsigned int> indices) { _indices = indices; }
+		void setVertexData(VertexData::ptr data) { _vertex_data = data; }
+		void setIndexData(IndexData::ptr data) { _index_data = data; }
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
 		virtual void setShaderUniform(Shader* shader) {}
@@ -137,6 +142,9 @@ namespace Core {
 		std::vector<uint32_t> _indices;
 		BoundingBox::ptr _bbx;
 		BoundingSphere::ptr _sphere;
+
+		VertexData::ptr _vertex_data;
+		IndexData::ptr  _index_data;
 
 	};
 }

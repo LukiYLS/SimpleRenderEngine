@@ -1,17 +1,110 @@
 #include "GeometryFactory.h"
 #include "../Math/MathHelper.h"
+
 using namespace Math;
 namespace Core {
 
-	Mesh* GeometryFactory::MakeBox(int width, int height, int depth)
+	RenderObject::ptr GeometryFactory::MakeBox(int width, int height, int depth)
 	{
-		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
-		Mesh* box = new Mesh();
+		size_t vertex_count = 6 * 2 * 3;
+		size_t index_count = 36;
+		VertexData* vertexdata = new VertexData;
+		vertexdata->setVertexStart(0);
+		vertexdata->setVertexCount(vertex_count);
+		VertexDeclaration::ptr vd = vertexdata->getVertexDeclaration();
+		VertexBufferBinding::ptr bind = vertexdata->getVertexBufferBinding();
+		size_t offset = 0;
+		VertexElement::ptr tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_POSITION);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
+
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_NORMAL);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
+
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
+		offset += tmp_ve->getTypeSize(VET_FLOAT2);
+
+		char* data = (char*)malloc(sizeof(char)*vd->getVertexSize(0)*vertex_count);
 
 		float halfW = width * 0.5f;
 		float halfH = height * 0.5f;
 		float halfD = depth * 0.5f;
+		float vertices[48 * 8] = {
+			-halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 0.f, 1.f,
+			-halfW, halfH, -halfD, 0.f, 0.f, -1.f, 0.f, 0.f,
+			halfW, halfH, -halfD, 0.f, 0.f, -1.f, 1.f, 0.f,
+			-halfW, -halfH, halfD, -1.f, 0.f, 0.f, 0.f, 1.f,
+
+			halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 1.f, 1.f,
+			-halfW, halfH, halfD, -1.f, 0.f, 0.f, 0.f, 0.f,
+			-halfW, halfH, -halfD, -1.f, 0.f, 0.f, 1.f, 0.f,
+			-halfW, -halfH, -halfD, -1.f, 0.f, 0.f, 1.f, 1.f,
+
+			halfW, -halfH, halfD, 0.f, 0.f, 1.f, 0.f, 1.f,
+			halfW, halfH, halfD, 0.f, 0.f, 1.f, 0.f, 0.f,
+			-halfW, halfH, halfD, 0.f, 0.f, 1.f, 1.f, 0.f,
+			-halfW, -halfH, halfD, 0.f, 0.f, 1.f, 1.f, 1.f,
+
+			halfW, -halfH, -halfD, 1.f, 0.f, 0.f, 0.f, 1.f,
+			halfW, halfH, -halfD, 1.f, 0.f, 0.f, 0.f, 0.f,
+			halfW, halfH, halfD, 1.f, 0.f, 0.f, 1.f, 0.f,
+			halfW, -halfH, halfD, 1.f, 0.f, 0.f, 1.f, 1.f,
+
+			-halfW, halfH, -halfD, 0.f, 1.f, 0.f, 0.f, 1.f,
+			-halfW, halfH, halfD, 0.f, 1.f, 0.f, 0.f, 0.f,
+			halfW, halfH, halfD, 0.f, 1.f, 0.f, 1.f, 0.f,
+			halfW, halfH, -halfD, 0.f, 1.f, 0.f, 1.f, 1.f,
+
+			-halfW, -halfH, halfD, 0.f, -1.f, 0.f, 0.f, 1.f,
+			-halfW, -halfH, -halfD, 0.f, -1.f, 0.f, 0.f, 0.f,
+			halfW, -halfH, -halfD, 0.f, -1.f, 0.f, 1.f, 0.f,
+			halfW, -halfH, halfD, 0.f, -1.f, 0.f, 1.f, 1.f
+		};
+		HardwareVertexBuffer* buffer = new HardwareVertexBuffer(offset, vertex_count, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		bind->setBinding(0, (HardwareVertexBuffer::ptr)buffer);
+		buffer->writeData(0, buffer->getSizeInBytes(), vertices);
+
+		IndexData* indexdata = new IndexData;
+		indexdata->setIndexStart(0);
+		indexdata->setIndexCount(36);
+		HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, index_count, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		indexdata->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
+
+		unsigned short faces[36] = {
+			// front
+			0,1,2,
+			0,2,3,
+
+			// back
+			4,5,6,
+			4,6,7,
+
+			// left
+			8,9,10,
+			8,10,11,
+
+			// right
+			12,13,14,
+			12,14,15,
+
+			// up
+			16,17,18,
+			16,18,19,
+
+			// down
+			20,21,22,
+			20,22,23
+		};
+		index_buffer->writeData(0, index_buffer->getSizeInBytes(), faces);
+		RenderObject::ptr ro = std::make_shared<RenderObject>();
+		ro->setVertexData((VertexData::ptr)vertexdata);
+		ro->setIndexData((IndexData::ptr)indexdata);
+		
+		return ro;
+		/*std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
+		Mesh* box = new Mesh();
+
+		
 
 		vertices.push_back(Vertex(-halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 0.f, 1.f));
 		vertices.push_back(Vertex(-halfW, halfH, -halfD, 0.f, 0.f, -1.f, 0.f, 0.f));
@@ -97,8 +190,8 @@ namespace Core {
 		sphere->setIndex(indices);
 		sphere->computeNormals();
 
-		return sphere;
-	}*/
+		return sphere;*/
+	}
 	/*Mesh* GeometryFactory::MakeSphere(const Vector3D& radii, int widthSegments, int heightSegments)
 	{
 
