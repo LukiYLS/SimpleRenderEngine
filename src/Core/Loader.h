@@ -1,7 +1,7 @@
 #pragma once
 #include "Mesh.h"
 #include <string>
-namespace Core {
+namespace SRE {
 	/*
 	resource loader basic class
 	*/

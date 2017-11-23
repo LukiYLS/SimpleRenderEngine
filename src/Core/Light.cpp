@@ -1,6 +1,6 @@
 #include "Light.h"
 #include "../Math/MathHelper.h"
-namespace Core
+namespace SRE
 {
 	Light::Light(void)
 	{

@@ -1,7 +1,7 @@
 #pragma once
 #include <memory>
 #include "Camera.h"
-namespace Core {
+namespace SRE {
 	class Scene;
 	class Plugin {
 

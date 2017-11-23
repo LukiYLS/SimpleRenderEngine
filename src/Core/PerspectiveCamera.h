@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera.h"
 
-namespace Core {
+namespace SRE {
 	class PerspectiveCamera :public Camera {
 	public:
 		typedef std::shared_ptr<PerspectiveCamera> ptr;

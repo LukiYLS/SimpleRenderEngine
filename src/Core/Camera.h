@@ -5,7 +5,7 @@
 #include "../Math/Quaternion.h"
 #include "../Math/Vector3D.h"
 #include <memory>
-namespace Core {
+namespace SRE {
 	enum CameraType{ Perspective, Orthographic};
 	class Camera 
 		:public Object{

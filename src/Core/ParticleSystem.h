@@ -6,7 +6,7 @@
 #include "Shader.h"
 #include "BillboardCollection.h"
 using namespace Math;
-namespace Core {
+namespace SRE {
 	
 	struct Particle{
 		float type;

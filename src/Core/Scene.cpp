@@ -4,7 +4,7 @@
 #include "ShaderManager.h"
 #include "BillboardCollection.h"
 #include "ShadowMapPlugin.h"
-namespace Core {
+namespace SRE {
 
 	void Scene::projectObject(Object* object)
 	{

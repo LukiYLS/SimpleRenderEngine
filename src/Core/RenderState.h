@@ -2,7 +2,7 @@
 #include <glew\glew.h>
 #include <memory>
 #include <map>
-namespace Core {
+namespace SRE {
 	class RenderState {//¿¼ÂÇÖÐ
 		enum CompareFunc
 		{

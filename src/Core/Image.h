@@ -4,7 +4,7 @@
 #include <FreeImage.h>
 #include "HardwareBuffer\PixelBox.h"
 using namespace SRE;
-namespace Core {
+namespace SRE {
 
 	class Image {
 	public:

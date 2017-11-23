@@ -1,7 +1,7 @@
 #include "GBuffer.h"
 
 
-namespace Core {
+namespace SRE {
 
 	GBuffer::GBuffer()
 	{

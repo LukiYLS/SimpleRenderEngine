@@ -3,7 +3,7 @@
 #include "GeometryFactory.h"
 #include <glew\glew.h>
 #include <FreeImage.h>
-namespace Core {
+namespace SRE {
 
 	Skybox::Skybox(std::vector<std::string> fileNames)
 	{		

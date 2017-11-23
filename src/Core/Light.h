@@ -5,7 +5,7 @@
 #include <string>
 #include <map>
 #include <memory>
-namespace Core
+namespace SRE
 {
 	enum LightType { DirectLight, PointLight, SpotLight };
 		 

@@ -40,6 +40,7 @@
     <ClInclude Include="..\..\..\src\Core\Image.h" />
     <ClInclude Include="..\..\..\src\Core\Light.h" />
     <ClInclude Include="..\..\..\src\Core\Loader.h" />
+    <ClInclude Include="..\..\..\src\Core\Material.h" />
     <ClInclude Include="..\..\..\src\Core\Mesh.h" />
     <ClInclude Include="..\..\..\src\Core\GeometryFactory.h" />
     <ClInclude Include="..\..\..\src\Core\Object.h" />
@@ -63,6 +64,7 @@
     <ClInclude Include="..\..\..\src\Core\Texture.h" />
     <ClInclude Include="..\..\..\src\Core\TextureManager.h" />
     <ClInclude Include="..\..\..\src\Core\TextureManager_.h" />
+    <ClInclude Include="..\..\..\src\Core\TextureUnit.h" />
     <ClInclude Include="..\..\..\src\Core\Uniform.h" />
     <ClInclude Include="..\..\..\src\Core\ViewPort.h" />
     <ClInclude Include="..\..\..\src\Core\Win.h" />

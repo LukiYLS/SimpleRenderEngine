@@ -1,7 +1,7 @@
 #include "Ray.h"
 #include "..\Math\MathHelper.h"
 #include <math.h>
-namespace Core {
+namespace SRE {
 	
 	void Ray::set(const Vector3D& origin, const Vector3D& direction)
 	{

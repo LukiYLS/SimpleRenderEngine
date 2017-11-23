@@ -5,7 +5,7 @@
 #include "RenderState.h"
 #include <string>
 #include <map>
-namespace Core {
+namespace SRE {
 
 	
 	struct Material//

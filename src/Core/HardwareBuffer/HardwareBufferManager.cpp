@@ -98,6 +98,11 @@ namespace SRE {
 		VertexDeclaration::ptr vd = std::make_shared<VertexDeclaration>();
 		return vd;
 	}
+	VertexBufferBinding::ptr HardwareBufferManager::createVertexBufferBinding(void)
+	{
+		VertexBufferBinding::ptr vb = std::make_shared<VertexBufferBinding>();
+		return vb;
+	}
 
 	GLenum HardwareBufferManager::getGLUsege(unsigned int usage)
 	{

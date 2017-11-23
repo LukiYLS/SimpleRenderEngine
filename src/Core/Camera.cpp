@@ -1,7 +1,7 @@
 #include "Camera.h"
 #include "../math/MathHelper.h"
 #include "../Math/Matrix3D.h"
-namespace Core {
+namespace SRE {
 
 
 	void Camera::lookAt(const Vector3D& target)

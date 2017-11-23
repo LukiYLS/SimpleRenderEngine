@@ -1,7 +1,7 @@
 #include "Mesh.h"
 #include "TextureManager.h"
 #include "../Math/Vector2D.h"
-namespace Core {
+namespace SRE {
 
 	void Mesh::setupUniform(Shader* shader)
 	{

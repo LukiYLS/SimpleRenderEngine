@@ -6,7 +6,7 @@
 #include <memory>
 using namespace Math;
 using namespace Utils;
-namespace Core {
+namespace SRE {
 
 	class Ray {
 	public:

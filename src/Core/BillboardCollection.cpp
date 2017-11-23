@@ -1,5 +1,5 @@
 #include "BillboardCollection.h"
-namespace Core {
+namespace SRE {
 
 	void BillboardCollection::init()
 	{

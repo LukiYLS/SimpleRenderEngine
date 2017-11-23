@@ -4,7 +4,7 @@
 #include "Shader.h"
 #include "Texture.h"
 #include "Plugin.h"
-namespace Core {
+namespace SRE {
 
 	class BillboardCollection 
 		:public Object,public Plugin

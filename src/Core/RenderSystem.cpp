@@ -6,7 +6,7 @@
 #include "../Utils/Event.h"
 using namespace Utils;
 #include <iostream>
-namespace Core {
+namespace SRE {
 	
 	RenderSystem::RenderSystem(Scene* scene, Camera* camera)
 	{

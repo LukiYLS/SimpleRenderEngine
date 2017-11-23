@@ -2,7 +2,7 @@
 #include "../Math/MathHelper.h"
 
 using namespace Math;
-namespace Core {
+namespace SRE {
 
 	RenderObject::ptr GeometryFactory::MakeBox(int width, int height, int depth)
 	{
@@ -102,46 +102,47 @@ namespace Core {
 		return ro;
 		
 	}
+	RenderObject::ptr GeometryFactory::MakeSphere(double radius, int numRings, int numSegments)
 	{
-		mesh->sharedVertexData = OGRE_NEW VertexData();
-		VertexData* vertexData = mesh->sharedVertexData;
+		unsigned int vertex_count = (numRings + 1) * (numSegments + 1);
+		VertexData* vertexdata = new VertexData;
+		vertexdata->setVertexStart(0);
+		vertexdata->setVertexCount(vertex_count);
+		VertexDeclaration::ptr vd = vertexdata->getVertexDeclaration();
+		VertexBufferBinding::ptr bind = vertexdata->getVertexBufferBinding();
+		size_t offset = 0;
+		VertexElement::ptr tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_POSITION);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
 
-		// define the vertex format
-		VertexDeclaration* vertexDecl = vertexData->vertexDeclaration;
-		size_t currOffset = 0;
-		// positions
-		vertexDecl->addElement(0, currOffset, VET_FLOAT3, VES_POSITION);
-		currOffset += VertexElement::getTypeSize(VET_FLOAT3);
-		// normals
-		vertexDecl->addElement(0, currOffset, VET_FLOAT3, VES_NORMAL);
-		currOffset += VertexElement::getTypeSize(VET_FLOAT3);
-		// two dimensional texture coordinates
-		vertexDecl->addElement(0, currOffset, VET_FLOAT2, VES_TEXTURE_COORDINATES, 0);
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_NORMAL);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
 
-		// allocate the vertex buffer
-		vertexData->vertexCount = (NUM_RINGS + 1) * (NUM_SEGMENTS + 1);
-		HardwareVertexBufferSharedPtr vBuf = HardwareBufferManager::getSingleton().createVertexBuffer(vertexDecl->getVertexSize(0), vertexData->vertexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY, false);
-		VertexBufferBinding* binding = vertexData->vertexBufferBinding;
-		binding->setBinding(0, vBuf);
-		float* pVertex = static_cast<float*>(vBuf->lock(HardwareBuffer::HBL_DISCARD));
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
+		offset += tmp_ve->getTypeSize(VET_FLOAT2);
+		
+		HardwareVertexBuffer* vertex_buffer = new HardwareVertexBuffer(offset, vertex_count, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		bind->setBinding(0, (HardwareVertexBuffer::ptr)vertex_buffer);
+		float* pVertex = static_cast<float*>(vertex_buffer->lock(HardwareBuffer::HBL_DISCARD));
 
-		// allocate index buffer
-		pSphereVertex->indexData->indexCount = 6 * NUM_RINGS * (NUM_SEGMENTS + 1);
-		pSphereVertex->indexData->indexBuffer = HardwareBufferManager::getSingleton().createIndexBuffer(HardwareIndexBuffer::IT_16BIT, pSphereVertex->indexData->indexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY, false);
-		HardwareIndexBufferSharedPtr iBuf = pSphereVertex->indexData->indexBuffer;
-		unsigned short* pIndices = static_cast<unsigned short*>(iBuf->lock(HardwareBuffer::HBL_DISCARD));
+		unsigned int index_count = 6 * numRings * (numSegments + 1);
+		IndexData* indexdata = new IndexData;
+		indexdata->setIndexStart(0);
+		indexdata->setIndexCount(36);
+		HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, index_count, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		indexdata->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
+		unsigned short* pIndices = static_cast<unsigned short*>(index_buffer->lock(HardwareBuffer::HBL_DISCARD));
 
-		float fDeltaRingAngle = (Math::PI / NUM_RINGS);
-		float fDeltaSegAngle = (2 * Math::PI / NUM_SEGMENTS);
+		float fDeltaRingAngle = (math_pi / numRings);
+		float fDeltaSegAngle = (math_two_pi / numSegments);
 		unsigned short wVerticeIndex = 0;
 
 		// Generate the group of rings for the sphere
-		for (int ring = 0; ring <= NUM_RINGS; ring++) {
-			float r0 = SPHERE_RADIUS * sinf(ring * fDeltaRingAngle);
-			float y0 = SPHERE_RADIUS * cosf(ring * fDeltaRingAngle);
+		for (int ring = 0; ring <= numRings; ring++) {
+			float r0 = radius * sinf(ring * fDeltaRingAngle);
+			float y0 = radius * cosf(ring * fDeltaRingAngle);
 
 			// Generate the group of segments for the current ring
-			for (int seg = 0; seg <= NUM_SEGMENTS; seg++) {
+			for (int seg = 0; seg <= numSegments; seg++) {
 				float x0 = r0 * sinf(seg * fDeltaSegAngle);
 				float z0 = r0 * cosf(seg * fDeltaSegAngle);
 
@@ -150,20 +151,20 @@ namespace Core {
 				*pVertex++ = y0;
 				*pVertex++ = z0;
 
-				Vector3 vNormal = Vector3(x0, y0, z0).normalisedCopy();
+				Vector3D vNormal = Vector3D(x0, y0, z0).normalize();
 				*pVertex++ = vNormal.x;
 				*pVertex++ = vNormal.y;
 				*pVertex++ = vNormal.z;
 
-				*pVertex++ = (float)seg / (float)NUM_SEGMENTS;
-				*pVertex++ = (float)ring / (float)NUM_RINGS;
+				*pVertex++ = (float)seg / (float)numSegments;
+				*pVertex++ = (float)ring / (float)numRings;
 
-				if (ring != NUM_RINGS) {
+				if (ring != numRings) {
 					// each vertex (except the last) has six indicies pointing to it
-					*pIndices++ = wVerticeIndex + NUM_SEGMENTS + 1;
+					*pIndices++ = wVerticeIndex + numSegments + 1;
 					*pIndices++ = wVerticeIndex;
-					*pIndices++ = wVerticeIndex + NUM_SEGMENTS;
-					*pIndices++ = wVerticeIndex + NUM_SEGMENTS + 1;
+					*pIndices++ = wVerticeIndex + numSegments;
+					*pIndices++ = wVerticeIndex + numSegments + 1;
 					*pIndices++ = wVerticeIndex + 1;
 					*pIndices++ = wVerticeIndex;
 					wVerticeIndex++;
@@ -172,16 +173,21 @@ namespace Core {
 		} // end for ring
 
 		  // Unlock
-		vBuf->unlock();
-		iBuf->unlock();
-		// Generate face list
-		pSphereVertex->useSharedVertices = true;
+		vertex_buffer->unlock();
+		index_buffer->unlock();
+		
+		RenderObject::ptr ro = std::make_shared<RenderObject>();
+		ro->setVertexData((VertexData::ptr)vertexdata);
+		ro->setIndexData((IndexData::ptr)indexdata);
+		BoundingBox::ptr bx = std::make_shared<BoundingBox>(Vector3D(-radius, -radius, -radius), Vector3D(radius, radius,radius));
+		BoundingSphere::ptr bs = std::make_shared<BoundingSphere>(Vector3D(0.0), radius);
+		ro->setBoundBox(bx);
+		ro->setBoundSphere(bs);
+		return ro;
+		//mesh->_setBounds(AxisAlignedBox(Vector3(-SPHERE_RADIUS, -SPHERE_RADIUS, -SPHERE_RADIUS),
+		//	Vector3(SPHERE_RADIUS, SPHERE_RADIUS, SPHERE_RADIUS)), false);
 
-		// the original code was missing this line:
-		mesh->_setBounds(AxisAlignedBox(Vector3(-SPHERE_RADIUS, -SPHERE_RADIUS, -SPHERE_RADIUS),
-			Vector3(SPHERE_RADIUS, SPHERE_RADIUS, SPHERE_RADIUS)), false);
-
-		mesh->_setBoundingSphereRadius(SPHERE_RADIUS);
+		//mesh->_setBoundingSphereRadius(SPHERE_RADIUS);
 	}
 
 	/*Mesh* GeometryFactory::MakeSphere(double radius, int widthSegments, int heightSegments)
@@ -321,7 +327,7 @@ namespace Core {
 
 		return sphere;
 	}*/
-	Mesh* GeometryFactory::MakeSphere(double radius, int widthSegments, int heightSegments)
+	Mesh* GeometryFactory::MakeSphereOld(double radius, int widthSegments, int heightSegments)
 	{
 		std::vector<Vertex> vertices;
 		std::vector<unsigned int> indices;

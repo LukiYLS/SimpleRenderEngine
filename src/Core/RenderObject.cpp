@@ -1,7 +1,7 @@
 #include "RenderObject.h"
 #include "HardwareBuffer\HardwareBufferManager.h"
 #include <glm\gtc\matrix_transform.hpp>
-namespace Core {
+namespace SRE {
 
 	void RenderObject::createBuffer()
 	{

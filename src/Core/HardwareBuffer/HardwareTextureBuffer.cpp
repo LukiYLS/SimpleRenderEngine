@@ -259,7 +259,7 @@ namespace SRE {
 				// Standard alignment of 4 is not right
 			glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			GLuint level = _level;
-			if (_softwareMipmap)
+			if (!_softwareMipmap)
 				level = 0;
 			switch (_target) {
 			case GL_TEXTURE_1D:

@@ -4,7 +4,7 @@
 #include "../Utils/AnyValue.h"
 #include <string>
 using namespace Utils;
-namespace Core {
+namespace SRE {
 
 	enum ValueType {
 		FLOAT = GL_FLOAT,

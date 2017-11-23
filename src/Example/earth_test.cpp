@@ -4,7 +4,7 @@
 #define radius 6378137.f
 Mesh* createSphere()
 {
-	Mesh* mesh = GeometryFactory::MakeSphere(1.025*radius, 128, 64);
+	Mesh* mesh = GeometryFactory::MakeSphereOld(1.025*radius, 128, 64);
 //	mesh->addTexture("earth");
 //	mesh->addRenderPass("atmosphere");
 //	mesh->addRenderPass("earth");
@@ -19,7 +19,7 @@ Scene::ptr createScene()
 	Object::ptr root = make_shared<Object>();
 	Mesh* mesh = createSphere();
 
-	Mesh* mesh1 = GeometryFactory::MakeSphere(radius, 128, 64);
+	Mesh* mesh1 = GeometryFactory::MakeSphereOld(radius, 128, 64);
 	mesh1->addTexture("earth");
 	mesh1->addTexture("cloud");
 	mesh1->addTexture("light");
@@ -33,10 +33,12 @@ Scene::ptr createScene()
 
 void initResource()
 {
+	RenderObject::ptr ro = GeometryFactory::MakeBox(10, 10, 10);
+	RenderObject::ptr ro2 = GeometryFactory::MakeSphere(10, 10, 10);
 
-	TextureManager::Inst()->loadTexture("../../../src/Data/texture/earthmap.jpg", "earth");
-	TextureManager::Inst()->loadTexture("../../../src/Data/texture/cloudsmap.jpg", "cloud");
-	TextureManager::Inst()->loadTexture("../../../src/Data/texture/lightsmap.jpg", "light");
+	TextureManager::Inst()->loadTexture("earth","../../../src/Data/texture/earthmap.jpg");
+	TextureManager::Inst()->loadTexture( "cloud", "../../../src/Data/texture/cloudsmap.jpg");
+	TextureManager::Inst()->loadTexture("light","../../../src/Data/texture/lightsmap.jpg" );
 	Shader::ptr shader_skyfromspace = make_shared<Shader>("../../../src/Data/shader/skyfromspace.vs", "../../../src/Data/shader/skyfromspace.fs");
 	Shader::ptr shader_skyfromatmosphere = make_shared<Shader>("../../../src/Data/shader/skyfromatmosphere.vs", "../../../src/Data/shader/skyfromatmosphere.fs");
 	Shader::ptr shader_groundfromspace = make_shared<Shader>("../../../src/Data/shader/groundfromspace.vs", "../../../src/Data/shader/groundfromspace.fs");

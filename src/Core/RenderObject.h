@@ -6,7 +6,7 @@
 #include "HardwareBuffer\PrimitiveData.h"
 using namespace Utils;
 using namespace SRE;
-namespace Core {
+namespace SRE {
 
 
 	struct Vertex
@@ -127,6 +127,8 @@ namespace Core {
 		void setIndexData(IndexData::ptr data) { _index_data = data; }
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
+		void setBoundBox(BoundingBox::ptr bbx) { _bbx = bbx; }
+		void setBoundSphere(BoundingSphere::ptr bs) { _sphere = bs; }
 		virtual void setShaderUniform(Shader* shader) {}
 		virtual void raycast(RayCaster* raycaster, AnyValue& intersects);
 		void computeNormals();

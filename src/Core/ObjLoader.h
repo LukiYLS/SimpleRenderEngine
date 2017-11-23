@@ -6,7 +6,7 @@
 #include <sstream>
 #include <algorithm>
 #include <string>
-namespace Core {
+namespace SRE {
 
 	class ObjLoader 
 		:public Loader{

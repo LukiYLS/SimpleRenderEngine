@@ -1,6 +1,6 @@
 #include "Object.h"
 #include "../Math/Vector4D.h"
-namespace Core {
+namespace SRE {
 
 	void Object::applyMatrix(const Matrix4D& matrix)
 	{

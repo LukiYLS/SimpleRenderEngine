@@ -3,7 +3,7 @@
 #include "RenderObject.h"
 #include "../Utils/BoundingSphere.h"
 using namespace Utils;
-namespace Core {
+namespace SRE {
 
 	class Code
 	{

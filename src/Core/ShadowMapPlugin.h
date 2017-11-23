@@ -4,7 +4,7 @@
 #include "Light.h"
 #include "Mesh.h"
 #include "ViewPort.h"
-namespace Core {
+namespace SRE {
 
 	class ShadowMapPlugin
 		:public Plugin{		

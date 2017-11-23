@@ -6,7 +6,7 @@
 #include "../Math/MathHelper.h"
 #include <glm\gtc\matrix_transform.hpp>
 #include <glm\glm.hpp>
-namespace Core {
+namespace SRE {
 
 
 	void ShadowMapPlugin::render(Camera* camera)

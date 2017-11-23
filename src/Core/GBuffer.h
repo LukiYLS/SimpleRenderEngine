@@ -1,7 +1,7 @@
 #pragma once
 #include <glew\glew.h>
 #include <memory>
-namespace Core {
+namespace SRE {
 
 	class GBuffer {
 

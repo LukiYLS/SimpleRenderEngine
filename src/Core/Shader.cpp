@@ -4,7 +4,7 @@
 #include <iostream>
 #include <string>
 
-namespace Core {
+namespace SRE {
 
 
 	Shader::Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath)

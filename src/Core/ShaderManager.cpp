@@ -3,7 +3,7 @@
 #include <sstream>
 #include <iostream>
 #include <string>
-namespace Core {
+namespace SRE {
 
 	ShaderManager* ShaderManager::instance(0);
 	ShaderManager* ShaderManager::getSingleton() {

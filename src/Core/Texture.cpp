@@ -2,18 +2,19 @@
 #include <FreeImage.h>
 #include "HardwareBuffer\HardwareTextureBuffer.h"
 #include "HardwareBuffer\PixelUtil.h"
-namespace Core {
+namespace SRE {
 
 
-	/*Texture::Texture(const std::string name, TextureType type)
+	Texture::Texture(const std::string name, TextureType type)
 		:_name(name),
 		_width(0),
 		_height(0),
 		_depth(0),
-		_isAlpha(false)
+		_isAlpha(false),
+		_textureType(type)
 	{
 
-	}*/
+	}
 	Texture::Texture(GLenum textureTarget, const std::string& fileName)
 	{
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -57,11 +58,19 @@ namespace Core {
 		glBindTexture(textureTarget, 0);
 		//_textureTarget = textureTarget;
 	}
-
 	Texture::~Texture()
 	{
 		glDeleteTextures(1, &_textureID);
 		glDeleteSamplers(1, &_sampler);
+	}
+
+	size_t Texture::calculateSize()const
+	{
+		return getNumFaces() * PixelUtil::getMemorySize(_width, _height, _depth, _pixelFormat);
+	}
+	bool Texture::hasAlpha(void) const
+	{
+		return PixelUtil::hasAlpha(_pixelFormat);
 	}
 	void Texture::loadImages(std::vector<Image::ptr> images)
 	{
@@ -82,7 +91,7 @@ namespace Core {
 		if (_numMipMaps > maxMips)
 			_numMipMaps = maxMips;
 		unsigned int numMipMaps = _numMipMaps;
-		if (_autoGenerateMipMap) numMipMaps = 0;
+		if (_autoGenerateMipMap) numMipMaps = 1;
 		size_t width = _width;
 		size_t height = _height;
 		size_t depth = _depth;
@@ -116,13 +125,13 @@ namespace Core {
 		_surface_list.clear();
 
 		unsigned int numMipMaps = _numMipMaps;
-		if (_autoGenerateMipMap) numMipMaps = 0;
+		if (_autoGenerateMipMap) numMipMaps = 1;
 
 		for (GLuint face = 0; face < getNumFaces(); face++)
 		{
 			for (unsigned short mip = 0; mip < numMipMaps; mip++)
 			{
-				HardwareTextureBuffer::ptr buffer = std::make_shared<HardwareTextureBuffer>(target, _textureID, face, mip, _usage, _autoGenerateMipMap);
+				HardwareTextureBuffer::ptr buffer = std::make_shared<HardwareTextureBuffer>(target, _textureID, face, mip, _usage, !_autoGenerateMipMap);
 				_surface_list.push_back(buffer);
 			}
 		}
@@ -138,7 +147,7 @@ namespace Core {
 			faces = 1;//_image_list[0]->getNumFaces();
 			multiImage = false;
 		}
-		for (size_t mip = 0; mip <= numMipMaps; ++mip)
+		for (size_t mip = 0; mip < numMipMaps; ++mip)
 		{
 			for (size_t i = 0; i < faces; ++i)
 			{
@@ -224,7 +233,9 @@ namespace Core {
 		{
 			return NULL;
 		}
-		unsigned long idx = face*(_numMipMaps + 1) + mipmap;
+		unsigned short numMipMaps = _numMipMaps;
+		if (_autoGenerateMipMap)numMipMaps = 0;
+		unsigned long idx = face*(numMipMaps + 1) + mipmap;
 		return idx < _surface_list.size() ? _surface_list[idx] : NULL;
 		
 	}

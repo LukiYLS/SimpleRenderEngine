@@ -1,7 +1,7 @@
 #pragma once
 
 #include <memory>
-namespace Core {
+namespace SRE {
 
 	class ViewPort {
 	public:

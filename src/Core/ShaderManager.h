@@ -3,7 +3,7 @@
 #include <string>
 #include <map>
 using namespace std;
-namespace Core {
+namespace SRE {
 
 	class ShaderManager {
 	protected:

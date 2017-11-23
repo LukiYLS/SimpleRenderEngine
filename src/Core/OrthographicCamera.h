@@ -1,7 +1,7 @@
 #pragma once
 #include "Camera.h"
 #include "../Math/Matrix4D.h"
-namespace Core {
+namespace SRE {
 	class OrthographicCamera :public Camera {
 	public:
 		OrthographicCamera(float left, float right, float bottom, float top, float near, float far) :

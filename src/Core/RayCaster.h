@@ -4,7 +4,7 @@
 #include "Camera.h"
 #include "Object.h"
 #include "../Utils/AnyValue.h"
-namespace Core {
+namespace SRE {
 	class RayCaster {
 
 	public:

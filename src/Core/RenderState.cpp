@@ -1,6 +1,6 @@
 #include "RenderState.h"
 
-namespace Core {
+namespace SRE {
 
 
 	RenderState::RenderState()

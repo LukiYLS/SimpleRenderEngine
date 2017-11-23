@@ -2,7 +2,7 @@
 #define FRAMEBUFFER_H
 #include <glew\glew.h>
 #include <memory>
-namespace Core {
+namespace SRE {
 
 	class FrameBuffer {//Õâ¸ö
 	public:

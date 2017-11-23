@@ -1,6 +1,6 @@
 #include "FrameBuffer.h"
 #include "TextureManager.h"
-namespace Core {
+namespace SRE {
 
 	bool FrameBuffer::createFrameBufferWithTexture(int width, int height)
 	{

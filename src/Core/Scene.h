@@ -10,7 +10,7 @@
 #include "Skybox.h"
 using namespace std;
 using namespace Utils;
-namespace Core {
+namespace SRE {
 	class Plugin;
 	class Scene {
 	public:

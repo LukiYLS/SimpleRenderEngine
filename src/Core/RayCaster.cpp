@@ -1,7 +1,7 @@
 #include "RayCaster.h"
 #include "../Math/MathHelper.h"
 
-namespace Core {
+namespace SRE {
 
 	void RayCaster::setFromCamera(const Vector2D& coords, Camera* camera)
 	{

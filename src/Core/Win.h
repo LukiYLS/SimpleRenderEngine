@@ -5,7 +5,7 @@
 #include "../Utils/Event.h"
 #include "../Utils/InputDefine.h"
 #include "RenderSystem.h"
-namespace Core {	
+namespace SRE {	
 	
 	class Win {
 		

@@ -1,6 +1,6 @@
 #include "TerrianTile.h"
 #include <FreeImage.h>
-namespace Core {
+namespace SRE {
 
 	TerrianTile::TerrianTile()
 	{

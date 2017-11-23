@@ -6,7 +6,7 @@
 #include <memory>
 #include <vector>
 using namespace Math;
-namespace Core {
+namespace SRE {
 	class Mesh;
 	class Light;
 	class Plugin;

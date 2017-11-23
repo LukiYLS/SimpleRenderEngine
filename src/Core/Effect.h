@@ -1,6 +1,6 @@
 #pragma once
 #include "Camera.h"
-namespace Core {
+namespace SRE {
 	class Effect {//特效怎么设计啊！！！后期准备扩展出一个组件，专门用来写特效，特效必须封装好shader
 	public:
 		Effect(){}

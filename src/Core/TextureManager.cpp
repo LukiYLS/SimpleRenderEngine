@@ -1,7 +1,7 @@
 
 #include "TextureManager.h"
 
-namespace Core {
+namespace SRE {
 	TextureManager* TextureManager::m_inst(0);
 
 	TextureManager* TextureManager::Inst()
@@ -32,7 +32,7 @@ namespace Core {
 		unloadAllTextures();
 		m_inst = 0;
 	}
-	Texture::ptr TextureManager::loadTexture(const std::string& tex_name,const std::string& file_name, TextureType type)
+	Texture::ptr TextureManager::loadTexture(std::string tex_name,const char* file_name, TextureType type)
 	{
 		Texture::ptr texture = std::make_shared<Texture>(tex_name, type);
 		Image::ptr image = std::make_shared<Image>();
@@ -42,7 +42,7 @@ namespace Core {
 		_textures[tex_name] = texture;
 		return texture;
 	}
-	Texture::ptr TextureManager::loadCubeMap(const std::string& tex_name, std::vector<const std::string> files)
+	Texture::ptr TextureManager::loadCubeMap(std::string tex_name, std::vector<const char*> files)
 	{
 		//Texture* texture = new Texture(tex_name, TEX_TYPE_CUBE_MAP);
 		std::vector<Image::ptr> images;

@@ -1,7 +1,7 @@
 #include "Image.h"
 
 
-namespace Core {
+namespace SRE {
 
 	Image::Image()
 		: _width(0),
@@ -67,7 +67,7 @@ namespace Core {
 			return false;
 		}
 
-		return decode(dib);
+		return decode2(dib);
 	}
 	bool Image::save(const std::string& file_name)
 	{
@@ -144,7 +144,7 @@ namespace Core {
 		_buffer = (unsigned char*)malloc(sizeof(char) * bit_count);
 		memcpy(_buffer, bits, sizeof(char) * bit_count);
 		_bufSize = bit_count;
-
+		free(bits);
 		return true;
 		
 	}

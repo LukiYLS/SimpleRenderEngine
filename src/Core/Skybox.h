@@ -3,7 +3,7 @@
 #include <vector>
 #include <string>
 #include "Camera.h"
-namespace Core {
+namespace SRE {
 	class Skybox
 		:public Object{
 	public:

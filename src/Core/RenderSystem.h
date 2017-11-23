@@ -6,7 +6,7 @@
 #include "Mesh.h"
 #include "Plugin.h"
 
-namespace Core {
+namespace SRE {
 	class RenderSystem {
 	public:		
 		RenderSystem(Scene* scene, Camera* camera);

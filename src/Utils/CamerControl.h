@@ -1,9 +1,9 @@
 #pragma once
 
-#include "../Core/Camera.h"
+#include "../SRE/Camera.h"
 #include "Event.h"
 #include "InputDefine.h"
-using namespace Core;
+using namespace SRE;
 namespace Utils
 {
 	class CameraControl

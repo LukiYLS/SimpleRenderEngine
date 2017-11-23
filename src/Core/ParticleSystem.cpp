@@ -5,7 +5,7 @@
 #define PARTICLE_TYPE_LAUNCHER 0.0f
 #define PARTICLE_TYPE_SHELL 1.0f
 #define PARTICLE_TYPE_SECONDARY_SHELL 2.0f
-namespace Core {
+namespace SRE {
 
 	ParticleSystem::ParticleSystem(int count)
 	{

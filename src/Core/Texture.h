@@ -7,7 +7,7 @@
 #include "HardwareBuffer\PixelBox.h"
 #include "HardwareBuffer\HardwareTextureBuffer.h"
 using namespace SRE;
-namespace Core {
+namespace SRE {
 	enum TextureType
 	{	
 		TEX_TYPE_1D = 1,	
@@ -33,34 +33,44 @@ namespace Core {
 		typedef std::shared_ptr<Texture> ptr;
 		typedef std::vector<HardwareTextureBuffer::ptr> TextureBufferVector;
 	public:
-		//Texture(const std::string name,TextureType type = TEX_TYPE_2D);
+		Texture(const std::string name,TextureType type = TEX_TYPE_2D);
 		Texture(GLenum textureTarget, const std::string& fileName);
 		~Texture();
 	public:		
-		//virtual void setTextureType(TextureType type) { _type = type; }		
-		//virtual TextureType getTextureType(void) const { return _type; }
-		void upLoad();
-		virtual bool getNumMipmaps(void) const { return _numMipMaps; }		
-		virtual void setNumMipmaps(bool num) { _numMipMaps = num; }
-		void setFiltering(int magnification, int minification);	
-		void bindTexture(int unit);		
+		
+		virtual bool gtNumMipmaps(void) const { return _numMipMaps; }		
+		virtual void setNumMipmaps(bool num) { _numMipMaps = num; }		
 		void setTextureType(TextureType type) { _textureType = type; }
 		TextureType getTextureType(void) const { return _textureType; }
+		int getUsage()const { return _usage; }
+		void setUset(int usage) { _usage = usage; }
+		unsigned int getWidth()const { return _width; }
+		void setWidth(unsigned int width) { _width = width; }
+		unsigned int getHeight()const { return _height; }
+		void setHeight(unsigned int height) { _height = height; }		
+		unsigned int getDepth()const { return _depth; }
+		void setDepth(unsigned int depth) { _depth = depth; }
+			
+		PixelFormat getFromat()const { return _pixelFormat; }
+
+		
+		void setFiltering(int magnification, int minification);
+		void bindTexture(int unit);
+
 		size_t getNumFaces()const { return _textureType == TEX_TYPE_CUBE_MAP ? 6 : 1; }
 		size_t calculateSize()const;
-		GLenum getTextureTarget()const;
+		bool hasAlpha(void) const;
+		
 		void loadImage(Image::ptr image);
 		void loadImages(std::vector<Image::ptr> images);
-		//virtual uint32_t getHeight() const { return _height; }
-		//virtual void setHeight(uint32_t height) { _height = height; }
-		//virtual uint32_t getWidth(void) const { return _width; }
-		//virtual void setWidth(uint32_t width) { _width = width; }
-		//virtual uint32_t getDepth(void) const { return _depth; }
-		//virtual void setDepth(uint32_t depth) { _depth = depth; }
-	protected:
+		void upLoad();
 		
+	protected:
+		GLenum getTextureTarget()const;
 		void createInternalResources();
+		void freeInternalResources();
 		HardwareTextureBuffer::ptr getBuffer(size_t face, size_t mipmap);
+
 		std::string _name;
 		unsigned int _numMipMaps;
 		PixelFormat _pixelFormat;

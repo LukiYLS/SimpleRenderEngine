@@ -9,7 +9,7 @@
 #include <vector>
 #include <memory>
 using namespace Math;
-namespace Core {
+namespace SRE {
 	class Shader {
 	public:
 		typedef std::shared_ptr<Shader> ptr;
