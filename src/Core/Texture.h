@@ -33,7 +33,7 @@ namespace Core {
 		typedef std::shared_ptr<Texture> ptr;
 		typedef std::vector<HardwareTextureBuffer::ptr> TextureBufferVector;
 	public:
-		Texture(const std::string name,TextureType type = TEX_TYPE_2D);
+		//Texture(const std::string name,TextureType type = TEX_TYPE_2D);
 		Texture(GLenum textureTarget, const std::string& fileName);
 		~Texture();
 	public:		
@@ -47,8 +47,10 @@ namespace Core {
 		void setTextureType(TextureType type) { _textureType = type; }
 		TextureType getTextureType(void) const { return _textureType; }
 		size_t getNumFaces()const { return _textureType == TEX_TYPE_CUBE_MAP ? 6 : 1; }
+		size_t calculateSize()const;
 		GLenum getTextureTarget()const;
-		void loadImage(Image* image);
+		void loadImage(Image::ptr image);
+		void loadImages(std::vector<Image::ptr> images);
 		//virtual uint32_t getHeight() const { return _height; }
 		//virtual void setHeight(uint32_t height) { _height = height; }
 		//virtual uint32_t getWidth(void) const { return _width; }

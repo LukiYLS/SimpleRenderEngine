@@ -140,7 +140,7 @@ namespace SRE {
 	public:
 		typedef std::shared_ptr<PixelBox> ptr;
 		PixelBox(unsigned int width, unsigned int height, unsigned int depth, PixelFormat PixelFormat, void *data);
-		~PixelBox();
+		~PixelBox() {};
 	public:
 		/**
 		* Get colour value from a certain location in the PixelBox. The z coordinate

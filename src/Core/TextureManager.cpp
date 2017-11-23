@@ -32,21 +32,43 @@ namespace Core {
 		unloadAllTextures();
 		m_inst = 0;
 	}
-	Texture::ptr TextureManager::createTexture(TextureType type, const std::string& tex_name,const std::string& file_name)
+	Texture::ptr TextureManager::loadTexture(const std::string& tex_name,const std::string& file_name, TextureType type)
 	{
-		Texture* texture = new Texture(tex_name, type);
-		Image* image = new Image;
+		Texture::ptr texture = std::make_shared<Texture>(tex_name, type);
+		Image::ptr image = std::make_shared<Image>();
 		image->load(file_name);
 		texture->loadImage(image);
-		_textures[tex_name] = (Texture::ptr)texture;
-		return (Texture::ptr)texture;
+		texture->upLoad();
+		_textures[tex_name] = texture;
+		return texture;
 	}
-	Texture::ptr TextureManager::createCubeMap(const std::string& tex_name, std::vector<const std::string> flies)
+	Texture::ptr TextureManager::loadCubeMap(const std::string& tex_name, std::vector<const std::string> files)
 	{
-		Texture* texture = new Texture(tex_name, TEX_TYPE_CUBE_MAP);
+		//Texture* texture = new Texture(tex_name, TEX_TYPE_CUBE_MAP);
+		std::vector<Image::ptr> images;
+		for (auto file : files)
+		{
+			Image::ptr image = std::make_shared<Image>();
+			image->load(file);
+			images.push_back(image);
+		}
+
+		Texture::ptr texture = std::make_shared<Texture>(tex_name, TEX_TYPE_CUBE_MAP);
+		texture->loadImages(images);
+		texture->upLoad();
+		_textures[tex_name] = texture;
+		return texture;
 		
 	}
-	bool TextureManager::loadTexture(const char* fileName, const std::string texName, GLenum image_format, GLint internal_format, GLint level, GLint border)
+	Texture::ptr TextureManager::getTexture(const std::string& tex_name)
+	{
+		if (_textures.find(tex_name) != _textures.end())
+		{
+			return _textures[tex_name];
+		}
+		return NULL;
+	}
+	/*bool TextureManager::loadTexture(const char* fileName, const std::string texName, GLenum image_format, GLint internal_format, GLint level, GLint border)
 	{
 
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -106,8 +128,8 @@ namespace Core {
 	}
 	bool TextureManager::loadCubeMap(std::vector<const char*> files)
 	{
-		//Texture::ptr cube = std::shared_ptr<Texture>(TEX_TYPE_CUBE_MAP);
-		Texture* cube = new Texture(TEX_TYPE_CUBE_MAP);
+		Texture::ptr cube = std::shared_ptr<Texture>(TEX_TYPE_CUBE_MAP);
+		Texture* cube = new Texture("tt",TEX_TYPE_CUBE_MAP);
 		glGenTextures(1, &m_cubeMap);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, m_cubeMap);
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -144,7 +166,7 @@ namespace Core {
 		glGenerateMipmap(GL_TEXTURE_2D);
 
 		glBindTexture(GL_TEXTURE_2D, 0);
-	}
+	}*/
 
 	bool TextureManager::unloadTexture(const std::string texName)
 	{
@@ -175,13 +197,7 @@ namespace Core {
 			result = false;
 
 		return result;
-	}
-	unsigned int TextureManager::getTextureUnit(const std::string texName)
-	{
-		if (m_texID.find(texName) != m_texID.end())
-			return m_texID[texName];
-		return 0;
-	}
+	}	
 
 	void TextureManager::addTexture(const std::string texName, GLuint textureID)
 	{

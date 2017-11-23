@@ -1,4 +1,5 @@
 #include "Ray.h"
+#include "..\Math\MathHelper.h"
 #include <math.h>
 namespace Core {
 	

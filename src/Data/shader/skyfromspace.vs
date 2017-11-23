@@ -23,7 +23,7 @@ uniform float fScaleDepth;			// The scale depth (i.e. the altitude at which the 
 uniform float fScaleOverScaleDepth;	// fScale / fScaleDepth
 
 uniform int Samples;
-
+const float fSamples = 4.0;
 varying vec3 v3Direction;
 varying vec3 rayleiColor;
 varying vec3 mieColor;
@@ -40,6 +40,8 @@ void main(void)
 	vec3 v3Ray = v3Pos - v3CameraPos;
 	float fFar = length(v3Ray);
 	v3Ray /= fFar;
+
+	// Calculate the closest intersection of the ray with the outer atmosphere (which is the near point of the ray passing through the atmosphere)
 	float B = 2.0 * dot(v3CameraPos, v3Ray);
 	float C = fCameraHeight2 - fOuterRadius2;
 	float fDet = max(0.0, B * B - 4.0 * C);
@@ -53,15 +55,14 @@ void main(void)
 	float fStartOffset = fStartDepth * scale(fStartAngle);
 
 	// Initialize the scattering loop variables
-	float fSampleLength = fFar / Samples;
+	float fSampleLength = fFar / fSamples;
 	float fScaledLength = fSampleLength * fScale;
 	vec3 v3SampleRay = v3Ray * fSampleLength;
 	vec3 v3SamplePoint = v3Start + v3SampleRay * 0.5;
 
 	// Now loop through the sample rays
-
 	vec3 v3FrontColor = vec3(0.0);
-	for(int i = 0; i < 2; i++)
+	for(int i = 0; i < Samples; i++)
 	{
 		float fHeight = length(v3SamplePoint);
 		float fDepth = exp(fScaleOverScaleDepth * (fInnerRadius - fHeight));

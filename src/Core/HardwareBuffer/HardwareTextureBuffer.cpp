@@ -100,8 +100,10 @@ namespace SRE {
 		{
 			if (data->getRowPitch() != data->getWidth())
 				glPixelStorei(GL_PACK_ROW_LENGTH, data->getRowPitch());
-			if (data->getTop() != 0 || data->getLeft() != 0)
-				glPixelStorei(GL_PACK_SKIP_PIXELS, data->getLeft() + data->getRowPitch() * data->getTop());
+			if (data->getHeight()*data->getWidth() != data->getSlicePitch())
+				glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, (data->getSlicePitch() / data->getWidth()));
+			if (data->getLeft() > 0 || data->getTop() > 0 || data->getFront() > 0)//结合前面两个计算skip pixel
+				glPixelStorei(GL_UNPACK_SKIP_PIXELS, data->getLeft() + data->getRowPitch() * data->getTop() + data->getRowPitch() * data->getFront());
 			if (data->getWidth() * PixelUtil::getNumElemBytes(data->getPixelFormat()) & 3)
 				glPixelStorei(GL_PACK_ALIGNMENT, 1);
 
@@ -242,7 +244,7 @@ namespace SRE {
 		else
 		{
 			//这里如果考虑三维？
-			if (data->getWidth() != data->getRowPitch())
+			if (data->getWidth() != data->getRowPitch())//宽度不等
 				glPixelStorei(GL_UNPACK_ROW_LENGTH, data->getRowPitch());////指定像素数据中原图的宽度
 
 			//glPixelStorei(GL_UNPACK_SKIP_ROWS, data->); //指定纹理起点偏离原点的高度值
@@ -250,7 +252,7 @@ namespace SRE {
 
 			if (data->getHeight()*data->getWidth() != data->getSlicePitch())
 				glPixelStorei(GL_UNPACK_IMAGE_HEIGHT, (data->getSlicePitch() / data->getWidth()));
-			if (data->getLeft() > 0 || data->getTop() > 0 || data->getFront() > 0)
+			if (data->getLeft() > 0 || data->getTop() > 0 || data->getFront() > 0)//结合前面两个计算skip pixel
 				glPixelStorei(GL_UNPACK_SKIP_PIXELS, data->getLeft() + data->getRowPitch() * data->getTop() + data->getRowPitch() * data->getFront());
 			//glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 			//if ((data.getWidth()*PixelUtil::getNumElemBytes(data.format)) & 3) {

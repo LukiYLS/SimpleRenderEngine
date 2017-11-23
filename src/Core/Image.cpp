@@ -291,10 +291,42 @@ namespace Core {
 
 	}
 
-	FIBITMAP* Image::rescale(FIBITMAP* dib, int width, int height)
+	Image::ptr Image::rescale(Image::ptr image, size_t rescalWidth, size_t rescalHeight)
 	{
-		//
+		if (image)
+		{
+			Image* result = new Image();
+			result = image.get();
+
+			FIBITMAP *dib = FreeImage_Allocate(image->width(), image->height(), image->BPP(), 0, 0, 0);
+			FIBITMAP *bit_map = rescale(dib, rescalWidth, rescalHeight);
+			BYTE* bits = FreeImage_GetBits(bit_map);
+			//result-> = image_info_->image_type;
+			//result->pixelFormat() = image->pixelFormat();
+			//result->image_width = rescale_width_;
+			//result->image_height = rescale_height_;
+			//result->data_size = image->image_width*image->image_height*byte_spp_;
+			//image->pixel_data = (unsigned char*)malloc(sizeof(char) * image->data_size);
+			//memcpy(image->pixel_data, bits, sizeof(char) * image->data_size);
+
+			FreeImage_Unload(bit_map);
+			FreeImage_Unload(dib);
+			return (Image::ptr)result;
+		}
 		return NULL;
+	}
+	FIBITMAP * Image::rescale(FIBITMAP *bit_map, size_t rescalWidth, size_t rescalHeight)
+	{
+		if (bit_map)
+		{
+			FIBITMAP* bit_map_ = FreeImage_Rescale(bit_map, rescalWidth, rescalHeight, FILTER_BOX);
+			return bit_map_;
+		}
+		else
+		{
+			return 0;
+		}
+		
 	}
 
 	FIBITMAP* Image::toBitMap()

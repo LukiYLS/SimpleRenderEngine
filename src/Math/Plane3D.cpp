@@ -1,6 +1,6 @@
 #include "Plane3D.h"
 
-
+#include "MathHelper.h"
 namespace Math {
 
 	Plane3D::Plane3D()

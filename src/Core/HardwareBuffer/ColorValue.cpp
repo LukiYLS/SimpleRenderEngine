@@ -1,5 +1,6 @@
 #include "ColorValue.h"
-
+#include "..\..\Math\MathHelper.h"
+#include <algorithm>
 namespace SRE {
 
 	float ColorValue::r() const
@@ -242,13 +243,126 @@ namespace SRE {
 		return ColorValue::ptr(ret);
 	}
 
-	void ColorValue::HSB(double hue, double saturation, double brightness)
+	void ColorValue::setHSB(double hue, double saturation, double brightness)
 	{
+		// wrap hue
+		if (hue > 1.0f)
+		{
+			hue -= (int)hue;
+		}
+		else if (hue < 0.0f)
+		{
+			hue += (int)hue + 1;
+		}
+		// clamp saturation / brightness
+		saturation = std::min(saturation, (double)1.0);
+		saturation = std::max(saturation, (double)0.0);
+		brightness = std::min(brightness, (double)1.0);
+		brightness = std::max(brightness, (double)0.0);
 
+		if (brightness == 0.0f)
+		{
+			// early exit, this has to be black
+			_r = _g = _b = 0.0f;
+			return;
+		}
+
+		if (saturation == 0.0f)
+		{
+			// early exit, this has to be grey
+
+			_r = _g = _b = brightness;
+			return;
+		}
+
+
+		double hueDomain = hue * 6.0f;
+		if (hueDomain >= 6.0f)
+		{
+			// wrap around, and allow mathematical errors
+			hueDomain = 0.0f;
+		}
+		unsigned short domain = (unsigned short)hueDomain;
+		double f1 = brightness * (1 - saturation);
+		double f2 = brightness * (1 - saturation * (hueDomain - domain));
+		double f3 = brightness * (1 - saturation * (1 - (hueDomain - domain)));
+
+		switch (domain)
+		{
+		case 0:
+			// red domain; green ascends
+			_r = brightness;
+			_g = f3;
+			_b = f1;
+			break;
+		case 1:
+			// yellow domain; red descends
+			_r = f2;
+			_g = brightness;
+			_b = f1;
+			break;
+		case 2:
+			// green domain; blue ascends
+			_r = f1;
+			_g = brightness;
+			_b = f3;
+			break;
+		case 3:
+			// cyan domain; green descends
+			_r = f1;
+			_g = f2;
+			_b = brightness;
+			break;
+		case 4:
+			// blue domain; red ascends
+			_r = f3;
+			_g = f1;
+			_b = brightness;
+			break;
+		case 5:
+			// magenta domain; blue descends
+			_r = brightness;
+			_g = f1;
+			_b = f2;
+			break;
+		}
 	}
 
-	void ColorValue::HSB(double* hue, double* saturation, double* brightness) const
+	void ColorValue::getHSB(double* hue, double* saturation, double* brightness) const
 	{
 
+		double vMin = std::min(_r, std::min(_g, _b));
+		double vMax = std::max(_r, std::max(_g, _b));
+		double delta = vMax - vMin;
+
+		*brightness = vMax;
+
+		if (Math::MathHelper::RealEqual(delta, 0.0f, 1e-6))
+		{
+			// grey
+			*hue = 0;
+			*saturation = 0;
+		}
+		else
+		{
+			// a colour
+			*saturation = delta / vMax;
+
+			double deltaR = (((vMax - _r) / 6.0f) + (delta / 2.0f)) / delta;
+			double deltaG = (((vMax - _g) / 6.0f) + (delta / 2.0f)) / delta;
+			double deltaB = (((vMax - _b) / 6.0f) + (delta / 2.0f)) / delta;
+
+			if (Math::MathHelper::RealEqual(_r, vMax))
+				*hue = deltaB - deltaG;
+			else if (Math::MathHelper::RealEqual(_g, vMax))
+				*hue = 0.3333333f + deltaR - deltaB;
+			else if (Math::MathHelper::RealEqual(_b, vMax))
+				*hue = 0.6666667f + deltaG - deltaR;
+
+			if (*hue < 0.0f)
+				*hue += 1.0f;
+			if (*hue > 1.0f)
+				*hue -= 1.0f;
+		}
 	}
 }

@@ -28,8 +28,7 @@ namespace SRE {
 	public:
 		static HardwareBufferManager& getSingleton(void);
 		static HardwareBufferManager* getSingletonPtr(void);
-		HardwareVertexBuffer::ptr createVertexBuffer(unsigned int vertex_size_, unsigned int num_verts_, HardwareBuffer::Usage usage,
-				bool use_shadow_buffer = false);
+		
 
 		HardwareIndexBuffer::ptr
 			createIndexBuffer(HardwareIndexBuffer::IndexType itype, unsigned int num_indexes,
@@ -54,5 +53,6 @@ namespace SRE {
 	protected:
 		static HardwareBufferManager* _singleton;
 		char* _bufferpool;
+
 	};
 }

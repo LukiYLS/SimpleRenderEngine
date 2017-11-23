@@ -93,6 +93,12 @@ namespace SRE {
 		}
 	}
 
+	VertexDeclaration::ptr HardwareBufferManager::createVertexDeclaration(void)
+	{
+		VertexDeclaration::ptr vd = std::make_shared<VertexDeclaration>();
+		return vd;
+	}
+
 	GLenum HardwareBufferManager::getGLUsege(unsigned int usage)
 	{
 		switch (usage)

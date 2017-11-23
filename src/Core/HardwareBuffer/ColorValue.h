@@ -5,7 +5,6 @@ namespace SRE {
 
 	class ColorValue {
 	public:
-
 		typedef std::shared_ptr<ColorValue> ptr;
 	public:
 		ColorValue(float r, float g, float b, float a)
@@ -75,14 +74,14 @@ namespace SRE {
 		@param saturation Saturation level, [0,1]
 		@param brightness Brightness level, [0,1]
 		*/
-		void HSB(double hue, double saturation, double brightness);
+		void setHSB(double hue, double saturation, double brightness);
 
 		/** Convert the current colour to Hue, Saturation and Brightness values.
 		@param hue Output hue value, scaled to the [0,1] range as opposed to the 0-360
 		@param saturation Output saturation level, [0,1]
 		@param brightness Output brightness level, [0,1]
 		*/
-		void HSB(double* hue, double* saturation, double* brightness) const;
+		void getHSB(double* hue, double* saturation, double* brightness) const;
 
 	protected:
 		float _r, _g, _b, _a;

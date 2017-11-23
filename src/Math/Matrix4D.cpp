@@ -3,6 +3,7 @@
 #include "Quaternion.h"
 #include "Vector3D.h"
 #include "Vector4D.h"
+#include "MathHelper.h"
 namespace Math {
 
 

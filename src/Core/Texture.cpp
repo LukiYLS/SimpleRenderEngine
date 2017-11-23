@@ -5,7 +5,7 @@
 namespace Core {
 
 
-	Texture::Texture(const std::string name, TextureType type = TEX_TYPE_2D)
+	/*Texture::Texture(const std::string name, TextureType type)
 		:_name(name),
 		_width(0),
 		_height(0),
@@ -13,7 +13,7 @@ namespace Core {
 		_isAlpha(false)
 	{
 
-	}
+	}*/
 	Texture::Texture(GLenum textureTarget, const std::string& fileName)
 	{
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
@@ -63,8 +63,12 @@ namespace Core {
 		glDeleteTextures(1, &_textureID);
 		glDeleteSamplers(1, &_sampler);
 	}
-
-	void Texture::loadImage(Image* image)
+	void Texture::loadImages(std::vector<Image::ptr> images)
+	{
+		for (auto image : images)
+			loadImage(image);
+	}
+	void Texture::loadImage(Image::ptr image)
 	{
 		if (!image)
 			return;
@@ -77,21 +81,21 @@ namespace Core {
 		size_t maxMips = PixelUtil::getMaxMipmaps(_width, _height, _depth, _pixelFormat);
 		if (_numMipMaps > maxMips)
 			_numMipMaps = maxMips;
-
+		unsigned int numMipMaps = _numMipMaps;
+		if (_autoGenerateMipMap) numMipMaps = 0;
 		size_t width = _width;
 		size_t height = _height;
 		size_t depth = _depth;
-		for (unsigned short mip = 0; mip < _numMipMaps; mip++)
+		for (unsigned short mip = 0; mip < numMipMaps; mip++)
 		{
 			if (mip == 0)
 			{
-				_image_list.push_back((Image::ptr)image);
-				if (_autoGenerateMipMap)
-					break;
+				_image_list.push_back(image);
+				
 			}
 			else
 			{
-				//_image_list.push_back(texture_manager_impl_->rescale_picture(image_information_, width, height));
+				_image_list.push_back(Image::rescale(image, width, height));
 			}				
 			if (width > 1)
 				width = width / 2;
@@ -104,6 +108,24 @@ namespace Core {
 		createInternalResources();
 
 
+		
+	}
+	void Texture::upLoad()
+	{
+		GLenum target = getTextureTarget();
+		_surface_list.clear();
+
+		unsigned int numMipMaps = _numMipMaps;
+		if (_autoGenerateMipMap) numMipMaps = 0;
+
+		for (GLuint face = 0; face < getNumFaces(); face++)
+		{
+			for (unsigned short mip = 0; mip < numMipMaps; mip++)
+			{
+				HardwareTextureBuffer::ptr buffer = std::make_shared<HardwareTextureBuffer>(target, _textureID, face, mip, _usage, _autoGenerateMipMap);
+				_surface_list.push_back(buffer);
+			}
+		}
 		size_t faces;
 		bool multiImage; // Load from multiple images?
 		if (_image_list.size() > 1)
@@ -116,7 +138,7 @@ namespace Core {
 			faces = 1;//_image_list[0]->getNumFaces();
 			multiImage = false;
 		}
-		for (size_t mip = 0; mip <= _numMipMaps; ++mip)
+		for (size_t mip = 0; mip <= numMipMaps; ++mip)
 		{
 			for (size_t i = 0; i < faces; ++i)
 			{
@@ -125,16 +147,11 @@ namespace Core {
 				getBuffer(i, mip)->blitFromMemory(box);
 			}
 		}
-	}
-	void Texture::upLoad()
-	{
-		
-		
 
 	}
 	void Texture::createInternalResources()
 	{
-		GLenum target = getTextureTarget();;
+		GLenum target = getTextureTarget();
 		glGenTextures(1, &_textureID);
 		glBindTexture(target, _textureID);
 
@@ -195,16 +212,7 @@ namespace Core {
 			}
 		}
 
-		_surface_list.clear();
-
-		for (GLuint face = 0; face < getNumFaces(); face++)
-		{
-			for (unsigned short mip = 0; mip < _numMipMaps; mip++)
-			{
-				HardwareTextureBuffer::ptr buffer = std::make_shared<HardwareTextureBuffer>(target, _textureID, face, mip, _usage, _autoGenerateMipMap);
-				_surface_list.push_back(buffer);
-			}
-		}
+		
 	}
 	HardwareTextureBuffer::ptr Texture::getBuffer(size_t face, size_t mipmap)
 	{

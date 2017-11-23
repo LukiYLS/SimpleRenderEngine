@@ -24,7 +24,7 @@ Scene::ptr createScene()
 	mesh1->addTexture("cloud");
 	mesh1->addTexture("light");
 	mesh1->setShaderName("groundfromspace");
-	root->add(mesh1);
+	//root->add(mesh1);
 	root->add(mesh);
 	
 	scene->setSceneRoot(root);
@@ -83,7 +83,7 @@ int main()
 {
 	Win::getSingleton()->create();
 	initResource();
-	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, radius*0.5, radius*3);
+	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, radius*0.5, radius*5);
 	camera->setPosition(Vector3D(0.0f, 0.0f, radius*3));
 	camera->lookAt(0.0, 0.0, 0.0);
 

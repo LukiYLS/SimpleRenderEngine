@@ -1,12 +1,10 @@
-
-
 #pragma once
 namespace SRE {
 
 	class HardwareBuffer {
 
 	public:
-		virtual ~HardwareBuffer() = 0;
+		virtual ~HardwareBuffer() {};
 	public:
 		enum Usage
 		{
@@ -72,6 +70,7 @@ namespace SRE {
 
 		};
 	public:
+	
 		virtual void*	lock(size_t offset, size_t length, LockOptions options) = 0;
 		virtual void*	lock(LockOptions options) = 0;
 		virtual void	unlock(void) = 0;

@@ -13,7 +13,7 @@ namespace SRE {
 			IT_32BIT
 		};
 		typedef std::shared_ptr<HardwareIndexBuffer> ptr;
-		HardwareIndexBuffer(IndexType index_type, size_t num_indices, HardwareBuffer::Usage usage, bool use_shadow_buffer);
+		HardwareIndexBuffer(IndexType index_type, size_t num_indices, HardwareBuffer::Usage usage, bool use_shadow_buffer = false);
 		~HardwareIndexBuffer();
 	public:
 		

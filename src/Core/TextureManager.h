@@ -16,18 +16,16 @@ namespace Core {
 		static TextureManager* Inst();
 		virtual ~TextureManager();
 	
-		Texture::ptr createTexture(TextureType type, const std::string& tex_name, const std::string& file_name);
-
-		Texture::ptr createCubeMap(const std::string& tex_name, std::vector<const std::string> flies);
-		bool loadTexture(const char* filename, const std::string texName, GLenum image_format = GL_RGB, GLint internal_format = GL_RGB, GLint level = 0, GLint border = 0);
-
-		bool unloadTexture(std::string texName);
-
-		bool loadCubeMap(std::vector<const char*> flies);
+		Texture::ptr loadTexture(const std::string& tex_name, const std::string& file_name, TextureType type = TEX_TYPE_2D);
+		Texture::ptr loadCubeMap(const std::string& tex_name, std::vector<const std::string> flies);
+		Texture::ptr getTexture(const std::string& tex_name);
+		//bool loadTexture(const char* filename, const std::string texName, GLenum image_format = GL_RGB, GLint internal_format = GL_RGB, GLint level = 0, GLint border = 0);
+		//bool loadCubeMap(std::vector<const char*> flies);
+		bool unloadTexture(std::string texName);		
 
 		bool bindTexture(const std::string texName, int units);		
 
-		GLuint getTextureUnit(const std::string texName);
+		
 
 		void unloadAllTextures();
 

@@ -47,13 +47,13 @@ namespace Core {
 		//void setColourAt(ColourValue const &cv, size_t x, size_t y, size_t z);
 		
 		//PixelBox getPixelBox(size_t face = 0, size_t mipmap = 0) const;
-		
+		static Image::ptr rescale(Image::ptr image, size_t rescalWidth, size_t rescalHeight);
 		
 		//void resize(int width, int height);
 	protected:		
 		bool decode(FIBITMAP* dib);
 		bool decode2(FIBITMAP* dib);
-		FIBITMAP* rescale(FIBITMAP* dib, int width, int height);
+		static FIBITMAP* rescale(FIBITMAP* dib, size_t width, size_t height);
 		FIBITMAP* toBitMap();
 		unsigned int _width;		
 		unsigned int _height;	

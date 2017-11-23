@@ -85,13 +85,13 @@ namespace Core {
 			//if (_enable_shadow)mesh->addTexture("shadowMap");
 			mesh->setupUniform(shader);
 			glEnable(GL_CULL_FACE);
-			if (first)
-			{
-				first = false;
+			//if (first)
+			//{
+				//first = false;
 
-				glCullFace(GL_BACK);
-			}
-			else
+				//glCullFace(GL_BACK);
+			//}
+			//else
 				glCullFace(GL_FRONT);
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			mesh->draw(shader);

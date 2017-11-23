@@ -51,15 +51,15 @@ namespace Core {
 
 	void Skybox::render(Camera* camera)
 	{
-		Shader::ptr skybox = std::make_shared<Shader>("../../../src/Data/shader/skybox.vs", "../../../src/Data/shader/skybox.fs");
-		Mesh::ptr mesh = (Mesh::ptr)GeometryFactory::MakeBox(1.0, 1.0, 1.0);
+//		Shader::ptr skybox = std::make_shared<Shader>("../../../src/Data/shader/skybox.vs", "../../../src/Data/shader/skybox.fs");
+//		Mesh::ptr mesh = (Mesh::ptr)GeometryFactory::MakeBox(1.0, 1.0, 1.0);
 
-		skybox->setMat4("veiw", camera->getViewMatrix().getMatrix3x3());
-		skybox->setMat4("projection", camera->getProjectionMatrix());
+//		skybox->setMat4("veiw", camera->getViewMatrix().getMatrix3x3());
+//		skybox->setMat4("projection", camera->getProjectionMatrix());
 
 		glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _textureID);
 		glDepthFunc(GL_LEQUAL);
-		mesh->draw(skybox.get());
+//		mesh->draw(skybox.get());
 	}
 }

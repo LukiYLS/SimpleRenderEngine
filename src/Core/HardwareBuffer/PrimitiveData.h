@@ -10,7 +10,7 @@ namespace SRE {
 		typedef std::shared_ptr<VertexData> ptr;
 	public:
 		VertexData();
-		~VertexData();
+		~VertexData() {};
 	public:
 		VertexDeclaration::ptr getVertexDeclaration();
 		void setVertexDeclaration(VertexDeclaration::ptr vertex_declaration);
@@ -35,7 +35,7 @@ namespace SRE {
 		typedef std::shared_ptr<IndexData> ptr;
 	public:
 		IndexData();
-		~IndexData();
+		~IndexData() {};
 	public:
 		
 		HardwareIndexBuffer::ptr getHardwareIndexBuffer();

@@ -1,5 +1,5 @@
 #pragma once
-#include <windows.h>
+
 #include "Vector3D.h"
 #include "Vector4D.h"
 #include "Matrix4D.h"
@@ -27,12 +27,12 @@ namespace Math {
 			return degrees * 0.01745329251994329576923690768489;
 		}
 
-		static UINT ColorTo32(const Vector3D& color) {
+		/*static UINT ColorTo32(const Vector3D& color) {
 			BYTE red = 255 * color[0];
 			BYTE green = 255 * color[1];
 			BYTE blue = 255 * color[2];
 			return (UINT)((BYTE)blue | (WORD)((BYTE)green << 8) | (DWORD)((BYTE)red << 16));
-		}
+		}*/
 		static bool Clip(Vector4D v)
 		{
 			if (v.x >= -v.w && v.x <= v.w && v.y >= -v.w && v.y <= v.w &&
@@ -61,6 +61,13 @@ namespace Math {
 				return true;
 			}
 			return false;
+		}
+		static bool RealEqual(double a, double b, double tolerance = math_tolerancef)
+		{
+			if (fabs(b - a) <= tolerance)
+				return true;
+			else
+				return false;
 		}
 		static Vector3D unProject(const Matrix4D& view, const Matrix4D& projection, const Vector3D& vec);
 		static Vector3D project(const Matrix4D& view, const Matrix4D& projection, const Vector3D& vec);		

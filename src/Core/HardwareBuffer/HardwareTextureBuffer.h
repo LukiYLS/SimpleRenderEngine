@@ -29,7 +29,7 @@ namespace SRE {
 
 		virtual bool isLocked(void) const { return _isLocked; }
 		virtual bool isUseShadowBuffer(void) const { return false; }
-
+		virtual void upload(void){}
 		//ÉÏ´«ÏÔ¿¨
 		void blitFromMemory(PixelBox::ptr data, PixelBox::ptr dst);
 		void blitFromMemory(PixelBox::ptr data);

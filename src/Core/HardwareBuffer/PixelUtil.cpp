@@ -667,6 +667,32 @@ namespace SRE {
 	{
 		return getDescriptionFor(format).elemBytes;
 	}
+	bool PixelUtil::hasAlpha(PixelFormat format)
+	{
+		return (PixelUtil::getFlags(format) & PFF_HASALPHA) > 0;
+	}
+	bool PixelUtil::isFloatingPoint(PixelFormat format)
+	{
+		return (PixelUtil::getFlags(format) & PFF_FLOAT) > 0;
+	}
+	bool PixelUtil::isInteger(PixelFormat format)
+	{
+		return (PixelUtil::getFlags(format) & PFF_INTEGER) > 0;
+	}
+	//-----------------------------------------------------------------------
+	
+	bool PixelUtil::isDepth(PixelFormat format)
+	{
+		return (PixelUtil::getFlags(format) & PFF_DEPTH) > 0;
+	}
+	void PixelUtil::getBitDepths(PixelFormat format, int rgba[4])
+	{
+		const PixelFormatDescription &des = getDescriptionFor(format);
+		rgba[0] = des.rbits;
+		rgba[1] = des.gbits;
+		rgba[2] = des.bbits;
+		rgba[3] = des.abits;
+	}
 	unsigned int PixelUtil::getMemorySize(unsigned int width, unsigned int height, unsigned int depth, PixelFormat format)
 	{
 		//对于DDS格式
@@ -877,6 +903,113 @@ namespace SRE {
 		default:
 			return GL_RGBA8;
 		}
+	}
+	PixelFormat PixelUtil::getClosestOGREFormat(GLenum fmt)
+	{
+		switch (fmt)
+		{
+		case GL_LUMINANCE8:
+			return PF_L8;
+		case GL_LUMINANCE16:
+			return PF_L16;
+		case GL_ALPHA8:
+			return PF_A8;
+		case GL_LUMINANCE4_ALPHA4:
+			// Unsupported by GL as input format, use the byte packed format
+			return PF_BYTE_LA;
+		case GL_LUMINANCE8_ALPHA8:
+			return PF_BYTE_LA;
+		case GL_R3_G3_B2:
+			return PF_R3G3B2;
+		case GL_RGB5_A1:
+			return PF_A1R5G5B5;
+		case GL_RGB5:
+			return PF_R5G6B5;
+		case GL_RGBA4:
+			return PF_A4R4G4B4;
+		case GL_RGB8:
+		case GL_SRGB8:
+			return PF_X8R8G8B8;
+		case GL_RGBA8:
+		case GL_SRGB8_ALPHA8:
+			return PF_A8R8G8B8;
+		case GL_RGB10_A2:
+			return PF_A2R10G10B10;
+		case GL_RGBA16:
+			return PF_SHORT_RGBA;
+		case GL_RGB16:
+			return PF_SHORT_RGB;
+		case GL_LUMINANCE16_ALPHA16:
+			return PF_SHORT_GR;
+		case GL_LUMINANCE_FLOAT16_ATI:
+			return PF_FLOAT16_R;
+		case GL_LUMINANCE_ALPHA_FLOAT16_ATI:
+			return PF_FLOAT16_GR;
+		case GL_LUMINANCE_ALPHA_FLOAT32_ATI:
+			return PF_FLOAT32_GR;
+		case GL_LUMINANCE_FLOAT32_ATI:
+			return PF_FLOAT32_R;
+		case GL_RGB_FLOAT16_ATI: // GL_RGB16F_ARB
+			return PF_FLOAT16_RGB;
+		case GL_RGBA_FLOAT16_ATI:
+			return PF_FLOAT16_RGBA;
+		case GL_RGB_FLOAT32_ATI:
+			return PF_FLOAT32_RGB;
+		case GL_RGBA_FLOAT32_ATI:
+			return PF_FLOAT32_RGBA;
+		case GL_COMPRESSED_RGB_S3TC_DXT1_EXT:
+		case GL_COMPRESSED_RGBA_S3TC_DXT1_EXT:
+		case GL_COMPRESSED_SRGB_S3TC_DXT1_EXT:
+		case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT1_EXT:
+			return PF_DXT1;
+		case GL_COMPRESSED_RGBA_S3TC_DXT3_EXT:
+		case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT3_EXT:
+			return PF_DXT3;
+		case GL_COMPRESSED_RGBA_S3TC_DXT5_EXT:
+		case GL_COMPRESSED_SRGB_ALPHA_S3TC_DXT5_EXT:
+			return PF_DXT5;
+		default:
+			return PF_A8R8G8B8;
+		};
+	}
+	GLenum PixelUtil::getClosestGLInternalFormat(PixelFormat format, bool hwGamma)
+	{
+		GLenum format_ = getGLInternalFormat(format, hwGamma);
+		if (format_ == GL_NONE)
+		{
+			if (hwGamma)
+				return GL_SRGB8;
+			else
+				return GL_RGBA8;
+		}
+		else
+			return format_;
+	}
+	size_t PixelUtil::getMaxMipmaps(unsigned int width, unsigned int height, unsigned int depth, PixelFormat format)
+	{
+		size_t count = 0;
+		if ((width > 0) && (height > 0) && (depth > 0))
+		{
+			do {
+				if (width>1)     width = width / 2;
+				if (height>1)    height = height / 2;
+				if (depth>1)     depth = depth / 2;
+				/*
+				NOT needed, compressed formats will have mipmaps up to 1x1
+				if(PixelUtil::isValidExtent(width, height, depth, format))
+				count ++;
+				else
+				break;
+				*/
+
+				count++;
+			} while (!(width == 1 && height == 1 && depth == 1));
+		}
+		return count;
+	}
+	unsigned int PixelUtil::optionalPO2(unsigned int value)
+	{
+		return 0;
 	}
 
 	void PixelUtil::packColor(ColorValue::ptr color, const PixelFormat pf, void* dest)
