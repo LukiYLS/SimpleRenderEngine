@@ -102,6 +102,87 @@ namespace Core {
 		return ro;
 		
 	}
+	{
+		mesh->sharedVertexData = OGRE_NEW VertexData();
+		VertexData* vertexData = mesh->sharedVertexData;
+
+		// define the vertex format
+		VertexDeclaration* vertexDecl = vertexData->vertexDeclaration;
+		size_t currOffset = 0;
+		// positions
+		vertexDecl->addElement(0, currOffset, VET_FLOAT3, VES_POSITION);
+		currOffset += VertexElement::getTypeSize(VET_FLOAT3);
+		// normals
+		vertexDecl->addElement(0, currOffset, VET_FLOAT3, VES_NORMAL);
+		currOffset += VertexElement::getTypeSize(VET_FLOAT3);
+		// two dimensional texture coordinates
+		vertexDecl->addElement(0, currOffset, VET_FLOAT2, VES_TEXTURE_COORDINATES, 0);
+
+		// allocate the vertex buffer
+		vertexData->vertexCount = (NUM_RINGS + 1) * (NUM_SEGMENTS + 1);
+		HardwareVertexBufferSharedPtr vBuf = HardwareBufferManager::getSingleton().createVertexBuffer(vertexDecl->getVertexSize(0), vertexData->vertexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY, false);
+		VertexBufferBinding* binding = vertexData->vertexBufferBinding;
+		binding->setBinding(0, vBuf);
+		float* pVertex = static_cast<float*>(vBuf->lock(HardwareBuffer::HBL_DISCARD));
+
+		// allocate index buffer
+		pSphereVertex->indexData->indexCount = 6 * NUM_RINGS * (NUM_SEGMENTS + 1);
+		pSphereVertex->indexData->indexBuffer = HardwareBufferManager::getSingleton().createIndexBuffer(HardwareIndexBuffer::IT_16BIT, pSphereVertex->indexData->indexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY, false);
+		HardwareIndexBufferSharedPtr iBuf = pSphereVertex->indexData->indexBuffer;
+		unsigned short* pIndices = static_cast<unsigned short*>(iBuf->lock(HardwareBuffer::HBL_DISCARD));
+
+		float fDeltaRingAngle = (Math::PI / NUM_RINGS);
+		float fDeltaSegAngle = (2 * Math::PI / NUM_SEGMENTS);
+		unsigned short wVerticeIndex = 0;
+
+		// Generate the group of rings for the sphere
+		for (int ring = 0; ring <= NUM_RINGS; ring++) {
+			float r0 = SPHERE_RADIUS * sinf(ring * fDeltaRingAngle);
+			float y0 = SPHERE_RADIUS * cosf(ring * fDeltaRingAngle);
+
+			// Generate the group of segments for the current ring
+			for (int seg = 0; seg <= NUM_SEGMENTS; seg++) {
+				float x0 = r0 * sinf(seg * fDeltaSegAngle);
+				float z0 = r0 * cosf(seg * fDeltaSegAngle);
+
+				// Add one vertex to the strip which makes up the sphere
+				*pVertex++ = x0;
+				*pVertex++ = y0;
+				*pVertex++ = z0;
+
+				Vector3 vNormal = Vector3(x0, y0, z0).normalisedCopy();
+				*pVertex++ = vNormal.x;
+				*pVertex++ = vNormal.y;
+				*pVertex++ = vNormal.z;
+
+				*pVertex++ = (float)seg / (float)NUM_SEGMENTS;
+				*pVertex++ = (float)ring / (float)NUM_RINGS;
+
+				if (ring != NUM_RINGS) {
+					// each vertex (except the last) has six indicies pointing to it
+					*pIndices++ = wVerticeIndex + NUM_SEGMENTS + 1;
+					*pIndices++ = wVerticeIndex;
+					*pIndices++ = wVerticeIndex + NUM_SEGMENTS;
+					*pIndices++ = wVerticeIndex + NUM_SEGMENTS + 1;
+					*pIndices++ = wVerticeIndex + 1;
+					*pIndices++ = wVerticeIndex;
+					wVerticeIndex++;
+				}
+			}; // end for seg
+		} // end for ring
+
+		  // Unlock
+		vBuf->unlock();
+		iBuf->unlock();
+		// Generate face list
+		pSphereVertex->useSharedVertices = true;
+
+		// the original code was missing this line:
+		mesh->_setBounds(AxisAlignedBox(Vector3(-SPHERE_RADIUS, -SPHERE_RADIUS, -SPHERE_RADIUS),
+			Vector3(SPHERE_RADIUS, SPHERE_RADIUS, SPHERE_RADIUS)), false);
+
+		mesh->_setBoundingSphereRadius(SPHERE_RADIUS);
+	}
 
 	/*Mesh* GeometryFactory::MakeSphere(double radius, int widthSegments, int heightSegments)
 	{
