@@ -132,8 +132,8 @@ namespace SRE {
 		indexdata->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
 		unsigned short* pIndices = static_cast<unsigned short*>(index_buffer->lock(HardwareBuffer::HBL_DISCARD));
 
-		float fDeltaRingAngle = (math_pi / numRings);
-		float fDeltaSegAngle = (math_two_pi / numSegments);
+		float fDeltaRingAngle = (M_PI / numRings);
+		float fDeltaSegAngle = (M_2PI / numSegments);
 		unsigned short wVerticeIndex = 0;
 
 		// Generate the group of rings for the sphere
@@ -335,13 +335,13 @@ namespace SRE {
 
 		int X = widthSegments, Y = heightSegments;
 
-		float a, stepa = (float)math_pi * 2.0f / (float)X, stepb = (float)math_pi / (float)Y, b = -(float)math_half_pi + stepb;
+		float a, stepa = (float)M_PI * 2.0f / (float)X, stepb = (float)M_PI / (float)Y, b = -(float)M_HALF_PI + stepb;
 
 		Vector3D *positions = new Vector3D[X * (Y - 1)];
 
 		for (int y = 0; y < (Y - 1); y++)
 		{
-			a = -(float)math_pi;
+			a = -(float)M_PI;
 
 			for (int x = 0; x < X; x++)
 			{

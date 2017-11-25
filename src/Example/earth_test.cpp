@@ -33,8 +33,11 @@ Scene::ptr createScene()
 
 void initResource()
 {
-	RenderObject::ptr ro = GeometryFactory::MakeBox(10, 10, 10);
-	RenderObject::ptr ro2 = GeometryFactory::MakeSphere(10, 10, 10);
+	//RenderObject::ptr ro = GeometryFactory::MakeBox(10, 10, 10);
+	//Shader::ptr basic = make_shared<Shader>("../../../src/Data/shader/basic.vs", "../../../src/Data/shader/basic.fs");
+	///basic->use();
+	//ro->drawPrimitive();
+	//RenderObject::ptr ro2 = GeometryFactory::MakeSphere(10, 10, 10);
 
 	TextureManager::Inst()->loadTexture("earth","../../../src/Data/texture/earthmap.jpg");
 	TextureManager::Inst()->loadTexture( "cloud", "../../../src/Data/texture/cloudsmap.jpg");
@@ -45,8 +48,8 @@ void initResource()
 	Shader::ptr shader_groundfromatmosphere = make_shared<Shader>("../../../src/Data/shader/groundfromatmosphere.vs", "../../../src/Data/shader/groundfromatmosphere.fs");
 	float Kr = 0.0030f;
 	float Km = 0.0015f;
-	float ESun = .0f;
-	float g = -0.75f;
+	float ESun = 15.0f;
+	float g = -0.95f;
 	float InnerRadius = radius;;
 	float OuterRadius = 1.025*radius;
 	float Scale = 1.0f / (OuterRadius - InnerRadius);
@@ -64,14 +67,14 @@ void initResource()
 		shader->setFloat("fOuterRadius2", OuterRadius * OuterRadius);
 		shader->setFloat("fKrESun", Kr * ESun);
 		shader->setFloat("fKmESun", Km * ESun);
-		shader->setFloat("fKr4PI", Kr * 4.0f * (float)math_pi);
-		shader->setFloat("fKm4PI", Km * 4.0f * (float)math_pi);
+		shader->setFloat("fKr4PI", Kr * 4.0f * (float)M_PI);
+		shader->setFloat("fKm4PI", Km * 4.0f * (float)M_PI);
 		shader->setFloat("fScale", Scale);
 		shader->setFloat("fScaleDepth", ScaleDepth);
 		shader->setFloat("fScaleOverScaleDepth", ScaleOverScaleDepth);
 		shader->setFloat("g", g);
 		shader->setFloat("g2", g * g);
-		shader->setInt("Samples", 4);
+		shader->setInt("Samples", 11);
 	}
 
 	ShaderManager::getSingleton()->add("skyfromspace", shader_skyfromspace);

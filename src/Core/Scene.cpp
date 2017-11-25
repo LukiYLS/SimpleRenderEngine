@@ -92,7 +92,7 @@ namespace SRE {
 				//glCullFace(GL_BACK);
 			//}
 			//else
-				glCullFace(GL_FRONT);
+			glCullFace(GL_FRONT);
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 			mesh->draw(shader);
 		}

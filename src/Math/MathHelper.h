@@ -6,10 +6,10 @@
 
 #define math_tolerance 1e-14
 #define math_tolerancef 1e-6
-#define math_pi     3.14159265358979323846
-#define math_two_pi     6.28318530717958647692
-#define math_half_pi     (math_pi*0.5)
-#define math_quarter_pi     (math_pi*0.25)
+#define M_PI     3.14159265358979323846
+#define M_2PI     6.28318530717958647692
+#define M_HALF_PI     (M_PI*0.5)
+#define M_QUAT_PI     (M_PI*0.25)
 namespace Math {
 
 	

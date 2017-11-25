@@ -28,5 +28,7 @@ namespace SRE {
 			CUBE_UP = 4,
 			CUBE_DOWN = 5
 		};
+
+
 	};
 }

@@ -5,7 +5,7 @@
 #include "../Utils/BoundingSphere.h"
 #include "HardwareBuffer\PrimitiveData.h"
 using namespace Utils;
-using namespace SRE;
+
 namespace SRE {
 
 

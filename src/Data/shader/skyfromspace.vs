@@ -75,9 +75,10 @@ void main(void)
 	}
 
 	// Finally, scale the Mie and Rayleigh colors and set up the varying variables for the pixel shader
+	gl_Position = projection * view * model * vec4(position, 1.0);	
 	mieColor = v3FrontColor * fKmESun;
 	rayleiColor = v3FrontColor * (v3InvWavelength * fKrESun);
-	gl_Position = projection * view * model * vec4(position, 1.0);	
+	
 	v3Direction = v3CameraPos - v3Pos;
 }
 

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../SRE/Camera.h"
+#include "../Core/Camera.h"
 #include "Event.h"
 #include "InputDefine.h"
 using namespace SRE;
