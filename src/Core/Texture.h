@@ -42,8 +42,8 @@ namespace SRE {
 		virtual void setNumMipmaps(bool num) { _numMipMaps = num; }		
 		void setTextureType(TextureType type) { _textureType = type; }
 		TextureType getTextureType(void) const { return _textureType; }
-//		int getUsage()const { return _usage; }
-//		void setUsage(int usage) { _usage = usage; }
+		HardwareBuffer::Usage getUsage()const { return _usage; }
+		void setUsage(HardwareBuffer::Usage usage) { _usage = usage; }
 		unsigned int getWidth()const { return _width; }
 		void setWidth(unsigned int width) { _width = width; }
 		unsigned int getHeight()const { return _height; }

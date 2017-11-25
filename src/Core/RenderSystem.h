@@ -16,10 +16,14 @@ namespace SRE {
 		void renderImpl();
 		void afterRender();//Ò»Ö¡½áÊø	
 		void resize(int x, int y, int width, int height);
+
+		void projectObject(Object::ptr object);
 	private:	
 		Scene::ptr _scene;
 		Camera::ptr _camera;	
 
+		std::vector<Mesh::ptr> _meshs;
+		std::vector<Light::ptr> _lights
 
 	};
 }

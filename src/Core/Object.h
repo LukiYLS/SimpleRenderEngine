@@ -21,26 +21,26 @@ namespace SRE {
 		Object(const Vector3D& pos) :_position(pos), _scale(Vector3D(1.0, 1.0, 1.0)) {}
 		Object(const Vector3D& pos, const Quaternion& quat) :_position(pos), _orientation(quat), _scale(Vector3D(1.0, 1.0, 1.0)) {}
 	public:
-		virtual Mesh* asMesh() { return 0; }
-		virtual const Mesh* asMesh() const { return 0; }
+		virtual Mesh::ptr asMesh() { return 0; }
+		virtual const Mesh::ptr asMesh() const { return 0; }
 
-		virtual Light* asLight() { return 0; }
+		virtual Light::ptr asLight() { return 0; }
 		virtual const Light* asLight() const { return 0; }
 
-		virtual Plugin* asPlugin() { return 0; }
+		virtual Plugin::ptr asPlugin() { return 0; }
 		virtual const Plugin* asPlugin() const { return 0; }
 
-		virtual Sprite* asSprite() { return 0; }
-		virtual const Sprite* asSprite() const { return 0; }
+		//virtual Sprite::ptr asSprite() { return 0; }
+		//virtual const Sprite* asSprite() const { return 0; }
 
-		virtual BillboardCollection* asBillboardCollection() { return 0; }
-		virtual const BillboardCollection* asBillboardCollection() const { return 0; }
+		virtual BillboardCollection::ptr asBillboardCollection() { return 0; }
+		virtual const BillboardCollection::ptr asBillboardCollection() const { return 0; }
 
-		virtual ParticleSystem* asParticleSystem() { return 0; }
-		virtual const ParticleSystem* asParticleSystem() const { return 0; }
+	//	virtual ParticleSystem* asParticleSystem() { return 0; }
+	//	virtual const ParticleSystem* asParticleSystem() const { return 0; }
 
-		virtual Object* asObject() { return this; }
-		virtual const Object* asObject() const { return this; }
+		virtual Object::ptr asObject() { return (ptr)this; }
+		virtual const Object::ptr asObject() const { return (ptr)this; }
 
 		virtual void raycast(RayCaster* raycaster, Utils::AnyValue& intersects) { }
 
@@ -79,9 +79,10 @@ namespace SRE {
 		//
 		bool add(Object* object);
 		bool remove(Object* object);
-		Object* getChild(int index);	
-		typedef std::vector<Object*> Children;
-		Children getChildren() { return _children; }
+		Object::ptr getChild(int index);	
+		unsigned int getChildCount()const { return _children.size(); }
+		typedef std::vector<Object::ptr> Children;
+		//Children getChildren() { return _children; }
 		void updateMatrixLocal();
 		void updateMatrixWorld();
 		//

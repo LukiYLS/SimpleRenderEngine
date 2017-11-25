@@ -130,7 +130,7 @@ namespace SRE {
 	}
 	void Win::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		//get register keyboard,
+		//get register keyboard,where register key 
 		
 		int state = glfwGetKey(window, GLFW_KEY_W);
 		if (state == GLFW_PRESS)

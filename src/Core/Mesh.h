@@ -3,19 +3,13 @@
 #include "Shader.h"
 #include "Uniform.h"
 #include "RenderState.h"
+#include "Material.h"
 #include <string>
 #include <map>
 namespace SRE {
 
 	
-	struct Material//
-	{
-		typedef std::shared_ptr<Material> ptr;
-		Vector3D ambient;   // 环境光
-		Vector3D diffuse;    // 漫反射光
-		Vector3D specular;   // 镜面光
-		float shininess; //镜面高光系数
-	};
+	
 	class Mesh
 		: public RenderObject
 	{
@@ -24,10 +18,10 @@ namespace SRE {
 	public:
 		virtual Mesh* asMesh() { return this; }
 		virtual const Mesh* asMesh() const { return this; }
-		void addTexture(const std::string& texName) { _textures.push_back(texName); }
-		void removeTexture(const std::string& texName) {}
-		void setMaterial(Material* material) { _material = (Material::ptr)material; }
-		Material* getMaterial() const { return _material.get(); }
+		//void addTexture(const std::string& texName) { _textures.push_back(texName); }
+		//void removeTexture(const std::string& texName) {}
+		void setMaterial(Material::ptr material) { _material = material; }
+		Material::ptr getMaterial() const { return _material; }
 		void setShaderName(const std::string& name) { _shader_name = name; }
 		const std::string& getShaderName() { return _shader_name; }
 		void addUniform(Uniform* uniform) { _uniforms.push_back((Uniform::ptr)uniform); }

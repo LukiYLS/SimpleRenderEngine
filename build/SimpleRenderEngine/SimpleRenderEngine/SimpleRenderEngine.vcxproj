@@ -64,7 +64,7 @@
     <ClInclude Include="..\..\..\src\Core\Texture.h" />
     <ClInclude Include="..\..\..\src\Core\TextureManager.h" />
     <ClInclude Include="..\..\..\src\Core\TextureManager_.h" />
-    <ClInclude Include="..\..\..\src\Core\TextureUnit.h" />
+    <ClInclude Include="..\..\..\src\Core\TextureUnitState.h" />
     <ClInclude Include="..\..\..\src\Core\Uniform.h" />
     <ClInclude Include="..\..\..\src\Core\ViewPort.h" />
     <ClInclude Include="..\..\..\src\Core\Win.h" />
@@ -107,6 +107,7 @@
     <ClCompile Include="..\..\..\src\Core\HardwareBuffer\VertexElement.cpp" />
     <ClCompile Include="..\..\..\src\Core\Image.cpp" />
     <ClCompile Include="..\..\..\src\Core\Light.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Material.cpp" />
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
     <ClCompile Include="..\..\..\src\Core\Object.cpp" />
     <ClCompile Include="..\..\..\src\Core\ParticleSystem.cpp" />
@@ -123,6 +124,7 @@
     <ClCompile Include="..\..\..\src\Core\TerrianTile.cpp" />
     <ClCompile Include="..\..\..\src\Core\Texture.cpp" />
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp" />
+    <ClCompile Include="..\..\..\src\Core\TextureUnitState.cpp" />
     <ClCompile Include="..\..\..\src\Core\Win.cpp" />
     <ClCompile Include="..\..\..\src\Example\earth_test.cpp" />
     <ClCompile Include="..\..\..\src\math\MathHelper.cpp" />

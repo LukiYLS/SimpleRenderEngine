@@ -66,7 +66,7 @@ namespace SRE {
 		}
 		return false;
 	}
-	Object* Object::getChild(int index)
+	Object::ptr Object::getChild(int index)
 	{
 		if (index < _children.size())
 			return _children[index];

@@ -74,7 +74,7 @@ void initResource()
 		shader->setFloat("fScaleOverScaleDepth", ScaleOverScaleDepth);
 		shader->setFloat("g", g);
 		shader->setFloat("g2", g * g);
-		shader->setInt("Samples", 11);
+		shader->setInt("Samples", 4);
 	}
 
 	ShaderManager::getSingleton()->add("skyfromspace", shader_skyfromspace);

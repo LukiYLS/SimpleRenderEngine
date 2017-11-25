@@ -17,13 +17,14 @@ namespace SRE {
 		typedef shared_ptr<Scene> ptr;
 	public:
 		void setSceneRoot(Object::ptr root) { _root = root; }
-		Object* const getSceneRoot()const { return _root.get(); }		
+		Object::ptr const getSceneRoot()const { return _root; }		
 		void setSkybox(Skybox* skybox) {}
 		Skybox* getSkybox() { return skybox; }
 		void render(Camera* camera);
 		void enableShadow() { _enable_shadow = true; }
 	protected:
 		void projectObject(Object* object);
+		void setMaterial();
 		void update();
 		void setupLights(Shader* shader);
 		void clearTemp();

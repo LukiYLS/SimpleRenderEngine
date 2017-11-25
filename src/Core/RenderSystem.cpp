@@ -36,10 +36,58 @@ namespace SRE {
 		{
 			std::cout << "no camera" << std::endl;
 			return;
-		}		
+		}
+		Object::ptr root = _scene->getSceneRoot();
+		root->updateMatrixWorld();
+
+		if (_camera->getParent())_camera->updateMatrixWorld();
+
+
 		_scene->render(_camera.get());
 	}
+	void RenderSystem::projectObject(Object::ptr object)
+	{
+		//if (object->visible = false)return;
+		if (object->asMesh())
+		{
+			Mesh::ptr mesh = object->asMesh();
+			_meshs.push_back(mesh);
 
+		}
+		else if (object->asLight())
+		{
+			Light::ptr light = object->asLight();
+			_lights.push_back(light);
+		}
+		else if (object->asPlugin())
+		{
+
+		}
+		else if (/*object->asSprite()*/)
+		{
+
+		}
+		else if (object->asBillboardCollection())
+		{
+			//BillboardCollection* bbc = object->asBillboardCollection();
+			//bbc->init();
+			//_plugins.push_back(bbc);
+		}
+		else if (/*object->asParticleSystem()*/)
+		{
+
+		}
+		else
+		{
+
+		}
+		unsigned int count = object->getChildCount();
+		for (int i = 0; i < count; i++)
+		{
+			Object::ptr child = object->getChild(i);
+			projectObject(child);
+		}	
+	}
 	void RenderSystem::resize(int x, int y, int width, int height)
 	{
 		ViewPort::ptr vp = _camera->getViewPort();

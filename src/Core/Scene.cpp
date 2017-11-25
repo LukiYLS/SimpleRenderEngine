@@ -82,6 +82,7 @@ namespace SRE {
 			shader->setFloat("fCameraHeight", camera->getPosition().length());
 			shader->setFloat("fCameraHeight2", camera->getPosition().length()*camera->getPosition().length());
 			setupLights(shader);
+			mesh->drawPrimitive();
 			//if (_enable_shadow)mesh->addTexture("shadowMap");
 			mesh->setupUniform(shader);
 			glEnable(GL_CULL_FACE);

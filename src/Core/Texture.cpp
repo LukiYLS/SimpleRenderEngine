@@ -223,6 +223,11 @@ namespace SRE {
 
 		
 	}
+	void Texture::freeInternalResources()
+	{
+		_surface_list.clear();
+		glDeleteTextures(1, &_textureID);
+	}
 	HardwareTextureBuffer::ptr Texture::getBuffer(size_t face, size_t mipmap)
 	{
 		if (face > getNumFaces())

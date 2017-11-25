@@ -8,7 +8,7 @@ using namespace Utils;
 
 namespace SRE {
 
-
+	//delete
 	struct Vertex
 	{
 		void setPosition(float x,float y, float z){
@@ -106,9 +106,8 @@ namespace SRE {
 	};
 
 
-	/*
-	这是最小的绘制单元，所有可绘制的对象都必须继承这个类，而这个类应该包含最基本的绘制所需要的信息
-	继承Node，以节点的形式组成更高一级的绘制对象（比如Mesh）
+	/**
+	baisc draw primitive
 	*/
 	class RenderObject
 		:public Object{
@@ -119,21 +118,25 @@ namespace SRE {
 		virtual ~RenderObject() {}
 	public:	
 
-		void draw(Shader* shader);
-		void drawPrimitive();
+		void draw(Shader* shader);		
 		void setVertices(std::vector<Vertex> vertices) { _vertices = vertices; }
 		void setIndex(std::vector<unsigned int> indices) { _indices = indices; }
+
+		void drawPrimitive();
 		void setVertexData(VertexData::ptr data) { _vertex_data = data; }
 		void setIndexData(IndexData::ptr data) { _index_data = data; }
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
 		void setBoundBox(BoundingBox::ptr bbx) { _bbx = bbx; }
 		void setBoundSphere(BoundingSphere::ptr bs) { _sphere = bs; }
+
 		virtual void setShaderUniform(Shader* shader) {}
+
 		virtual void raycast(RayCaster* raycaster, AnyValue& intersects);
 		void computeNormals();
 		void computeBoundingBox();
 		void computeBoundingSphere();
+
 		void createBuffer();
 	protected:		
 

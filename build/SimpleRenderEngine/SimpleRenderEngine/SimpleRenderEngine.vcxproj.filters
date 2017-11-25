@@ -228,7 +228,7 @@
     <ClInclude Include="..\..\..\src\Core\Material.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\TextureUnit.h">
+    <ClInclude Include="..\..\..\src\Core\TextureUnitState.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>
@@ -376,6 +376,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Example\earth_test.cpp">
       <Filter>Examples</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\TextureUnitState.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\Material.cpp">
+      <Filter>头文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
