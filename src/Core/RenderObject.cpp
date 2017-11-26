@@ -212,6 +212,14 @@ namespace SRE {
 	{
 
 	}
+	BoundingSphere::ptr RenderObject::getBoundSphere()
+	{
+		if (!_sphere)
+		{
+			computeBoundingSphere();
+		}
+		return _sphere;
+	}
 	void RenderObject::raycast(RayCaster* raycaster, AnyValue& intersects)
 	{
 		//with boundingbox intersect

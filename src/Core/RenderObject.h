@@ -129,7 +129,7 @@ namespace SRE {
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
 		void setBoundBox(BoundingBox::ptr bbx) { _bbx = bbx; }
 		void setBoundSphere(BoundingSphere::ptr bs) { _sphere = bs; }
-
+		BoundingSphere::ptr getBoundSphere();
 		virtual void setShaderUniform(Shader* shader) {}
 
 		virtual void raycast(RayCaster* raycaster, AnyValue& intersects);

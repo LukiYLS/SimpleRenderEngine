@@ -5,7 +5,7 @@
 #include "Camera.h"
 #include "Mesh.h"
 #include "Plugin.h"
-
+#include "..\Math\Frustum.h"
 namespace SRE {
 	class RenderSystem {
 	public:		
@@ -16,15 +16,16 @@ namespace SRE {
 		void renderImpl();
 		void afterRender();//Ò»Ö¡½áÊø	
 		void resize(int x, int y, int width, int height);
-
+		void renderMeshs(std::vector<Mesh::ptr> meshs);
 		void projectObject(Object::ptr object);
 	private:	
 		Scene::ptr _scene;
 		Camera::ptr _camera;	
 
-		std::vector<Mesh::ptr> _meshs;
-		std::vector<Light::ptr> _lights
-
+		std::vector<Mesh::ptr> _opaqueMehss;
+		std::vector<Mesh::ptr> _transparentMeshs;
+		std::vector<Light::ptr> _lights;
+		Frustum _frustum;
 	};
 }
 

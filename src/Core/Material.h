@@ -26,9 +26,9 @@ namespace SRE {
 		void setShininess(float shininess);
 		float getShininess()const;
 
-		void setEmissiveColor(const ColorValue& diffuse);
-		void setEmissiveColor(float r, float g, float b, float a);
-		void getEmissiveColor(float& r, float& g, float& b, float& a)const;
+		void setEmissive(const ColorValue& diffuse);
+		void setEmissive(float r, float g, float b, float a);
+		void getEmissive(float& r, float& g, float& b, float& a)const;
 
 		//void setReceiveShadows(bool enabled) { mReceiveShadows = enabled; }
 		//bool getReceiveShadows(void) const { return mReceiveShadows; }
@@ -55,9 +55,13 @@ namespace SRE {
 		//bool getTwoSided();
 		//void setTwoSided(bool is_draw_two_sides_);
 
-		bool isTransparent();
+		bool isTransparent() { return _transparent; }
 	protected:
 
-
+		ColorValue _ambient;
+		ColorValue _diffuse;
+		ColorValue _specular;
+		double _shininess;
+		bool _transparent;
 	};
 }

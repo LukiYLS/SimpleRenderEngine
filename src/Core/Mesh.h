@@ -3,7 +3,7 @@
 #include "Shader.h"
 #include "Uniform.h"
 #include "RenderState.h"
-#include "Material.h"
+#include "..\Material\Material.h"
 #include <string>
 #include <map>
 namespace SRE {
@@ -16,8 +16,8 @@ namespace SRE {
 	public:
 		typedef std::shared_ptr<Mesh> ptr;
 	public:
-		virtual Mesh* asMesh() { return this; }
-		virtual const Mesh* asMesh() const { return this; }
+		virtual Mesh::ptr asMesh() { return (ptr)this; }
+		virtual const Mesh::ptr asMesh() const { return (ptr)this; }
 		//void addTexture(const std::string& texName) { _textures.push_back(texName); }
 		//void removeTexture(const std::string& texName) {}
 		void setMaterial(Material::ptr material) { _material = material; }

@@ -2,6 +2,7 @@
 #include <glew\glew.h>
 #include <memory>
 #include <map>
+#include "..\Material\Material.h"
 namespace SRE {
 	class RenderState {//¿¼ÂÇÖÐ
 		enum CompareFunc
@@ -38,6 +39,8 @@ namespace SRE {
 		void setCullFace(CullFaceMode face);
 		void setBlendingFunc();
 		void init();	
+
+		static void setMaterial(Material::ptr material) {}
 	protected:		
 		typedef std::map<StateList, bool> StateMap;
 		StateMap _state_map;

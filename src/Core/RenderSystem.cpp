@@ -42,8 +42,45 @@ namespace SRE {
 
 		if (_camera->getParent())_camera->updateMatrixWorld();
 
+		_frustum.setFromMatrix(_camera->getProjectionMatrix()*_camera->getViewMatrix());
 
+		projectObject(root);
+
+		//sort();
+
+		if (/*_enable_shadow*/)
+		{
+			//ShadowMapPlugin* sp = new ShadowMapPlugin(_lights, _render_mesh);
+			//sp->render(camera);			
+		}
+		Skybox* skybox = _scene->getSkybox();
+		if (skybox)
+			skybox->render(_camera.get());
+		else
+		{
+			//clear color
+		}
+
+		if (_opaqueMehss.size()>0) renderMeshs(_opaqueMehss);
+
+		// transparent pass (back-to-front order)
+
+		if (_transparentMeshs.size()>0) renderMeshs(_transparentMeshs);
 		_scene->render(_camera.get());
+	}
+	void RenderSystem::renderMeshs(std::vector<Mesh::ptr> meshs)
+	{
+		for (auto mesh : meshs)
+		{
+			Material::ptr material = mesh->getMaterial();
+			RenderState::setMaterial(material);//设置绘制前的环境
+
+			//然后要完成shader 获取--> uniform值设置----> 纹理设置----> draw
+
+			Shader::ptr shader = getMaterialShader
+
+
+		}
 	}
 	void RenderSystem::projectObject(Object::ptr object)
 	{
@@ -51,7 +88,18 @@ namespace SRE {
 		if (object->asMesh())
 		{
 			Mesh::ptr mesh = object->asMesh();
-			_meshs.push_back(mesh);
+			if (_frustum.intersectsSphere(*mesh->getBoundSphere().get()))
+			{
+				Material::ptr material = mesh->getMaterial();
+				if (material->getTransparent())
+				{
+					_transparentMeshs.push_back(mesh);
+				}
+				else
+				{
+					_opaqueMehss.push_back(mesh);
+				}
+			}				
 
 		}
 		else if (object->asLight())

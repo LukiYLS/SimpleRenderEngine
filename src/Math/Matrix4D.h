@@ -35,24 +35,24 @@ namespace Math {
 			return _m[col * 4 + row];
 		}
 
-		Matrix4D operator*(double scalar_) const {
+		Matrix4D operator*(double scalar) const {
 			return Matrix4D(
-				scalar_*_m[0],
-				scalar_*_m[1],
-				scalar_*_m[2],
-				scalar_*_m[3],
-				scalar_*_m[4],
-				scalar_*_m[5],
-				scalar_*_m[6],
-				scalar_*_m[7],
-				scalar_*_m[8],
-				scalar_*_m[9],
-				scalar_*_m[10],
-				scalar_*_m[11],
-				scalar_*_m[12],
-				scalar_*_m[13],
-				scalar_*_m[14],
-				scalar_*_m[15]
+				scalar*_m[0],
+				scalar*_m[1],
+				scalar*_m[2],
+				scalar*_m[3],
+				scalar*_m[4],
+				scalar*_m[5],
+				scalar*_m[6],
+				scalar*_m[7],
+				scalar*_m[8],
+				scalar*_m[9],
+				scalar*_m[10],
+				scalar*_m[11],
+				scalar*_m[12],
+				scalar*_m[13],
+				scalar*_m[14],
+				scalar*_m[15]
 			);
 		}
 		Matrix4D operator + (const Matrix4D &m2) const
