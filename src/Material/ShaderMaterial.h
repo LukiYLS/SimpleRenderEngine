@@ -11,7 +11,7 @@ namespace SRE {
 
 		void addUniform(Uniform::ptr uniform);
 		void setShader(Shader::ptr shader);
-
+		Shader::ptr getShader()const {}
 		MaterialType getType()const { return _type; }
 		void uploadUniforms();
 	protected:

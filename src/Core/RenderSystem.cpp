@@ -4,6 +4,8 @@
 #include "ShaderManager.h"
 #include "../Utils/CamerControl.h"
 #include "../Utils/Event.h"
+#include "../Material/PhongMaterial.h"
+#include "../Material/ShaderMaterial.h"
 using namespace Utils;
 #include <iostream>
 namespace SRE {
@@ -76,11 +78,58 @@ namespace SRE {
 			RenderState::setMaterial(material);//设置绘制前的环境
 
 			//然后要完成shader 获取--> uniform值设置----> 纹理设置----> draw
+			Material::MaterialType mt = material->getType();
+			Shader::ptr shader;
+			switch (mt)
+			{
+			case Material::Basic:
+			{
+				break;
+			}
+			case Material::Phong:
+			{
 
-			Shader::ptr shader = getMaterialShader
+				break;
+			}
+			}
+			//Shader::ptr shader = getMaterialShader
 
 
 		}
+	}
+	void RenderSystem::setPrograme(Mesh::ptr mesh)
+	{
+		Material::ptr material = mesh->getMaterial();
+
+		Shader::ptr shader = getShader(material->getType());
+
+		shader->use();
+
+		Matrix4D viewMatrix = _camera->getViewMatrix();
+		Matrix4D projectionMatrix = _camera->getProjectionMatrix();
+
+		shader->setMat4("viewMatrix", viewMatrix);
+		shader->setMat4("projectionMatrix", projectionMatrix);
+
+		
+	}
+	Shader::ptr RenderSystem::getShader(Material::MaterialType type)
+	{
+		Shader::ptr shader;
+		switch (type)
+		{
+		case Material::Basic:
+		{
+			shader = make_shared<Shader>("../../../src/Data/shader/basic.vs", "../../../src/Data/shader/basic.fs");
+			break;
+		}
+		case Material::Phong:
+		{
+			shader = make_shared<Shader>("../../../src/Data/shader/phong.vs", "../../../src/Data/shader/phong.fs");
+			break;
+		}
+		}
+		return shader;
 	}
 	void RenderSystem::projectObject(Object::ptr object)
 	{

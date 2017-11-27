@@ -43,6 +43,12 @@ namespace SRE {
 		void setColorWrite(bool colorWrite) { _colorWrite = colorWrite; }
 		bool getColorWrite()const { return _colorWrite; }
 
+		void setWireframe(const bool& wireframe) { _wireframe = wireframe; }
+		bool getWireframe()const { return _wireframe; }
+
+		void setWireframeLinewidth(const float& width) { _lineWidth = width; }
+		float getWireframeLinewidth()const { return _lineWidth; }
+
 		void setVisible(bool visible) { _visible = visible; }
 		bool getVisible()const { return _visible; }
 
@@ -90,11 +96,11 @@ namespace SRE {
 
 
 	protected:
-		bool _fog, _transparaent, _depthTest, _depthWrite, _colorWrite, _visible;
+		bool _fog, _transparaent, _depthTest, _depthWrite, _colorWrite, _visible, _wireframe;
 		BlendingMode _blendingMode;
 		CullFaceMode _cullFaceMode;
 		CompareFunc _depthFunc;
 		ShadeOptions _shadeType;
-		float _opacity;
+		float _opacity, _lineWidth;
 	};
 }

@@ -98,7 +98,7 @@ namespace SRE {
 
 		void setTexture(Texture::ptr texture);
 		Texture::ptr getTexture()const;
-		void setCubeTexture(Texture::ptr texuter);
+		void setCubeTexture(Texture::ptr texture);
 
 		
 		void setBindingType(BindingType bt);	

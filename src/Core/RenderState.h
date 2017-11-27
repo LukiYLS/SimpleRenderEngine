@@ -5,22 +5,8 @@
 #include "..\Material\Material.h"
 namespace SRE {
 	class RenderState {//¿¼ÂÇÖÐ
-		enum CompareFunc
-		{
-			NeverDepth = GL_NEVER,
-			AlwaysDepth = GL_ALWAYS,
-			LessDepth = GL_LESS,
-			LessEqualDepth = GL_LEQUAL,
-			GreaterEqualDepth = GL_GEQUAL,
-			GreaterDepth = GL_GREATER,
-			NotEqualDepth = GL_NOTEQUAL
-		};
-		enum CullFaceMode
-		{
-			Front = GL_FRONT,
-			Back = GL_BACK,
-			DoubleSide = GL_FRONT_AND_BACK
-		};
+		
+		
 		enum StateList {
 			DepthTest = GL_DEPTH_TEST,
 			Blend = GL_BLEND,
@@ -40,7 +26,11 @@ namespace SRE {
 		void setBlendingFunc();
 		void init();	
 
-		static void setMaterial(Material::ptr material) {}
+		static void setMaterial(Material::ptr material);
+		static void setBlending();
+		static void setDepthFunc(CompareFunc func);
+		static void setStencilTest();
+		static void setMask();
 	protected:		
 		typedef std::map<StateList, bool> StateMap;
 		StateMap _state_map;

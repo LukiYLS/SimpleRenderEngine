@@ -34,7 +34,7 @@ namespace SRE {
 		typedef std::vector<HardwareTextureBuffer::ptr> TextureBufferVector;
 	public:
 		Texture(const std::string name,TextureType type = TEX_TYPE_2D);
-		Texture(GLenum textureTarget, const std::string& fileName);
+		//Texture(GLenum textureTarget, const std::string& fileName);
 		~Texture();
 	public:		
 		
@@ -54,8 +54,7 @@ namespace SRE {
 		PixelFormat getFromat()const { return _pixelFormat; }
 
 		
-		void setFiltering(int magnification, int minification);
-		void bindTexture(int unit);
+
 
 		size_t getNumFaces()const { return _textureType == TEX_TYPE_CUBE_MAP ? 6 : 1; }
 		size_t calculateSize()const;

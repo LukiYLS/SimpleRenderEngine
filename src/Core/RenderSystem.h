@@ -18,6 +18,8 @@ namespace SRE {
 		void resize(int x, int y, int width, int height);
 		void renderMeshs(std::vector<Mesh::ptr> meshs);
 		void projectObject(Object::ptr object);
+		void setPrograme(Mesh::ptr mesh);
+		Shader::ptr getShader(Material::MaterialType type);
 	private:	
 		Scene::ptr _scene;
 		Camera::ptr _camera;	

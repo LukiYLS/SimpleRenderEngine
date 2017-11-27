@@ -39,16 +39,11 @@ namespace SRE {
 		void setNormalMap(TextureUnitState::ptr normalMap) { _normalMap = normalMap; }
 		TextureUnitState::ptr getNormalMap()const { return _normalMap; }
 
-		void setWireframe(const bool& wireframe) { _wireframe = wireframe; }
-		bool getWireframe()const { return _wireframe; }
-
-		void setWireframeLinewidth(const float& width) { _lineWidth = width; }
-		float getWireframeLinewidth()const { return _lineWidth; }
+		
 
 	protected:
 
 		ColorValue _color, _specular, _emissive;
 		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap;
-		float _shininess, _lineWidth;
-		bool _wireframe;
+		float _shininess;
 	}
