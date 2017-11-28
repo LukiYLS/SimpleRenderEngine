@@ -1,7 +1,7 @@
 #pragma once
 #include "Object.h"
 #include "Mesh.h"
-#include "Light.h"
+#include "..\Light\Light.h"
 #include "Plugin.h"
 #include <map>
 #include <vector>

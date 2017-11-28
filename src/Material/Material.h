@@ -57,6 +57,9 @@ namespace SRE {
 
 		virtual MaterialType getType()const { return NO; }
 
+		virtual TextureUnitState::ptr getMap()const { return NULL; }
+		virtual TextureUnitState::ptr getLightMap()const { return NULL; }
+		virtual TextureUnitState::ptr getDisplacementMap()const { return NULL; }
 		/*void setAmbient(const ColorValue& diffuse);
 		void setAmbient(float r, float g, float b, float a);
 		void getAmbient(float& r, float& g, float& b, float &a)const;

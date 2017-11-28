@@ -12,11 +12,7 @@ namespace SRE {
 		CustomBlending	= 5																				
 	};
 
-	enum Side {
-		FrontSide = 0,
-		BackSide = 1,
-		DoubleSide = 2
-	};
+
 
 	enum CompareFunc
 	{
@@ -53,5 +49,8 @@ namespace SRE {
 		FOG_LINEAR
 	};
 	
+	const char* vertex_attribute = "layout(location=0)in vec3 position;\nlayout(location =1) in vec3 normal;\nlayout(location=2)in vec3 color;\nlayout(location=3)in vec2 texCoord;\nuniform mat4 modelMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\n";
+
+	const char* uv_vertex = "#if (define USE_MAP) || (define USE_NORMAL_MAP)\nvaying vec2 uv;\nuniform vec3 uvTransform;\n#endif";
 
 }

@@ -28,6 +28,9 @@
     <Filter Include="Material">
       <UniqueIdentifier>{d5b87f51-2581-48cb-9ea0-ce1bd88d4a99}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Light">
+      <UniqueIdentifier>{2c179c1e-9025-48c1-b4b6-13ac77a6e905}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Core\Camera.h">
@@ -245,6 +248,21 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\Constants.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Light\Light.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Light\PointLight.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Light\DirectionLight.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Light\SpotLight.h">
+      <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Light\HemisphereLight.h">
+      <Filter>Light</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

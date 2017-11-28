@@ -1,7 +1,7 @@
 #pragma once
 #include "FrameBuffer.h"
 #include "Plugin.h"
-#include "Light.h"
+#include "..\Light\Light.h"
 #include "Mesh.h"
 #include "ViewPort.h"
 namespace SRE {

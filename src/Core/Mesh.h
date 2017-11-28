@@ -29,12 +29,15 @@ namespace SRE {
 		RenderState* getRenderState() { return _renderState.get(); }
 		void setupUniform(Shader* shader);
 		virtual void setShaderUniform(Shader* shader) {}
+		bool getReceiveShadow()const { return _receiveShadow; }
+		void setReceiveShadow(bool receive) { _receiveShadow = receive; }
 	protected:		
 		std::vector<std::string> _textures;
 		Material::ptr _material;	
 		std::string _shader_name;
 		std::vector<Uniform::ptr> _uniforms;
 		RenderState::ptr _renderState;
+		bool _receiveShadow;
 	};
 	/*class Mesh
 		:public Group{

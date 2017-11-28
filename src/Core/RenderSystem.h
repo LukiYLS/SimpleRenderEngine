@@ -27,6 +27,7 @@ namespace SRE {
 		std::vector<Mesh::ptr> _opaqueMehss;
 		std::vector<Mesh::ptr> _transparentMeshs;
 		std::vector<Light::ptr> _lights;
+		std::vector<Light::ptr> _shadow_lights;
 		Frustum _frustum;
 	};
 }

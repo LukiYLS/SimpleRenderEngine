@@ -4,7 +4,6 @@
 #include "ShaderManager.h"
 #include "../Utils/CamerControl.h"
 #include "../Utils/Event.h"
-#include "../Material/PhongMaterial.h"
 #include "../Material/ShaderMaterial.h"
 using namespace Utils;
 #include <iostream>
@@ -101,15 +100,40 @@ namespace SRE {
 	{
 		Material::ptr material = mesh->getMaterial();
 
-		Shader::ptr shader = getShader(material->getType());
+		//Shader::ptr shader = getShader(material->getType());
 
-		shader->use();
+		//shader->use();
+		//组装shader
+		std::string prefixVertex;// = vertex_attribute;
+		if (material->getFog())
+		{
+			prefixVertex += "#define USE_FOG\n";
+		}
+		if (material->getMap())
+		{
+			prefixVertex += "#define USE_MAP\n";
+		}
+		if (material->getLightMap())
+		{
+			prefixVertex += "#define USE_LIGHT_MAP\n";
+		}
+		if (material->getDisplacementMap())
+		{
+			prefixVertex += "#define USE_DISPLACEMENT_MAP\n";
+		}
+		
+		if (true)
+		{
+			//vertex_shader += "#define SHADOW_MAP\n";
+		}
+		std::string fragment_shader;
 
+		//组装uniform
 		Matrix4D viewMatrix = _camera->getViewMatrix();
 		Matrix4D projectionMatrix = _camera->getProjectionMatrix();
 
-		shader->setMat4("viewMatrix", viewMatrix);
-		shader->setMat4("projectionMatrix", projectionMatrix);
+		//shader->setMat4("viewMatrix", viewMatrix);
+		//shader->setMat4("projectionMatrix", projectionMatrix);
 
 		
 	}
@@ -136,25 +160,28 @@ namespace SRE {
 		//if (object->visible = false)return;
 		if (object->asMesh())
 		{
-			Mesh::ptr mesh = object->asMesh();
+			Mesh* mesh = object->asMesh();
 			if (_frustum.intersectsSphere(*mesh->getBoundSphere().get()))
 			{
 				Material::ptr material = mesh->getMaterial();
 				if (material->getTransparent())
 				{
-					_transparentMeshs.push_back(mesh);
+					_transparentMeshs.push_back((Mesh::ptr)mesh);
 				}
 				else
 				{
-					_opaqueMehss.push_back(mesh);
+					_opaqueMehss.push_back((Mesh::ptr)mesh);
 				}
 			}				
 
 		}
 		else if (object->asLight())
 		{
-			Light::ptr light = object->asLight();
-			_lights.push_back(light);
+			Light* light = object->asLight();
+			_lights.push_back((Light::ptr)light);
+			if (light->getCastShadow())
+				_shadow_lights.push_back((Light::ptr)light);
+
 		}
 		else if (object->asPlugin())
 		{
