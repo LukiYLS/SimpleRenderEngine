@@ -115,12 +115,17 @@ namespace SRE {
 		}
 		if (material->getLightMap())
 		{
-			prefixVertex += "#define USE_LIGHT_MAP\n";
+			prefixVertex += "#define USE_LIGHTMAP\n";
 		}
 		if (material->getDisplacementMap())
 		{
-			prefixVertex += "#define USE_DISPLACEMENT_MAP\n";
+			prefixVertex += "#define USE_DISPLACEMENTMAP\n";
 		}
+		if (_scene->hasShadow() && mesh->getReceiveShadow())
+		{
+			prefixVertex += "#define USE_SHADOWMAP";
+		}
+
 		
 		if (true)
 		{

@@ -22,6 +22,7 @@ namespace SRE {
 		Skybox* getSkybox() { return skybox; }
 		void render(Camera* camera);
 		void enableShadow() { _enable_shadow = true; }
+		bool hasShadow()const { return _enable_shadow; }
 	protected:
 		void projectObject(Object* object);
 		void setMaterial();
