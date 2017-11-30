@@ -77,7 +77,7 @@ namespace SRE {
 
 	const string project_vertex = "vec4 mvPosition = viewMatrix * modelMatrix * vec4(position,1.0);\ngl_Position = projectionMatrix * vec4(mvPosition, 1.0);\n";
 
-	const string envmap_vertex = "#ifdef USE_ENVMAP\n\t#if defined(USE_BUMPMAP) || defined(USE_NORMALMAP) || defined(PHONG)\n\t\tworldPosition = (modelMatrix * vec4(position,1.0)).xyz;\n\t#else\n\t\tvec3 cameraToVertex = normalize(worldPosition - cameraPosition);\n\t\tvec3 worldNormal = normalize((vec4(normal,0.0)*viewMatri).xyz);\n\t\t#ifdef ENVMAP_REFLECTION\n\t\t\treflect = reflect(cameraToVertex,worldNormal);\n\t\t#else\n\t\treflect = refract(cameraToVertex, worldNormal, refractionRatio);\n\t\t#endif\n\t#endif\n#endif";
+	const string envmap_vertex = "#ifdef USE_ENVMAP\n\t#if defined(USE_BUMPMAP) || defined(USE_NORMALMAP) || defined(PHONG)\n\t\tworldPosition = (modelMatrix * vec4(position,1.0)).xyz;\n\t#else\n\t\tvec3 cameraToVertex = normalize(worldPosition - cameraPosition);\n\t\tvec3 worldNormal = normalize((vec4(normal,0.0)*viewMatrix).xyz);\n\t\t#ifdef ENVMAP_REFLECTION\n\t\t\treflect = reflect(cameraToVertex,worldNormal);\n\t\t#else\n\t\treflect = refract(cameraToVertex, worldNormal, refractionRatio);\n\t\t#endif\n\t#endif\n#endif";
 
 	const string shadowmap_vertex = "#ifdef USE_SHADOWMAP\n\t#if NUM_DIR_LIGHTS > 0\n\tfor(int i=0;i< NUM_DIR_LIGHTS;i++){\n\t\tdirectionShadowCoord[i] = directionShadowMatrix[i] * worldPosition;\n\t}\n\t#endif\n\t#if NUM_SPOT_LIGHTS > 0\n\tfor(int i=0;i<NUM_SPOT_LIGHTS;i++){\n\t\tspotShadowCoord[i] = spotShadowMatrix[i]*worldPosition;\n\t}\n\t#endif\n\t#if NUM_POINT_LIGHTS > 0 \n\tfor(int i=0;i<NUM_POINT_LIGHTS;i++){\n\t\tpointShadowCoord[i] =pointShadowMatrix[i] * worldPosition;\n\t}\n\t#endif\n#endif";
 

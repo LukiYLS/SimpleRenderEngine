@@ -4,6 +4,15 @@
 #include <algorithm>
 namespace SRE {
 
+	ShaderLib* ShaderLib::_inst(0);
+
+	ShaderLib* ShaderLib::getSingleton()
+	{
+		if (!_inst)
+			_inst = new ShaderLib();
+		return _inst;
+	}
+
 	void ShaderLib::init()
 	{
 		_shaderLibMap.insert(std::pair<std::string, std::string>("vertex_attribute", readFileToStr("../"));
