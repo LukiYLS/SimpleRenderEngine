@@ -264,6 +264,9 @@
     <ClInclude Include="..\..\..\src\Light\HemisphereLight.h">
       <Filter>Light</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\ShaderLib.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -421,6 +424,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Material\Material.cpp">
       <Filter>Material</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\ShaderLib.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
