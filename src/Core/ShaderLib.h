@@ -15,6 +15,9 @@ namespace SRE {
 
 		static ShaderLib* _inst;
 
+
 		std::map<std::string, std::string>_shaderLibMap;
+
+		std::map<std::string, const char*> _shaderFileMap;
 	};
 }
