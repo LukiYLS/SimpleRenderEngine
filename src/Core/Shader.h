@@ -6,6 +6,7 @@
 #include "../Math/Vector4D.h"
 #include "../Math/Matrix3D.h"
 #include "../Math/Matrix4D.h"
+#include "../Core/Uniform.h"
 #include <vector>
 #include <memory>
 using namespace Math;
@@ -28,12 +29,19 @@ namespace SRE {
 		void setVec4(const char* name, const Vector4D& value)const;
 		//void setMat2(const char* name, const Matrix2D& value)const;
 		void setMat3(const char* name, const Matrix3D& value)const;
-		void setMat4(const char* name, const Matrix4D& value)const;			
+		void setMat4(const char* name, const Matrix4D& value)const;		
+
+		void addUniform(Uniform uniform);
+		void getUnifrom(unsigned int index);
+		void getUniform(const char* name);
+		void uplaod();
 		
 	private:
 		void checkCompileErrors(GLuint shader, const char* type);
+		void uploadUniform(Uniform uniform);
 	public:
 		unsigned int shader_ID;	
+		std::vector<Uniform> _uniforms;
 	};
 }
 

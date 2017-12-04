@@ -2,6 +2,7 @@
 
 #include "..\Core\TextureUnitState.h"
 #include "..\Core\Constants.h"
+#include "..\Core\Shader.h"
 namespace SRE {
 
 	
@@ -57,9 +58,11 @@ namespace SRE {
 
 		virtual MaterialType getType()const { return NO; }
 
-		virtual TextureUnitState::ptr getMap()const { return NULL; }
-		virtual TextureUnitState::ptr getLightMap()const { return NULL; }
+		virtual TextureUnitState::ptr getMap()const { return NULL; }//纹理
+		virtual TextureUnitState::ptr getLightMap()const { return NULL; }//间接光照
 		virtual TextureUnitState::ptr getDisplacementMap()const { return NULL; }
+		virtual Shader::ptr getShader()const { return NULL; }
+		
 		/*void setAmbient(const ColorValue& diffuse);
 		void setAmbient(float r, float g, float b, float a);
 		void getAmbient(float& r, float& g, float& b, float &a)const;

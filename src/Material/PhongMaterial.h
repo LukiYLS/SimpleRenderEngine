@@ -39,11 +39,13 @@ namespace SRE {
 		void setNormalMap(TextureUnitState::ptr normalMap) { _normalMap = normalMap; }
 		TextureUnitState::ptr getNormalMap()const { return _normalMap; }
 
-		
+		Shader::ptr getShader()const { return _shader; }
+		void setShader(Shader::ptr shader) { _shader = shader; }
 
 	protected:
 
 		ColorValue _color, _specular, _emissive;
 		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap;
 		float _shininess;
+		Shader::ptr _shader;
 	}

@@ -67,7 +67,7 @@ namespace SRE {
 		// transparent pass (back-to-front order)
 
 		if (_transparentMeshs.size()>0) renderMeshs(_transparentMeshs);
-		_scene->render(_camera.get());
+		//_scene->render(_camera.get());
 	}
 	void RenderSystem::renderMeshs(std::vector<Mesh::ptr> meshs)
 	{
@@ -96,10 +96,23 @@ namespace SRE {
 
 		}
 	}
-	void RenderSystem::setPrograme(Mesh::ptr mesh)
+	void RenderSystem::setProgram(Mesh::ptr mesh)
 	{
+		//用一个全局的uniforms存储所有的uniform信息,这个应该分成need update和no need update，如果是第一帧需要构建shader 和 uniforms，如果是第二帧开始则只需要更新uniforms需要更新的值，uniform应该是在shader内部对应uniform数组
 		Material::ptr material = mesh->getMaterial();
+		Shader::ptr shader = material->getShader();
+		if (NULL == shader)
+		{
+			//update
+			shader->setMat4("viewMatrix", _camera->getViewMatrix());
+			shader->setMat4("projectionMatrix", _camera->getProjectionMatrix());
+			shader->setVec3("cameraPosition", _camera->getPosition());
+			//其它信息如何更新
 
+
+			return;
+		}
+		//先生成预定义信息，然后与不同材质对应的shader组合起来得到完整的shader，然后进行编译，最后把material的值上传至shader
 		//Shader::ptr shader = getShader(material->getType());
 
 		//shader->use();
@@ -123,9 +136,25 @@ namespace SRE {
 		}
 		if (_scene->hasShadow() && mesh->getReceiveShadow())
 		{
-			prefixVertex += "#define USE_SHADOWMAP";
+			prefixVertex += "#define USE_SHADOWMAP\n";
 		}
+		//if(material->)
 
+		Material::MaterialType type = material->getType();
+		switch (type) {
+
+		case Material::Phong: {
+
+			std::string shader_vertex = prefixVertex + "";
+
+			std::string shader_fragment = prefixVertex + "";
+
+			Shader::ptr shader = std::make_shared<Shader>(shader_vertex, shader_fragment);
+
+			
+
+		}
+		}
 		
 		if (true)
 		{

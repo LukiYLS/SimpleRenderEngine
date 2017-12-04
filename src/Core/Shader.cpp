@@ -126,6 +126,27 @@ namespace SRE {
 			}			
 		glUniformMatrix3fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, matrix_gl);
 	}
+	void Shader::addUniform(Uniform uniform)
+	{
+		
+	}
+	void Shader::getUnifrom(unsigned int index)
+	{
+
+	}
+	void Shader::getUniform(const char* name)
+	{
+
+	}
+	void Shader::uplaod()
+	{
+		for (auto uniform : _uniforms)
+		{
+			const char* name = uniform.getName();
+			AnyValue value = uniform.getValue();
+			ValueType type = uniform.getType();
+		}
+	}
 	void Shader::setMat4(const char* name, const Matrix4D& value)const
 	{		
 		GLfloat matrix_gl[16];
@@ -135,6 +156,48 @@ namespace SRE {
 		}
 		glUniformMatrix4fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, matrix_gl);//传到glsl中自动转置，GL_TRUE不会转置
 	}	
+
+	void Shader::uploadUniform(Uniform uniform)
+	{
+		const char* name = uniform.getName();
+	
+		ValueType type = uniform.getType();
+
+		switch (type)
+		{
+		case FLOAT:
+			float value1 = uniform.getValue();
+			setFloat(name, value1);
+			break;
+		case FLOAT_VEC2:
+		case DOUBLE_VEC2:
+			Vector2D value2 = uniform.getValue();
+			setVec2(name, value2);
+			break;
+		case FLOAT_VEC3:
+		case DOUBLE_VEC3:
+			Vector3D value3 = uniform.getValue();
+			setVec3(name, value3);
+			break;
+		case FLOAT_VEC4:
+		case DOUBLE_VEC4:
+			Vector4D value4 = uniform.getValue();
+			setVec4(name, value4);
+			break;
+		case FLOAT_MAT3:
+		case DOUBLE_MAT3:
+			Matrix3D matrix3 = uniform.getValue();
+			setMat3(name, matrix3);
+			break;
+		case FLOAT_MAT4:
+		case DOUBLE_MAT4:
+			Matrix4D matrix4 = uniform.getValue();
+			setMat4(name, matrix4);
+			break;
+		default:
+			break;
+		}
+	}
 	void Shader::checkCompileErrors(GLuint shader, const char* type)
 	{
 		GLint success;

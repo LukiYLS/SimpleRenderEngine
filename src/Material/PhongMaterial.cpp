@@ -9,9 +9,7 @@ namespace SRE {
 	 _lightMap(NULL),
 	 _displacementMap(NULL),
 	 _normalMap(NULL),
-	 _shininess(30),
-	 _lineWidth(1.0),
-	 _wireframe(false)	
+	 _shininess(30)
 	 {
 	}
 }
