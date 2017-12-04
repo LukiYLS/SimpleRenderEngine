@@ -19,6 +19,7 @@ namespace SRE {
 		void renderMeshs(std::vector<Mesh::ptr> meshs);
 		void projectObject(Object::ptr object);
 		void setProgram(Mesh::ptr mesh);
+		void setMaterial(Material::ptr material);
 		Shader::ptr getShader(Material::MaterialType type);
 	private:	
 		Scene::ptr _scene;

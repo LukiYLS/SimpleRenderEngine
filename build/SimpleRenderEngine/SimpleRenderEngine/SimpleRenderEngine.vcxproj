@@ -97,6 +97,7 @@
     <ClInclude Include="..\..\..\src\Utils\KeyBoardConfig.h" />
     <ClInclude Include="..\..\..\src\Utils\ObjectControl.h" />
     <ClInclude Include="..\..\..\src\Utils\Parameter.h" />
+    <ClInclude Include="..\..\..\src\Utils\UtilsHelp.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\BillboardCollection.cpp" />

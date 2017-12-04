@@ -88,6 +88,44 @@ namespace SRE {
 			glDeleteShader(geometry);
 	}
 
+
+	void Shader::load(const char* vertexStr, const char* fragmentStr, const char* geometryStr)
+	{
+		unsigned int vertex, fragment;
+		int success;
+		char infoLog[512];
+
+		vertex = glCreateShader(GL_VERTEX_SHADER);
+		glShaderSource(vertex, 1, &vertexStr, NULL);
+		glCompileShader(vertex);
+		checkCompileErrors(vertex, "VERTEX");
+
+		fragment = glCreateShader(GL_FRAGMENT_SHADER);
+		glShaderSource(fragment, 1, &vertexStr, NULL);
+		glCompileShader(fragment);
+		checkCompileErrors(fragment, "FRAGMENT");
+
+		unsigned int geometry;
+		if (geometryStr != nullptr)
+		{			
+			geometry = glCreateShader(GL_GEOMETRY_SHADER);
+			glShaderSource(geometry, 1, &geometryStr, NULL);
+			glCompileShader(geometry);
+			checkCompileErrors(geometry, "GEOMETRY");
+		}
+
+		shader_ID = glCreateProgram();
+		glAttachShader(shader_ID, vertex);
+		glAttachShader(shader_ID, fragment);
+		if (geometryStr != nullptr)
+			glAttachShader(shader_ID, geometry);
+		glLinkProgram(shader_ID);
+		checkCompileErrors(shader_ID, "PROGRAM");
+		glDeleteShader(vertex);
+		glDeleteShader(fragment);
+		if (geometryStr != nullptr)
+			glDeleteShader(geometry);
+	}
 	void Shader::use()
 	{
 		glUseProgram(shader_ID);

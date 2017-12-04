@@ -15,11 +15,14 @@ namespace SRE {
 	public:
 		typedef std::shared_ptr<Shader> ptr;
 	public:
+		Shader() = default;
 		Shader(uint32_t shaderID):shader_ID(shaderID){}
 		Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
+		
 		Shader(const Shader& shader) {}
 		~Shader() {}
 	public:
+		void load(const char* vertex, const char* fragment, const char* geometryPath = nullptr);
 		void use();
 		void setBool(const char* name, bool value)const;
 		void setInt(const char* name, int value)const;

@@ -4,6 +4,7 @@
 #include "ShaderManager.h"
 #include "../Utils/CamerControl.h"
 #include "../Utils/Event.h"
+#include "../Utils/UtilsHelp.h"
 #include "../Material/ShaderMaterial.h"
 using namespace Utils;
 #include <iostream>
@@ -108,7 +109,7 @@ namespace SRE {
 			shader->setMat4("projectionMatrix", _camera->getProjectionMatrix());
 			shader->setVec3("cameraPosition", _camera->getPosition());
 			//其它信息如何更新
-
+			
 
 			return;
 		}
@@ -142,16 +143,25 @@ namespace SRE {
 
 		Material::MaterialType type = material->getType();
 		switch (type) {
+		case Material::Basic: {
+
+
+			break;
+		}
 
 		case Material::Phong: {
 
-			std::string shader_vertex = prefixVertex + "";
+			std::string shader_vertex = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.vs");
 
-			std::string shader_fragment = prefixVertex + "";
+			std::string shader_fragment = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.fs");
 
-			Shader::ptr shader = std::make_shared<Shader>(shader_vertex, shader_fragment);
+			Shader::ptr shader = std::make_shared<Shader>();
 
+			shader->load(shader_vertex.c_str(), shader_fragment.c_str());
 			
+			//shader->addUniform();
+
+			break;
 
 		}
 		}
@@ -168,6 +178,15 @@ namespace SRE {
 
 		//shader->setMat4("viewMatrix", viewMatrix);
 		//shader->setMat4("projectionMatrix", projectionMatrix);
+
+		
+	}
+	/*
+	
+	*/
+	void RenderSystem::setMaterial(Material::ptr material)
+	{
+		Shader::ptr shader = material->getShader();
 
 		
 	}
