@@ -42,9 +42,6 @@
     <ClInclude Include="..\..\..\src\Core\FrameBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\Light.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Core\Loader.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -270,6 +267,9 @@
     <ClInclude Include="..\..\..\src\Utils\UtilsHelp.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Light\LightShadowMap.h">
+      <Filter>Light</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -294,9 +294,6 @@
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\Light.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Camera.cpp">

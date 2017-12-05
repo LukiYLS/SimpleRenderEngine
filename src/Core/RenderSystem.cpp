@@ -6,6 +6,7 @@
 #include "../Utils/Event.h"
 #include "../Utils/UtilsHelp.h"
 #include "../Material/ShaderMaterial.h"
+
 using namespace Utils;
 #include <iostream>
 namespace SRE {
@@ -43,7 +44,6 @@ namespace SRE {
 		root->updateMatrixWorld();
 
 		if (_camera->getParent())_camera->updateMatrixWorld();
-
 		_frustum.setFromMatrix(_camera->getProjectionMatrix()*_camera->getViewMatrix());
 
 		projectObject(root);
@@ -70,13 +70,30 @@ namespace SRE {
 		if (_transparentMeshs.size()>0) renderMeshs(_transparentMeshs);
 		//_scene->render(_camera.get());
 	}
+
+	void RenderSystem::setupLights(std::vector<Light::ptr> lights)
+	{
+		unsigned int numDirectionLight = 0;
+		unsigned int numPointLight = 0;
+		unsigned int numSpotLight = 0;
+		
+		for (auto light : lights)
+		{
+			ColorValue color = light->getColor();
+			float intensity = light->getIntensity();
+			
+			//get light define and uniform  information
+		}
+	}
+
 	void RenderSystem::renderMeshs(std::vector<Mesh::ptr> meshs)
 	{
 		for (auto mesh : meshs)
 		{
 			Material::ptr material = mesh->getMaterial();
 			RenderState::setMaterial(material);//设置绘制前的环境
-
+			setProgram(mesh);
+			//setTextures();
 			//然后要完成shader 获取--> uniform值设置----> 纹理设置----> draw
 			Material::MaterialType mt = material->getType();
 			Shader::ptr shader;
@@ -98,11 +115,104 @@ namespace SRE {
 		}
 	}
 	void RenderSystem::setProgram(Mesh::ptr mesh)
-	{
-		//用一个全局的uniforms存储所有的uniform信息,这个应该分成need update和no need update，如果是第一帧需要构建shader 和 uniforms，如果是第二帧开始则只需要更新uniforms需要更新的值，uniform应该是在shader内部对应uniform数组
+	{		
 		Material::ptr material = mesh->getMaterial();
+		Material::MaterialType type = material->getType();
 		Shader::ptr shader = material->getShader();
-		if (NULL == shader)
+		if (shader == NULL)//first frame
+		{
+			//assemble their shader,corresponding to the material
+
+			//1.build define information
+
+			std::string defineStr;
+
+			if (material->getFog())
+			{
+				defineStr += "#define USE_FOG\n";
+			}
+			if (material->getMap())
+			{
+				defineStr += "#define USE_MAP\n";
+				//_textures.push_back(material->getMap());
+			}
+			if (material->getLightMap())
+			{
+				defineStr += "#define USE_LIGHTMAP\n";
+			}
+			if (material->getDisplacementMap())
+			{
+				defineStr += "#define USE_DISPLACEMENTMAP\n";
+			}
+			if (material->getEnvMap())
+			{
+				defineStr += "#define USE_ENVMAP\n";
+			}
+			if (mesh->isUseColor())
+			{
+				defineStr += "#define USE_COLOR\n";
+			}
+			if (_scene->hasShadow() && mesh->getReceiveShadow())
+			{
+				defineStr += "#define USE_SHADOWMAP\n";
+			}
+			std::string vertexStr, fragmentStr;
+			switch (type)
+			{
+			case SRE::Material::Basic:
+				vertexStr = readFileToStr("../../../src/Data/shader/basicMaterial.vs");
+				fragmentStr = readFileToStr("../../../src/Data/shader/basicMaterial.fs");
+				break;
+			case SRE::Material::Shader:
+				break;
+			case SRE::Material::Phong:
+				break;
+			case SRE::Material::NO:
+				break;
+			default:
+				break;
+			}
+
+		}
+		switch (type) {
+		case Material::Basic: {
+
+
+			break;
+		}
+
+		case Material::Phong: {
+
+			PhongMaterial* phongMaterial = material->asPhongMaterial();
+
+			std::string shader_vertex = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.vs");
+
+			std::string shader_fragment = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.fs");
+
+			Shader::ptr shader = std::make_shared<Shader>();
+
+			shader->load(shader_vertex.c_str(), shader_fragment.c_str());
+
+			shader->setVec3("cameraPosition", _camera->getPosition());
+
+			Matrix3D uvMatrix = Matrix3D::Identity;
+
+			//envmap
+
+
+
+			//shadowmap
+
+
+			//shader->addUniform();
+
+			break;
+
+		}
+		}
+
+		Shader::ptr shader = material->getShader();
+		if (NULL != shader)
 		{
 			//update
 			shader->setMat4("viewMatrix", _camera->getViewMatrix());
@@ -119,52 +229,12 @@ namespace SRE {
 		//shader->use();
 		//组装shader
 		std::string prefixVertex;// = vertex_attribute;
-		if (material->getFog())
-		{
-			prefixVertex += "#define USE_FOG\n";
-		}
-		if (material->getMap())
-		{
-			prefixVertex += "#define USE_MAP\n";
-		}
-		if (material->getLightMap())
-		{
-			prefixVertex += "#define USE_LIGHTMAP\n";
-		}
-		if (material->getDisplacementMap())
-		{
-			prefixVertex += "#define USE_DISPLACEMENTMAP\n";
-		}
-		if (_scene->hasShadow() && mesh->getReceiveShadow())
-		{
-			prefixVertex += "#define USE_SHADOWMAP\n";
-		}
+		std::vector<TextureUnitState::ptr> _textures;
+		
+		
 		//if(material->)
 
-		Material::MaterialType type = material->getType();
-		switch (type) {
-		case Material::Basic: {
-
-
-			break;
-		}
-
-		case Material::Phong: {
-
-			std::string shader_vertex = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.vs");
-
-			std::string shader_fragment = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.fs");
-
-			Shader::ptr shader = std::make_shared<Shader>();
-
-			shader->load(shader_vertex.c_str(), shader_fragment.c_str());
-			
-			//shader->addUniform();
-
-			break;
-
-		}
-		}
+		
 		
 		if (true)
 		{

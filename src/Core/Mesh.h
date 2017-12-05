@@ -16,8 +16,8 @@ namespace SRE {
 	public:
 		typedef std::shared_ptr<Mesh> ptr;
 	public:
-		virtual Mesh::ptr asMesh() { return (ptr)this; }
-		virtual const Mesh::ptr asMesh() const { return (ptr)this; }
+		virtual Mesh* asMesh() { return this; }
+		virtual const Mesh* asMesh() const { return this; }
 		//void addTexture(const std::string& texName) { _textures.push_back(texName); }
 		//void removeTexture(const std::string& texName) {}
 		void setMaterial(Material::ptr material) { _material = material; }
@@ -31,13 +31,14 @@ namespace SRE {
 		virtual void setShaderUniform(Shader* shader) {}
 		bool getReceiveShadow()const { return _receiveShadow; }
 		void setReceiveShadow(bool receive) { _receiveShadow = receive; }
+		bool isUseColor()const { return _useColor; }
 	protected:		
 		std::vector<std::string> _textures;
 		Material::ptr _material;	
 		std::string _shader_name;
 		std::vector<Uniform::ptr> _uniforms;
 		RenderState::ptr _renderState;
-		bool _receiveShadow;
+		bool _receiveShadow, _useColor;
 	};
 	/*class Mesh
 		:public Group{

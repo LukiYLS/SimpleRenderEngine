@@ -12,6 +12,7 @@ namespace SRE {
 
 	public:
 
+		virtual PhongMaterial* asPhongMaterial() { return this; }
 		//should be technique
 		TextureUnitState::ptr getMap()const { return _map; }
 		void setMap(TextureUnitState::ptr map) { _map = map; }
@@ -39,13 +40,22 @@ namespace SRE {
 		void setNormalMap(TextureUnitState::ptr normalMap) { _normalMap = normalMap; }
 		TextureUnitState::ptr getNormalMap()const { return _normalMap; }
 
+		void setEnvMap(TextureUnitState::ptr envMap) { _envMap = envMap; }
+		TextureUnitState::ptr getEnvMap()const { return _envMap; }
+
+		void setReflectivity(float reflectivity) { _reflectivity = reflectivity; }
+		float getReflectivity()const { return _reflectivity; }
+
+		void setRefractionRatio(float refractionRatio) { _refractionRatio = refractionRatio; }
+		float getRefractionRatio()const { return _refractionRatio; }
+
 		Shader::ptr getShader()const { return _shader; }
 		void setShader(Shader::ptr shader) { _shader = shader; }
 
 	protected:
 
 		ColorValue _color, _specular, _emissive;
-		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap;
-		float _shininess;
+		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap,_envMap;
+		float _shininess,_reflectivity,_refractionRatio;
 		Shader::ptr _shader;
 	}

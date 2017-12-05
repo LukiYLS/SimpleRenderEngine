@@ -1,5 +1,5 @@
 #pragma once
-
+#include <memory>
 #include "..\Core\Object.h"
 #include "..\Core\HardwareBuffer\ColorValue.h"
 namespace SRE {

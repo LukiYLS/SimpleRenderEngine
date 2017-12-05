@@ -9,6 +9,6 @@ namespace SRE {
 
 	public:
 
-
+		virtual BasicMaterial* asBasicMaterial() { return this; }
 	};
 }

@@ -5,7 +5,9 @@
 #include "..\Core\Shader.h"
 namespace SRE {
 
-	
+	class PhongMaterial;
+	class BasicMaterial;
+	class ShaderMaterial;
 	class Material {
 
 	public:
@@ -16,6 +18,11 @@ namespace SRE {
 			NO
 		};
 		typedef std::shared_ptr<Material> ptr;
+
+		virtual Material* asMaterial() { return this; }
+		virtual BasicMaterial* asBasicMaterial() { return NULL; }
+		virtual PhongMaterial* asPhongMaterial() { return NULL; }
+		virtual ShaderMaterial* asShaderMaterial() { return NULL; }
 		
 		void setFog(bool fog) { _fog = fog; }
 		bool getFog()const { return _fog; }
@@ -61,6 +68,7 @@ namespace SRE {
 		virtual TextureUnitState::ptr getMap()const { return NULL; }//纹理
 		virtual TextureUnitState::ptr getLightMap()const { return NULL; }//间接光照
 		virtual TextureUnitState::ptr getDisplacementMap()const { return NULL; }
+		virtual TextureUnitState::ptr getEnvMap()const { return NULL; }
 		virtual Shader::ptr getShader()const { return NULL; }
 		
 		/*void setAmbient(const ColorValue& diffuse);

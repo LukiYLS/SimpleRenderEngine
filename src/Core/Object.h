@@ -1,9 +1,10 @@
 #pragma once
+#include <memory>
 #include "../Math/Vector3D.h"
 #include "../Math/Quaternion.h"
 #include "../Math/Matrix4D.h"
 #include "../Utils/AnyValue.h"
-#include <memory>
+
 #include <vector>
 using namespace Math;
 namespace SRE {

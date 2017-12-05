@@ -20,6 +20,8 @@ namespace SRE {
 		void projectObject(Object::ptr object);
 		void setProgram(Mesh::ptr mesh);
 		void setMaterial(Material::ptr material);
+		void setupLights(std::vector<Light::ptr> lights);
+		void setTextures(std::vector<TextureUnitState::ptr> textures);
 		Shader::ptr getShader(Material::MaterialType type);
 	private:	
 		Scene::ptr _scene;
