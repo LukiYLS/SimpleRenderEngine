@@ -137,6 +137,9 @@
     <ClCompile Include="..\..\..\src\Core\TextureUnitState.cpp" />
     <ClCompile Include="..\..\..\src\Core\Win.cpp" />
     <ClCompile Include="..\..\..\src\Example\earth_test.cpp" />
+    <ClCompile Include="..\..\..\src\Light\DirectionLight.cpp" />
+    <ClCompile Include="..\..\..\src\Light\PointLight.cpp" />
+    <ClCompile Include="..\..\..\src\Light\SpotLight.cpp" />
     <ClCompile Include="..\..\..\src\Material\Material.cpp" />
     <ClCompile Include="..\..\..\src\Material\PhongMaterial.cpp" />
     <ClCompile Include="..\..\..\src\Math\Frustum.cpp" />

@@ -71,5 +71,6 @@ namespace Math {
 		}
 		static Vector3D unProject(const Matrix4D& view, const Matrix4D& projection, const Vector3D& vec);
 		static Vector3D project(const Matrix4D& view, const Matrix4D& projection, const Vector3D& vec);		
+		static Vector3D getPosFromMatrix(const Matrix4D& matrix);
 	};
 }

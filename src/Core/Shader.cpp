@@ -130,6 +130,10 @@ namespace SRE {
 	{
 		glUseProgram(shader_ID);
 	}
+	void Shader::unUse()
+	{
+		glUseProgram(0);
+	}
 	void Shader::setBool(const char* name, bool value)const
 	{
 		glUniform1i(glGetUniformLocation(shader_ID, name), (int)value);

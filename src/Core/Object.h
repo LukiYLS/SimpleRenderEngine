@@ -4,7 +4,6 @@
 #include "../Math/Quaternion.h"
 #include "../Math/Matrix4D.h"
 #include "../Utils/AnyValue.h"
-
 #include <vector>
 using namespace Math;
 namespace SRE {
@@ -25,8 +24,8 @@ namespace SRE {
 		virtual Mesh* asMesh() { return 0; }
 		virtual const Mesh* asMesh() const { return 0; }
 
-		virtual Light* asLight() { return 0; }
-		virtual const Light* asLight() const { return 0; }
+		virtual Light* asLight() { return NULL; }
+		virtual const Light* asLight() const { return NULL; }
 
 		virtual Plugin* asPlugin() { return 0; }
 		virtual const Plugin* asPlugin() const { return 0; }

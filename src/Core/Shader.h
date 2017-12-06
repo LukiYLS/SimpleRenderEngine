@@ -24,6 +24,7 @@ namespace SRE {
 	public:
 		void load(const char* vertex, const char* fragment, const char* geometryPath = nullptr);
 		void use();
+		void unUse();
 		void setBool(const char* name, bool value)const;
 		void setInt(const char* name, int value)const;
 		void setFloat(const char* name, float value)const;

@@ -6,6 +6,7 @@
 #include "Mesh.h"
 #include "Plugin.h"
 #include "..\Math\Frustum.h"
+
 namespace SRE {
 	class RenderSystem {
 	public:		

@@ -13,4 +13,12 @@ namespace Math {
 	{
 		return projection * view * vec;
 	}
+	Vector3D MathHelper::getPosFromMatrix(const Matrix4D& matrix)
+	{
+		return Vector3D(
+			matrix[12],
+			matrix[13],
+			matrix[14]
+		);
+	}
 }

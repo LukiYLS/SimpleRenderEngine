@@ -6,9 +6,9 @@
 #include "../Utils/Event.h"
 #include "../Utils/UtilsHelp.h"
 #include "../Material/ShaderMaterial.h"
-
-using namespace Utils;
+#include "../Light/DirectionLight.h"
 #include <iostream>
+using namespace Utils;
 namespace SRE {
 	
 	RenderSystem::RenderSystem(Scene* scene, Camera* camera)
@@ -76,12 +76,45 @@ namespace SRE {
 		unsigned int numDirectionLight = 0;
 		unsigned int numPointLight = 0;
 		unsigned int numSpotLight = 0;
+
+		std::vector<DirectionLight*> directionLights;
 		
 		for (auto light : lights)
 		{
 			ColorValue color = light->getColor();
 			float intensity = light->getIntensity();
+			Light::LightType type = light->getType();
 			
+			if (type == Light::DirectionLightType)
+			{
+				//
+				//DirectionLight* dir = light->asDirectionLight();
+				Matrix4D worldMat = light->getWorldMatrix();
+				Vector3D position(worldMat[12], worldMat[13], worldMat[14]);
+
+				Vector3D direction = Vector3D(0.0) - position;
+				direction.normalize();
+
+				bool castShadow = light->getCastShadow();
+				if (castShadow)
+				{
+
+				}
+
+				light->setNumber(numDirectionLight);
+				numDirectionLight++;			
+
+
+			}
+			else if (type == Light::PointLightType)
+			{
+
+
+				numPointLight++;
+			}
+			//pointLights[0].pos/color/distance/decay/shadow/shadowbias/radius/size
+			//directionalLights[0].dir/color/shadow/shadowbias/radius/size
+			//spotLights[0].pos/dir/color/distance/decay/conecos/penumbracos/shadow/shadowbias/radius/size
 			//get light define and uniform  information
 		}
 	}
