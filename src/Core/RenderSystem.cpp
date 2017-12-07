@@ -204,7 +204,7 @@ namespace SRE {
 	void RenderSystem::setProgram(Mesh::ptr mesh)
 	{		
 		Material::ptr material = mesh->getMaterial();
-		Material::MaterialType type = material->getType();
+		Material::MaterialType type = material->getMaterialType();
 		Shader::ptr shader = material->getShader();
 		if (shader == NULL)//first frame
 		{

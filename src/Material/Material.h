@@ -7,24 +7,25 @@ namespace SRE {
 	
 	//combine material
 
-	class PhongMaterial;
-	class BasicMaterial;
-	class ShaderMaterial;
+	
+
+	//class PhongMaterial;
+	//class BasicMaterial;
+	//class ShaderMaterial;
 	class Material {
 
 	public:
 		enum MaterialType {
-			Basic,
-			Shader,
-			Phong,
-			NO
+			BasicMaterial,
+			PhongMaterial,
+			ShaderMaterial
 		};
 		typedef std::shared_ptr<Material> ptr;
 
-		virtual Material* asMaterial() { return this; }
-		virtual BasicMaterial* asBasicMaterial() { return NULL; }
-		virtual PhongMaterial* asPhongMaterial() { return NULL; }
-		virtual ShaderMaterial* asShaderMaterial() { return NULL; }
+		//virtual Material* asMaterial() { return this; }
+		//virtual BasicMaterial* asBasicMaterial() { return NULL; }
+		//virtual PhongMaterial* asPhongMaterial() { return NULL; }
+		//virtual ShaderMaterial* asShaderMaterial() { return NULL; }
 		
 		void setFog(bool fog) { _fog = fog; }
 		bool getFog()const { return _fog; }
@@ -65,17 +66,48 @@ namespace SRE {
 		void setShadeType(ShadeOptions type) { _shadeType = type; }
 		ShadeOptions getShadeType()const { return _shadeType; }
 
-		virtual MaterialType getType()const { return NO; }
+		MaterialType getMaterialType()const { return _materialType; }
+		void setMaterialType(MaterialType materialType) { _materialType = materialType; }
 
-		virtual TextureUnitState::ptr getMap()const { return NULL; }//纹理
-		virtual TextureUnitState::ptr getLightMap()const { return NULL; }//间接光照
-		virtual TextureUnitState::ptr getDisplacementMap()const { return NULL; }
-		virtual TextureUnitState::ptr getEnvMap()const { return NULL; }
-		virtual TextureUnitState::ptr getSpecularMap()const { return NULL; }
-		virtual TextureUnitState::ptr getAlphaMap()const { return NULL; }
-		virtual TextureUnitState::ptr getAoMap()const { return NULL; }
+		TextureUnitState::ptr getMap()const { return _map; }
+		void setMap(TextureUnitState::ptr map) { _map = map; }		
 
-		virtual Shader::ptr getShader()const { return NULL; }
+		void setColor(const Vector3D& color) { _color = color; }
+		Vector3D getColor()const { return _color; }
+
+		void setSpecular(const Vector3D& specular) { _specular = specular; }
+		Vector3D getSpecular() const { return _specular; }
+
+		void setShininess(const float& shininess) { _shininess = shininess; }
+		float getShininess()const { return _shininess; }
+
+		void setLightMap(TextureUnitState::ptr lightMap) { _lightMap = lightMap; }
+		TextureUnitState::ptr getLightMap()const { return _lightMap; }
+
+		void setEmissive(const Vector3D& emissive) { _emissive = emissive; }
+		Vector3D getEmissive()const { return _emissive; }
+		void setEmissiveMap(TextureUnitState::ptr emissiveMap) { _emissiveMap = emissiveMap; }
+		TextureUnitState::ptr getEmissiveMap()const { return _emissiveMap; }
+
+		void setDisplacementMap(TextureUnitState::ptr displacementMap) { _displacementMap = displacementMap; }
+		TextureUnitState::ptr getDisplacementMap()const { return _displacementMap; }
+
+		void setNormalMap(TextureUnitState::ptr normalMap) { _normalMap = normalMap; }
+		TextureUnitState::ptr getNormalMap()const { return _normalMap; }
+
+		void setEnvMap(TextureUnitState::ptr envMap) { _envMap = envMap; }
+		TextureUnitState::ptr getEnvMap()const { return _envMap; }
+
+		void setReflectivity(float reflectivity) { _reflectivity = reflectivity; }
+		float getReflectivity()const { return _reflectivity; }
+
+		void setRefractionRatio(float refractionRatio) { _refractionRatio = refractionRatio; }
+		float getRefractionRatio()const { return _refractionRatio; }
+
+		Shader::ptr getShader()const { return _shader; } 
+		void setShader(Shader::ptr shader) { _shader = shader; }
+
+		
 		
 		/*void setAmbient(const ColorValue& diffuse);
 		void setAmbient(float r, float g, float b, float a);
@@ -115,12 +147,16 @@ namespace SRE {
 
 
 
-	protected:
-		bool _fog, _transparaent, _depthTest, _depthWrite, _colorWrite, _visible, _wireframe;
+	protected:		
 		BlendingMode _blendingMode;
 		CullFaceMode _cullFaceMode;
 		CompareFunc _depthFunc;
-		ShadeOptions _shadeType;
-		float _opacity, _lineWidth;
+		ShadeOptions _shadeType;		
+		MaterialType _materialType;
+		Vector3D _color, _specular, _emissive;
+		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap, _envMap, _emissiveMap,_specularMap,_;
+		bool _fog, _transparaent, _depthTest, _depthWrite, _colorWrite, _visible, _wireframe;
+		float _opacity, _lineWidth, _shininess, _reflectivity, _refractionRatio;
+		Shader::ptr _shader;
 	};
 }
