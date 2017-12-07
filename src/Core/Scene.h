@@ -20,12 +20,14 @@ namespace SRE {
 		Object::ptr const getSceneRoot()const { return _root; }		
 		void setSkybox(Skybox* skybox) {}
 		Skybox* getSkybox() { return skybox; }
+		void setUseShadowMap(bool isUse) { _useShadowMap = isUse; }
+		bool getUseShadowMap()const { return _useShadowMap; }
 		void render(Camera* camera);
-		void enableShadow() { _enable_shadow = true; }
-		bool hasShadow()const { return _enable_shadow; }
+		//void enableShadow() { _enable_shadow = true; }
+		//bool hasShadow()const { return _enable_shadow; }
 	protected:
 		void projectObject(Object* object);
-		void setMaterial();
+		//void setMaterial();
 		void update();
 		void setupLights(Shader* shader);
 		void clearTemp();
@@ -35,7 +37,7 @@ namespace SRE {
 		std::vector<Mesh*> _render_mesh;
 		std::vector<Light*> _lights;
 		std::vector<Plugin*> _plugins;	
-		bool _enable_shadow;
+		bool _useShadowMap;
 	};
 }
 

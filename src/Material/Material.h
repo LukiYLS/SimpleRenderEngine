@@ -4,6 +4,8 @@
 #include "..\Core\Constants.h"
 #include "..\Core\Shader.h"
 namespace SRE {
+	
+	//combine material
 
 	class PhongMaterial;
 	class BasicMaterial;
@@ -69,6 +71,10 @@ namespace SRE {
 		virtual TextureUnitState::ptr getLightMap()const { return NULL; }//º‰Ω”π‚’’
 		virtual TextureUnitState::ptr getDisplacementMap()const { return NULL; }
 		virtual TextureUnitState::ptr getEnvMap()const { return NULL; }
+		virtual TextureUnitState::ptr getSpecularMap()const { return NULL; }
+		virtual TextureUnitState::ptr getAlphaMap()const { return NULL; }
+		virtual TextureUnitState::ptr getAoMap()const { return NULL; }
+
 		virtual Shader::ptr getShader()const { return NULL; }
 		
 		/*void setAmbient(const ColorValue& diffuse);

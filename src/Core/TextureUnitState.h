@@ -64,13 +64,13 @@ namespace SRE {
 	enum TextureAddressingMode
 	{
 		/// Texture wraps at values over 1.0.
-		TAM_WRAP,
+		TAM_WRAP = GL_REPEAT,
 		/// Texture mirrors (flips) at joins over 1.0.
-		TAM_MIRROR,
+		TAM_MIRROR = GL_MIRRORED_REPEAT,
 		/// Texture clamps at 1.0.
-		TAM_CLAMP,
+		TAM_CLAMP = GL_CLAMP_TO_EDGE,
 		/// Texture coordinates outside the range [0.0, 1.0] are set to the border colour.
-		TAM_BORDER,
+		TAM_BORDER = GL_CLAMP_TO_BORDER,
 		/// Unknown
 		TAM_UNKNOWN = 99
 	};
@@ -127,6 +127,8 @@ namespace SRE {
 		/// Get this layer texture anisotropy level.
 		unsigned int getTextureAnisotropy() const;
 
+		Matrix3D getUvTransfrom()const { return _uvTransform; }
+
 	protected:
 		ColorValue _borderColour;
 		/// Texture filtering - minification.
@@ -149,6 +151,8 @@ namespace SRE {
 		UVWAddressingMode _addressMode;
 
 		std::vector<Texture::ptr> _frameTextures;
+
+		Matrix3D _uvTransform;
 
 	};
 }

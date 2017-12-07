@@ -21,4 +21,10 @@ namespace Math {
 			matrix[14]
 		);
 	}
+	Matrix3D MathHelper::getNormalMatrix(const Matrix4D& matrix)
+	{
+		Matrix3D matrix3 = matrix.getMatrix3x3();
+		matrix3 = matrix3.inverse();
+		return matrix3.transpose();
+	}
 }

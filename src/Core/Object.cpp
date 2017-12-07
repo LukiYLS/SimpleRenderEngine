@@ -2,6 +2,11 @@
 #include "../Math/Vector4D.h"
 namespace SRE {
 
+	Object* Object::getParent() {
+		if (!_parent)return _parent;
+		else
+			return NULL;
+	}
 	void Object::applyMatrix(const Matrix4D& matrix)
 	{
 		_matrix_local = _matrix_local * matrix;
@@ -50,7 +55,7 @@ namespace SRE {
 		if (parent)
 			parent->remove(object);
 		object->setParent(this);
-		_children.push_back(object);
+		_children.push_back((Object::ptr)object);
 		return true;
 	}
 	bool Object::remove(Object* object)
@@ -103,8 +108,8 @@ namespace SRE {
 	Vector3D Object::getWorldPosition()
 	{
 		this->updateMatrixWorld();
-		this->_matrix_world.decompose(_position, _scale, _orientation);
-		return _position;
+		//this->_matrix_world.decompose(_position, _scale, _orientation);
+		return Vector3D(_matrix_world[12], _matrix_world[13], _matrix_world[14]);
 	}
 
 	Quaternion Object::getWorldQuaternion()

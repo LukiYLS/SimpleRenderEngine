@@ -19,7 +19,7 @@ namespace SRE {
 	}
 	Texture::ptr TextureUnitState::getTexture()const
 	{
-
+		return NULL;
 	}
 	void TextureUnitState::setCubeTexture(Texture::ptr texuter)
 	{
@@ -45,7 +45,7 @@ namespace SRE {
 
 	bool TextureUnitState::isCubic(void) const
 	{
-
+		return false;
 	}
 	void TextureUnitState::setTextureTransform(const Math::Matrix4D& xform)
 	{
@@ -53,7 +53,7 @@ namespace SRE {
 	}
 	const Math::Matrix4D& TextureUnitState::getTextureTransform(void) const
 	{
-
+		return Matrix4D::Identity;
 	}
 
 	void TextureUnitState::setTextureAddressingMode(TextureAddressingMode tam)
@@ -150,6 +150,8 @@ namespace SRE {
 	
 	unsigned int TextureUnitState::getTextureAnisotropy() const
 	{
-
+		return 0;
 	}
+
+	
 }

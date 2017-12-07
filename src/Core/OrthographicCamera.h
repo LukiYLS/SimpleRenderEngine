@@ -18,3 +18,4 @@ namespace SRE {
 		float _near;
 		float _far;
 	};
+}

@@ -18,12 +18,7 @@ namespace SRE {
 	class DirectionLight : public Light {
 
 	public:
-
-
-		typedef std::shared_ptr<DirectionLight> ptr;
-
-
-		
+		typedef std::shared_ptr<DirectionLight> ptr;	
 
 		Vector3D getDirection()const { return _direction; }
 		void setDirection(const Vector3D& direction) { _direction = direction; }
@@ -34,8 +29,6 @@ namespace SRE {
 		virtual LightType getType()const { return DirectionLightType; }
 
 	protected:
-
-
 		Vector3D _direction;
 		float _distance;
 		OrthographicCamera::ptr _shadow_camera;

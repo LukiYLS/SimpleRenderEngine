@@ -53,9 +53,9 @@ namespace SRE {
 			
 		PixelFormat getFromat()const { return _pixelFormat; }
 
-		
+		void bindTextureUnit(unsigned int unit);
 
-
+		GLenum getTextureTarget()const;
 		size_t getNumFaces()const { return _textureType == TEX_TYPE_CUBE_MAP ? 6 : 1; }
 		size_t calculateSize()const;
 		bool hasAlpha(void) const;
@@ -65,7 +65,7 @@ namespace SRE {
 		void upLoad();
 		
 	protected:
-		GLenum getTextureTarget()const;
+		
 		void createInternalResources();
 		void freeInternalResources();
 		HardwareTextureBuffer::ptr getBuffer(size_t face, size_t mipmap);

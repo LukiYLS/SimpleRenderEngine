@@ -243,6 +243,11 @@ namespace SRE {
 		return idx < _surface_list.size() ? _surface_list[idx] : NULL;
 		
 	}
+	void Texture::bindTextureUnit(unsigned int unit)
+	{
+		glActiveTexture(GL_TEXTURE0 + unit);
+		glBindTexture(GL_TEXTURE_2D, _textureID);
+	}
 	//void Texture::setFiltering(int magnification, int minification)
 	//{
 	//	glBindSampler(0, _sampler);

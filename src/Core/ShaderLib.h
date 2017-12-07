@@ -9,8 +9,8 @@ namespace SRE {
 		static ShaderLib* getSingleton();
 		ShaderLib();
 		void init();
-		std::string getShaderStr(const std::string& key);
-		std::string readFileToStr(const char* fileName);
+		//std::string getShaderStr(const std::string& key);
+		//std::string readFileToStr(const char* fileName);
 	protected:
 
 		static ShaderLib* _inst;

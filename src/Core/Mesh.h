@@ -2,13 +2,10 @@
 #include "RenderObject.h"
 #include "Shader.h"
 #include "Uniform.h"
-#include "RenderState.h"
 #include "..\Material\Material.h"
 #include <string>
 #include <map>
-namespace SRE {
-
-	
+namespace SRE {	
 	
 	class Mesh
 		: public RenderObject
@@ -22,23 +19,23 @@ namespace SRE {
 		//void removeTexture(const std::string& texName) {}
 		void setMaterial(Material::ptr material) { _material = material; }
 		Material::ptr getMaterial() const { return _material; }
-		void setShaderName(const std::string& name) { _shader_name = name; }
-		const std::string& getShaderName() { return _shader_name; }
-		void addUniform(Uniform* uniform) { _uniforms.push_back((Uniform::ptr)uniform); }
-		void setRenderState(RenderState* renderstate) { _renderState = (RenderState::ptr)renderstate; }
-		RenderState* getRenderState() { return _renderState.get(); }
+//		void setShaderName(const std::string& name) { _shader_name = name; }
+//		const std::string& getShaderName() { return _shader_name; }
+//		void addUniform(Uniform* uniform) { _uniforms.push_back((Uniform::ptr)uniform); }
+//		void setRenderState(RenderState* renderstate) { _renderState = (RenderState::ptr)renderstate; }
+		//RenderState* getRenderState() { return _renderState.get(); }
 		void setupUniform(Shader* shader);
 		virtual void setShaderUniform(Shader* shader) {}
 		bool getReceiveShadow()const { return _receiveShadow; }
 		void setReceiveShadow(bool receive) { _receiveShadow = receive; }
-		bool isUseColor()const { return _useColor; }
+		
 	protected:		
 		std::vector<std::string> _textures;
 		Material::ptr _material;	
 		std::string _shader_name;
 		std::vector<Uniform::ptr> _uniforms;
-		RenderState::ptr _renderState;
-		bool _receiveShadow, _useColor;
+		//RenderState::ptr _renderState;
+		bool _receiveShadow;
 	};
 	/*class Mesh
 		:public Group{

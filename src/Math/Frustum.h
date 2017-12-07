@@ -21,7 +21,7 @@ namespace Math {
 		//CULL_STATE is_sphere_in_frustum(const Vector3D& center_, double radius_) const;
 		//void set_frustum(const Matrix4D& proj_view_matrix_, const Vector3D& render_origin_);
 		void setFromMatrix(const Matrix4D& matrix);
-		bool intersectsSphere(const BoundingSphere& sphere);
+		bool intersectsSphere(BoundingSphere& sphere);
 	protected:
 
 		Plane3D _planes[6];

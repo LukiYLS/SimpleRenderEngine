@@ -29,8 +29,8 @@ namespace SRE {
 		_shader->use();
 		if (!_texture)
 		{
-			_texture->bindTexture(0);
-			_shader->setInt("texture", 0);
+//			_texture->bindTexture(0);
+//			_shader->setInt("texture", 0);
 		}
 		
 		_shader->setMat4("VP", camera->getProjectionMatrix() * camera->getViewMatrix());

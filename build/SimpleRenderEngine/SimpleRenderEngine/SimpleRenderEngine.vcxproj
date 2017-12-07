@@ -68,7 +68,6 @@
     <ClInclude Include="..\..\..\src\Core\Uniform.h" />
     <ClInclude Include="..\..\..\src\Core\ViewPort.h" />
     <ClInclude Include="..\..\..\src\Core\Win.h" />
-    <ClInclude Include="..\..\..\src\Example\CommonHead.h" />
     <ClInclude Include="..\..\..\src\Light\DirectionLight.h" />
     <ClInclude Include="..\..\..\src\Light\HemisphereLight.h" />
     <ClInclude Include="..\..\..\src\Light\Light.h" />
@@ -136,7 +135,6 @@
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp" />
     <ClCompile Include="..\..\..\src\Core\TextureUnitState.cpp" />
     <ClCompile Include="..\..\..\src\Core\Win.cpp" />
-    <ClCompile Include="..\..\..\src\Example\earth_test.cpp" />
     <ClCompile Include="..\..\..\src\Light\DirectionLight.cpp" />
     <ClCompile Include="..\..\..\src\Light\PointLight.cpp" />
     <ClCompile Include="..\..\..\src\Light\SpotLight.cpp" />
@@ -155,6 +153,7 @@
     <ClCompile Include="..\..\..\src\Utils\CameraControl.cpp" />
     <ClCompile Include="..\..\..\src\Utils\Event.cpp" />
     <ClCompile Include="..\..\..\src\Utils\ObjectControl.cpp" />
+    <ClCompile Include="..\..\..\src\Utils\UtilsHelp.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{0BF797B4-8A67-48BB-A960-5D351CEE102D}</ProjectGuid>

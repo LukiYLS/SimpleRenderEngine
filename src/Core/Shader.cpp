@@ -75,13 +75,13 @@ namespace SRE {
 			checkCompileErrors(geometry, "GEOMETRY");
 		}
 		
-		shader_ID = glCreateProgram();
-		glAttachShader(shader_ID, vertex);
-		glAttachShader(shader_ID, fragment);
+		_shaderID = glCreateProgram();
+		glAttachShader(_shaderID, vertex);
+		glAttachShader(_shaderID, fragment);
 		if (geometryPath != nullptr)
-			glAttachShader(shader_ID, geometry);
-		glLinkProgram(shader_ID);
-		checkCompileErrors(shader_ID, "PROGRAM");
+			glAttachShader(_shaderID, geometry);
+		glLinkProgram(_shaderID);
+		checkCompileErrors(_shaderID, "PROGRAM");
 		glDeleteShader(vertex);
 		glDeleteShader(fragment);
 		if (geometryPath != nullptr)
@@ -101,7 +101,7 @@ namespace SRE {
 		checkCompileErrors(vertex, "VERTEX");
 
 		fragment = glCreateShader(GL_FRAGMENT_SHADER);
-		glShaderSource(fragment, 1, &vertexStr, NULL);
+		glShaderSource(fragment, 1, &fragmentStr, NULL);
 		glCompileShader(fragment);
 		checkCompileErrors(fragment, "FRAGMENT");
 
@@ -114,13 +114,13 @@ namespace SRE {
 			checkCompileErrors(geometry, "GEOMETRY");
 		}
 
-		shader_ID = glCreateProgram();
-		glAttachShader(shader_ID, vertex);
-		glAttachShader(shader_ID, fragment);
+		_shaderID = glCreateProgram();
+		glAttachShader(_shaderID, vertex);
+		glAttachShader(_shaderID, fragment);
 		if (geometryStr != nullptr)
-			glAttachShader(shader_ID, geometry);
-		glLinkProgram(shader_ID);
-		checkCompileErrors(shader_ID, "PROGRAM");
+			glAttachShader(_shaderID, geometry);
+		glLinkProgram(_shaderID);
+		checkCompileErrors(_shaderID, "PROGRAM");
 		glDeleteShader(vertex);
 		glDeleteShader(fragment);
 		if (geometryStr != nullptr)
@@ -128,7 +128,7 @@ namespace SRE {
 	}
 	void Shader::use()
 	{
-		glUseProgram(shader_ID);
+		glUseProgram(_shaderID);
 	}
 	void Shader::unUse()
 	{
@@ -136,27 +136,27 @@ namespace SRE {
 	}
 	void Shader::setBool(const char* name, bool value)const
 	{
-		glUniform1i(glGetUniformLocation(shader_ID, name), (int)value);
+		glUniform1i(glGetUniformLocation(_shaderID, name), (int)value);
 	}
 	void Shader::setInt(const char* name, int value)const
 	{
-		glUniform1i(glGetUniformLocation(shader_ID, name), value);
+		glUniform1i(glGetUniformLocation(_shaderID, name), value);
 	}
 	void Shader::setFloat(const char* name, float value)const
 	{
-		glUniform1f(glGetUniformLocation(shader_ID, name), value);
+		glUniform1f(glGetUniformLocation(_shaderID, name), value);
 	}
 	void Shader::setVec2(const char* name, const Vector2D& value)const
 	{
-		glUniform2f(glGetUniformLocation(shader_ID, name), value.x, value.y);
+		glUniform2f(glGetUniformLocation(_shaderID, name), value.x, value.y);
 	}
 	void Shader::setVec3(const char* name, const Vector3D& value)const
 	{		
-		glUniform3f(glGetUniformLocation(shader_ID, name), value.x,value.y,value.z);
+		glUniform3f(glGetUniformLocation(_shaderID, name), value.x,value.y,value.z);
 	}
 	void Shader::setVec4(const char* name, const Vector4D& value)const
 	{
-		glUniform4f(glGetUniformLocation(shader_ID, name), value.x, value.y, value.z, value.w);
+		glUniform4f(glGetUniformLocation(_shaderID, name), value.x, value.y, value.z, value.w);
 	}	
 	void Shader::setMat3(const char* name, const Matrix3D& value)const
 	{
@@ -166,7 +166,7 @@ namespace SRE {
 			{
 				matrix_gl[i] = value[i][j];
 			}			
-		glUniformMatrix3fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, matrix_gl);
+		glUniformMatrix3fv(glGetUniformLocation(_shaderID, name), 1, GL_FALSE, matrix_gl);
 	}
 	void Shader::addUniform(Uniform uniform)
 	{
@@ -196,7 +196,7 @@ namespace SRE {
 		{
 			matrix_gl[i] = value[i];
 		}
-		glUniformMatrix4fv(glGetUniformLocation(shader_ID, name), 1, GL_FALSE, matrix_gl);//传到glsl中自动转置，GL_TRUE不会转置
+		glUniformMatrix4fv(glGetUniformLocation(_shaderID, name), 1, GL_FALSE, matrix_gl);//传到glsl中自动转置，GL_TRUE不会转置
 	}	
 
 	void Shader::uploadUniform(Uniform uniform)
@@ -208,34 +208,47 @@ namespace SRE {
 		switch (type)
 		{
 		case FLOAT:
+		{
 			float value1 = uniform.getValue();
 			setFloat(name, value1);
 			break;
+		}
 		case FLOAT_VEC2:
 		case DOUBLE_VEC2:
+		{
 			Vector2D value2 = uniform.getValue();
 			setVec2(name, value2);
 			break;
+		}
 		case FLOAT_VEC3:
 		case DOUBLE_VEC3:
+		{
 			Vector3D value3 = uniform.getValue();
 			setVec3(name, value3);
 			break;
+		}
 		case FLOAT_VEC4:
 		case DOUBLE_VEC4:
+		{
 			Vector4D value4 = uniform.getValue();
 			setVec4(name, value4);
 			break;
+		}
+		
 		case FLOAT_MAT3:
 		case DOUBLE_MAT3:
+		{
 			Matrix3D matrix3 = uniform.getValue();
 			setMat3(name, matrix3);
 			break;
+		}
 		case FLOAT_MAT4:
 		case DOUBLE_MAT4:
+		{
 			Matrix4D matrix4 = uniform.getValue();
 			setMat4(name, matrix4);
 			break;
+		}
 		default:
 			break;
 		}

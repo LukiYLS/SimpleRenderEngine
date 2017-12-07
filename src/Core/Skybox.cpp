@@ -7,7 +7,7 @@ namespace SRE {
 
 	Skybox::Skybox(std::vector<std::string> fileNames)
 	{		
-		glGenTextures(1, &_textureID);
+		/*glGenTextures(1, &_textureID);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _textureID);
 		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 		FIBITMAP *dib(0);
@@ -41,7 +41,7 @@ namespace SRE {
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 		glGenerateMipmap(GL_TEXTURE_2D);
-		glBindTexture(GL_TEXTURE_2D, 0);		
+		glBindTexture(GL_TEXTURE_2D, 0);		*/
 	}
 
 	Skybox::~Skybox()
@@ -57,9 +57,9 @@ namespace SRE {
 //		skybox->setMat4("veiw", camera->getViewMatrix().getMatrix3x3());
 //		skybox->setMat4("projection", camera->getProjectionMatrix());
 
-		glActiveTexture(GL_TEXTURE0);
+	/*	glActiveTexture(GL_TEXTURE0);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _textureID);
-		glDepthFunc(GL_LEQUAL);
+		glDepthFunc(GL_LEQUAL);*/
 //		mesh->draw(skybox.get());
 	}
 }

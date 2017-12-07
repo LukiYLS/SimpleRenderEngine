@@ -3,7 +3,7 @@
 #include "Vector3D.h"
 #include "Vector4D.h"
 #include "Matrix4D.h"
-
+#include "Matrix3D.h"
 #define math_tolerance 1e-14
 #define math_tolerancef 1e-6
 #define M_PI     3.14159265358979323846
@@ -72,5 +72,8 @@ namespace Math {
 		static Vector3D unProject(const Matrix4D& view, const Matrix4D& projection, const Vector3D& vec);
 		static Vector3D project(const Matrix4D& view, const Matrix4D& projection, const Vector3D& vec);		
 		static Vector3D getPosFromMatrix(const Matrix4D& matrix);
+
+		static Matrix3D getNormalMatrix(const Matrix4D& matrix);
+
 	};
 }

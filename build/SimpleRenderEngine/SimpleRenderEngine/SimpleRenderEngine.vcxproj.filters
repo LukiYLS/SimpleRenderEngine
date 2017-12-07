@@ -186,9 +186,6 @@
     <ClInclude Include="..\..\..\src\Core\RayCaster.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Example\CommonHead.h">
-      <Filter>Examples</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Core\Image.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -410,9 +407,6 @@
     <ClCompile Include="..\..\..\src\Core\HardwareBuffer\VertexElement.cpp">
       <Filter>HardwareBuffer</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Example\earth_test.cpp">
-      <Filter>Examples</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Core\TextureUnitState.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -436,6 +430,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Light\SpotLight.cpp">
       <Filter>Light</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Utils\UtilsHelp.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

@@ -29,41 +29,43 @@ namespace SRE {
 	}
 	double Ray::distanceToPlane(const Plane3D& plane)
 	{
-		double d = plane.normal.dot(_direction);
-		if (fabs(d) < math_tolerance)
-		{
-			if (fabs(plane.distance_to_point(_origin)) < math_tolerance)
-			{
-				return 0.0;
-			}
-			//
-		}
-		else
-		{
+		//double d = plane.normal.dot(_direction);
+		//if (fabs(d) < math_tolerance)
+		//{
+		//	if (fabs(plane.distanceToPoint(_origin)) < math_tolerance)
+		//	{
+		//		return 0.0;
+		//	}
+		//	//
+		//}
+		//else
+		//{
 
-		}
+		//}
+		return 0.0;
 	}
 
 	bool Ray::intersectPlane(const Plane3D& plane, Vector3D& intersect)
 	{
-		double d = plane.normal.dot(_direction);
-		double t = plane.normal.dot(_origin); 
-		if (fabs(d) < math_tolerance)
-		{
-			if (fabs(plane.distance_to_point(_origin)) < math_tolerance)
-			{
-				intersect = _origin;
-				return true;
-			}
-			//
-			return false;
-		}
-		else
-		{
-			t = (plane.distance_to_origin - t) / d;
-			intersect = _origin + _direction*t;
-			return true;
-		}
+		//double d = plane.normal.dot(_direction);
+		//double t = plane.normal.dot(_origin); 
+		//if (fabs(d) < math_tolerance)
+		//{
+		//	if (fabs(plane.distanceToPoint(_origin)) < math_tolerance)
+		//	{
+		//		intersect = _origin;
+		//		return true;
+		//	}
+		//	//
+		//	return false;
+		//}
+		//else
+		//{
+		//	t = (plane.distance_to_origin - t) / d;
+		//	intersect = _origin + _direction*t;
+		//	return true;
+		//}
+		return true;
 	}
 
 	bool Ray::intersectSphere(const BoundingSphere& sphere, Vector3D& intersect)

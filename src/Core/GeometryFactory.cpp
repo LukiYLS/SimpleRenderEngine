@@ -327,143 +327,143 @@ namespace SRE {
 
 		return sphere;
 	}*/
-	Mesh* GeometryFactory::MakeSphereOld(double radius, int widthSegments, int heightSegments)
-	{
-		std::vector<Vertex> vertices;
-		std::vector<unsigned int> indices;
-		Mesh* sphere = new Mesh();
-
-		int X = widthSegments, Y = heightSegments;
-
-		float a, stepa = (float)M_PI * 2.0f / (float)X, stepb = (float)M_PI / (float)Y, b = -(float)M_HALF_PI + stepb;
-
-		Vector3D *positions = new Vector3D[X * (Y - 1)];
-
-		for (int y = 0; y < (Y - 1); y++)
-		{
-			a = -(float)M_PI;
-
-			for (int x = 0; x < X; x++)
-			{
-				positions[y * X + x] = Vector3D(radius * sin(a) * cos(b), radius *sin(b), radius *cos(a) * cos(b));
-				a += stepa;
-			}
-
-			b += stepb;
-		}
-
-		//VerticesCount = (X * (Y - 2) * 2 + X * 2) * 3;
-
-		///Vector3D *Vertices = new Vector3D[VerticesCount];
-		//vec2 *TexCoords = new vec2[VerticesCount];
-
-		for (int x = 0; x < X; x++)
-		{
-			Vertex v1(0.0f, -radius, 0.0f, (float)(x + 0.5f) / (float)X, 0.0f);
-			vertices.push_back(v1);
-
-			Vertex v2;
-			v2.setPosition(positions[(0 + 0) * X + ((x + 1) % X)]);
-			v2.setTex((float)(x + 1) / (float)X, (float)(0 + 1) / (float)Y);			
-			vertices.push_back(v2);
-			Vertex v3;
-			v3.setPosition(positions[(0 + 0) * X + ((x + 0) % X)]);
-			v3.setTex((float)(x + 0) / (float)X, (float)(0 + 1) / (float)Y);
-			vertices.push_back(v3);
-			//Vertices[vpos++] = Vector3D(0.0f, -1.0f, 0.0f);
-			//Vertices[vpos++] = vertices[(0 + 0) * X + ((x + 1) % X)];
-			//Vertices[vpos++] = vertices[(0 + 0) * X + ((x + 0) % X)];
-
-			//TexCoords[tpos++] = vec2((float)(x + 0.5f) / (float)X, 0.0f);
-			//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, (float)(0 + 1) / (float)Y);
-			//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, (float)(0 + 1) / (float)Y);
-		}
-
-		for (int y = 0; y < Y - 2; y++)
-		{
-			for (int x = 0; x < X; x++)
-			{
-				Vertex v1;
-				v1.setPosition(positions[(y + 0) * X + ((x + 0) % X)]);
-				v1.setTex((float)(x + 0) / (float)X, (float)(1 + y + 0) / (float)Y);
-				vertices.push_back(v1);
-
-				Vertex v2;
-				v2.setPosition(positions[(y + 0) * X + ((x + 1) % X)]);
-				v2.setTex((float)(x + 1) / (float)X, (float)(1 + y + 0) / (float)Y);
-				vertices.push_back(v2);
-
-
-				Vertex v3;
-				v3.setPosition(positions[(y + 1) * X + ((x + 1) % X)]);
-				v3.setTex((float)(x + 1) / (float)X, (float)(1 + y + 1) / (float)Y);
-				vertices.push_back(v3);
-
-				//Vertices[vpos++] = vertices[(y + 0) * X + ((x + 0) % X)];
-				//Vertices[vpos++] = vertices[(y + 0) * X + ((x + 1) % X)];
-				//Vertices[vpos++] = vertices[(y + 1) * X + ((x + 1) % X)];
+//	Mesh* GeometryFactory::MakeSphereOld(double radius, int widthSegments, int heightSegments)
+//	{
+//		std::vector<Vertex> vertices;
+//		std::vector<unsigned int> indices;
+//		Mesh* sphere = new Mesh();
 //
-				//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, (float)(1 + y + 0) / (float)Y);
-				//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, (float)(1 + y + 0) / (float)Y);
-				//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, (float)(1 + y + 1) / (float)Y);
-				Vertex v4;
-				v4.setPosition(positions[(y + 1) * X + ((x + 1) % X)]);
-				v4.setTex((float)(x + 1) / (float)X, float(1 + y + 1) / (float)Y);
-				vertices.push_back(v4);
-
-				Vertex v5;
-				v5.setPosition(positions[(y + 1) * X + ((x + 0) % X)]);
-				v5.setTex((float)(x + 0) / (float)X, float(1 + y + 1) / (float)Y);
-				vertices.push_back(v5);
-
-
-				Vertex v6;
-				v6.setPosition(positions[(y + 0) * X + ((x + 0) % X)]);
-				v6.setTex((float)(x + 0) / (float)X, float(1 + y + 0) / (float)Y);
-				vertices.push_back(v6);
-
-				//Vertices[vpos++] = vertices[(y + 1) * X + ((x + 1) % X)];
-				//Vertices[vpos++] = vertices[(y + 1) * X + ((x + 0) % X)];
-				//Vertices[vpos++] = vertices[(y + 0) * X + ((x + 0) % X)];
-
-				//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, float(1 + y + 1) / (float)Y);
-				//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, float(1 + y + 1) / (float)Y);
-				//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, float(1 + y + 0) / (float)Y);
-			}
-		}
-
-		for (int x = 0; x < X; x++)
-		{
-			Vertex v1;
-			v1.setPosition(positions[(Y - 2) * X + ((x + 0) % X)]);
-			v1.setTex((float)(x + 0) / (float)X, (float)(Y - 1) / (float)Y);
-			vertices.push_back(v1);
-
-			Vertex v2;
-			v2.setPosition(positions[(Y - 2) * X + ((x + 1) % X)]);
-			v2.setTex((float)(x + 1) / (float)X, (float)(Y - 1) / (float)Y);
-			vertices.push_back(v2);
-
-
-			Vertex v3;
-			v3.setPosition(0.0f, radius, 0.0f);
-			v3.setTex((float)(x + 0.5f) / (float)X, 1.0f);
-			vertices.push_back(v3);
-
-			//Vertices[vpos++] = vertices[(Y - 2) * X + ((x + 0) % X)];
-			//Vertices[vpos++] = vertices[(Y - 2) * X + ((x + 1) % X)];
-			//Vertices[vpos++] = Vector3D(0.0f, 1.0f, 0.0f);
-
-			//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, (float)(Y - 1) / (float)Y);
-			//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, (float)(Y - 1) / (float)Y);
-			//TexCoords[tpos++] = vec2((float)(x + 0.5f) / (float)X, 1.0f);
-		}
-		sphere->setVertices(vertices);
-		//sphere->setIndex(indices);
-		sphere->computeNormals();
-
-		return sphere;
-	}
+//		int X = widthSegments, Y = heightSegments;
+//
+//		float a, stepa = (float)M_PI * 2.0f / (float)X, stepb = (float)M_PI / (float)Y, b = -(float)M_HALF_PI + stepb;
+//
+//		Vector3D *positions = new Vector3D[X * (Y - 1)];
+//
+//		for (int y = 0; y < (Y - 1); y++)
+//		{
+//			a = -(float)M_PI;
+//
+//			for (int x = 0; x < X; x++)
+//			{
+//				positions[y * X + x] = Vector3D(radius * sin(a) * cos(b), radius *sin(b), radius *cos(a) * cos(b));
+//				a += stepa;
+//			}
+//
+//			b += stepb;
+//		}
+//
+//		//VerticesCount = (X * (Y - 2) * 2 + X * 2) * 3;
+//
+//		///Vector3D *Vertices = new Vector3D[VerticesCount];
+//		//vec2 *TexCoords = new vec2[VerticesCount];
+//
+//		for (int x = 0; x < X; x++)
+//		{
+//			Vertex v1(0.0f, -radius, 0.0f, (float)(x + 0.5f) / (float)X, 0.0f);
+//			vertices.push_back(v1);
+//
+//			Vertex v2;
+//			v2.setPosition(positions[(0 + 0) * X + ((x + 1) % X)]);
+//			v2.setTex((float)(x + 1) / (float)X, (float)(0 + 1) / (float)Y);			
+//			vertices.push_back(v2);
+//			Vertex v3;
+//			v3.setPosition(positions[(0 + 0) * X + ((x + 0) % X)]);
+//			v3.setTex((float)(x + 0) / (float)X, (float)(0 + 1) / (float)Y);
+//			vertices.push_back(v3);
+//			//Vertices[vpos++] = Vector3D(0.0f, -1.0f, 0.0f);
+//			//Vertices[vpos++] = vertices[(0 + 0) * X + ((x + 1) % X)];
+//			//Vertices[vpos++] = vertices[(0 + 0) * X + ((x + 0) % X)];
+//
+//			//TexCoords[tpos++] = vec2((float)(x + 0.5f) / (float)X, 0.0f);
+//			//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, (float)(0 + 1) / (float)Y);
+//			//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, (float)(0 + 1) / (float)Y);
+//		}
+//
+//		for (int y = 0; y < Y - 2; y++)
+//		{
+//			for (int x = 0; x < X; x++)
+//			{
+//				Vertex v1;
+//				v1.setPosition(positions[(y + 0) * X + ((x + 0) % X)]);
+//				v1.setTex((float)(x + 0) / (float)X, (float)(1 + y + 0) / (float)Y);
+//				vertices.push_back(v1);
+//
+//				Vertex v2;
+//				v2.setPosition(positions[(y + 0) * X + ((x + 1) % X)]);
+//				v2.setTex((float)(x + 1) / (float)X, (float)(1 + y + 0) / (float)Y);
+//				vertices.push_back(v2);
+//
+//
+//				Vertex v3;
+//				v3.setPosition(positions[(y + 1) * X + ((x + 1) % X)]);
+//				v3.setTex((float)(x + 1) / (float)X, (float)(1 + y + 1) / (float)Y);
+//				vertices.push_back(v3);
+//
+//				//Vertices[vpos++] = vertices[(y + 0) * X + ((x + 0) % X)];
+//				//Vertices[vpos++] = vertices[(y + 0) * X + ((x + 1) % X)];
+//				//Vertices[vpos++] = vertices[(y + 1) * X + ((x + 1) % X)];
+////
+//				//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, (float)(1 + y + 0) / (float)Y);
+//				//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, (float)(1 + y + 0) / (float)Y);
+//				//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, (float)(1 + y + 1) / (float)Y);
+//				Vertex v4;
+//				v4.setPosition(positions[(y + 1) * X + ((x + 1) % X)]);
+//				v4.setTex((float)(x + 1) / (float)X, float(1 + y + 1) / (float)Y);
+//				vertices.push_back(v4);
+//
+//				Vertex v5;
+//				v5.setPosition(positions[(y + 1) * X + ((x + 0) % X)]);
+//				v5.setTex((float)(x + 0) / (float)X, float(1 + y + 1) / (float)Y);
+//				vertices.push_back(v5);
+//
+//
+//				Vertex v6;
+//				v6.setPosition(positions[(y + 0) * X + ((x + 0) % X)]);
+//				v6.setTex((float)(x + 0) / (float)X, float(1 + y + 0) / (float)Y);
+//				vertices.push_back(v6);
+//
+//				//Vertices[vpos++] = vertices[(y + 1) * X + ((x + 1) % X)];
+//				//Vertices[vpos++] = vertices[(y + 1) * X + ((x + 0) % X)];
+//				//Vertices[vpos++] = vertices[(y + 0) * X + ((x + 0) % X)];
+//
+//				//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, float(1 + y + 1) / (float)Y);
+//				//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, float(1 + y + 1) / (float)Y);
+//				//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, float(1 + y + 0) / (float)Y);
+//			}
+//		}
+//
+//		for (int x = 0; x < X; x++)
+//		{
+//			Vertex v1;
+//			v1.setPosition(positions[(Y - 2) * X + ((x + 0) % X)]);
+//			v1.setTex((float)(x + 0) / (float)X, (float)(Y - 1) / (float)Y);
+//			vertices.push_back(v1);
+//
+//			Vertex v2;
+//			v2.setPosition(positions[(Y - 2) * X + ((x + 1) % X)]);
+//			v2.setTex((float)(x + 1) / (float)X, (float)(Y - 1) / (float)Y);
+//			vertices.push_back(v2);
+//
+//
+//			Vertex v3;
+//			v3.setPosition(0.0f, radius, 0.0f);
+//			v3.setTex((float)(x + 0.5f) / (float)X, 1.0f);
+//			vertices.push_back(v3);
+//
+//			//Vertices[vpos++] = vertices[(Y - 2) * X + ((x + 0) % X)];
+//			//Vertices[vpos++] = vertices[(Y - 2) * X + ((x + 1) % X)];
+//			//Vertices[vpos++] = Vector3D(0.0f, 1.0f, 0.0f);
+//
+//			//TexCoords[tpos++] = vec2((float)(x + 0) / (float)X, (float)(Y - 1) / (float)Y);
+//			//TexCoords[tpos++] = vec2((float)(x + 1) / (float)X, (float)(Y - 1) / (float)Y);
+//			//TexCoords[tpos++] = vec2((float)(x + 0.5f) / (float)X, 1.0f);
+//		}
+//		sphere->setVertices(vertices);
+//		//sphere->setIndex(indices);
+//		sphere->computeNormals();
+//
+//		return sphere;
+//	}
 
 
 }

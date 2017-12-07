@@ -10,10 +10,9 @@ namespace SRE {
 		ss >> number;
 		std::string uniform_name_pre = "spotLights[].";
 		if (_number < 10)
-			uniform_name_pre.insert(12, number, 0, 1);
+			uniform_name_pre.insert(11, number, 0, 1);
 		else
-			uniform_name_pre.insert(12, number, 0, 2);
-
+			uniform_name_pre.insert(11, number, 0, 2);
 
 		shader->use();
 

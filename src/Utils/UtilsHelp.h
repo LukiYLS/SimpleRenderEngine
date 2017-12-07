@@ -6,20 +6,12 @@
 
 namespace SRE {
 
-	std::string readFileToStr(const char* fileName)
-	{
-		std::string result;
-		std::ifstream shaderFile;
-		shaderFile.open(fileName);
+	class StringHelp {
+	public:
+		static std::string Int2String(unsigned int a);
+		static std::string readFileToStr(const char* fileName);
+	};
 
-		std::stringstream shaderStream;
-
-		shaderStream << shaderFile.rdbuf();
-
-
-		shaderFile.close();
-
-		return result;
-	}
-
+	
+	
 }

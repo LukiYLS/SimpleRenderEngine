@@ -42,10 +42,10 @@ namespace SRE {
 		{
 
 		}
-		vector<Object*> children = object->getChildren();
-		if (children.size() == 0)return;
-		for (auto child : children)
-			projectObject(child);
+		//vector<Object*> children = object->getChildren();
+		//if (children.size() == 0)return;
+		//for (auto child : children)
+			//projectObject(child);
 	}
 	void Scene::update()
 	{
@@ -73,19 +73,19 @@ namespace SRE {
 		for (auto mesh : _render_mesh)
 		{
 			//multi_mesh
-			Shader* shader = ShaderManager::getSingleton()->getByName(mesh->getShaderName()).get();
-			shader->use();
-			shader->setMat4("model", mesh->getWorldMatrix());
-			shader->setMat4("view", camera->getViewMatrix());
-			shader->setMat4("projection", camera->getProjectionMatrix());
-			shader->setVec3("v3CameraPos", camera->getPosition());
-			shader->setFloat("fCameraHeight", camera->getPosition().length());
-			shader->setFloat("fCameraHeight2", camera->getPosition().length()*camera->getPosition().length());
-			setupLights(shader);
-			mesh->drawPrimitive();
-			//if (_enable_shadow)mesh->addTexture("shadowMap");
-			mesh->setupUniform(shader);
-			glEnable(GL_CULL_FACE);
+			//Shader* shader = ShaderManager::getSingleton()->getByName(mesh->getShaderName()).get();
+			//shader->use();
+			//shader->setMat4("model", mesh->getWorldMatrix());
+			//shader->setMat4("view", camera->getViewMatrix());
+			//shader->setMat4("projection", camera->getProjectionMatrix());
+			//shader->setVec3("v3CameraPos", camera->getPosition());
+			//shader->setFloat("fCameraHeight", camera->getPosition().length());
+			//shader->setFloat("fCameraHeight2", camera->getPosition().length()*camera->getPosition().length());
+			//setupLights(shader);
+			//mesh->drawPrimitive();
+			////if (_enable_shadow)mesh->addTexture("shadowMap");
+			//mesh->setupUniform(shader);
+			//glEnable(GL_CULL_FACE);
 			//if (first)
 			//{
 				//first = false;
@@ -95,7 +95,7 @@ namespace SRE {
 			//else
 			glCullFace(GL_FRONT);
 			//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-			mesh->draw(shader);
+			//mesh->draw(shader);
 		}
 		for (auto plugin : _plugins)
 		{
@@ -111,7 +111,7 @@ namespace SRE {
 	}
 	void Scene::setupLights(Shader* shader)
 	{
-		shader->use();
+		/*shader->use();
 		for (auto it = _lights.begin(); it != _lights.end(); it++)
 		{
 			if ((*it)->getType() == DirectLight)
@@ -147,7 +147,7 @@ namespace SRE {
 				shader->setFloat("spotLight.innerCutoff", (*it)->getInnerCutoff());
 				shader->setFloat("spotLight.outerCutoff", (*it)->getOuterCutoff());
 			}
-		}
+		}*/
 	}
 		
 }

@@ -100,7 +100,7 @@ namespace SRE {
 		_render_shader->setVec3("cameraPos", camera->getPosition());
 		if (!_texture)
 		{
-			_texture->bindTexture(0);
+//			_texture->bindTexture(0);
 			_render_shader->setInt("texture", 0);
 		}
 		glDisable(GL_RASTERIZER_DISCARD);

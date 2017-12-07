@@ -23,6 +23,7 @@ namespace SRE {
 		void setMaterial(Material::ptr material);
 		void setupLights(std::vector<Light::ptr> lights);
 		void setTextures(std::vector<TextureUnitState::ptr> textures);
+		void setTexture(TextureUnitState::ptr texutre);
 		Shader::ptr getShader(Material::MaterialType type);
 	private:	
 		Scene::ptr _scene;
@@ -33,6 +34,9 @@ namespace SRE {
 		std::vector<Light::ptr> _lights;
 		std::vector<Light::ptr> _shadow_lights;
 		Frustum _frustum;
+
+		unsigned int _current_texture_unit_count;
+		std::string _light_num_define;
 	};
 }
 

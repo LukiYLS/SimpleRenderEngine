@@ -55,7 +55,8 @@ namespace SRE {
 	protected:
 
 		ColorValue _color, _specular, _emissive;
-		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap,_envMap;
-		float _shininess,_reflectivity,_refractionRatio;
+		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap, _envMap;
+		float _shininess, _reflectivity, _refractionRatio;
 		Shader::ptr _shader;
-	}
+	};
+}

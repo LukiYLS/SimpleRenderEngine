@@ -1,10 +1,9 @@
 #pragma once
-
-
 #include "Light.h"
 #include "..\Core\PerspectiveCamera.h"
 
 namespace SRE {
+
 	struct PointLightUniform {
 		Vector3D position;
 		Vector3D color;
@@ -24,10 +23,14 @@ namespace SRE {
 		virtual LightType getType()const { return PointLightType; }
 		virtual void upload(Shader::ptr shader);
 		void setUniform(PointLightUniform uniform) { _uniform = uniform; }
+		float getDistance()const { return _distance; }
+		void setDistance(float distance) { _distance = distance; }
+		float getDecay()const { return _decay; }
+		void setDecay(float decay) { _decay = decay; }
 	protected:
 
-		float _distance;
+		float _distance,_decay;
 		PerspectiveCamera::ptr _shadow_camera;
-		PointLightUniform _uniform
+		PointLightUniform _uniform;
 	};
 }

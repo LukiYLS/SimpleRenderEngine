@@ -127,6 +127,7 @@ namespace SRE {
 		void setIndexData(IndexData::ptr data) { _index_data = data; }
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }		
+		bool isUseColor()const { return _useColor; }
 		void setBoundBox(BoundingBox::ptr bbx) { _bbx = bbx; }
 		void setBoundSphere(BoundingSphere::ptr bs) { _sphere = bs; }
 		BoundingSphere::ptr getBoundSphere();
@@ -141,7 +142,7 @@ namespace SRE {
 	protected:		
 
 		PrimitiveType _type;
-		bool _isVisible;
+		bool _isVisible, _useColor;
 		uint32_t _vao, _vbo, _ebo;
 		std::vector<Vertex> _vertices;
 		std::vector<uint32_t> _indices;

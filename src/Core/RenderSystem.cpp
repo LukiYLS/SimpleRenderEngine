@@ -7,6 +7,9 @@
 #include "../Utils/UtilsHelp.h"
 #include "../Material/ShaderMaterial.h"
 #include "../Light/DirectionLight.h"
+#include "../Light/PointLight.h"
+#include "../Light/SpotLight.h"
+#include "../Math/MathHelper.h"
 #include <iostream>
 using namespace Utils;
 namespace SRE {
@@ -22,13 +25,14 @@ namespace SRE {
 	}
 	
 	void RenderSystem::render()
-	{	
+	{		
 		beforeRender();
-		renderImpl();
+		renderImpl(); 
 		afterRender();
 	}
 	void RenderSystem::beforeRender()
 	{
+		_current_texture_unit_count = 0;
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
@@ -37,7 +41,7 @@ namespace SRE {
 	{
 		if (_camera == NULL)
 		{
-			std::cout << "no camera" << std::endl;
+			std::cout << "SB,There is no camera!" << std::endl;
 			return;
 		}
 		Object::ptr root = _scene->getSceneRoot();
@@ -46,15 +50,19 @@ namespace SRE {
 		if (_camera->getParent())_camera->updateMatrixWorld();
 		_frustum.setFromMatrix(_camera->getProjectionMatrix()*_camera->getViewMatrix());
 
+		//Sort each object
 		projectObject(root);
+
+		if (_scene->getUseShadowMap())
+		{
+
+		}
+		//use lights
+		setupLights(_lights);
 
 		//sort();
 
-		if (/*_enable_shadow*/)
-		{
-			//ShadowMapPlugin* sp = new ShadowMapPlugin(_lights, _render_mesh);
-			//sp->render(camera);			
-		}
+		//start render
 		Skybox* skybox = _scene->getSkybox();
 		if (skybox)
 			skybox->render(_camera.get());
@@ -81,42 +89,87 @@ namespace SRE {
 		
 		for (auto light : lights)
 		{
-			ColorValue color = light->getColor();
+			Vector3D color = light->getColor();
 			float intensity = light->getIntensity();
 			Light::LightType type = light->getType();
 			
 			if (type == Light::DirectionLightType)
-			{
-				//
-				//DirectionLight* dir = light->asDirectionLight();
-				Matrix4D worldMat = light->getWorldMatrix();
-				Vector3D position(worldMat[12], worldMat[13], worldMat[14]);
+			{				
+				DirectionLight* directionLight = light->asDirectionLight();
+				DirectionalLightUniform uniform_dir;
 
-				Vector3D direction = Vector3D(0.0) - position;
+				//Vector3D direction = dir->getDirection();
+				
+				Vector3D position = directionLight->getWorldPosition();
+				Vector3D direction = Vector3D(0.0) - position;//default target(0,0,0)
 				direction.normalize();
 
-				bool castShadow = light->getCastShadow();
+				uniform_dir.direction = direction;
+				uniform_dir.color = color * intensity;
+				bool castShadow = directionLight->getCastShadow();
+				uniform_dir.shadow = castShadow;
 				if (castShadow)
 				{
 
 				}
 
-				light->setNumber(numDirectionLight);
-				numDirectionLight++;			
-
+				directionLight->setNumber(numDirectionLight);
+				directionLight->setUniform(uniform_dir);
+				numDirectionLight++;
 
 			}
 			else if (type == Light::PointLightType)
 			{
+				PointLight* pointLight = light->asPointLight();
+				PointLightUniform uniform_point;
 
+				
+				uniform_point.distance = pointLight->getDistance();
+				uniform_point.position = pointLight->getPosition();
+				uniform_point.color = color * intensity;
+				uniform_point.decay = (uniform_point.distance == 0.0) ? 0.0 : pointLight->getDecay();
+				bool castShadow = pointLight->getCastShadow();
+				uniform_point.shadow = castShadow;
+				if (castShadow)
+				{
 
+				}
+				pointLight->setNumber(numPointLight);
+				pointLight->setUniform(uniform_point);
 				numPointLight++;
 			}
-			//pointLights[0].pos/color/distance/decay/shadow/shadowbias/radius/size
-			//directionalLights[0].dir/color/shadow/shadowbias/radius/size
-			//spotLights[0].pos/dir/color/distance/decay/conecos/penumbracos/shadow/shadowbias/radius/size
-			//get light define and uniform  information
+			else if (type == Light::SpotLightType)
+			{
+				SpotLight* spotLight = light->asSpotLight();
+				SpotLightUniform uniform_spot;
+
+				uniform_spot.direction = spotLight->getDirection();
+				uniform_spot.distance = spotLight->getDistance();
+				uniform_spot.position = spotLight->getPosition();
+				uniform_spot.color = color * intensity;
+				uniform_spot.decay = (uniform_spot.distance == 0.0) ? 0.0 : spotLight->getDecay();
+				uniform_spot.coneCos = cos(spotLight->getAngle());
+				uniform_spot.penumbraCos = cos(spotLight->getAngle() * (1 - spotLight->getPenumbra()));
+				bool castShadow = spotLight->getCastShadow();
+				uniform_spot.shadow = castShadow;
+				if (castShadow)
+				{
+
+				}
+				spotLight->setNumber(numSpotLight);
+				spotLight->setUniform(uniform_spot);
+				numSpotLight++;
+			}
+
 		}
+		string dir_define = "#define NUM_DIR_LIGHTS ";
+		string point_define = "#define NUM_POINT_LIGHTS ";
+		string spot_define = "#define NUM_SPOT_LIGHTS ";
+
+		_light_num_define = dir_define + StringHelp::Int2String(numDirectionLight) + "\n" +
+			point_define + StringHelp::Int2String(numPointLight) + "\n" +
+			spot_define + StringHelp::Int2String(numSpotLight) + "\n";
+
 	}
 
 	void RenderSystem::renderMeshs(std::vector<Mesh::ptr> meshs)
@@ -124,10 +177,11 @@ namespace SRE {
 		for (auto mesh : meshs)
 		{
 			Material::ptr material = mesh->getMaterial();
-			RenderState::setMaterial(material);//设置绘制前的环境
+			RenderState::setMaterial(material);//before render,set render envi
 			setProgram(mesh);
 			//setTextures();
 			//然后要完成shader 获取--> uniform值设置----> 纹理设置----> draw
+			//prepare shader 
 			Material::MaterialType mt = material->getType();
 			Shader::ptr shader;
 			switch (mt)
@@ -181,32 +235,83 @@ namespace SRE {
 			{
 				defineStr += "#define USE_ENVMAP\n";
 			}
+			if (material->getSpecularMap())
+			{
+				defineStr += "#define USE_SPECULARMAP\n";
+			}
+			if (material->getAlphaMap())
+			{
+				defineStr += "#define USE_AlPHAMAP\n";
+			}
+			if (material->getAoMap())
+			{
+				defineStr += "#define USE_AOMAP\n";
+			}
+
 			if (mesh->isUseColor())
 			{
 				defineStr += "#define USE_COLOR\n";
 			}
-			if (_scene->hasShadow() && mesh->getReceiveShadow())
+			if (_scene->getUseShadowMap() && mesh->getReceiveShadow())
 			{
 				defineStr += "#define USE_SHADOWMAP\n";
 			}
+			
 			std::string vertexStr, fragmentStr;
 			switch (type)
 			{
 			case SRE::Material::Basic:
-				vertexStr = readFileToStr("../../../src/Data/shader/basicMaterial.vs");
-				fragmentStr = readFileToStr("../../../src/Data/shader/basicMaterial.fs");
+				vertexStr = StringHelp::readFileToStr("../../../src/Data/shader/basicMaterial.vs");
+				fragmentStr = StringHelp::readFileToStr("../../../src/Data/shader/basicMaterial.fs");
 				break;
-			case SRE::Material::Shader:
+			case SRE::Material::Shader:			
 				break;
 			case SRE::Material::Phong:
+				vertexStr = StringHelp::readFileToStr("../../../src/Data/shader/phongMaterial.vs");
+				fragmentStr = StringHelp::readFileToStr("../../../src/Data/shader/phongMaterial.fs");
 				break;
 			case SRE::Material::NO:
 				break;
 			default:
 				break;
 			}
+			std::string vertex_shader = _light_num_define + defineStr + vertexStr;
+			std::string fragment_shader = _light_num_define + defineStr + fragmentStr;
+
+			shader->load(vertex_shader.c_str(), fragment_shader.c_str());
 
 		}
+		//update uniform......
+		shader->use();
+		shader->setMat4("modelMatrix", mesh->getWorldMatrix());
+		shader->setMat4("viewMatrix", _camera->getViewMatrix());
+		shader->setMat4("projectionMatrix", _camera->getProjectionMatrix());
+		shader->setVec3("cameraPosition", _camera->getPosition());
+		shader->setMat3("normalMatrix", MathHelper::getNormalMatrix(mesh->getWorldMatrix()));
+
+		TextureUnitState::ptr map = material->getMap();
+		if (map)
+		{
+			Matrix3D uvTransfrom = map->getUvTransfrom();
+			shader->setMat3("uvTransfrom", uvTransfrom);
+			setTexture(map);
+			shader->setInt("map", _current_texture_unit_count);
+			_current_texture_unit_count++;
+		}
+		TextureUnitState::ptr envMap = material->getEnvMap();
+		if (envMap)
+		{
+			//float refractionRatio = 
+			setTexture(envMap);
+			shader->setInt("envMap", _current_texture_unit_count);
+			_current_texture_unit_count++;
+		}
+		//light upload...
+		for (auto light : _lights)
+			light->upload(shader);
+
+		//
+		mesh->drawPrimitive();
 		switch (type) {
 		case Material::Basic: {
 
@@ -216,7 +321,7 @@ namespace SRE {
 
 		case Material::Phong: {
 
-			PhongMaterial* phongMaterial = material->asPhongMaterial();
+			/*PhongMaterial* phongMaterial = material->asPhongMaterial();
 
 			std::string shader_vertex = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.vs");
 
@@ -228,7 +333,7 @@ namespace SRE {
 
 			shader->setVec3("cameraPosition", _camera->getPosition());
 
-			Matrix3D uvMatrix = Matrix3D::Identity;
+			Matrix3D uvMatrix = Matrix3D::Identity;*/
 
 			//envmap
 
@@ -244,13 +349,11 @@ namespace SRE {
 		}
 		}
 
-		Shader::ptr shader = material->getShader();
+		//Shader::ptr shader = material->getShader();
 		if (NULL != shader)
 		{
 			//update
-			shader->setMat4("viewMatrix", _camera->getViewMatrix());
-			shader->setMat4("projectionMatrix", _camera->getProjectionMatrix());
-			shader->setVec3("cameraPosition", _camera->getPosition());
+			
 			//其它信息如何更新
 			
 
@@ -284,6 +387,27 @@ namespace SRE {
 
 		
 	}
+	void RenderSystem::setTexture(TextureUnitState::ptr texture)
+	{
+		UVWAddressingMode mode = texture->getTextureAddressingMode();
+		FilterOptions minFilter = texture->getTextureFiltering(FT_MIN);
+		FilterOptions magFilter = texture->getTextureFiltering(FT_MAG);
+		FilterOptions mipFilter = texture->getTextureFiltering(FT_MIP);
+
+		GLenum target = texture->getTexture()->getTextureTarget();
+
+		//there is some problem
+		glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+		glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+
+		
+		glTexParameteri(target, GL_TEXTURE_WRAP_S, mode.u);
+		glTexParameteri(target, GL_TEXTURE_WRAP_T, mode.v);
+		glTexParameteri(target, GL_TEXTURE_WRAP_R, mode.w);
+
+		texture->getTexture()->bindTextureUnit(_current_texture_unit_count);
+		
+	}
 	/*
 	
 	*/
@@ -293,6 +417,7 @@ namespace SRE {
 
 		
 	}
+	
 	Shader::ptr RenderSystem::getShader(Material::MaterialType type)
 	{
 		Shader::ptr shader;
@@ -343,7 +468,7 @@ namespace SRE {
 		{
 
 		}
-		else if (/*object->asSprite()*/)
+		else if (true/*object->asSprite()*/)
 		{
 
 		}
@@ -353,7 +478,7 @@ namespace SRE {
 			//bbc->init();
 			//_plugins.push_back(bbc);
 		}
-		else if (/*object->asParticleSystem()*/)
+		else if (true/*object->asParticleSystem()*/)
 		{
 
 		}

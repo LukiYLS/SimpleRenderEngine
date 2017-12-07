@@ -22,9 +22,9 @@ namespace SRE {
 
 		if (recursive)
 		{
-			Object::Children childs = object->getChildren();
-			for (auto child : childs)
-				intersectObject(child, intersects, true);
+//			Object::Children childs = object->getChildren();
+//			for (auto child : childs)
+//				intersectObject(child, intersects, true);
 		}
 	}
 }

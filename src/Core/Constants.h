@@ -50,8 +50,7 @@ namespace SRE {
 		FOG_LINEAR
 	};
 	
-	map<string,string> shader_lib = {{"",""},
-									 {"",""} };
+	
 	
 	const string vertex_attribute = "layout(location=0)in vec3 position;\nlayout(location =1) in vec3 normal;\nlayout(location=2)in vec3 color;\nlayout(location=3)in vec2 texCoord;\nuniform mat4 modelMatrix;\nuniform mat4 viewMatrix;\nuniform mat4 projectionMatrix;\n";
 
@@ -83,11 +82,11 @@ namespace SRE {
 
 	const string fog_vertex = "#ifdef USE_FOG\n\tfogDepth = -mvPosition.z;\n#endif";
 
-	const string light_define = "uniform vec3 ambientLightColor;\nvec3 getAmbientLightIrradiance(const in vec3 ambientLightColor){\n\tvec3 irradiance = ambientLightColor;#ifdef PHYSICALLY_CORRECT_LIGHTS\n\t\tirradiance *= PI;\n\t#endif\n\treturn irradiance;\n}\n#if NUM_DIR_LIGHTS >0"
+	const string light_define = "uniform vec3 ambientLightColor;\nvec3 getAmbientLightIrradiance(const in vec3 ambientLightColor){\n\tvec3 irradiance = ambientLightColor;#ifdef PHYSICALLY_CORRECT_LIGHTS\n\t\tirradiance *= PI;\n\t#endif\n\treturn irradiance;\n}\n#if NUM_DIR_LIGHTS >0";
 		
 
-	const string phong_vertex = "#define PHONG\nvarying vec3 viewPosition;\n#ifdef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif" +
-		uv_vertex_define + envmap_vertex_define + color_vertex_define + fog_vertex_define + shadowmap_vertex_define;
+	//const string phong_vertex = "#define PHONG\nvarying vec3 viewPosition;\n#ifdef FLAT_SHADED\n\tvarying vec3 vNormal;\n#endif" +
+	//	uv_vertex_define + envmap_vertex_define + color_vertex_define + fog_vertex_define + shadowmap_vertex_define;
 	
 
 

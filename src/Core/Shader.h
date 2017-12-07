@@ -16,13 +16,13 @@ namespace SRE {
 		typedef std::shared_ptr<Shader> ptr;
 	public:
 		Shader() = default;
-		Shader(uint32_t shaderID):shader_ID(shaderID){}
+		Shader(uint32_t shaderID):_shaderID(shaderID){}
 		Shader(const char* vertexPath, const char* fragmentPath, const char* geometryPath = nullptr);
 		
 		Shader(const Shader& shader) {}
 		~Shader() {}
 	public:
-		void load(const char* vertex, const char* fragment, const char* geometryPath = nullptr);
+		void load(const char* vertexStr, const char* fragmentStr, const char* geometryStr = nullptr);
 		void use();
 		void unUse();
 		void setBool(const char* name, bool value)const;
@@ -44,7 +44,7 @@ namespace SRE {
 		void checkCompileErrors(GLuint shader, const char* type);
 		void uploadUniform(Uniform uniform);
 	public:
-		unsigned int shader_ID;	
+		unsigned int _shaderID;	
 		std::vector<Uniform> _uniforms;
 	};
 }

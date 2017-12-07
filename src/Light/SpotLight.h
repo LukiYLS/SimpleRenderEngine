@@ -28,11 +28,18 @@ namespace SRE {
 		virtual SpotLight* asSpotLight() { return this; }
 		virtual void upload(Shader::ptr shader);
 		virtual LightType getType()const { return SpotLightType; }
-		void setUniform(SpotLightUniform uniform) { _uniform = uniform; }		
+		void setUniform(SpotLightUniform uniform) { _uniform = uniform; }	
+		float getDistance()const { return _distance; }
+		void setDistance(float distance) { _distance = distance; }
+		float getDecay()const { return _decay; }
+		void setDecay(float decay) { _decay = decay; }
+		float getAngle()const { return _angle; }
+		void setAngle(float angle) { _angle = angle; }
+		float getPenumbra()const { return _penumbra; }
+		void setPenumbra(float penumbra) { _penumbra = penumbra; }
 	protected:
 
-		float _distance;
-		Vector3D _direction;
+		float _distance,_decay,_penumbra;
 		float _angle;
 		PerspectiveCamera::ptr _shadow_camera;
 		SpotLightUniform _uniform;

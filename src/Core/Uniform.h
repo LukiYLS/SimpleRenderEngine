@@ -1,4 +1,4 @@
-#pragma
+#pragma once
 #include <glew\glew.h>
 #include <memory>
 #include "../Utils/AnyValue.h"
