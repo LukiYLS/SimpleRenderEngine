@@ -27,6 +27,7 @@ namespace SRE {
 		void init();	
 
 		static void setMaterial(Material::ptr material);
+		static void reset();
 		static void setBlending();
 		//static void setDepthFunc(CompareFunc func);
 		static void setStencilTest();

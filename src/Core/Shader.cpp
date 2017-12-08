@@ -163,8 +163,8 @@ namespace SRE {
 		GLfloat matrix_gl[9];
 		for (unsigned int i = 0; i < 3; i++)	
 			for (unsigned int j = 0; j < 3; j++)
-			{
-				matrix_gl[i] = value[i][j];
+			{				
+				matrix_gl[i * 3 + j] = value[i][j];
 			}			
 		glUniformMatrix3fv(glGetUniformLocation(_shaderID, name), 1, GL_FALSE, matrix_gl);
 	}

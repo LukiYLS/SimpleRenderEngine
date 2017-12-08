@@ -16,8 +16,8 @@ namespace SRE {
 	}	
 	Matrix4D Camera::getViewMatrix()const
 	{			
-		Matrix4D m1 = Matrix4D::makeTransformMatrix(_position, Vector3D(1.0), _orientation).getInverse();
-		Matrix4D m2 = Matrix4D::lookAt(_position, _position + getDirection(), getUp());
+		//Matrix4D m1 = Matrix4D::makeTransformMatrix(_position, Vector3D(1.0), _orientation).getInverse();
+		//Matrix4D m2 = Matrix4D::lookAt(_position, _position + getDirection(), getUp());
 		return Matrix4D::lookAt(_position, _position + getDirection(), getUp());
 		//return Matrix4D::makeTransformMatrix(_position, Vector3D(1.0), _orientation).getInverse();
 	}

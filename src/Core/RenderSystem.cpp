@@ -179,10 +179,12 @@ namespace SRE {
 	{
 		for (auto mesh : meshs)
 		{
+			_current_texture_unit_count = 0;
 			Material::ptr material = mesh->getMaterial();
 			RenderState::setMaterial(material);//before render,set render envi
 			setProgram(mesh);			
 			mesh->drawPrimitive();
+		
 		}
 	}
 	void RenderSystem::setProgram(Mesh::ptr mesh)
@@ -339,7 +341,7 @@ namespace SRE {
 		if (map)
 		{
 			Matrix3D uvTransfrom = Matrix3D::Identity;
-			shader->setMat3("uvTransfrom", uvTransfrom);
+			shader->setMat3("uvTransform", uvTransfrom);
 			setTexture(map);
 			shader->setInt("map", _current_texture_unit_count);
 			_current_texture_unit_count++;
@@ -418,7 +420,7 @@ namespace SRE {
 		glTexParameteri(target, GL_TEXTURE_WRAP_R, mode.w);
 
 		texture->getTexture()->bindTextureUnit(_current_texture_unit_count);
-		
+		//glBindTexture(target, 0);
 	}
 
 	void RenderSystem::projectObject(Object::ptr object)

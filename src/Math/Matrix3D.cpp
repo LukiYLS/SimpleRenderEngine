@@ -3,7 +3,7 @@
 namespace Math {
 
 	const Matrix3D Matrix3D::Zero(0, 0, 0, 0, 0, 0, 0, 0, 0);
-	const Matrix3D Matrix3D::Identity(1, 0, 0, 0, 1, 0, 0, 0, 1);
+	const Matrix3D Matrix3D::Identity(1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0);
 	Vector3D Matrix3D::getColumn(size_t col) const
 	{
 		return Vector3D(m[0][col], m[1][col], m[2][col]);

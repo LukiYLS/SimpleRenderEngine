@@ -74,6 +74,8 @@ namespace SRE {
 		if (!_vertex_data)
 			return;
 
+		glGenVertexArrays(1, &_vao);
+		glBindVertexArray(_vao);
 		VertexElementList elements = _vertex_data->getVertexDeclaration()->getElements();
 		for (VertexElementList::iterator iter = elements.begin(); iter != elements.end(); iter++)
 		{
@@ -173,6 +175,7 @@ namespace SRE {
 		glDisableVertexAttribArray(1);
 		glDisableVertexAttribArray(2);
 		glDisableVertexAttribArray(3);
+		glBindVertexArray(0);
 	}
 	void RenderObject::computeNormals()
 	{

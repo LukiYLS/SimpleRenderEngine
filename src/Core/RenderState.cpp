@@ -43,7 +43,11 @@ namespace SRE {
 		bool colorWrite = material->getColorWrite();
 		glColorMask(colorWrite, colorWrite, colorWrite, colorWrite);
 	}
-	
+
+	void RenderState::reset()
+	{
+		//glBindTexture(0);
+	}
 	void RenderState::use()
 	{		
 		for (auto it = _state_map.begin(); it != _state_map.end(); it++)

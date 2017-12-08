@@ -6,7 +6,7 @@ namespace SRE {
 
 	Mesh* GeometryFactory::MakeBox(int width, int height, int depth)
 	{
-		size_t vertex_count = 6 * 2 * 3;
+		size_t vertex_count = 24;
 		size_t index_count = 36;
 		VertexData* vertexdata = new VertexData;
 		vertexdata->setVertexStart(0);
@@ -28,13 +28,13 @@ namespace SRE {
 		float halfW = width * 0.5f;
 		float halfH = height * 0.5f;
 		float halfD = depth * 0.5f;
-		float vertices[48 * 8] = {
+		float vertices[24 * 8] = {
 			-halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 0.f, 1.f,
 			-halfW, halfH, -halfD, 0.f, 0.f, -1.f, 0.f, 0.f,
 			halfW, halfH, -halfD, 0.f, 0.f, -1.f, 1.f, 0.f,
-			-halfW, -halfH, halfD, -1.f, 0.f, 0.f, 0.f, 1.f,
+			-halfW, -halfH, halfD, -1.f, 0.f, 0.f, 1.f, 1.f,
 
-			halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 1.f, 1.f,
+			-halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 1.f, 1.f,
 			-halfW, halfH, halfD, -1.f, 0.f, 0.f, 0.f, 0.f,
 			-halfW, halfH, -halfD, -1.f, 0.f, 0.f, 1.f, 0.f,
 			-halfW, -halfH, -halfD, -1.f, 0.f, 0.f, 1.f, 1.f,
