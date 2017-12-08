@@ -21,7 +21,8 @@ namespace SRE {
 			ShaderMaterial
 		};
 		typedef std::shared_ptr<Material> ptr;
-
+		Material();
+		~Material() = default;
 		//virtual Material* asMaterial() { return this; }
 		//virtual BasicMaterial* asBasicMaterial() { return NULL; }
 		//virtual PhongMaterial* asPhongMaterial() { return NULL; }
@@ -84,6 +85,9 @@ namespace SRE {
 		void setLightMap(TextureUnitState::ptr lightMap) { _lightMap = lightMap; }
 		TextureUnitState::ptr getLightMap()const { return _lightMap; }
 
+		void setLightMapIntensity(float lightMapIntensity) { _lightMapIntensity = lightMapIntensity; }
+		float getLightMapIntensity()const { return _lightMapIntensity; }
+
 		void setEmissive(const Vector3D& emissive) { _emissive = emissive; }
 		Vector3D getEmissive()const { return _emissive; }
 		void setEmissiveMap(TextureUnitState::ptr emissiveMap) { _emissiveMap = emissiveMap; }
@@ -98,14 +102,32 @@ namespace SRE {
 		void setEnvMap(TextureUnitState::ptr envMap) { _envMap = envMap; }
 		TextureUnitState::ptr getEnvMap()const { return _envMap; }
 
+		void setEnvMapType(EnvMapType type) { _envMapType = type; }
+		EnvMapType getEnvMapType()const { return _envMapType; }
+
+		void setEnvMapBlendMode(EnvMapBlendMode mode) { _envMapBlendMode = mode; }
+		EnvMapBlendMode getEnvMapBlendMode()const { return _envMapBlendMode; }
+
+		void setSpecularMap(TextureUnitState::ptr specularMap) { _specularMap = specularMap; }
+		TextureUnitState::ptr getSpecularMap()const { return _specularMap; }
+
+		void setAlphaMap(TextureUnitState::ptr alphaMap) { _alphaMap = alphaMap; }
+		TextureUnitState::ptr getAlphaMap()const { return _alphaMap; }
+
+		void setAoMap(TextureUnitState::ptr aoMap) { _aoMap = aoMap; }
+		TextureUnitState::ptr getAoMap()const { return _aoMap; }
+
+		void setAoMapIntensity(float aoMapIntensity) { _aoMapIntensity = aoMapIntensity; }
+		float getAoMapIntensity()const { return _aoMapIntensity; }
+
 		void setReflectivity(float reflectivity) { _reflectivity = reflectivity; }
 		float getReflectivity()const { return _reflectivity; }
 
 		void setRefractionRatio(float refractionRatio) { _refractionRatio = refractionRatio; }
 		float getRefractionRatio()const { return _refractionRatio; }
 
-		Shader::ptr getShader()const { return _shader; } 
-		void setShader(Shader::ptr shader) { _shader = shader; }
+		Shader* getShader()const { return _shader.get(); } 
+		void setShader(Shader* shader) { _shader = (Shader::ptr)shader; }
 
 		
 		
@@ -150,13 +172,15 @@ namespace SRE {
 	protected:		
 		BlendingMode _blendingMode;
 		CullFaceMode _cullFaceMode;
+		EnvMapBlendMode _envMapBlendMode;
+		EnvMapType _envMapType;
 		CompareFunc _depthFunc;
 		ShadeOptions _shadeType;		
 		MaterialType _materialType;
 		Vector3D _color, _specular, _emissive;
-		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap, _envMap, _emissiveMap,_specularMap,_;
+		TextureUnitState::ptr _map, _lightMap, _displacementMap, _normalMap, _envMap, _emissiveMap,_specularMap,_alphaMap,_aoMap;
 		bool _fog, _transparaent, _depthTest, _depthWrite, _colorWrite, _visible, _wireframe;
-		float _opacity, _lineWidth, _shininess, _reflectivity, _refractionRatio;
+		float _opacity, _lightMapIntensity,_aoMapIntensity,_lineWidth, _shininess, _reflectivity, _refractionRatio;
 		Shader::ptr _shader;
 	};
 }

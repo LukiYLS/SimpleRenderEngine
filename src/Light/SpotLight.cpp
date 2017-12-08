@@ -2,7 +2,7 @@
 #include <sstream>
 namespace SRE {
 
-	void SpotLight::upload(Shader::ptr shader)
+	void SpotLight::upload(Shader* shader)
 	{
 		std::stringstream ss;
 		std::string number;

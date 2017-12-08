@@ -1,14 +1,19 @@
 
 uniform mat4 modelMatrix;
-uniform mat4 modelViewMatrix;
 uniform mat4 viewMatrix;
+uniform mat4 projectionMatrix;
 uniform mat3 normalMatrix;
 uniform vec3 cameraPosition;
 
 layout (location = 0)in vec3 position;
 layout (location = 1)in vec3 normal;
 layout (location = 2)in vec2 uv;
+#ifdef USE_COLOR
 layout (location = 3)in vec3 color;
+#endif
+#if defined( USE_LIGHTMAP ) || defined( USE_AOMAP )	
+layout (location = 4)in vec2 uv2;
+#endif
 
 #define PHONG
 varying vec3 vViewPosition;
@@ -29,8 +34,7 @@ vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
 	uniform mat3 uvTransform;
 #endif
 
-#if defined( USE_LIGHTMAP ) || defined( USE_AOMAP )
-	attribute vec2 uv2;
+#if defined( USE_LIGHTMAP ) || defined( USE_AOMAP )	
 	varying vec2 vUv2;
 #endif
 #ifdef USE_DISPLACEMENTMAP
@@ -71,9 +75,9 @@ vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
 #endif
 
 
-#if NUM_CLIPPING_PLANES > 0 && ! defined( PHYSICAL ) && ! defined( PHONG )
-	varying vec3 vViewPosition;
-#endif
+//#if NUM_CLIPPING_PLANES > 0 && ! defined( PHYSICAL ) && ! defined( PHONG )
+//	varying vec3 vViewPosition;
+//#endif
 
 void main() {
 #if defined( USE_MAP ) || defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) || defined( USE_SPECULARMAP ) || defined( USE_ALPHAMAP ) 
@@ -105,9 +109,9 @@ vec3 transformed = vec3( position );
 vec4 mvPosition = viewMatrix * modelMatrix * vec4( transformed, 1.0 );
 gl_Position = projectionMatrix * mvPosition;
 
-#if NUM_CLIPPING_PLANES > 0 && ! defined( PHYSICAL ) && ! defined( PHONG )
-	vViewPosition = - mvPosition.xyz;
-#endif
+//#if NUM_CLIPPING_PLANES > 0 && ! defined( PHYSICAL ) && ! defined( PHONG )
+//	vViewPosition = - mvPosition.xyz;
+//#endif
 
 	vViewPosition = - mvPosition.xyz;
 #if defined( USE_ENVMAP ) || defined( DISTANCE ) || defined ( USE_SHADOWMAP )

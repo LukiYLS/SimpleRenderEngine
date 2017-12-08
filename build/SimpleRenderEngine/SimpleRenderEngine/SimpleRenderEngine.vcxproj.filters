@@ -36,9 +36,6 @@
     <ClInclude Include="..\..\..\src\Core\Camera.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\Effect.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Core\FrameBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -55,9 +52,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\PerspectiveCamera.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\Plugin.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\RenderObject.h">
@@ -85,9 +79,6 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\TextureManager.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\TextureManager_.h">
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\ViewPort.h">
@@ -171,9 +162,6 @@
     <ClInclude Include="..\..\..\src\Math\Frustum.h">
       <Filter>Math</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\Geometry.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Utils\KeyBoardConfig.h">
       <Filter>Utils</Filter>
     </ClInclude>
@@ -228,15 +216,6 @@
     <ClInclude Include="..\..\..\src\Core\TextureUnitState.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Material\BasicMaterial.h">
-      <Filter>Material</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Material\ShaderMaterial.h">
-      <Filter>Material</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\..\src\Material\PhongMaterial.h">
-      <Filter>Material</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Material\Material.h">
       <Filter>Material</Filter>
     </ClInclude>
@@ -266,6 +245,9 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Light\LightShadowMap.h">
       <Filter>Light</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Example\CommonHead.h">
+      <Filter>Examples</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -413,9 +395,6 @@
     <ClCompile Include="..\..\..\src\Math\Frustum.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Material\PhongMaterial.cpp">
-      <Filter>Material</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Material\Material.cpp">
       <Filter>Material</Filter>
     </ClCompile>
@@ -433,6 +412,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Utils\UtilsHelp.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Example\test.cpp">
+      <Filter>Examples</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

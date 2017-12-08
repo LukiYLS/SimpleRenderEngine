@@ -21,7 +21,7 @@ namespace SRE {
 		typedef std::shared_ptr<PointLight> ptr;
 		virtual PointLight* asPointLight() { return this; }
 		virtual LightType getType()const { return PointLightType; }
-		virtual void upload(Shader::ptr shader);
+		virtual void upload(Shader* shader);
 		void setUniform(PointLightUniform uniform) { _uniform = uniform; }
 		float getDistance()const { return _distance; }
 		void setDistance(float distance) { _distance = distance; }

@@ -2,7 +2,7 @@
 #include <sstream>
 namespace SRE {
 
-	void DirectionLight::upload(Shader::ptr shader)
+	void DirectionLight::upload(Shader* shader)
 	{
 		//according to number,create uniform name,directionLights[number]
 

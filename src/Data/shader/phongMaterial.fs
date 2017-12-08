@@ -6,10 +6,10 @@ uniform vec3 cameraPosition;
 	#define saturate(a) clamp( a, 0.0, 1.0 )
 #endif
 
-vec4 mapTexelToLinear( vec4 value ) { return LinearToLinear( value ); }
-vec4 envMapTexelToLinear( vec4 value ) { return LinearToLinear( value ); }
-vec4 emissiveMapTexelToLinear( vec4 value ) { return LinearToLinear( value ); }
-vec4 linearToOutputTexel( vec4 value ) { return LinearToLinear( value ); }
+//vec4 mapTexelToLinear( vec4 value ) { return LinearToLinear( value ); }
+//vec4 envMapTexelToLinear( vec4 value ) { return LinearToLinear( value ); }
+//vec4 emissiveMapTexelToLinear( vec4 value ) { return LinearToLinear( value ); }
+//vec4 linearToOutputTexel( vec4 value ) { return LinearToLinear( value ); }
 
 #define PHONG
 uniform vec3 diffuse;
@@ -122,7 +122,7 @@ float perspectiveDepthToViewZ( const in float invClipZ, const in float near, con
 
 #if defined( USE_ENVMAP ) || defined( PHYSICAL )
 	uniform float reflectivity;
-	uniform float envMapIntensity;
+	//uniform float envMapIntensity;
 #endif
 #ifdef USE_ENVMAP
 	#if ! defined( PHYSICAL ) && ( defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) || defined( PHONG ) )
@@ -173,6 +173,7 @@ vec3 F_Schlick( const in vec3 specularColor, const in float dotLH ) {
 	float fresnel = exp2( ( -5.55473 * dotLH - 6.98316 ) * dotLH );
 	return ( 1.0 - specularColor ) * fresnel + specularColor;
 }
+//Blinn-Phong，简单快速，各向同性，表达能力有限
 
 float G_BlinnPhong_Implicit( ) {
 	return 0.25;
@@ -356,6 +357,7 @@ void RE_Direct_BlinnPhong( const in IncidentLight directLight, const in Geometri
 	#ifndef PHYSICALLY_CORRECT_LIGHTS
 		irradiance *= PI;
 	#endif
+	
 	reflectedLight.directDiffuse += irradiance * BRDF_Diffuse_Lambert( material.diffuseColor );
 	reflectedLight.directSpecular += irradiance * BRDF_Specular_BlinnPhong( directLight, geometry, material.specularColor, material.specularShininess ) * material.specularStrength;
 }
@@ -535,15 +537,15 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 #ifdef USE_SPECULARMAP
 	uniform sampler2D specularMap;
 #endif
-#if NUM_CLIPPING_PLANES > 0
-	#if ! defined( PHYSICAL ) && ! defined( PHONG )
-		varying vec3 vViewPosition;
-	#endif
-	uniform vec4 clippingPlanes[ NUM_CLIPPING_PLANES ];
-#endif
+//#if NUM_CLIPPING_PLANES > 0
+//	#if ! defined( PHYSICAL ) && ! defined( PHONG )
+//		varying vec3 vViewPosition;
+//	#endif
+//	uniform vec4 clippingPlanes[ NUM_CLIPPING_PLANES ];
+//#endif
 
 void main() {
-#if NUM_CLIPPING_PLANES > 0
+/*#if NUM_CLIPPING_PLANES > 0
 	for ( int i = 0; i < UNION_CLIPPING_PLANES; ++ i ) {
 		vec4 plane = clippingPlanes[ i ];
 		if ( dot( vViewPosition, plane.xyz ) > plane.w ) discard;
@@ -558,7 +560,7 @@ void main() {
 		if ( clipped ) discard;
 	
 	#endif
-#endif
+#endif*/
 
 	vec4 diffuseColor = vec4( diffuse, opacity );
 	ReflectedLight reflectedLight = ReflectedLight( vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ), vec3( 0.0 ) );
@@ -568,7 +570,7 @@ void main() {
 #endif
 #ifdef USE_MAP
 	vec4 texelColor = texture2D( map, vUv );
-	texelColor = mapTexelToLinear( texelColor );
+	//texelColor = mapTexelToLinear( texelColor );
 	diffuseColor *= texelColor;
 #endif
 
@@ -608,7 +610,7 @@ float specularStrength;
 
 #ifdef USE_EMISSIVEMAP
 	vec4 emissiveColor = texture2D( emissiveMap, vUv );
-	emissiveColor.rgb = emissiveMapTexelToLinear( emissiveColor ).rgb;
+	//emissiveColor.rgb = emissiveMapTexelToLinear( emissiveColor ).rgb;
 	totalEmissiveRadiance *= emissiveColor.rgb;
 #endif
 
@@ -780,7 +782,7 @@ IncidentLight directLight;
 	#else
 		vec4 envColor = vec4( 0.0 );
 	#endif
-	envColor = envMapTexelToLinear( envColor );
+	//envColor = envMapTexelToLinear( envColor );
 	#ifdef ENVMAP_BLENDING_MULTIPLY
 		outgoingLight = mix( outgoingLight, outgoingLight * envColor.xyz, specularStrength * reflectivity );
 	#elif defined( ENVMAP_BLENDING_MIX )
@@ -793,7 +795,7 @@ IncidentLight directLight;
 	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
 
 
-  gl_FragColor = linearToOutputTexel( gl_FragColor );
+  //gl_FragColor = linearToOutputTexel( gl_FragColor );
 
 #ifdef USE_FOG
 	#ifdef FOG_EXP2
@@ -811,5 +813,5 @@ IncidentLight directLight;
 #if defined( DITHERING )
   gl_FragColor.rgb = dithering( gl_FragColor.rgb );
 #endif
-
+	gl_FragColor = vec4(1.0,0.0,0.0,1.0);
 }

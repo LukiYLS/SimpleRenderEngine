@@ -63,7 +63,7 @@ namespace SRE {
 		//sort();
 
 		//start render
-		Skybox* skybox = _scene->getSkybox();
+		Skybox::ptr skybox = _scene->getSkybox();
 		if (skybox)
 			skybox->render(_camera.get());
 		else
@@ -92,8 +92,11 @@ namespace SRE {
 			Vector3D color = light->getColor();
 			float intensity = light->getIntensity();
 			Light::LightType type = light->getType();
-			
-			if (type == Light::DirectionLightType)
+			if (type == Light::AmbientLightType)
+			{
+
+			}
+			else if (type == Light::DirectionLightType)
 			{				
 				DirectionLight* directionLight = light->asDirectionLight();
 				DirectionalLightUniform uniform_dir;
@@ -178,43 +181,25 @@ namespace SRE {
 		{
 			Material::ptr material = mesh->getMaterial();
 			RenderState::setMaterial(material);//before render,set render envi
-			setProgram(mesh);
-			//setTextures();
-			//然后要完成shader 获取--> uniform值设置----> 纹理设置----> draw
-			//prepare shader 
-			Material::MaterialType mt = material->getType();
-			Shader::ptr shader;
-			switch (mt)
-			{
-			case Material::Basic:
-			{
-				break;
-			}
-			case Material::Phong:
-			{
-
-				break;
-			}
-			}
-			//Shader::ptr shader = getMaterialShader
-
-
+			setProgram(mesh);			
+			mesh->drawPrimitive();
 		}
 	}
 	void RenderSystem::setProgram(Mesh::ptr mesh)
 	{		
 		Material::ptr material = mesh->getMaterial();
 		Material::MaterialType type = material->getMaterialType();
-		Shader::ptr shader = material->getShader();
+		Shader* shader = material->getShader();
 		if (shader == NULL)//first frame
 		{
+			//Shader *shader_mat = new Shader;
 			//assemble their shader,corresponding to the material
 
 			//1.build define information
-
+			shader = new Shader;
 			std::string defineStr;
 
-			if (material->getFog())
+			if (_scene->getUseFog() && material->getFog())
 			{
 				defineStr += "#define USE_FOG\n";
 			}
@@ -234,6 +219,53 @@ namespace SRE {
 			if (material->getEnvMap())
 			{
 				defineStr += "#define USE_ENVMAP\n";
+				EnvMapType envmaptype = material->getEnvMapType();
+				switch (envmaptype)
+				{
+				case CubeReflectionMapping:
+				case CubeRefractionMapping:
+					defineStr += "#define ENVMAP_TYPE_CUBE\n";
+					break;
+
+				case CubeUVReflectionMapping:
+				case CubeUVRefractionMapping:
+					defineStr += "#define ENVMAP_TYPE_CUBE_UV\n";
+					break;
+
+				case EquirectangularReflectionMapping:
+				case EquirectangularRefractionMapping:
+					defineStr += "#define ENVMAP_TYPE_EQUIRE\n";
+					break;
+
+				case SphericalReflectionMapping:
+					defineStr += "ENVMAP_TYPE_SPHERE\n";
+					break;
+				default:
+					break;
+				}
+				switch (envmaptype) {
+
+				case CubeRefractionMapping:
+				case EquirectangularRefractionMapping:
+					defineStr += "#define ENVMAP_MODE_REFRACTION\n";
+					break;
+
+				}
+				switch (material->getEnvMapBlendMode()) {
+
+				case MultiplyOperation:
+					defineStr += "#define ENVMAP_BLENDING_MULTIPLY\n";
+					break;
+
+				case MixOperation:
+					defineStr += "#define ENVMAP_BLENDING_MIX\n";
+					break;
+
+				case AddOperation:
+					defineStr += "#define ENVMAP_BLENDING_ADD\n";
+					break;
+
+				}
 			}
 			if (material->getSpecularMap())
 			{
@@ -255,23 +287,22 @@ namespace SRE {
 			if (_scene->getUseShadowMap() && mesh->getReceiveShadow())
 			{
 				defineStr += "#define USE_SHADOWMAP\n";
+				//shadwomap type
 			}
 			
 			std::string vertexStr, fragmentStr;
 			switch (type)
 			{
-			case SRE::Material::Basic:
+			case Material::BasicMaterial:
 				vertexStr = StringHelp::readFileToStr("../../../src/Data/shader/basicMaterial.vs");
 				fragmentStr = StringHelp::readFileToStr("../../../src/Data/shader/basicMaterial.fs");
 				break;
-			case SRE::Material::Shader:			
+			case Material::ShaderMaterial:			
 				break;
-			case SRE::Material::Phong:
+			case Material::PhongMaterial:
 				vertexStr = StringHelp::readFileToStr("../../../src/Data/shader/phongMaterial.vs");
 				fragmentStr = StringHelp::readFileToStr("../../../src/Data/shader/phongMaterial.fs");
-				break;
-			case SRE::Material::NO:
-				break;
+				break;		
 			default:
 				break;
 			}
@@ -279,6 +310,7 @@ namespace SRE {
 			std::string fragment_shader = _light_num_define + defineStr + fragmentStr;
 
 			shader->load(vertex_shader.c_str(), fragment_shader.c_str());
+			material->setShader(shader);
 
 		}
 		//update uniform......
@@ -289,102 +321,82 @@ namespace SRE {
 		shader->setVec3("cameraPosition", _camera->getPosition());
 		shader->setMat3("normalMatrix", MathHelper::getNormalMatrix(mesh->getWorldMatrix()));
 
+		shader->setFloat("opacity", material->getOpacity());
+		shader->setVec3("diffuse", material->getColor());
+		shader->setVec3("emissive", material->getEmissive());
+		shader->setVec3("specular", material->getSpecular());
+		shader->setFloat("shininess", material->getShininess());
+
+		if (_scene->getUseFog() && material->getFog())
+		{
+			Fog fog = _scene->getFog();
+			shader->setFloat("fogNear", fog.near);
+			shader->setFloat("fogFar", fog.far);
+			shader->setVec3("fogColor", fog.color);
+		}
+
 		TextureUnitState::ptr map = material->getMap();
 		if (map)
 		{
-			Matrix3D uvTransfrom = map->getUvTransfrom();
+			Matrix3D uvTransfrom = Matrix3D::Identity;
 			shader->setMat3("uvTransfrom", uvTransfrom);
 			setTexture(map);
 			shader->setInt("map", _current_texture_unit_count);
 			_current_texture_unit_count++;
 		}
+		TextureUnitState::ptr lightMap = material->getLightMap();
+		if (lightMap)
+		{
+			setTexture(lightMap);
+			shader->setInt("lightMap", _current_texture_unit_count);
+			shader->setFloat("lightMapIntensity", material->getLightMapIntensity());
+			_current_texture_unit_count++;
+		}
+
+		TextureUnitState::ptr aoMap = material->getAoMap();
+		if (aoMap)
+		{
+			setTexture(aoMap);
+			shader->setInt("aoMap", _current_texture_unit_count);
+			shader->setFloat("aoMapIntensity", material->getAoMapIntensity());
+			_current_texture_unit_count++;
+		}
+
+		TextureUnitState::ptr alphaMap = material->getAlphaMap();
+		if (alphaMap)
+		{
+			setTexture(alphaMap);
+			shader->setInt("alphaMap", _current_texture_unit_count);			
+			_current_texture_unit_count++;
+		}
+
+		TextureUnitState::ptr specularMap = material->getSpecularMap();
+		if (specularMap)
+		{
+			setTexture(specularMap);
+			shader->setInt("specularMap", _current_texture_unit_count);			
+			_current_texture_unit_count++;
+		}
+		
+
 		TextureUnitState::ptr envMap = material->getEnvMap();
 		if (envMap)
-		{
-			//float refractionRatio = 
+		{			
 			setTexture(envMap);
 			shader->setInt("envMap", _current_texture_unit_count);
 			_current_texture_unit_count++;
+			shader->setFloat("reflectivity", material->getReflectivity());
+			shader->setFloat("refractionRatio", material->getRefractionRatio());
+			float flipEnvMap = envMap->getTexture()->getTextureTarget() == TEX_TYPE_CUBE_MAP ? 1.0 : -1.0;
+			shader->setFloat("flipEnvMap", flipEnvMap);
+		}
+		if (_scene->getUseShadowMap() && mesh->getReceiveShadow())
+		{
+
 		}
 		//light upload...
 		for (auto light : _lights)
-			light->upload(shader);
-
-		//
-		mesh->drawPrimitive();
-		switch (type) {
-		case Material::Basic: {
-
-
-			break;
-		}
-
-		case Material::Phong: {
-
-			/*PhongMaterial* phongMaterial = material->asPhongMaterial();
-
-			std::string shader_vertex = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.vs");
-
-			std::string shader_fragment = prefixVertex + readFileToStr("../../../src/Data/shader/phongMaterial.fs");
-
-			Shader::ptr shader = std::make_shared<Shader>();
-
-			shader->load(shader_vertex.c_str(), shader_fragment.c_str());
-
-			shader->setVec3("cameraPosition", _camera->getPosition());
-
-			Matrix3D uvMatrix = Matrix3D::Identity;*/
-
-			//envmap
-
-
-
-			//shadowmap
-
-
-			//shader->addUniform();
-
-			break;
-
-		}
-		}
-
-		//Shader::ptr shader = material->getShader();
-		if (NULL != shader)
-		{
-			//update
-			
-			//其它信息如何更新
-			
-
-			return;
-		}
-		//先生成预定义信息，然后与不同材质对应的shader组合起来得到完整的shader，然后进行编译，最后把material的值上传至shader
-		//Shader::ptr shader = getShader(material->getType());
-
-		//shader->use();
-		//组装shader
-		std::string prefixVertex;// = vertex_attribute;
-		std::vector<TextureUnitState::ptr> _textures;
-		
-		
-		//if(material->)
-
-		
-		
-		if (true)
-		{
-			//vertex_shader += "#define SHADOW_MAP\n";
-		}
-		std::string fragment_shader;
-
-		//组装uniform
-		Matrix4D viewMatrix = _camera->getViewMatrix();
-		Matrix4D projectionMatrix = _camera->getProjectionMatrix();
-
-		//shader->setMat4("viewMatrix", viewMatrix);
-		//shader->setMat4("projectionMatrix", projectionMatrix);
-
+			light->upload(shader);	
 		
 	}
 	void RenderSystem::setTexture(TextureUnitState::ptr texture)
@@ -408,41 +420,14 @@ namespace SRE {
 		texture->getTexture()->bindTextureUnit(_current_texture_unit_count);
 		
 	}
-	/*
-	
-	*/
-	void RenderSystem::setMaterial(Material::ptr material)
-	{
-		Shader::ptr shader = material->getShader();
 
-		
-	}
-	
-	Shader::ptr RenderSystem::getShader(Material::MaterialType type)
-	{
-		Shader::ptr shader;
-		switch (type)
-		{
-		case Material::Basic:
-		{
-			shader = make_shared<Shader>("../../../src/Data/shader/basic.vs", "../../../src/Data/shader/basic.fs");
-			break;
-		}
-		case Material::Phong:
-		{
-			shader = make_shared<Shader>("../../../src/Data/shader/phong.vs", "../../../src/Data/shader/phong.fs");
-			break;
-		}
-		}
-		return shader;
-	}
 	void RenderSystem::projectObject(Object::ptr object)
 	{
 		//if (object->visible = false)return;
 		if (object->asMesh())
 		{
 			Mesh* mesh = object->asMesh();
-			if (_frustum.intersectsSphere(*mesh->getBoundSphere().get()))
+			//if (_frustum.intersectsSphere(*mesh->getBoundSphere().get()))
 			{
 				Material::ptr material = mesh->getMaterial();
 				if (material->getTransparent())
@@ -463,11 +448,7 @@ namespace SRE {
 			if (light->getCastShadow())
 				_shadow_lights.push_back((Light::ptr)light);
 
-		}
-		else if (object->asPlugin())
-		{
-
-		}
+		}		
 		else if (true/*object->asSprite()*/)
 		{
 

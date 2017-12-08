@@ -7,6 +7,7 @@ namespace SRE {
 	class Skybox
 		:public Object{
 	public:
+		typedef std::shared_ptr<Skybox> ptr;
 		Skybox(std::vector<std::string> fileNames);
 		~Skybox();
 		void render(Camera* camera);

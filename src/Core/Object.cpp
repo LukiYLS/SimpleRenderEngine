@@ -75,7 +75,7 @@ namespace SRE {
 	{
 		if (index < _children.size())
 			return _children[index];
-		return nullptr;
+		return NULL;
 	}
 	void Object::updateMatrixLocal()
 	{

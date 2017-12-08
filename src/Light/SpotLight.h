@@ -26,7 +26,7 @@ namespace SRE {
 	public:
 		typedef std::shared_ptr<SpotLight> ptr;
 		virtual SpotLight* asSpotLight() { return this; }
-		virtual void upload(Shader::ptr shader);
+		virtual void upload(Shader* shader);
 		virtual LightType getType()const { return SpotLightType; }
 		void setUniform(SpotLightUniform uniform) { _uniform = uniform; }	
 		float getDistance()const { return _distance; }

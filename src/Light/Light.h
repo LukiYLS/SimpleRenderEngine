@@ -10,7 +10,7 @@ namespace SRE {
 	class Light : public  Object{
 	public:
 		enum LightType {
-
+			AmbientLightType,
 			DirectionLightType,
 			PointLightType,
 			SpotLightType,
@@ -39,7 +39,7 @@ namespace SRE {
 		bool getCastShadow()const { return _castShadow; }
 
 		virtual void setNumber(unsigned int number) { _number = number; }
-		virtual void upload(Shader::ptr shader) {}
+		virtual void upload(Shader* shader) { /*shader->setVec3("ambientLightColor",);*/ }
 
 		virtual LightType getType()const { return NoneType; }
 

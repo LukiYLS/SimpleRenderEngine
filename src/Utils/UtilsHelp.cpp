@@ -21,11 +21,11 @@ namespace SRE
 		std::stringstream shaderStream;
 
 		shaderStream << shaderFile.rdbuf();
-
+		shaderStream >> result;
 
 		shaderFile.close();
 
-		return result;
+		return shaderStream.str();
 	}
 }
 

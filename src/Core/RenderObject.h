@@ -118,27 +118,26 @@ namespace SRE {
 		virtual ~RenderObject() {}
 	public:	
 
-		void draw(Shader* shader);		
-		void setVertices(std::vector<Vertex> vertices) { _vertices = vertices; }
-		void setIndex(std::vector<unsigned int> indices) { _indices = indices; }
+		//void draw(Shader* shader);		
+		//void setVertices(std::vector<Vertex> vertices) { _vertices = vertices; }
+		//void setIndex(std::vector<unsigned int> indices) { _indices = indices; }
 
 		void drawPrimitive();
 		void setVertexData(VertexData::ptr data) { _vertex_data = data; }
 		void setIndexData(IndexData::ptr data) { _index_data = data; }
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
-		void setVisible(bool isVisible) { _isVisible = isVisible; }		
-		bool isUseColor()const { return _useColor; }
-		void setBoundBox(BoundingBox::ptr bbx) { _bbx = bbx; }
-		void setBoundSphere(BoundingSphere::ptr bs) { _sphere = bs; }
-		BoundingSphere::ptr getBoundSphere();
-		virtual void setShaderUniform(Shader* shader) {}
+		void setVisible(bool isVisible) { _isVisible = isVisible; }	
+
+		bool isUseColor()const { return _useColor; }		
 
 		virtual void raycast(RayCaster* raycaster, AnyValue& intersects);
 		void computeNormals();
 		void computeBoundingBox();
 		void computeBoundingSphere();
+		void setBoundBox(BoundingBox::ptr bbx) { _bbx = bbx; }
+		void setBoundSphere(BoundingSphere::ptr bs) { _sphere = bs; }
+		BoundingSphere::ptr getBoundSphere();
 
-		void createBuffer();
 	protected:		
 
 		PrimitiveType _type;

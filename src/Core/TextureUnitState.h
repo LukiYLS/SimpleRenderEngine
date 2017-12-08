@@ -1,5 +1,6 @@
 #pragma once
 #include "..\Math\Matrix4D.h"
+#include "..\Math\Matrix3D.h"
 #include "Texture.h"
 #include "HardwareBuffer\ColorValue.h"
 namespace SRE {
@@ -103,7 +104,7 @@ namespace SRE {
 		
 		void setBindingType(BindingType bt);	
 		BindingType getBindingType(void) const;
-
+		//
 		
 		void setContentType(ContentType ct);
 		/** Get the type of content this TextureUnitState references. */
@@ -127,7 +128,7 @@ namespace SRE {
 		/// Get this layer texture anisotropy level.
 		unsigned int getTextureAnisotropy() const;
 
-		Matrix3D getUvTransfrom()const { return _uvTransform; }
+	//	Matrix3D getUvTransfrom()const { return _uvTransform; }
 
 	protected:
 		ColorValue _borderColour;
@@ -149,10 +150,10 @@ namespace SRE {
 		ContentType _contentType;
 
 		UVWAddressingMode _addressMode;
-
+		Texture::ptr _texture;
 		std::vector<Texture::ptr> _frameTextures;
 
-		Matrix3D _uvTransform;
+	//	Matrix3D _uvTransform;
 
 	};
 }

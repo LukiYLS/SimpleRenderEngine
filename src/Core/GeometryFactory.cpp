@@ -4,7 +4,7 @@
 using namespace Math;
 namespace SRE {
 
-	RenderObject::ptr GeometryFactory::MakeBox(int width, int height, int depth)
+	Mesh* GeometryFactory::MakeBox(int width, int height, int depth)
 	{
 		size_t vertex_count = 6 * 2 * 3;
 		size_t index_count = 36;
@@ -95,14 +95,14 @@ namespace SRE {
 			20,22,23
 		};
 		index_buffer->writeData(0, index_buffer->getSizeInBytes(), faces);
-		RenderObject::ptr ro = std::make_shared<RenderObject>();
+		Mesh* ro = new Mesh;
 		ro->setVertexData((VertexData::ptr)vertexdata);
 		ro->setIndexData((IndexData::ptr)indexdata);
 		
 		return ro;
 		
 	}
-	RenderObject::ptr GeometryFactory::MakeSphere(double radius, int numRings, int numSegments)
+	Mesh* GeometryFactory::MakeSphere(double radius, int numRings, int numSegments)
 	{
 		unsigned int vertex_count = (numRings + 1) * (numSegments + 1);
 		VertexData* vertexdata = new VertexData;
@@ -176,7 +176,7 @@ namespace SRE {
 		vertex_buffer->unlock();
 		index_buffer->unlock();
 		
-		RenderObject::ptr ro = std::make_shared<RenderObject>();
+		Mesh* ro = new Mesh;
 		ro->setVertexData((VertexData::ptr)vertexdata);
 		ro->setIndexData((IndexData::ptr)indexdata);
 		BoundingBox::ptr bx = std::make_shared<BoundingBox>(Vector3D(-radius, -radius, -radius), Vector3D(radius, radius,radius));

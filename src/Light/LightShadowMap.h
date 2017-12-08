@@ -7,6 +7,11 @@ namespace SRE {
 	class RenderSystem;
 	class ShadowMap {
 
+		enum ShadowMapType {
+			PCFShadowMap,
+			PCFSoftShadowMap
+		};
+
 	public:
 
 

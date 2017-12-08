@@ -25,7 +25,7 @@ namespace SRE {
 		void setUniform(DirectionalLightUniform uniform) { _uniform = uniform; }
 
 		virtual DirectionLight* asDirectionLight() { return this; }
-		virtual void upload(Shader::ptr shader);
+		virtual void upload(Shader* shader);
 		virtual LightType getType()const { return DirectionLightType; }
 
 	protected:

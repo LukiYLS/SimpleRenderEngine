@@ -1,10 +1,9 @@
-#ifndef FRAMEBUFFER_H
-#define FRAMEBUFFER_H
+#pragma once
 #include <glew\glew.h>
 #include <memory>
 namespace SRE {
 
-	class FrameBuffer {//Õâ¸ö
+	class FrameBuffer {
 	public:
 		typedef std::shared_ptr<FrameBuffer> ptr;
 		FrameBuffer() = default;
@@ -23,5 +22,5 @@ namespace SRE {
 
 	};
 }
-#endif // !FRAMEBUFFER_H
+
 

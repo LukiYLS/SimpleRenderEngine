@@ -13,8 +13,6 @@ namespace SRE {
 		CustomBlending	= 5																				
 	};
 
-
-
 	enum CompareFunc
 	{
 		NeverDepth = GL_NEVER,
@@ -48,6 +46,26 @@ namespace SRE {
 		FOG_EXP2,
 		/// Fog density increases linearly between the start and end distances
 		FOG_LINEAR
+	};
+
+	enum EnvMapType {
+		CubeReflectionMapping,
+		CubeRefractionMapping,
+		CubeUVReflectionMapping,
+		CubeUVRefractionMapping,
+		EquirectangularReflectionMapping,
+		EquirectangularRefractionMapping,
+		SphericalReflectionMapping
+	};
+	enum EnvMapBlendMode {
+		MultiplyOperation,
+		MixOperation,
+		AddOperation
+	};
+
+	enum ShadowMapType {
+		PCFShadowMap,
+		PCFSoftShadowMap
 	};
 	
 	

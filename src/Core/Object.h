@@ -6,40 +6,38 @@
 #include <vector>
 #include <memory>
 using namespace Math;
-namespace SRE {
-	using namespace std;
+namespace SRE {	
 	class Mesh;
-	class Light;
-	class Plugin;
+	class Light;	
 	class Sprite;
 	class BillboardCollection;
 	class ParticleSystem;
 	class RayCaster;
 	class Object {
 	public:
-		typedef shared_ptr<Object> ptr;
+		typedef std::shared_ptr<Object> ptr;
 		typedef std::vector<Object::ptr> Children;
 		Object() :_position(Vector3D(0.0, 0.0, 0.0)), _scale(Vector3D(1.0, 1.0, 1.0)) {}
 		Object(const Vector3D& pos) :_position(pos), _scale(Vector3D(1.0, 1.0, 1.0)) {}
 		Object(const Vector3D& pos, const Quaternion& quat) :_position(pos), _orientation(quat), _scale(Vector3D(1.0, 1.0, 1.0)) {}
 	public:
-		virtual Mesh* asMesh() { return 0; }
-		virtual const Mesh* asMesh() const { return 0; }
+		virtual Mesh* asMesh() { return NULL; }
+		virtual const Mesh* asMesh() const { return NULL; }
 
 		virtual Light* asLight() { return NULL; }
 		virtual const Light* asLight() const { return NULL; }
 
-		virtual Plugin* asPlugin() { return 0; }
-		virtual const Plugin* asPlugin() const { return 0; }
+		//virtual Plugin* asPlugin() { return 0; }
+		//virtual const Plugin* asPlugin() const { return 0; }
 
-		virtual Sprite* asSprite() { return 0; }
-		virtual const Sprite* asSprite() const { return 0; }
+		virtual Sprite* asSprite() { return NULL; }
+		virtual const Sprite* asSprite() const { return NULL; }
 
-		virtual BillboardCollection* asBillboardCollection() { return 0; }
-		virtual const BillboardCollection* asBillboardCollection() const { return 0; }
+		virtual BillboardCollection* asBillboardCollection() { return NULL; }
+		virtual const BillboardCollection* asBillboardCollection() const { return NULL; }
 
-		virtual ParticleSystem* asParticleSystem() { return 0; }
-		virtual const ParticleSystem* asParticleSystem() const { return 0; }
+		virtual ParticleSystem* asParticleSystem() { return NULL; }
+		virtual const ParticleSystem* asParticleSystem() const { return NULL; }
 
 		virtual Object* asObject() { return this; }
 		virtual const Object* asObject() const { return this; }

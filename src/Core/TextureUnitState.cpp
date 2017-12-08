@@ -4,22 +4,26 @@
 
 namespace SRE {
 
-	TextureUnitState::TextureUnitState()
+	TextureUnitState::TextureUnitState():
+		_defaultMinFilter(FO_NONE),
+		_defaultMagFilter(FO_NONE),
+		_defaultMipFilter(FO_NONE)
+		
 	{
-
+			_addressMode.u = _addressMode.v = _addressMode.w = TAM_WRAP;
 	}
 	TextureUnitState::~TextureUnitState()
 	{
-
+		
 	}
 
 	void TextureUnitState::setTexture(Texture::ptr texture)
 	{
-
+		_texture = texture;
 	}
 	Texture::ptr TextureUnitState::getTexture()const
 	{
-		return NULL;
+		return _texture;
 	}
 	void TextureUnitState::setCubeTexture(Texture::ptr texuter)
 	{

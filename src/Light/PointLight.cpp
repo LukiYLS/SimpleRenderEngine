@@ -4,7 +4,7 @@
 
 namespace SRE {
 
-	void PointLight::upload(Shader::ptr shader)
+	void PointLight::upload(Shader* shader)
 	{
 		std::stringstream ss;
 		std::string number;

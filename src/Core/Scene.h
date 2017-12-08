@@ -1,43 +1,49 @@
 #pragma once
 #include "Object.h"
-#include "Mesh.h"
-#include "..\Light\Light.h"
-#include "Plugin.h"
 #include <map>
 #include <vector>
 #include <string>
-#include "Camera.h"
 #include "Skybox.h"
 using namespace std;
 using namespace Utils;
 namespace SRE {
-	class Plugin;
+	struct Fog {
+
+		Vector3D color;
+		float near;
+		float far;
+		Fog() :color(Vector3D(1.0, 1.0, 1.0)),
+			near(1.0),
+			far(1000.0)
+		{
+
+		}
+	};
+
 	class Scene {
 	public:
 		typedef shared_ptr<Scene> ptr;
+		Scene();
 	public:
 		void setSceneRoot(Object::ptr root) { _root = root; }
 		Object::ptr const getSceneRoot()const { return _root; }		
-		void setSkybox(Skybox* skybox) {}
-		Skybox* getSkybox() { return skybox; }
+		void setSkybox(Skybox::ptr skybox) { _skybox = skybox; }
+		Skybox::ptr getSkybox() { return _skybox; } 
 		void setUseShadowMap(bool isUse) { _useShadowMap = isUse; }
 		bool getUseShadowMap()const { return _useShadowMap; }
-		void render(Camera* camera);
-		//void enableShadow() { _enable_shadow = true; }
-		//bool hasShadow()const { return _enable_shadow; }
+		bool getUseFog()const { return _useFog; }
+		void setUseFog(bool isUse) { _useFog = isUse; }
+		Fog getFog()const { return _fog; }
+		void setFog(Fog fog) { _fog = fog; }
 	protected:
-		void projectObject(Object* object);
-		//void setMaterial();
+	
 		void update();
-		void setupLights(Shader* shader);
-		void clearTemp();
+	
 	protected:		
-		Skybox* skybox;
-		Object::ptr _root;
-		std::vector<Mesh*> _render_mesh;
-		std::vector<Light*> _lights;
-		std::vector<Plugin*> _plugins;	
-		bool _useShadowMap;
+		Skybox::ptr _skybox;
+		Object::ptr _root;	
+		bool _useShadowMap, _useFog;
+		Fog _fog;
 	};
 }
 

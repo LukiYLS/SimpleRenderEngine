@@ -16,11 +16,7 @@ namespace SRE {
 		Camera(const Vector3D& pos) :Object(pos) {}
 		Camera(const Vector3D& pos, const Quaternion& quat) :Object(pos, quat) {}
 	public:		
-
-		Vector3D getDirection(void) const { return _orientation * Vector3D(0, 0, 1); }
-		Vector3D getUp(void) const { return _orientation * Vector3D(0, 1, 0); }
-		Vector3D getRight(void) const { return _orientation * Vector3D(1, 0, 0); }
-		Vector3D zAxis() { return _orientation.zAxis(); }
+	
 		void lookAt(const Vector3D& target);
 		void lookAt(float x, float y, float z) { lookAt(Vector3D(x, y, z)); }
 		void lookAt(const Vector3D& position, const Vector3D target, const Vector3D& up);

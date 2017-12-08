@@ -3,7 +3,7 @@
 #include "../Core/ShaderManager.h"
 #include "../Core/PerspectiveCamera.h"
 #include "../Core/Mesh.h"
-#include "../Core/Light.h"
+#include "../Light/Light.h"
 #include "../Core/Scene.h"
 #include "../Utils/CamerControl.h"
 #include "../Utils/Event.h"
