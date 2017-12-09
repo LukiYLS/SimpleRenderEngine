@@ -813,5 +813,5 @@ IncidentLight directLight;
 #if defined( DITHERING )
   gl_FragColor.rgb = dithering( gl_FragColor.rgb );
 #endif
-	gl_FragColor = texelColor;
+	//gl_FragColor = texelColor;
 }

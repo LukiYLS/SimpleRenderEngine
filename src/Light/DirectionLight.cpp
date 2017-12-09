@@ -10,11 +10,11 @@ namespace SRE {
 		std::string number;
 		ss << _number;
 		ss >> number;
-		std::string uniform_name_pre = "directionLights[].";
+		std::string uniform_name_pre = "directionalLights[].";
 		if (_number < 10)
-			uniform_name_pre.insert(16, number, 0, 1);
+			uniform_name_pre.insert(18, number, 0, 1);
 		else
-			uniform_name_pre.insert(16, number, 0, 2);
+			uniform_name_pre.insert(18, number, 0, 2);
 
 		shader->use();
 
@@ -36,6 +36,6 @@ namespace SRE {
 		std::string shadowMapSize = uniform_name_pre + "shadowMapSize";
 		shader->setVec2(shadowMapSize.c_str(), _uniform.shadowMapSize);
 
-		shader->unUse();
+		//shader->unUse();
 	}
 }

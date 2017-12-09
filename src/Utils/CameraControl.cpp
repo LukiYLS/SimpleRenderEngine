@@ -57,7 +57,7 @@ namespace Utils
 					{
 						int dx = mouse_work.xpos - _last_x_pos;
 						int dy = mouse_work.ypos - _last_y_pos;
-						_camera->rotateOnAxisFixedPosition(Vector3D(1.0,0.0,0.0),-dy*0.001);
+						_camera->rotateOnAxisFixedPosition(Vector3D(1.0,0.0,0.0),dy*0.001);
 						_camera->rotateOnAxisFixedPosition(Vector3D(0.0,1.0,0.0),-dx*0.001);
 						//_camera->yaw(-dy*0.001);
 						//_camera->pitch(dx*0.001);

@@ -4,7 +4,7 @@
 
 namespace SRE {
 	PointLight::PointLight():
-		_distance(0.0),
+		_distance(500.0),
 		_decay(1.0)
 	{
 
@@ -48,6 +48,6 @@ namespace SRE {
 		std::string shadowMapSize = uniform_name_pre + "shadowMapSize";
 		shader->setVec2(shadowMapSize.c_str(), _uniform.shadowMapSize);
 		
-		shader->unUse();
+		//shader->unUse();
 	}
 }

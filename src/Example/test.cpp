@@ -40,7 +40,7 @@ Scene::ptr createScene()
 	root->add(box);
 	root->add(sphere);
 
-	root->add(dlight);
+	//root->add(dlight);
 	root->add(plight);
 	scene->setSceneRoot(root);
 

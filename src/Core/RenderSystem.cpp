@@ -115,9 +115,14 @@ namespace SRE {
 				uniform_dir.color = color * intensity;
 				bool castShadow = directionLight->getCastShadow();
 				uniform_dir.shadow = castShadow;
-				if (castShadow)
+				if (_scene->getUseShadowMap()&&castShadow)
 				{
 
+				}
+				else {
+					uniform_dir.shadowBias = 0.0;
+					uniform_dir.shadowRadius = 1.0;
+					uniform_dir.shadowMapSize = Vector2D(512.0, 512.0);
 				}
 
 				directionLight->setNumber(numDirectionLight);
@@ -134,12 +139,17 @@ namespace SRE {
 				uniform_point.distance = pointLight->getDistance();
 				uniform_point.position = pointLight->getPosition();
 				uniform_point.color = color * intensity;
-				uniform_point.decay = (uniform_point.distance == 0.0) ? 0.0 : pointLight->getDecay();
+				uniform_point.decay = pointLight->getDecay();
 				bool castShadow = pointLight->getCastShadow();
 				uniform_point.shadow = castShadow;
-				if (castShadow)
+				if (_scene->getUseShadowMap() && castShadow)
 				{
 
+				}
+				else {
+					uniform_point.shadowBias = 0.0;
+					uniform_point.shadowRadius = 1.0;
+					uniform_point.shadowMapSize = Vector2D(512.0, 512.0);
 				}
 				pointLight->setNumber(numPointLight);
 				pointLight->setUniform(uniform_point);
