@@ -18,6 +18,7 @@ namespace SRE {
 	class PointLight : public Light {
 
 	public:
+		PointLight();
 		typedef std::shared_ptr<PointLight> ptr;
 		virtual PointLight* asPointLight() { return this; }
 		virtual LightType getType()const { return PointLightType; }

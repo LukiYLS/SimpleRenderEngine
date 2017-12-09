@@ -29,8 +29,7 @@ namespace SRE {
 		virtual LightType getType()const { return DirectionLightType; }
 
 	protected:
-		Vector3D _direction;
-		float _distance;
+		Vector3D _direction;		
 		OrthographicCamera::ptr _shadow_camera;
 		DirectionalLightUniform _uniform;
 	};

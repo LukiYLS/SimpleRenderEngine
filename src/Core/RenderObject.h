@@ -114,7 +114,7 @@ namespace SRE {
 	public:
 		typedef std::shared_ptr<RenderObject> ptr;
 	public:
-		RenderObject() {}
+		RenderObject();
 		virtual ~RenderObject() {}
 	public:	
 

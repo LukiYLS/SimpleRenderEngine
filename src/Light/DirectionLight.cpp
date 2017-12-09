@@ -12,9 +12,9 @@ namespace SRE {
 		ss >> number;
 		std::string uniform_name_pre = "directionLights[].";
 		if (_number < 10)
-			uniform_name_pre.insert(17, number, 0, 1);
+			uniform_name_pre.insert(16, number, 0, 1);
 		else
-			uniform_name_pre.insert(17, number, 0, 2);
+			uniform_name_pre.insert(16, number, 0, 2);
 
 		shader->use();
 

@@ -18,6 +18,7 @@ namespace SRE {
 	{
 		_scene = (Scene::ptr)scene;
 		_camera = (Camera::ptr)camera;
+		_isProjected = false;
 		//注册鼠标键盘事件，放在哪里？
 		CameraControl::ptr cc = make_shared<CameraControl>(camera);
 		EventManager::Inst()->registerReceiver("mouse.event", cc);
@@ -31,8 +32,7 @@ namespace SRE {
 		afterRender();
 	}
 	void RenderSystem::beforeRender()
-	{
-		_current_texture_unit_count = 0;
+	{		
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
@@ -51,7 +51,11 @@ namespace SRE {
 		_frustum.setFromMatrix(_camera->getProjectionMatrix()*_camera->getViewMatrix());
 
 		//Sort each object
-		projectObject(root);
+		if (!_isProjected)
+		{
+			projectObject(root);
+			_isProjected = true;
+		}
 
 		if (_scene->getUseShadowMap())
 		{
@@ -60,7 +64,7 @@ namespace SRE {
 		//use lights
 		setupLights(_lights);
 
-		//sort();
+		////sort();
 
 		//start render
 		Skybox::ptr skybox = _scene->getSkybox();
@@ -428,27 +432,36 @@ namespace SRE {
 		//if (object->visible = false)return;
 		if (object->asMesh())
 		{
-			Mesh* mesh = object->asMesh();
+			Mesh::ptr mesh = (Mesh::ptr)object->asMesh();
 			//if (_frustum.intersectsSphere(*mesh->getBoundSphere().get()))
 			{
 				Material::ptr material = mesh->getMaterial();
 				if (material->getTransparent())
 				{
-					_transparentMeshs.push_back((Mesh::ptr)mesh);
+					if (std::find(_transparentMeshs.begin(), _transparentMeshs.end(), mesh) == _transparentMeshs.end())
+						_transparentMeshs.push_back(mesh);
 				}
 				else
 				{
-					_opaqueMehss.push_back((Mesh::ptr)mesh);
+					if (std::find(_opaqueMehss.begin(), _opaqueMehss.end(), mesh) == _opaqueMehss.end())
+						_opaqueMehss.push_back(mesh);
 				}
-			}				
+
+			}	
+			int a = mesh.use_count();
 
 		}
 		else if (object->asLight())
 		{
-			Light* light = object->asLight();
-			_lights.push_back((Light::ptr)light);
+			Light::ptr light = (Light::ptr)object->asLight();
+			if (std::find(_lights.begin(), _lights.end(), light) == _lights.end())
+				_lights.push_back((Light::ptr)light);
 			if (light->getCastShadow())
-				_shadow_lights.push_back((Light::ptr)light);
+			{
+				if (std::find(_shadow_lights.begin(), _shadow_lights.end(), light) == _shadow_lights.end())
+					_shadow_lights.push_back((Light::ptr)light);
+			}
+				
 
 		}		
 		else if (true/*object->asSprite()*/)

@@ -3,6 +3,10 @@
 #include <glm\gtc\matrix_transform.hpp>
 namespace SRE {
 
+	RenderObject::RenderObject()
+	{
+		glGenVertexArrays(1, &_vao);
+	}
 	//void RenderObject::createBuffer()
 	//{
 	//	glGenVertexArrays(1, &_vao);
@@ -74,7 +78,7 @@ namespace SRE {
 		if (!_vertex_data)
 			return;
 
-		glGenVertexArrays(1, &_vao);
+		
 		glBindVertexArray(_vao);
 		VertexElementList elements = _vertex_data->getVertexDeclaration()->getElements();
 		for (VertexElementList::iterator iter = elements.begin(); iter != elements.end(); iter++)

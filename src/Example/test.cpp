@@ -13,7 +13,7 @@ Scene::ptr createScene()
 	TextureUnitState::ptr us1 = std::make_shared<TextureUnitState>();
 	us1->setTexture(texture1);
 	TextureUnitState::ptr us2 = std::make_shared<TextureUnitState>();
-	us2->setTexture(texture2);
+	us2->setTexture(texture1);
 
 	Mesh* box = GeometryFactory::MakeBox(5.0, 5.0, 5.0);
 	//Mesh* mesh_box = dynamic_cast<Mesh*>(box.get());
@@ -22,7 +22,7 @@ Scene::ptr createScene()
 	mesh_mat1->setMap(us1);
 	box->setMaterial(mesh_mat1);
 
-	Mesh* sphere = GeometryFactory::MakeSphere(5.0, 32, 32);
+	Mesh* sphere = GeometryFactory::MakeSphere(20.0, 32, 32);
 	//Mesh* mesh_sphere = dynamic_cast<Mesh*>(sphere.get());
 	Material::ptr mesh_mat2 = std::make_shared<Material>();
 	mesh_mat2->setMap(us2);
@@ -31,9 +31,17 @@ Scene::ptr createScene()
 	
 	Object::ptr root = std::make_shared<Object>();
 
-	//root->add(box);
+	Light* dlight = new DirectionLight();
+	dlight->setPosition(Vector3D(1.0, 1.0, 0.0));
+
+	Light* plight = new PointLight();
+	plight->setPosition(Vector3D(-50.0, 50.0, -50.0));
+
+	root->add(box);
 	root->add(sphere);
 
+	root->add(dlight);
+	root->add(plight);
 	scene->setSceneRoot(root);
 
 	return scene;
@@ -42,7 +50,7 @@ void main()
 {
 	Win::getSingleton()->create();	
 	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1, 100.0);
-	camera->setPosition(Vector3D(0.0f, 0.0f, 50.0));
+	camera->setPosition(Vector3D(0.0f, 0.0f, -50.0));
 	camera->lookAt(0.0, 0.0, 0.0);
 
 	Scene::ptr scene = createScene();

@@ -32,9 +32,9 @@ namespace SRE {
 			-halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 0.f, 1.f,
 			-halfW, halfH, -halfD, 0.f, 0.f, -1.f, 0.f, 0.f,
 			halfW, halfH, -halfD, 0.f, 0.f, -1.f, 1.f, 0.f,
-			-halfW, -halfH, halfD, -1.f, 0.f, 0.f, 1.f, 1.f,
+			halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 1.f, 1.f,
 
-			-halfW, -halfH, -halfD, 0.f, 0.f, -1.f, 1.f, 1.f,
+			-halfW, -halfH, halfD, -1.f, 0.f, 0.f, 0.f, 1.f,
 			-halfW, halfH, halfD, -1.f, 0.f, 0.f, 0.f, 0.f,
 			-halfW, halfH, -halfD, -1.f, 0.f, 0.f, 1.f, 0.f,
 			-halfW, -halfH, -halfD, -1.f, 0.f, 0.f, 1.f, 1.f,
@@ -127,7 +127,7 @@ namespace SRE {
 		unsigned int index_count = 6 * numRings * (numSegments + 1);
 		IndexData* indexdata = new IndexData;
 		indexdata->setIndexStart(0);
-		indexdata->setIndexCount(36);
+		indexdata->setIndexCount(index_count);
 		HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, index_count, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
 		indexdata->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
 		unsigned short* pIndices = static_cast<unsigned short*>(index_buffer->lock(HardwareBuffer::HBL_DISCARD));

@@ -13,6 +13,8 @@
 #include "../Core/BillboardCollection.h"
 #include "../Core/TerrianTile.h"
 #include "../Core/ParticleSystem.h"
+#include "../Light/DirectionLight.h"
+#include "../Light/PointLight.h"
 #include <vector>
 #include <iostream>
 #include <string>

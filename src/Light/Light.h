@@ -17,7 +17,9 @@ namespace SRE {
 			HemisphereLightType,
 			NoneType
 		};		
-		Light() = default;
+		Light() :_color(Vector3D(1.0, 1.0, 1.0)), _intensity(1.0), _castShadow(true) {
+
+		}
 		virtual ~Light() = default;
 
 	public:

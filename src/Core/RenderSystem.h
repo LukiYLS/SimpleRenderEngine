@@ -31,6 +31,7 @@ namespace SRE {
 		Frustum _frustum;
 		unsigned int _current_texture_unit_count;
 		std::string _light_num_define;
+		bool _isProjected;
 	};
 }
 

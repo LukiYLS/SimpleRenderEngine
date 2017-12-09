@@ -10,7 +10,8 @@ namespace SRE {
 		_skybox(NULL),
 		_root(NULL),
 		_useShadowMap(false),
-		_useFog(false)
+		_useFog(false),
+		_neadUpdate(false)
 	{
 
 	}

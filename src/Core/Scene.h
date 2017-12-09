@@ -35,6 +35,7 @@ namespace SRE {
 		void setUseFog(bool isUse) { _useFog = isUse; }
 		Fog getFog()const { return _fog; }
 		void setFog(Fog fog) { _fog = fog; }
+		bool neadUpdate()const { return _neadUpdate; }
 	protected:
 	
 		void update();
@@ -42,7 +43,7 @@ namespace SRE {
 	protected:		
 		Skybox::ptr _skybox;
 		Object::ptr _root;	
-		bool _useShadowMap, _useFog;
+		bool _useShadowMap, _useFog, _neadUpdate;
 		Fog _fog;
 	};
 }

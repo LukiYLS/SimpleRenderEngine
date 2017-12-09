@@ -3,7 +3,12 @@
 
 
 namespace SRE {
+	PointLight::PointLight():
+		_distance(0.0),
+		_decay(1.0)
+	{
 
+	}
 	void PointLight::upload(Shader* shader)
 	{
 		std::stringstream ss;
