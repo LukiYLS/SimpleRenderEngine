@@ -24,7 +24,9 @@ namespace SRE {
 		EventManager::Inst()->registerReceiver("mouse.event", cc);
 		EventManager::Inst()->registerReceiver("keyboard.event", cc);
 	}
-	
+	/*
+
+	*/
 	void RenderSystem::render()
 	{		
 		beforeRender();
@@ -37,6 +39,9 @@ namespace SRE {
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
 	}
+	/*
+	true render
+	*/
 	void RenderSystem::renderImpl()
 	{
 		if (_camera == NULL)
@@ -59,7 +64,7 @@ namespace SRE {
 
 		if (_scene->getUseShadowMap())
 		{
-
+			shadowMapRender(_lights, _shadowMeshs);
 		}
 		//use lights
 		setupLights(_lights);
@@ -82,7 +87,9 @@ namespace SRE {
 		if (_transparentMeshs.size()>0) renderMeshs(_transparentMeshs);
 		//_scene->render(_camera.get());
 	}
-
+	/*
+	uniform need?
+	*/
 	void RenderSystem::setupLights(std::vector<Light::ptr> lights)
 	{
 		unsigned int numDirectionLight = 0;
@@ -115,15 +122,12 @@ namespace SRE {
 				uniform_dir.color = color * intensity;
 				bool castShadow = directionLight->getCastShadow();
 				uniform_dir.shadow = castShadow;
-				if (_scene->getUseShadowMap()&&castShadow)
-				{
+				//no nead
+				uniform_dir.shadowBias = light->getShadowBias();
+				uniform_dir.shadowRadius = light->getShadowRadius();
+				uniform_dir.shadowMapSize = light->getShadowMapSize();
 
-				}
-				else {
-					uniform_dir.shadowBias = 0.0;
-					uniform_dir.shadowRadius = 1.0;
-					uniform_dir.shadowMapSize = Vector2D(512.0, 512.0);
-				}
+				
 
 				directionLight->setNumber(numDirectionLight);
 				directionLight->setUniform(uniform_dir);
@@ -142,15 +146,11 @@ namespace SRE {
 				uniform_point.decay = pointLight->getDecay();
 				bool castShadow = pointLight->getCastShadow();
 				uniform_point.shadow = castShadow;
-				if (_scene->getUseShadowMap() && castShadow)
-				{
 
-				}
-				else {
-					uniform_point.shadowBias = 0.0;
-					uniform_point.shadowRadius = 1.0;
-					uniform_point.shadowMapSize = Vector2D(512.0, 512.0);
-				}
+				uniform_point.shadowBias = light->getShadowBias();
+				uniform_point.shadowRadius = light->getShadowRadius();
+				uniform_point.shadowMapSize = light->getShadowMapSize();
+
 				pointLight->setNumber(numPointLight);
 				pointLight->setUniform(uniform_point);
 				numPointLight++;
@@ -169,10 +169,11 @@ namespace SRE {
 				uniform_spot.penumbraCos = cos(spotLight->getAngle() * (1 - spotLight->getPenumbra()));
 				bool castShadow = spotLight->getCastShadow();
 				uniform_spot.shadow = castShadow;
-				if (castShadow)
-				{
+				
+				uniform_spot.shadowBias = light->getShadowBias();
+				uniform_spot.shadowRadius = light->getShadowRadius();
+				uniform_spot.shadowMapSize = light->getShadowMapSize();
 
-				}
 				spotLight->setNumber(numSpotLight);
 				spotLight->setUniform(uniform_spot);
 				numSpotLight++;
@@ -188,7 +189,9 @@ namespace SRE {
 			spot_define + StringHelp::Int2String(numSpotLight) + "\n";
 
 	}
-
+	/*
+	what's the problem,how to advance
+	*/
 	void RenderSystem::renderMeshs(std::vector<Mesh::ptr> meshs)
 	{
 		for (auto mesh : meshs)
@@ -201,11 +204,27 @@ namespace SRE {
 		
 		}
 	}
+	/*
+	it's too... long, build shader and set material property,and upload 
+	it must fit in all differect material, so how?
+	*/
 	void RenderSystem::setProgram(Mesh::ptr mesh)
 	{		
 		Material::ptr material = mesh->getMaterial();
 		Material::MaterialType type = material->getMaterialType();
 		Shader* shader = material->getShader();
+		if (type == Material::ShaderMaterial) {
+			//only set uniform
+			if(shader==NULL)
+				return;
+			shader->use();
+			shader->setMat4("modelMatrix", mesh->getWorldMatrix());
+			shader->setMat4("viewMatrix", _camera->getViewMatrix());
+			shader->setMat4("projectionMatrix", _camera->getProjectionMatrix());
+			//set uniform
+			return;
+		}
+		
 		if (shader == NULL)//first frame
 		{
 			//Shader *shader_mat = new Shader;
@@ -408,13 +427,21 @@ namespace SRE {
 		}
 		if (_scene->getUseShadowMap() && mesh->getReceiveShadow())
 		{
-
+			
 		}
 		//light upload...
 		for (auto light : _lights)
-			light->upload(shader);	
+		{
+			light->upload(shader);
+			if (_scene->getUseShadowMap() && mesh->getReceiveShadow())
+				light->uploadShadow(shader, _current_texture_unit_count);
+		}
+			
 		
 	}
+	/*
+	something problem,
+	*/
 	void RenderSystem::setTexture(TextureUnitState::ptr texture)
 	{
 		UVWAddressingMode mode = texture->getTextureAddressingMode();
@@ -436,7 +463,10 @@ namespace SRE {
 		texture->getTexture()->bindTextureUnit(_current_texture_unit_count);
 		//glBindTexture(target, 0);
 	}
-
+	/*
+	sort object,how to avoid execute every frame?
+	from root object to child node ,tranvse node according different pt
+	*/
 	void RenderSystem::projectObject(Object::ptr object)
 	{
 		//if (object->visible = false)return;
@@ -456,6 +486,10 @@ namespace SRE {
 					if (std::find(_opaqueMehss.begin(), _opaqueMehss.end(), mesh) == _opaqueMehss.end())
 						_opaqueMehss.push_back(mesh);
 				}
+
+				if (mesh->getReceiveShadow())
+					_shadowMeshs.push_back(mesh);
+
 
 			}	
 			int a = mesh.use_count();
@@ -499,6 +533,116 @@ namespace SRE {
 			projectObject(child);
 		}	
 	}
+	/*
+	what fuck! why place here,should i create a shadow map plugin
+	*/
+	void RenderSystem::shadowMapRender(std::vector<Light::ptr> lights, std::vector<Mesh::ptr> meshs)
+	{
+		//
+		if (lights.empty())
+			return;
+
+		//use for point light ,shit!!!
+		Vector3D cubeDirections[6] = { Vector3D(1, 0, 0),Vector3D(-1, 0, 0),Vector3D(0, 0, 1),
+			Vector3D(0, 0, -1),Vector3D(0, 1, 0),Vector3D(0, -1, 0) };
+
+		Vector3D cubeUps[6] = {
+			Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0),
+			Vector3D(0, 1, 0), Vector3D(0, 0, 1), Vector3D(0, 0, -1)
+		};
+
+		Vector4D cube2DViewPorts[6] = {
+			Vector4D(), Vector4D(), Vector4D(),
+			Vector4D(), Vector4D(), Vector4D()
+		};
+
+		// get shader,
+
+		Shader::ptr shader = std::make_shared<Shader>("../../../src/Data/shader/shadowmapdepth.vs", "../../../src/Data/shader/shadowmapdepth.fs");
+
+		Matrix4D shadowMatrix;
+
+		for (auto light : lights)
+		{
+			Light::LightType type = light->getType();
+			unsigned int faceCount = 1;
+			Camera* shadowCamera = light->getShadowCamera();
+			Vector2D mapSize = light->getShadowMapSize();
+
+			if (type == Light::PointLightType)
+			{				
+
+				float vpWidth = mapSize.x;
+				float vpHeight = mapSize.y;
+				// positive X
+				cube2DViewPorts[0] = Vector4D(vpWidth * 2, vpHeight, vpWidth, vpHeight);
+				// negative X
+				cube2DViewPorts[1] = Vector4D(0, vpHeight, vpWidth, vpHeight);
+				// positive Z
+				cube2DViewPorts[2] = Vector4D(vpWidth * 3, vpHeight, vpWidth, vpHeight);
+				// negative Z
+				cube2DViewPorts[3] = Vector4D(vpWidth, vpHeight, vpWidth, vpHeight);
+				// positive Y
+				cube2DViewPorts[4] = Vector4D(vpWidth * 3, 0, vpWidth, vpHeight);
+				// negative Y
+				cube2DViewPorts[5] = Vector4D(vpWidth, 0, vpWidth, vpHeight);
+
+				mapSize.x *= 4.0;
+				mapSize.y *= 2.0;
+
+				faceCount = 6;
+
+				Vector3D position = light->getPosition();
+				//why no projection matrix,because point light shadow is 360 degree,
+				shadowMatrix = Matrix4D::makeTranslation(Vector3D(-position.x, -position.y, -position.z));
+			}
+			else{
+
+				/*tips: how to avoid shadow acne(because of resolution,one depth pixel correspoinding a region,so it show up
+				some fragmen greater than depth, and some fragment less than depth,so we can see stagger(½»´í) shadow),the method
+				is rise depth (add a bias value 0.0005)
+
+				*/
+				faceCount = 1;
+
+				Matrix4D view = shadowCamera->getViewMatrix();
+
+				Matrix4D projection = shadowCamera->getProjectionMatrix();
+
+				shadowMatrix = projection * view;
+
+			}
+			//create fbo
+			FrameBuffer::ptr fbo = std::make_shared<FrameBuffer>();
+			fbo->createFrameBufferWithTexture(mapSize.x, mapSize.y);
+			//save shadow infomation(matrix ,fbo)
+			Light::ShadowInfo shadowInfo;
+			shadowInfo.shadowMatrix = shadowMatrix;
+			shadowInfo.depthFBO = fbo;
+			light->setShadowInfo(shadowInfo);
+
+			type == Light::PointLightType ? fbo->bingForWriting(false) : fbo->bingForWriting();
+
+			for (int i = 0; i < faceCount; i++)
+			{
+				if (type == Light::PointLightType)
+				{
+					shadowCamera->lookAt(shadowCamera->getPosition(), shadowCamera->getPosition() + cubeDirections[i], cubeUps[i]);					
+					RenderState::setViewPort(cube2DViewPorts[i].x, cube2DViewPorts[i].y, cube2DViewPorts[i].z, cube2DViewPorts[i].w);
+				}
+
+				for (auto mesh : meshs)
+				{
+					shader->use();
+					shader->setMat4("viewMatrix", shadowCamera->getViewMatrix());
+					shader->setMat4("projectionMatrix", shadowCamera->getProjectionMatrix());
+					mesh->drawPrimitive();
+				}				
+
+			}
+		}
+		
+	}
 	void RenderSystem::resize(int x, int y, int width, int height)
 	{
 		ViewPort::ptr vp = _camera->getViewPort();
@@ -506,6 +650,7 @@ namespace SRE {
 	}
 	void RenderSystem::afterRender()
 	{
+		//reset ...
 		//_render_mesh.clear();
 		//_lights.clear();
 

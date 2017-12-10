@@ -26,6 +26,7 @@ namespace SRE {
 		void setBlendingFunc();
 		void init();	
 
+		static void setViewPort(int x, int y, int width, int height);
 		static void setMaterial(Material::ptr material);
 		static void reset();
 		static void setBlending();

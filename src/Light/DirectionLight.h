@@ -26,6 +26,7 @@ namespace SRE {
 
 		virtual DirectionLight* asDirectionLight() { return this; }
 		virtual void upload(Shader* shader);
+		virtual void uploadShadow(Shader* shader, unsigned int& currectTextureUnit);
 		virtual LightType getType()const { return DirectionLightType; }
 
 	protected:

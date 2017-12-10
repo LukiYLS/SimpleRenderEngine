@@ -50,4 +50,31 @@ namespace SRE {
 		
 		//shader->unUse();
 	}
+	void PointLight::uploadShadow(Shader* shader, unsigned int& currectTextureUnit)
+	{
+		std::stringstream ss;
+		std::string number;
+		ss << _number;
+		ss >> number;
+		std::string uniform_name_matrix = "pointShadowMatrix[].";
+		if (_number < 10)
+			uniform_name_matrix.insert(19, number, 0, 1);
+		else
+			uniform_name_matrix.insert(19, number, 0, 2);
+
+		shader->use();
+
+		Matrix4D shadowMatrix = _shadowInfo.shadowMatrix;
+		shader->setMat4(uniform_name_matrix.c_str(), shadowMatrix);
+
+		std::string uniform_name_map = "pointShadowMap[].";
+		if (_number < 10)
+			uniform_name_map.insert(16, number, 0, 1);
+		else
+			uniform_name_map.insert(16, number, 0, 2);
+		shader->setInt(uniform_name_map.c_str(), currectTextureUnit);
+		FrameBuffer::ptr fbo = _shadowInfo.depthFBO;
+		fbo->bindForReading(currectTextureUnit);
+		++currectTextureUnit;
+	}
 }

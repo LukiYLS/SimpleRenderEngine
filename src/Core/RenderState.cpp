@@ -7,6 +7,11 @@ namespace SRE {
 	{
 
 	}
+
+	void RenderState::setViewPort(int x, int y, int width, int height)
+	{
+		glViewport(x, y, width, height);
+	}
 	void RenderState::setMaterial(Material::ptr material)
 	{
 		CullFaceMode cfm = material->getCullFaceMode();

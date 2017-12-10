@@ -5,17 +5,22 @@
 namespace SRE {
 
 	class RenderSystem;
-	class ShadowMap {
+	class LightShadowMap {
+
+
+	public:
+
 
 		enum ShadowMapType {
 			PCFShadowMap,
 			PCFSoftShadowMap
 		};
 
+		typedef std::shared_ptr<ShadowMapType> ptr;
+
 	public:
 
-
-		void render(std::vector<Light::ptr> lights,std::vector<Mesh::ptr> objects, RenderSystem* rs);
+		void render(std::vector<Light::ptr> lights,std::vector<Mesh::ptr> objects);
 
 	};
 }

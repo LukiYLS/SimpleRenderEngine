@@ -13,6 +13,7 @@ namespace SRE {
 	class BillboardCollection;
 	class ParticleSystem;
 	class RayCaster;
+	class TerrianTile;
 	class Object {
 	public:
 		typedef std::shared_ptr<Object> ptr;
@@ -38,6 +39,9 @@ namespace SRE {
 
 		virtual ParticleSystem* asParticleSystem() { return NULL; }
 		virtual const ParticleSystem* asParticleSystem() const { return NULL; }
+
+		virtual TerrianTile* asTerrianTile() { return NULL; }
+		virtual const TerrianTile* asTerrianTile() const { return NULL; }
 
 		virtual Object* asObject() { return this; }
 		virtual const Object* asObject() const { return this; }

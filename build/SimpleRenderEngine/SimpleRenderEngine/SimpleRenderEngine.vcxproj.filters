@@ -243,9 +243,6 @@
     <ClInclude Include="..\..\..\src\Utils\UtilsHelp.h">
       <Filter>Utils</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Light\LightShadowMap.h">
-      <Filter>Light</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Example\CommonHead.h">
       <Filter>Examples</Filter>
     </ClInclude>

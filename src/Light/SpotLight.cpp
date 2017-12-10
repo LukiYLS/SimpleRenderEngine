@@ -49,6 +49,6 @@ namespace SRE {
 		std::string shadowMapSize = uniform_name_pre + "shadowMapSize";
 		shader->setVec2(shadowMapSize.c_str(), _uniform.shadowMapSize);
 
-		shader->unUse();
+		
 	}
 }

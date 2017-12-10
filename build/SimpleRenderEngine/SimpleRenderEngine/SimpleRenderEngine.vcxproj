@@ -68,7 +68,6 @@
     <ClInclude Include="..\..\..\src\Light\DirectionLight.h" />
     <ClInclude Include="..\..\..\src\Light\HemisphereLight.h" />
     <ClInclude Include="..\..\..\src\Light\Light.h" />
-    <ClInclude Include="..\..\..\src\Light\LightShadowMap.h" />
     <ClInclude Include="..\..\..\src\Light\PointLight.h" />
     <ClInclude Include="..\..\..\src\Light\SpotLight.h" />
     <ClInclude Include="..\..\..\src\Material\Material.h" />
