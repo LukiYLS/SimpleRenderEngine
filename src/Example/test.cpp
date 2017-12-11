@@ -2,55 +2,135 @@
 
 #include "CommonHead.h"
 
+Mesh* createFloor() {
 
+
+	Mesh* mesh = new Mesh;
+
+
+	VertexData* vertexdata = new VertexData;
+	vertexdata->setVertexStart(0);
+	vertexdata->setVertexCount(4);
+	VertexDeclaration::ptr vd = vertexdata->getVertexDeclaration();
+	VertexBufferBinding::ptr bind = vertexdata->getVertexBufferBinding();
+	size_t offset = 0;
+	VertexElement::ptr tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_POSITION);
+	offset += tmp_ve->getTypeSize(VET_FLOAT3);
+
+	tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_NORMAL);
+	offset += tmp_ve->getTypeSize(VET_FLOAT3);
+
+	tmp_ve = vd->addElement(0, offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
+	offset += tmp_ve->getTypeSize(VET_FLOAT2);
+
+	char* data = (char*)malloc(sizeof(char)*vd->getVertexSize(0)*4);
+
+	float vertices[32] = {
+		-50.0, 0.0, 50.0, 0.0, 1.0, 0.0, 0.0, 0.0,
+		50.0, 0.0, 50.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+		-50.0, 0.0, -50.0, 0.0, 1.0, 0.0, 1.0, 0.0,
+		50.0, 0.0, -50.0, 0.0, 1.0, 0.0, 1.0, 1.0
+	};
+
+	HardwareVertexBuffer* buffer = new HardwareVertexBuffer(offset, 4, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+	bind->setBinding(0, (HardwareVertexBuffer::ptr)buffer);
+	buffer->writeData(0, buffer->getSizeInBytes(), vertices);
+
+	IndexData* indexdata = new IndexData;
+	indexdata->setIndexStart(0);
+	indexdata->setIndexCount(6);
+	HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, 6, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+	indexdata->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
+
+	unsigned short faces[36] = {
+		
+		0,1,2,
+		2,1,3,
+	};
+
+	index_buffer->writeData(0, index_buffer->getSizeInBytes(), faces);
+	
+	mesh->setVertexData((VertexData::ptr)vertexdata);
+	mesh->setIndexData((IndexData::ptr)indexdata);
+
+	return mesh;
+
+}
 Scene::ptr createScene()
 {
 	Scene::ptr scene = std::make_shared<Scene>();
 
-	Texture::ptr texture1 = TextureManager::Inst()->loadTexture("earth", "../../../src/Data/texture/earthmap.jpg");
-	Texture::ptr texture2 = TextureManager::Inst()->loadTexture("cloud", "../../../src/Data/texture/cloudsmap.jpg");
+	Texture::ptr earthTex = TextureManager::Inst()->loadTexture("earth", "../../../src/Data/texture/earthmap.jpg");
+	Texture::ptr boxTex = TextureManager::Inst()->loadTexture("cloud", "../../../src/Data/texture/box.jpg");
+	Texture::ptr floorTex = TextureManager::Inst()->loadTexture("earth", "../../../src/Data/texture/floor.jpg");
 
-	TextureUnitState::ptr us1 = std::make_shared<TextureUnitState>();
-	us1->setTexture(texture1);
-	TextureUnitState::ptr us2 = std::make_shared<TextureUnitState>();
-	us2->setTexture(texture1);
+	TextureUnitState::ptr earthUnit = std::make_shared<TextureUnitState>();
+	earthUnit->setTexture(earthTex);
+	TextureUnitState::ptr boxUnit = std::make_shared<TextureUnitState>();
+	boxUnit->setTexture(boxTex);
+	TextureUnitState::ptr floorUnit = std::make_shared<TextureUnitState>();
+	floorUnit->setTexture(floorTex);
 
-	Mesh* box = GeometryFactory::MakeBox(5.0, 5.0, 5.0);
-	//Mesh* mesh_box = dynamic_cast<Mesh*>(box.get());
-	Material::ptr mesh_mat1 = std::make_shared<Material>();
-	mesh_mat1->setMaterialType(Material::PhongMaterial);
-	mesh_mat1->setMap(us1);
-	box->setMaterial(mesh_mat1);
+	Material::ptr floorMat = std::make_shared<Material>();
+	floorMat->setMaterialType(Material::PhongMaterial);
+	floorMat->setMap(floorUnit);
 
-	Mesh* sphere = GeometryFactory::MakeSphere(20.0, 32, 32);
-	//Mesh* mesh_sphere = dynamic_cast<Mesh*>(sphere.get());
-	Material::ptr mesh_mat2 = std::make_shared<Material>();
-	mesh_mat2->setMap(us2);
-	mesh_mat2->setMaterialType(Material::PhongMaterial);
-	sphere->setMaterial(mesh_mat2);
+	Mesh* floor = createFloor();
+	floor->setMaterial(floorMat);
+	
+	Material::ptr boxMat = std::make_shared<Material>();
+	boxMat->setMaterialType(Material::PhongMaterial);
+	boxMat->setMap(boxUnit);
+
+	Mesh* box1 = GeometryFactory::MakeBox(20.0, 20.0, 20.0);
+	box1->setPosition(Vector3D(-25.0, 10.0, 25.0));	
+	box1->setMaterial(boxMat);
+
+	Mesh* box2 = GeometryFactory::MakeBox(10.0, 10.0, 10.0);
+	box2->setPosition(Vector3D(0.0, 5.0, -25.0));
+	box2->setMaterial(boxMat);
+
+	Mesh* box3 = GeometryFactory::MakeBox(10.0, 10.0, 10.0);
+	box3->setPosition(Vector3D(25.0, 5.0, 25.0));
+	box3->setMaterial(boxMat);
+
+	Mesh* sphere = GeometryFactory::MakeSphere(8.0, 32, 32);
+	sphere->setPosition(Vector3D(0.0, 8.0, 0.0));
+	
+	Material::ptr earthMat = std::make_shared<Material>();
+	earthMat->setMap(earthUnit);
+	earthMat->setMaterialType(Material::PhongMaterial);
+	sphere->setMaterial(earthMat);
 	
 	Object::ptr root = std::make_shared<Object>();
 
-	Light* dlight = new DirectionLight();
-	dlight->setPosition(Vector3D(1.0, 1.0, 0.0));
+	DirectionLight* dlight = new DirectionLight();
+	dlight->setPosition(Vector3D(0.0, 50.0, 50.0));
+	dlight->setShadowCamera(new OrthographicCamera(-40.0, 40.0, -30.0, 30.0, 0.1, 100.0));
 
-	Light* plight = new PointLight();
-	plight->setPosition(Vector3D(-50.0, 50.0, -50.0));
+	PointLight* plight = new PointLight();
+	plight->setPosition(Vector3D(0.0, 50.0, 0.0));
+	plight->setShadowCamera(new PerspectiveCamera(MathHelper::radian(90.0), 1.0, 0.5, 200.0));
 
-	root->add(box);
+	root->add(floor);
+	root->add(box1);
+	root->add(box2);
+	root->add(box3);
 	root->add(sphere);
 
-	//root->add(dlight);
-	root->add(plight);
+	root->add(dlight);
+	//root->add(plight);
+
 	scene->setSceneRoot(root);
+	scene->setUseShadowMap(true);
 
 	return scene;
 }
 void main()
 {
 	Win::getSingleton()->create();	
-	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(45.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1, 100.0);
-	camera->setPosition(Vector3D(0.0f, 0.0f, -50.0));
+	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(65.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1, 500.0);
+	camera->setPosition(Vector3D(0.0f, 50.0f, 50.0));
 	camera->lookAt(0.0, 0.0, 0.0);
 
 	Scene::ptr scene = createScene();

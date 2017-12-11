@@ -28,7 +28,7 @@ namespace SRE {
 		void roll(float angle) { rotateOnAxis(_orientation.zAxis(),angle); }
 
 		Matrix4D getViewMatrix()const;
-		virtual Matrix4D getProjectionMatrix() { return Matrix4D::makeIdentity(); }	
+		virtual Matrix4D getProjectionMatrix() const { return Matrix4D::makeIdentity(); }	
 		void setViewPort(ViewPort::ptr vp) { _view_port = vp; }
 		ViewPort::ptr getViewPort() { return _view_port; }
 

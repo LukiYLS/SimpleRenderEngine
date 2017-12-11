@@ -47,6 +47,12 @@ namespace SRE {
 
 		std::string shadowMapSize = uniform_name_pre + "shadowMapSize";
 		shader->setVec2(shadowMapSize.c_str(), _uniform.shadowMapSize);
+
+		std::string shadowCameraNear = uniform_name_pre + "shadowCameraNear";
+		shader->setFloat(shadowCameraNear.c_str(), _shadow_camera->getNear());
+
+		std::string shadowCameraFar = uniform_name_pre + "shadowCameraFar";
+		shader->setFloat(shadowCameraFar.c_str(), _shadow_camera->getFar());
 		
 		//shader->unUse();
 	}
@@ -64,7 +70,7 @@ namespace SRE {
 
 		shader->use();
 
-		Matrix4D shadowMatrix = _shadowInfo.shadowMatrix;
+		Matrix4D shadowMatrix = _shadowMatrix;
 		shader->setMat4(uniform_name_matrix.c_str(), shadowMatrix);
 
 		std::string uniform_name_map = "pointShadowMap[].";
@@ -73,8 +79,8 @@ namespace SRE {
 		else
 			uniform_name_map.insert(16, number, 0, 2);
 		shader->setInt(uniform_name_map.c_str(), currectTextureUnit);
-		FrameBuffer::ptr fbo = _shadowInfo.depthFBO;
-		fbo->bindForReading(currectTextureUnit);
+		if (_shadowFB != NULL)
+			_shadowFB->bindForReading(currectTextureUnit);
 		++currectTextureUnit;
 	}
 }

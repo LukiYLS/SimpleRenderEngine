@@ -29,6 +29,9 @@ namespace SRE {
 		virtual void uploadShadow(Shader* shader, unsigned int& currectTextureUnit);
 		virtual LightType getType()const { return DirectionLightType; }
 
+		virtual Camera* getShadowCamera()const { return _shadow_camera.get(); }
+		virtual void setShadowCamera(OrthographicCamera* camera) { _shadow_camera = (OrthographicCamera::ptr)camera; }
+
 	protected:
 		Vector3D _direction;		
 		OrthographicCamera::ptr _shadow_camera;

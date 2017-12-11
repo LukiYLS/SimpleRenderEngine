@@ -49,25 +49,26 @@ namespace SRE {
 		std::string number;
 		ss << _number;
 		ss >> number;
-		std::string uniform_name_matrix = "directionalShadowMatrix[].";
+		std::string uniform_name_matrix = "directionalShadowMatrix[]";
 		if (_number < 10)
-			uniform_name_matrix.insert(25, number, 0, 1);
+			uniform_name_matrix.insert(24, number, 0, 1);
 		else
-			uniform_name_matrix.insert(25, number, 0, 2);
+			uniform_name_matrix.insert(24, number, 0, 2);
 
 		shader->use();
 		
-		Matrix4D shadowMatrix = _shadowInfo.shadowMatrix;
+		Matrix4D shadowMatrix = _shadowMatrix;
 		shader->setMat4(uniform_name_matrix.c_str(), shadowMatrix);
 
-		std::string uniform_name_map = "directionalShadowMap[].";
+		std::string uniform_name_map = "directionalShadowMap[]";
 		if (_number < 10)
-			uniform_name_map.insert(19, number, 0, 1);
+			uniform_name_map.insert(21, number, 0, 1);
 		else
-			uniform_name_map.insert(19, number, 0, 2);
+			uniform_name_map.insert(21, number, 0, 2);
 		shader->setInt(uniform_name_map.c_str(), currectTextureUnit);
-		FrameBuffer::ptr fbo = _shadowInfo.depthFBO;
-		fbo->bindForReading(currectTextureUnit);
+		//FrameBuffer::ptr fbo = _shadowFB;
+		if (_shadowFB != NULL)
+			_shadowFB->bindForReading(currectTextureUnit);
 		++currectTextureUnit;
 	}
 }

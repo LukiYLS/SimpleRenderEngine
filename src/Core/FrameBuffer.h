@@ -7,6 +7,7 @@ namespace SRE {
 	public:
 		typedef std::shared_ptr<FrameBuffer> ptr;
 		FrameBuffer() = default;
+		FrameBuffer(int width, int height);
 		~FrameBuffer() = default;
 
 	public:

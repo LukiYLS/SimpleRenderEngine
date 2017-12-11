@@ -19,11 +19,11 @@ namespace SRE {
 			HemisphereLightType,
 			NoneType
 		};	
-		struct ShadowInfo {
-			Matrix4D shadowMatrix;
-			FrameBuffer::ptr depthFBO;
-		};
-		Light() :_color(Vector3D(1.0, 1.0, 1.0)), _intensity(1.0), _castShadow(true) {
+		//struct ShadowInfo {
+		//	Matrix4D shadowMatrix;
+		//	FrameBuffer::ptr depthFBO;
+		//};
+		Light() :_color(Vector3D(1.0, 1.0, 1.0)), _intensity(1.0), _castShadow(true), _shadowMapSize(Vector2D(512.0,512.0)), _shadowBias(0.005), _shadowRadius(1.0){
 
 		}
 		virtual ~Light() = default;
@@ -64,16 +64,24 @@ namespace SRE {
 		float getShadowRadius()const { return _shadowRadius; }
 		void setShadowRadius(float shadowRadius) { _shadowRadius = shadowRadius; }
 
-		void setShadowInfo(ShadowInfo shadowInfo) { _shadowInfo = shadowInfo; }
-		ShadowInfo getShadowInfo()const { return _shadowInfo; }
+		Matrix4D getShadowMatrix()const { return _shadowMatrix; }
+		void setShadowMatrix(const Matrix4D& matrix) { _shadowMatrix = matrix; }
+
+		FrameBuffer* getShadowFrameBuffer()const { return _shadowFB.get(); }
+		void setShadowFrameBuffer(FrameBuffer* fb) { _shadowFB = (FrameBuffer::ptr)fb; }
+
+		//void setShadowInfo(ShadowInfo shadowInfo) { _shadowInfo = shadowInfo; }
+	//	ShadowInfo getShadowInfo()const { return _shadowInfo; }
 	protected:
 
 		Vector3D _color;
 		unsigned int _number;
 		float _intensity;
 		bool _castShadow;
-		ShadowInfo _shadowInfo;
+		//ShadowInfo _shadowInfo;
 		Vector2D _shadowMapSize;
+		Matrix4D _shadowMatrix;
+		FrameBuffer::ptr _shadowFB;
 		float _shadowBias, _shadowRadius;
 	};
 }

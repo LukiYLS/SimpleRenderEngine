@@ -10,8 +10,9 @@ namespace SRE {
 			type = Perspective;
 		}
 
-		virtual Matrix4D getProjectionMatrix() { return Matrix4D::makePerspective(_fovy, _aspect, _near, _far); }
-
+		virtual Matrix4D getProjectionMatrix() const{ return Matrix4D::makePerspective(_fovy, _aspect, _near, _far); }
+		float getNear()const { return _near; }
+		float getFar()const { return _far; }
 	private:
 		float _fovy;
 		float _aspect;

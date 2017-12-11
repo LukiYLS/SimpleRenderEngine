@@ -19,6 +19,7 @@ namespace SRE {
 		_scene = (Scene::ptr)scene;
 		_camera = (Camera::ptr)camera;
 		_isProjected = false;
+		_shadowShader = NULL;
 		//注册鼠标键盘事件，放在哪里？
 		CameraControl::ptr cc = make_shared<CameraControl>(camera);
 		EventManager::Inst()->registerReceiver("mouse.event", cc);
@@ -31,6 +32,7 @@ namespace SRE {
 	{		
 		beforeRender();
 		renderImpl(); 
+
 		afterRender();
 	}
 	void RenderSystem::beforeRender()
@@ -64,7 +66,10 @@ namespace SRE {
 
 		if (_scene->getUseShadowMap())
 		{
-			shadowMapRender(_lights, _shadowMeshs);
+			shadowMapRender(_lights, _shadowMeshs);	
+			glBindFramebuffer(GL_FRAMEBUFFER, 0);
+			RenderState::setViewPort(0, 0, 800, 600);
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		}
 		//use lights
 		setupLights(_lights);
@@ -115,7 +120,7 @@ namespace SRE {
 				//Vector3D direction = dir->getDirection();
 				
 				Vector3D position = directionLight->getWorldPosition();
-				Vector3D direction = Vector3D(0.0) - position;//default target(0,0,0)
+				Vector3D direction =  position - Vector3D(0.0);//default target(0,0,0)
 				direction.normalize();
 
 				uniform_dir.direction = direction;
@@ -319,9 +324,10 @@ namespace SRE {
 			{
 				defineStr += "#define USE_COLOR\n";
 			}
-			if (_scene->getUseShadowMap() && mesh->getReceiveShadow())
+			if (_scene->getUseShadowMap())
 			{
 				defineStr += "#define USE_SHADOWMAP\n";
+				defineStr += "#define SHADOWMAP_TYPE_PCF\n";
 				//shadwomap type
 			}
 			
@@ -433,7 +439,7 @@ namespace SRE {
 		for (auto light : _lights)
 		{
 			light->upload(shader);
-			if (_scene->getUseShadowMap() && mesh->getReceiveShadow())
+			if (_scene->getUseShadowMap())
 				light->uploadShadow(shader, _current_texture_unit_count);
 		}
 			
@@ -558,7 +564,8 @@ namespace SRE {
 
 		// get shader,
 
-		Shader::ptr shader = std::make_shared<Shader>("../../../src/Data/shader/shadowmapdepth.vs", "../../../src/Data/shader/shadowmapdepth.fs");
+		if(_shadowShader==NULL)
+			_shadowShader = std::make_shared<Shader>("../../../src/Data/shader/shadowmapdepth.vs", "../../../src/Data/shader/shadowmapdepth.fs");
 
 		Matrix4D shadowMatrix;
 
@@ -568,7 +575,9 @@ namespace SRE {
 			unsigned int faceCount = 1;
 			Camera* shadowCamera = light->getShadowCamera();
 			Vector2D mapSize = light->getShadowMapSize();
-
+			Vector3D cameraPosition = light->getWorldPosition();
+			shadowCamera->setPosition(cameraPosition);
+			shadowCamera->lookAt(0.0, 0.0, 0.0);
 			if (type == Light::PointLightType)
 			{				
 
@@ -592,9 +601,9 @@ namespace SRE {
 
 				faceCount = 6;
 
-				Vector3D position = light->getPosition();
+				//Vector3D position = light->getPosition();
 				//why no projection matrix,because point light shadow is 360 degree,
-				shadowMatrix = Matrix4D::makeTranslation(Vector3D(-position.x, -position.y, -position.z));
+				shadowMatrix = Matrix4D::makeTranslation(Vector3D(-cameraPosition.x, -cameraPosition.y, -cameraPosition.z));
 			}
 			else{
 
@@ -605,6 +614,13 @@ namespace SRE {
 				*/
 				faceCount = 1;
 
+				Matrix4D matrix(
+					0.5, 0.0, 0.0, 0.5,
+					0.0, 0.5, 0.0, 0.5,
+					0.0, 0.0, 0.5, 0.5,
+					0.0, 0.0, 0.0, 1.0
+				);
+
 				Matrix4D view = shadowCamera->getViewMatrix();
 
 				Matrix4D projection = shadowCamera->getProjectionMatrix();
@@ -613,15 +629,23 @@ namespace SRE {
 
 			}
 			//create fbo
-			FrameBuffer::ptr fbo = std::make_shared<FrameBuffer>();
-			fbo->createFrameBufferWithTexture(mapSize.x, mapSize.y);
-			//save shadow infomation(matrix ,fbo)
-			Light::ShadowInfo shadowInfo;
-			shadowInfo.shadowMatrix = shadowMatrix;
-			shadowInfo.depthFBO = fbo;
-			light->setShadowInfo(shadowInfo);
+			FrameBuffer* fb = light->getShadowFrameBuffer();
+			if (fb == NULL)
+			{
+				fb = new FrameBuffer(mapSize.x, mapSize.y);
+				light->setShadowFrameBuffer(fb);
+			}
+			light->setShadowMatrix(shadowMatrix);
+			
+			//FrameBuffer::ptr fbo = std::make_shared<FrameBuffer>();
+			//fbo->createFrameBufferWithTexture(mapSize.x, mapSize.y);
+			////save shadow infomation(matrix ,fbo)
+			//Light::ShadowInfo shadowInfo;
+			//shadowInfo.shadowMatrix = shadowMatrix;
+			//shadowInfo.depthFBO = fbo;
+			//light->setShadowInfo(shadowInfo);
 
-			type == Light::PointLightType ? fbo->bingForWriting(false) : fbo->bingForWriting();
+			type == Light::PointLightType ? fb->bingForWriting(false) : fb->bingForWriting();
 
 			for (int i = 0; i < faceCount; i++)
 			{
@@ -633,9 +657,10 @@ namespace SRE {
 
 				for (auto mesh : meshs)
 				{
-					shader->use();
-					shader->setMat4("viewMatrix", shadowCamera->getViewMatrix());
-					shader->setMat4("projectionMatrix", shadowCamera->getProjectionMatrix());
+					_shadowShader->use();
+					_shadowShader->setMat4("modelMatrix", mesh->getWorldMatrix());
+					_shadowShader->setMat4("viewMatrix", shadowCamera->getViewMatrix());
+					_shadowShader->setMat4("projectionMatrix", shadowCamera->getProjectionMatrix());
 					mesh->drawPrimitive();
 				}				
 

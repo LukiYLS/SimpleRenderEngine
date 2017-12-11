@@ -1,4 +1,4 @@
-
+#version 400 
 uniform mat4 viewMatrix;
 uniform vec3 cameraPosition;
 
@@ -240,6 +240,9 @@ vec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
 		float shadowBias;
 		float shadowRadius;
 		vec2 shadowMapSize;
+		
+		float shadowCameraNear;
+		float shadowCameraFar;
 	};
 
 	uniform PointLight pointLights[ NUM_POINT_LIGHTS ];
@@ -383,7 +386,8 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 	#endif
 
 	float texture2DCompare( sampler2D depths, vec2 uv, float compare ) {
-		return step( compare, unpackRGBAToDepth( texture2D( depths, uv ) ) );
+		//return step( compare, texture2D( depths, uv ) );
+		return texture2D( depths, uv );
 	}
 	float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare ) {
 		const vec2 offset = vec2( 0.0, 1.0 );
@@ -406,14 +410,15 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 		bvec4 inFrustumVec = bvec4 ( shadowCoord.x >= 0.0, shadowCoord.x <= 1.0, shadowCoord.y >= 0.0, shadowCoord.y <= 1.0 );
 		bool inFrustum = all( inFrustumVec );
 		bvec2 frustumTestVec = bvec2( inFrustum, shadowCoord.z <= 1.0 );
-		bool frustumTest = all( frustumTestVec );
+		bool frustumTest = all( frustumTestVec );		
 		if ( frustumTest ) {
-		#if defined( SHADOWMAP_TYPE_PCF )
+		#if defined( SHADOWMAP_TYPE_PCF )				
 			vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
 			float dx0 = - texelSize.x * shadowRadius;
 			float dy0 = - texelSize.y * shadowRadius;
 			float dx1 = + texelSize.x * shadowRadius;
 			float dy1 = + texelSize.y * shadowRadius;
+			
 			shadow = (
 				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx0, dy0 ), shadowCoord.z ) +
 				texture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy0 ), shadowCoord.z ) +
@@ -425,6 +430,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 				texture2DCompare( shadowMap, shadowCoord.xy + vec2( 0.0, dy1 ), shadowCoord.z ) +
 				texture2DCompare( shadowMap, shadowCoord.xy + vec2( dx1, dy1 ), shadowCoord.z )
 			) * ( 1.0 / 9.0 );
+			//shadow = texture2DCompare( shadowMap, shadowCoord.xy,shadowCoord.z);
 		#elif defined( SHADOWMAP_TYPE_PCF_SOFT )
 			vec2 texelSize = vec2( 1.0 ) / shadowMapSize;
 			float dx0 = - texelSize.x * shadowRadius;
@@ -640,7 +646,7 @@ IncidentLight directLight;
 		getPointDirectLightIrradiance( pointLight, geometry, directLight );
 
 		#ifdef USE_SHADOWMAP
-		directLight.color *= all( bvec2( pointLight.shadow, directLight.visible ) ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ] ) : 1.0;
+		directLight.color *= all( bvec2( pointLight.shadow, directLight.visible ) ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ],pointLight.shadowCameraNear,pointLight.shadowCameraFar) : 1.0;
 		#endif
 
 		RE_Direct( directLight, geometry, material, reflectedLight );
@@ -793,7 +799,10 @@ IncidentLight directLight;
 #endif
 
 	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
-
+	
+	float a = getShadow( directionalShadowMap[ 0 ], directionalLight.shadowMapSize, directionalLight.shadowBias, directionalLight.shadowRadius, vDirectionalShadowCoord[ 0 ] );
+	
+	//gl_FragColor = vec4(a,0.0,0.0,1.0);
 
   //gl_FragColor = linearToOutputTexel( gl_FragColor );
 
@@ -813,5 +822,5 @@ IncidentLight directLight;
 #if defined( DITHERING )
   gl_FragColor.rgb = dithering( gl_FragColor.rgb );
 #endif
-	//gl_FragColor = texelColor;
+	
 }

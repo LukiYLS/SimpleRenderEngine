@@ -9,7 +9,7 @@ namespace SRE {
 			type = Orthographic;
 		}
 
-		Matrix4D getProjectMatrix() const { return Matrix4D::makeOrthographic(_left, _right, _bottom, _top, _near, _far); }
+		virtual Matrix4D getProjectionMatrix() const { return Matrix4D::makeOrthographic(_left, _right, _bottom, _top, _near, _far); }
 	private:
 		float _left;
 		float _right;

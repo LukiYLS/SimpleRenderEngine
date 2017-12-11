@@ -1,4 +1,4 @@
-
+#version 400 
 uniform mat4 modelMatrix;
 uniform mat4 viewMatrix;
 uniform mat4 projectionMatrix;
@@ -139,7 +139,7 @@ gl_Position = projectionMatrix * mvPosition;
 	for ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {
 
 		vDirectionalShadowCoord[ i ] = directionalShadowMatrix[ i ] * worldPosition;
-
+		vDirectionalShadowCoord[ i ] = vDirectionalShadowCoord[ i ] * 0.5 + 0.5;
 	}
 
 	#endif
