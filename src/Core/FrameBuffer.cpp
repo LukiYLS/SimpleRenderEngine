@@ -68,7 +68,7 @@ namespace SRE {
 	{
 		glBindFramebuffer(GL_FRAMEBUFFER, _fbo);	
 		if (isFullViewPort)glViewport(0, 0, _width, _height);
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+		
 	}
 	void FrameBuffer::bindForReading(int units)
 	{

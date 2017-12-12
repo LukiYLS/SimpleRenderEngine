@@ -22,6 +22,7 @@
     <ClInclude Include="..\..\..\src\Core\BillboardCollection.h" />
     <ClInclude Include="..\..\..\src\Core\Camera.h" />
     <ClInclude Include="..\..\..\src\Core\Constants.h" />
+    <ClInclude Include="..\..\..\src\Core\CubeFrameBuffer.h" />
     <ClInclude Include="..\..\..\src\Core\FrameBuffer.h" />
     <ClInclude Include="..\..\..\src\Core\GBuffer.h" />
     <ClInclude Include="..\..\..\src\Core\HardwareBuffer\ColorValue.h" />

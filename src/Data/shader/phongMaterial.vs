@@ -139,7 +139,7 @@ gl_Position = projectionMatrix * mvPosition;
 	for ( int i = 0; i < NUM_DIR_LIGHTS; i ++ ) {
 
 		vDirectionalShadowCoord[ i ] = directionalShadowMatrix[ i ] * worldPosition;
-		vDirectionalShadowCoord[ i ] = vDirectionalShadowCoord[ i ] * 0.5 + 0.5;
+		//vDirectionalShadowCoord[ i ] = vDirectionalShadowCoord[ i ] * 0.5 + 0.5;
 	}
 
 	#endif

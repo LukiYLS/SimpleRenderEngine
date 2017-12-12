@@ -15,6 +15,7 @@
 #include "../Core/ParticleSystem.h"
 #include "../Light/DirectionLight.h"
 #include "../Light/PointLight.h"
+#include "../Light/SpotLight.h"
 #include <vector>
 #include <iostream>
 #include <string>

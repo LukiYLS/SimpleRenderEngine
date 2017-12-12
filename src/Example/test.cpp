@@ -74,6 +74,7 @@ Scene::ptr createScene()
 	Material::ptr floorMat = std::make_shared<Material>();
 	floorMat->setMaterialType(Material::PhongMaterial);
 	floorMat->setMap(floorUnit);
+	floorMat->setCullFaceMode(CullFaceMode::DoubleSide);
 
 	Mesh* floor = createFloor();
 	floor->setMaterial(floorMat);
@@ -106,11 +107,14 @@ Scene::ptr createScene()
 
 	DirectionLight* dlight = new DirectionLight();
 	dlight->setPosition(Vector3D(0.0, 50.0, 50.0));
-	dlight->setShadowCamera(new OrthographicCamera(-40.0, 40.0, -30.0, 30.0, 0.1, 100.0));
+	dlight->setShadowCamera(new OrthographicCamera(-50.0, 50.0, -50.0, 50.0, 0.1, 100.0));
 
 	PointLight* plight = new PointLight();
-	plight->setPosition(Vector3D(0.0, 50.0, 0.0));
-	plight->setShadowCamera(new PerspectiveCamera(MathHelper::radian(90.0), 1.0, 0.5, 200.0));
+	plight->setPosition(Vector3D(0.0, 20.0, 0.0));
+	plight->setShadowCamera(new PerspectiveCamera(MathHelper::radian(90.0), 1.0, 1.0, 5000.0));
+
+	SpotLight* spotlight = new SpotLight;
+	
 
 	root->add(floor);
 	root->add(box1);
@@ -130,7 +134,7 @@ void main()
 {
 	Win::getSingleton()->create();	
 	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(65.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1, 500.0);
-	camera->setPosition(Vector3D(0.0f, 50.0f, 50.0));
+	camera->setPosition(Vector3D(0.0f, 50.0f, -50.0));
 	camera->lookAt(0.0, 0.0, 0.0);
 
 	Scene::ptr scene = createScene();

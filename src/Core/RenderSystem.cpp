@@ -146,7 +146,7 @@ namespace SRE {
 
 				
 				uniform_point.distance = pointLight->getDistance();
-				uniform_point.position = pointLight->getPosition();
+				uniform_point.position = _camera->getViewMatrix() * pointLight->getPosition();
 				uniform_point.color = color * intensity;
 				uniform_point.decay = pointLight->getDecay();
 				bool castShadow = pointLight->getCastShadow();
@@ -615,17 +615,17 @@ namespace SRE {
 				faceCount = 1;
 
 				Matrix4D matrix(
-					0.5, 0.0, 0.0, 0.5,
-					0.0, 0.5, 0.0, 0.5,
-					0.0, 0.0, 0.5, 0.5,
-					0.0, 0.0, 0.0, 1.0
+					0.5, 0.0, 0.0, 0.0,
+					0.0, 0.5, 0.0, 0.0,
+					0.0, 0.0, 0.5, 0.0,
+					0.5, 0.5, 0.5, 1.0
 				);
 
 				Matrix4D view = shadowCamera->getViewMatrix();
 
 				Matrix4D projection = shadowCamera->getProjectionMatrix();
 
-				shadowMatrix = projection * view;
+				shadowMatrix = matrix * projection * view;
 
 			}
 			//create fbo

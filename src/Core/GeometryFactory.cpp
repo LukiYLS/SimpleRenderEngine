@@ -4,6 +4,13 @@
 using namespace Math;
 namespace SRE {
 
+
+	Mesh* GeometryFactory::MakeQuad(int width, int height)
+	{
+		Mesh* mesh = new Mesh;
+		return mesh;
+	}
+
 	Mesh* GeometryFactory::MakeBox(int width, int height, int depth)
 	{
 		size_t vertex_count = 24;
