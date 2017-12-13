@@ -132,7 +132,7 @@ namespace SRE {
 	{
 		//get register keyboard,where register key 
 		
-		int state = glfwGetKey(window, GLFW_KEY_W);
+		int state = glfwGetKey(window, key);
 		if (state == GLFW_PRESS)
 		{
 			key_press.push_back(key);
@@ -141,6 +141,8 @@ namespace SRE {
 		{
 			key_press.remove(key);
 		}
+		
+
 		if ((key >= 0) && (key <= 255)&&(action = GLFW_PRESS))
 		{
 			//key_press.push_back(key);

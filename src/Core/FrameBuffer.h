@@ -3,40 +3,40 @@
 #include <memory>
 namespace SRE {
 
-	class FrameBuffer {
+	//class FrameBuffer {
 
-	public:
-		enum BufferType {
-			DepthBuffer,
-			ColorBuffer,
-			StencilBuffer
-		};
-		typedef std::shared_ptr<FrameBuffer> ptr;
-		virtual void bindForWriting() = 0;
-		virtual void bindForReading() = 0;
-
-
-	protected:
-		unsigned int _width;
-		unsigned int _height;
-		unsigned int _fbo;
-		unsigned int _texture;
-
-	};
-
-	class FrameBuffer2D : public FrameBuffer {
-	public:
-
-		FrameBuffer2D(unsigned int width, unsigned int height);
-	};
-	class FrameBufferCube : public FrameBuffer {
-
-	public:
-
-		FrameBufferCube(unsigned int width, unsigned int height);
+	//public:
+	//	enum BufferType {
+	//		DepthBuffer,
+	//		ColorBuffer,
+	//		StencilBuffer
+	//	};
+	//	typedef std::shared_ptr<FrameBuffer> ptr;
+	//	virtual void bindForWriting() = 0;
+	//	virtual void bindForReading() = 0;
 
 
-	};
+	//protected:
+	//	unsigned int _width;
+	//	unsigned int _height;
+	//	unsigned int _fbo;
+	//	unsigned int _texture;
+
+	//};
+
+	//class FrameBuffer2D : public FrameBuffer {
+	//public:
+
+	//	FrameBuffer2D(unsigned int width, unsigned int height, BufferType);
+	//};
+	//class FrameBufferCube : public FrameBuffer {
+
+	//public:
+
+	//	FrameBufferCube(unsigned int width, unsigned int height);
+
+
+	//};
 
 	class FrameBuffer {
 	public:

@@ -37,7 +37,7 @@ namespace Utils
 				}
 				case M_WHEEL:
 				{
-					int value = mouse_work.wheelvalue * _camera->getPosition().length()*0.001;
+					double value = mouse_work.wheelvalue * _camera->getPosition().length()*0.001;
 
 					_camera->translateOnZ(value);
 				}
@@ -94,17 +94,17 @@ namespace Utils
 			}
 			case 'A':
 			{
-				_camera->translateOnAxis(_camera->getRight(), -0.1);
+				_camera->translateOnAxis(_camera->getRight(), -0.0001*_camera->getPosition().length());
 				break;
 			}
 			case 'S':
 			{
-				_camera->translateOnAxis(_camera->getDirection(), -0.1);
+				_camera->translateOnAxis(_camera->getDirection(), -0.0001*_camera->getPosition().length());
 				break;
 			}
 			case 'D':
 			{
-				_camera->translateOnAxis(_camera->getRight(), 0.1);
+				_camera->translateOnAxis(_camera->getRight(), 0.0001*_camera->getPosition().length());
 				break;
 			}
 			default:
