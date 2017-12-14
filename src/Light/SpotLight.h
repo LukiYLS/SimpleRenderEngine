@@ -37,6 +37,8 @@ namespace SRE {
 		void setAngle(float angle) { _angle = angle; }
 		float getPenumbra()const { return _penumbra; }
 		void setPenumbra(float penumbra) { _penumbra = penumbra; }
+		void setShadowCamera(PerspectiveCamera* camera) { _shadow_camera = (PerspectiveCamera::ptr)camera; }
+		virtual Camera* getShadowCamera()const { return _shadow_camera.get(); }
 	protected:
 
 		float _distance,_decay,_penumbra;

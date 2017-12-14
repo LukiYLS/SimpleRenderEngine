@@ -291,13 +291,14 @@ vec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
 
 		float lightDistance = length( lVector );
 		float angleCos = dot( directLight.direction, spotLight.direction );
-
+		
 		if ( angleCos > spotLight.coneCos ) {
 
 			float spotEffect = smoothstep( spotLight.coneCos, spotLight.penumbraCos, angleCos );
 
 			directLight.color = spotLight.color;
 			directLight.color *= spotEffect * punctualLightIntensityToIrradianceFactor( lightDistance, spotLight.distance, spotLight.decay );
+			
 			directLight.visible = true;
 
 		} else {
@@ -306,6 +307,7 @@ vec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
 			directLight.visible = false;
 
 		}
+		//directLight.color = vec3(angleCos,0.0,0.0);
 	}
 
 #endif
@@ -666,7 +668,7 @@ IncidentLight directLight;
 		spotLight = spotLights[ i ];
 
 		getSpotDirectLightIrradiance( spotLight, geometry, directLight );
-
+		
 		#ifdef USE_SHADOWMAP
 		directLight.color *= all( bvec2( spotLight.shadow, directLight.visible ) ) ? getShadow( spotShadowMap[ i ], spotLight.shadowMapSize, spotLight.shadowBias, spotLight.shadowRadius, vSpotShadowCoord[ i ] ) : 1.0;
 		#endif
@@ -761,7 +763,7 @@ IncidentLight directLight;
 		reflectedLight.indirectSpecular *= computeSpecularOcclusion( dotNV, ambientOcclusion, material.specularRoughness );
 	#endif
 #endif
-
+	
 	vec3 outgoingLight = reflectedLight.directDiffuse + reflectedLight.indirectDiffuse + reflectedLight.directSpecular + reflectedLight.indirectSpecular + totalEmissiveRadiance;
 #ifdef USE_ENVMAP
 	#if defined( USE_BUMPMAP ) || defined( USE_NORMALMAP ) || defined( PHONG )
@@ -804,7 +806,7 @@ IncidentLight directLight;
 	
 	//float a = getPointShadow( pointShadowMap[ 0 ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, //vPointShadowCoord[ 0 ],pointLight.shadowCameraNear,pointLight.shadowCameraFar) ;
 	
-	//gl_FragColor = vec4(a,0.0,0.0,1.0);
+	//gl_FragColor = vec4(directLight.color,1.0);
 
   //gl_FragColor = linearToOutputTexel( gl_FragColor );
 

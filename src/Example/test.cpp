@@ -113,20 +113,26 @@ Scene::ptr createScene()
 	plight->setPosition(Vector3D(0.0, 20.0, 0.0));
 	plight->setShadowCamera(new PerspectiveCamera(MathHelper::radian(90.0), 1.0, 1.0, 5000.0));
 
-	SpotLight* spotlight = new SpotLight;
-	
 
+
+	SpotLight* spotlight = new SpotLight;
+	spotlight->setPosition(Vector3D(0.0, 50.0, 0.0));
+	spotlight->setAngle(M_PI/8.0);
+	spotlight->setDecay(1.0);
+	spotlight->setDistance(500.0);
+	spotlight->setPenumbra(0.05);
+	spotlight->setShadowCamera(new PerspectiveCamera(MathHelper::radian(50.0), 1.0, 1.0, 500.0));
 	root->add(floor);
 	root->add(box1);
 	root->add(box2);
 	root->add(box3);
 	root->add(sphere);
 
-	root->add(dlight);
+	//root->add(dlight);
 	//root->add(plight);
-
+	root->add(spotlight);
 	scene->setSceneRoot(root);
-	scene->setUseShadowMap(true);
+	//scene->setUseShadowMap(true);
 
 	return scene;
 }

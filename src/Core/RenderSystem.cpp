@@ -146,7 +146,7 @@ namespace SRE {
 
 				
 				uniform_point.distance = pointLight->getDistance();
-				uniform_point.position = _camera->getViewMatrix() * pointLight->getPosition();
+				uniform_point.position =  pointLight->getPosition();
 				uniform_point.color = color * intensity;
 				uniform_point.decay = pointLight->getDecay();
 				bool castShadow = pointLight->getCastShadow();
@@ -165,7 +165,10 @@ namespace SRE {
 				SpotLight* spotLight = light->asSpotLight();
 				SpotLightUniform uniform_spot;
 
-				uniform_spot.direction = spotLight->getDirection();
+				Vector3D position = spotLight->getWorldPosition();
+				Vector3D direction = position - Vector3D(0.0);//default target(0,0,0)
+				direction.normalize();
+				uniform_spot.direction = direction;
 				uniform_spot.distance = spotLight->getDistance();
 				uniform_spot.position = spotLight->getPosition();
 				uniform_spot.color = color * intensity;

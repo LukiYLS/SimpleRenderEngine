@@ -106,8 +106,8 @@ vec3 transformed = vec3( position );
 	transformed += normalize( objectNormal ) * ( texture2D( displacementMap, uv ).x * displacementScale + displacementBias );
 #endif
 
-vec4 mvPosition = viewMatrix * modelMatrix * vec4( transformed, 1.0 );
-gl_Position = projectionMatrix * mvPosition;
+vec4 mvPosition = modelMatrix * vec4( transformed, 1.0 );
+gl_Position = projectionMatrix * viewMatrix * mvPosition;
 
 //#if NUM_CLIPPING_PLANES > 0 && ! defined( PHYSICAL ) && ! defined( PHONG )
 //	vViewPosition = - mvPosition.xyz;
