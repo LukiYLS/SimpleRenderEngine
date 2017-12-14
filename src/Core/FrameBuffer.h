@@ -12,9 +12,10 @@ namespace SRE {
 			StencilBuffer
 		};
 		typedef std::shared_ptr<FrameBuffer> ptr;
-		virtual void bindForWriting() = 0;
-		virtual void bindForReading() = 0;
-
+		virtual void bindForWriting(bool isFullViewPort = true) = 0;
+		virtual void bindForReading(unsigned int units) = 0;
+		static GLenum getGLtype(BufferType type);
+		static GLenum getGLAttach(BufferType);
 
 	protected:
 		unsigned int _width;
@@ -24,21 +25,34 @@ namespace SRE {
 
 	};
 
-	class FrameBuffer2D{
+	class FrameBuffer2D : public FrameBuffer{
 	public:
 
-		FrameBuffer2D(unsigned int width, unsigned int height);
+		FrameBuffer2D(unsigned int width, unsigned int height, FrameBuffer::BufferType type);
+		void bindForWriting(bool isFullViewPort = true);
+		void bindForReading(unsigned int units);
+	protected:
+		unsigned int _width;
+		unsigned int _height;
+		unsigned int _fbo;
+		unsigned int _texture;
 	};
 	class FrameBufferCube : public FrameBuffer {
 
 	public:
 
-		FrameBufferCube(unsigned int width, unsigned int height);
-
+		FrameBufferCube(unsigned int width, unsigned int height, FrameBuffer::BufferType typ);
+		void bindForWriting(bool isFullViewPort = true);
+		void bindForReading(unsigned int units);
+	protected:
+		unsigned int _width;
+		unsigned int _height;
+		unsigned int _fbo;
+		unsigned int _texture;
 
 	};
 
-	class FrameBuffer {
+	/*class FrameBuffer {
 	public:
 		typedef std::shared_ptr<FrameBuffer> ptr;
 		FrameBuffer() = default;
@@ -56,7 +70,7 @@ namespace SRE {
 		unsigned int _fbo;
 		unsigned int _texture;
 
-	};
+	};*/
 }
 
 

@@ -635,7 +635,12 @@ namespace SRE {
 			FrameBuffer* fb = light->getShadowFrameBuffer();
 			if (fb == NULL)
 			{
-				fb = new FrameBuffer(mapSize.x, mapSize.y);
+				if (type == Light::PointLightType)
+				{
+					fb = new FrameBufferCube(mapSize.x, mapSize.y, FrameBuffer::DepthBuffer);
+				}
+				else
+					fb = new FrameBuffer2D(mapSize.x, mapSize.y, FrameBuffer::DepthBuffer);				
 				light->setShadowFrameBuffer(fb);
 			}
 			light->setShadowMatrix(shadowMatrix);
@@ -648,7 +653,7 @@ namespace SRE {
 			//shadowInfo.depthFBO = fbo;
 			//light->setShadowInfo(shadowInfo);
 
-			type == Light::PointLightType ? fb->bingForWriting(false) : fb->bingForWriting();
+			fb->bindForWriting();
 
 			for (int i = 0; i < faceCount; i++)
 			{

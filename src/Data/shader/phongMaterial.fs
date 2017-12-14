@@ -383,7 +383,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 		varying vec4 vSpotShadowCoord[ NUM_SPOT_LIGHTS ];
 	#endif
 	#if NUM_POINT_LIGHTS > 0
-		uniform sampler2D pointShadowMap[ NUM_POINT_LIGHTS ];
+		uniform samplerCube pointShadowMap[ NUM_POINT_LIGHTS ];
 		varying vec4 vPointShadowCoord[ NUM_POINT_LIGHTS ];
 	#endif
 
@@ -391,6 +391,10 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 		//return step( compare, unpackRGBAToDepth( texture2D( depths, uv ) ) );
 		return step( compare, texture2D( depths, uv ).r );
 		//return compare;
+	}
+	float texture3DCompare(samplerCube depths, vec3 uvs,float compare)
+	{
+		return step( compare, textureCube( depths, uvs ).r );
 	}
 	float texture2DShadowLerp( sampler2D depths, vec2 size, vec2 uv, float compare ) {
 		const vec2 offset = vec2( 0.0, 1.0 );
@@ -478,27 +482,27 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 		}
 		return vec2( 0.125, 0.25 ) * planar + vec2( 0.375, 0.75 );
 	}
-	float getPointShadow( sampler2D shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord, float shadowCameraNear, float shadowCameraFar ) {
+	float getPointShadow( samplerCube shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord, float shadowCameraNear, float shadowCameraFar ) {
 		vec2 texelSize = vec2( 1.0 ) / ( shadowMapSize * vec2( 4.0, 2.0 ) );
 		vec3 lightToPosition = shadowCoord.xyz;
 		float dp = ( length( lightToPosition ) - shadowCameraNear ) / ( shadowCameraFar - shadowCameraNear );		dp += shadowBias;
 		vec3 bd3D = normalize( lightToPosition );
 		#if defined( SHADOWMAP_TYPE_PCF ) || defined( SHADOWMAP_TYPE_PCF_SOFT )
-			return texture2D(shadowMap,cubeToUV( bd3D, texelSize.y ));
+			//return textureCube(shadowMap, bd3D);
 			vec2 offset = vec2( - 1, 1 ) * shadowRadius * texelSize.y;
 			return (
-				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyy, texelSize.y ), dp ) +
-				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyy, texelSize.y ), dp ) +
-				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xyx, texelSize.y ), dp ) +
-				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yyx, texelSize.y ), dp ) +
-				texture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp ) +
-				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxy, texelSize.y ), dp ) +
-				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxy, texelSize.y ), dp ) +
-				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.xxx, texelSize.y ), dp ) +
-				texture2DCompare( shadowMap, cubeToUV( bd3D + offset.yxx, texelSize.y ), dp )
+				texture3DCompare( shadowMap, bd3D + offset.xyy , dp ) +
+				texture3DCompare( shadowMap, bd3D + offset.yyy, dp ) +
+				texture3DCompare( shadowMap, bd3D + offset.xyx, dp ) +
+				texture3DCompare( shadowMap, bd3D + offset.yyx, dp ) +
+				texture3DCompare( shadowMap, bd3D , dp ) +
+				texture3DCompare( shadowMap, bd3D + offset.xxy, dp ) +
+				texture3DCompare( shadowMap, bd3D + offset.yxy, dp ) +
+				texture3DCompare( shadowMap, bd3D + offset.xxx, dp ) +
+				texture3DCompare( shadowMap, bd3D + offset.yxx , dp )
 			) * ( 1.0 / 9.0 );
 		#else
-			return texture2DCompare( shadowMap, cubeToUV( bd3D, texelSize.y ), dp );
+			return texture3DCompare( shadowMap, bd3D, dp );
 		#endif
 	}
 #endif

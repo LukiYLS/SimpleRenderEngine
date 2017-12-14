@@ -128,11 +128,11 @@ Scene::ptr createScene()
 	root->add(box3);
 	root->add(sphere);
 
-	//root->add(dlight);
+	root->add(dlight);
 	//root->add(plight);
 	root->add(spotlight);
 	scene->setSceneRoot(root);
-	//scene->setUseShadowMap(true);
+	scene->setUseShadowMap(true);
 
 	return scene;
 }
