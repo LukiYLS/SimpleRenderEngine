@@ -27,15 +27,15 @@
 
 DirectionLight
 
-![Light_ShdowMap](http://ovi6hpv55.bkt.clouddn.com/Light_ShadowMap.png)
+![DirectionLight](http://ovi6hpv55.bkt.clouddn.com/Light_ShadowMap.png)
 
 PointLight
 
-![Light_ShdowMap](http://ovi6hpv55.bkt.clouddn.com/point.png)
+![PointLight](http://ovi6hpv55.bkt.clouddn.com/point.png)
 
 SpotLight
 
-![Light_ShdowMap](http://ovi6hpv55.bkt.clouddn.com/spot.png)
+![SpotLight](http://ovi6hpv55.bkt.clouddn.com/spot.png)
 
 
 
@@ -45,7 +45,7 @@ SpotLight
 
   ​
 
-![Light_ShdowMap](http://ovi6hpv55.bkt.clouddn.com/earth.png)
+![Earth](http://ovi6hpv55.bkt.clouddn.com/earth.png)
 
 ###3.鼠标控制器 
 
