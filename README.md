@@ -5,7 +5,7 @@
 
 
 
-### 1. 基础库
+###  1. 基础库
 
 - Math库：Vector,Matrix,Frustum,Quaternion
 
@@ -21,7 +21,7 @@
 
   不一而足
 
-###2. 对材质的封装，材质和shader对应，
+### 2. 对材质的封装，材质和shader对应，
 
 - PhongMaterial,带光照的材质（包含Shadow）
 
@@ -47,11 +47,11 @@ SpotLight
 
 ![Earth](http://ovi6hpv55.bkt.clouddn.com/earth.png)
 
-###3.鼠标控制器 
+### 3.鼠标控制器 
 
 
 
-### 4.TerrianTile
+###  4.TerrianTile
 
 
 
