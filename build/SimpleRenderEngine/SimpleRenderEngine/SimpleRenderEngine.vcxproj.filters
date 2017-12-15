@@ -31,6 +31,9 @@
     <Filter Include="Light">
       <UniqueIdentifier>{2c179c1e-9025-48c1-b4b6-13ac77a6e905}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Animation">
+      <UniqueIdentifier>{b461ca4f-1dca-4954-8afa-7d15a8d51316}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Core\Camera.h">
@@ -248,6 +251,15 @@
     </ClInclude>
     <ClInclude Include="..\..\..\src\Core\CubeFrameBuffer.h">
       <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Animation\KeyFrame.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Animation\AnimationTrack.h">
+      <Filter>Animation</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Animation\Animation.h">
+      <Filter>Animation</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

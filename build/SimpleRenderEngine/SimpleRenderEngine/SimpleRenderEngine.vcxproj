@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\Animation\Animation.h" />
+    <ClInclude Include="..\..\..\src\Animation\AnimationTrack.h" />
+    <ClInclude Include="..\..\..\src\Animation\KeyFrame.h" />
     <ClInclude Include="..\..\..\src\Core\BillboardCollection.h" />
     <ClInclude Include="..\..\..\src\Core\Camera.h" />
     <ClInclude Include="..\..\..\src\Core\Constants.h" />
