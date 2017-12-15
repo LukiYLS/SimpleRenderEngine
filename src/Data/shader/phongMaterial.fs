@@ -343,6 +343,7 @@ vec3 getAmbientLightIrradiance( const in vec3 ambientLightColor ) {
 #endif
 
 varying vec3 vViewPosition;
+varying vec3 vWorldPosition;
 #ifndef FLAT_SHADED
 	varying vec3 vNormal;
 #endif
@@ -482,8 +483,34 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 		}
 		return vec2( 0.125, 0.25 ) * planar + vec2( 0.375, 0.75 );
 	}
-	float getPointShadow( samplerCube shadowMap, vec2 shadowMapSize, float shadowBias, float shadowRadius, vec4 shadowCoord, float shadowCameraNear, float shadowCameraFar ) {
-		vec2 texelSize = vec2( 1.0 ) / ( shadowMapSize * vec2( 4.0, 2.0 ) );
+	vec3 gridSamplingDisk[20] = vec3[]
+	(
+		vec3(1, 1,  1), vec3( 1, -1,  1), vec3(-1, -1,  1), vec3(-1, 1,  1), 
+		vec3(1, 1, -1), vec3( 1, -1, -1), vec3(-1, -1, -1), vec3(-1, 1, -1),
+		vec3(1, 1,  0), vec3( 1, -1,  0), vec3(-1, -1,  0), vec3(-1, 1,  0),
+		vec3(1, 0,  1), vec3(-1,  0,  1), vec3( 1,  0, -1), vec3(-1, 0, -1),
+		vec3(0, 1,  1), vec3( 0, -1,  1), vec3( 0, -1, -1), vec3( 0, 1, -1)
+	);
+	float getPointShadow( samplerCube shadowMap, vec3 lightPosition, float shadowBias, float shadowRadius, float shadowCameraFar ) {
+		vec3 fragToLight = vWorldPosition - lightPosition;
+		float currentDepth = length(fragToLight);
+		float viewDistance = length(cameraPosition - vWorldPosition);
+		float radius = (1.0 + (viewDistance / shadowCameraFar)) / 25.0;
+		float shadow = 0.0;		
+		int samples = 20;
+		//return currentDepth/shadowCameraFar;
+		//return texture(shadowMap, fragToLight + gridSamplingDisk[0] * radius).r;
+		for(int i = 0; i < samples; ++i)
+		{
+			float closestDepth = texture(shadowMap, fragToLight + gridSamplingDisk[i] * radius).r;
+			float currentDepth = currentDepth/shadowCameraFar;
+			//closestDepth *= shadowCameraFar;   // undo mapping [0;1]
+			if(currentDepth - 0.1 < closestDepth)
+				shadow += 1.0;
+		}
+		shadow /= float(samples);
+		return shadow;
+		/*vec2 texelSize = vec2( 1.0 ) / ( shadowMapSize * vec2( 4.0, 2.0 ) );
 		vec3 lightToPosition = shadowCoord.xyz;
 		float dp = ( length( lightToPosition ) - shadowCameraNear ) / ( shadowCameraFar - shadowCameraNear );		dp += shadowBias;
 		vec3 bd3D = normalize( lightToPosition );
@@ -503,7 +530,7 @@ void RE_IndirectDiffuse_BlinnPhong( const in vec3 irradiance, const in Geometric
 			) * ( 1.0 / 9.0 );
 		#else
 			return texture3DCompare( shadowMap, bd3D, dp );
-		#endif
+		#endif*/
 	}
 #endif
 
@@ -637,7 +664,7 @@ material.specularStrength = specularStrength;
 
 GeometricContext geometry;
 
-geometry.position = - vViewPosition;
+geometry.position = vWorldPosition;
 geometry.normal = normal;
 geometry.viewDir = normalize( vViewPosition );
 
@@ -654,7 +681,7 @@ IncidentLight directLight;
 		getPointDirectLightIrradiance( pointLight, geometry, directLight );
 
 		#ifdef USE_SHADOWMAP
-		directLight.color *= all( bvec2( pointLight.shadow, directLight.visible ) ) ? getPointShadow( pointShadowMap[ i ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, vPointShadowCoord[ i ],pointLight.shadowCameraNear,pointLight.shadowCameraFar) : 1.0;
+		directLight.color *= all( bvec2( pointLight.shadow, directLight.visible ) ) ? getPointShadow( pointShadowMap[ i ], pointLight.position, pointLight.shadowBias, pointLight.shadowRadius, pointLight.shadowCameraFar) : 1.0;
 		#endif
 
 		RE_Direct( directLight, geometry, material, reflectedLight );
@@ -808,9 +835,9 @@ IncidentLight directLight;
 
 	gl_FragColor = vec4( outgoingLight, diffuseColor.a );
 	
-	//float a = getPointShadow( pointShadowMap[ 0 ], pointLight.shadowMapSize, pointLight.shadowBias, pointLight.shadowRadius, //vPointShadowCoord[ 0 ],pointLight.shadowCameraNear,pointLight.shadowCameraFar) ;
+	//float a =getPointShadow( pointShadowMap[ 0 ], pointLight.position, pointLight.shadowBias, pointLight.shadowRadius, //pointLight.shadowCameraFar);
 	
-	//gl_FragColor = vec4(directLight.color,1.0);
+	//gl_FragColor = vec4(a,0.0,0.0,1.0);
 
   //gl_FragColor = linearToOutputTexel( gl_FragColor );
 

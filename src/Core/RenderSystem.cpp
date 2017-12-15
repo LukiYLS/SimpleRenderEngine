@@ -19,7 +19,8 @@ namespace SRE {
 		_scene = (Scene::ptr)scene;
 		_camera = (Camera::ptr)camera;
 		_isProjected = false;
-		_shadowShader = NULL;
+		_shadowDepth = NULL;
+		_cubeShadowDepth = NULL;
 		//注册鼠标键盘事件，放在哪里？
 		CameraControl::ptr cc = make_shared<CameraControl>(camera);
 		EventManager::Inst()->registerReceiver("mouse.event", cc);
@@ -552,70 +553,40 @@ namespace SRE {
 			return;
 
 		//use for point light ,shit!!!
-		Vector3D cubeDirections[6] = { Vector3D(1, 0, 0),Vector3D(-1, 0, 0),Vector3D(0, 0, 1),
-			Vector3D(0, 0, -1),Vector3D(0, 1, 0),Vector3D(0, -1, 0) };
+		Vector3D cubeDirections[6] = { Vector3D(1, 0, 0),Vector3D(-1, 0, 0),Vector3D(0, 1, 0),
+			Vector3D(0, -1, 0),Vector3D(0, 0, 1),Vector3D(0, 0, -1) };
 
 		Vector3D cubeUps[6] = {
-			Vector3D(0, 1, 0), Vector3D(0, 1, 0), Vector3D(0, 1, 0),
-			Vector3D(0, 1, 0), Vector3D(0, 0, 1), Vector3D(0, 0, -1)
+			Vector3D(0, -1, 0), Vector3D(0, -1, 0), Vector3D(0, 0, 1),
+			Vector3D(0, 0, -1), Vector3D(0, -1, 0), Vector3D(0, -1, 0)
 		};
-
-		Vector4D cube2DViewPorts[6] = {
-			Vector4D(), Vector4D(), Vector4D(),
-			Vector4D(), Vector4D(), Vector4D()
-		};
-
-		// get shader,
-
-		if(_shadowShader==NULL)
-			_shadowShader = std::make_shared<Shader>("../../../src/Data/shader/shadowmapdepth.vs", "../../../src/Data/shader/shadowmapdepth.fs");
-
+		
+		Matrix4D cubeShadowMatrix[6];
+		if(_shadowDepth ==NULL)
+			_shadowDepth = std::make_shared<Shader>("../../../src/Data/shader/shadowmapdepth.vs", "../../../src/Data/shader/shadowmapdepth.fs");
+		if (_cubeShadowDepth == NULL)
+			_cubeShadowDepth = std::make_shared<Shader>("../../../src/Data/shader/pointshadowmapdepth.vs", "../../../src/Data/shader/pointshadowmapdepth.fs", "../../../src/Data/shader/pointshadowmapdepth.gs");
+		
 		Matrix4D shadowMatrix;
 
 		for (auto light : lights)
 		{
-			Light::LightType type = light->getType();
-			unsigned int faceCount = 1;
+			Light::LightType type = light->getType();			
 			Camera* shadowCamera = light->getShadowCamera();
 			Vector2D mapSize = light->getShadowMapSize();
 			Vector3D cameraPosition = light->getWorldPosition();
 			shadowCamera->setPosition(cameraPosition);
-			shadowCamera->lookAt(0.0, 0.0, 0.0);
+			shadowCamera->lookAt(0.0, 0.0, 0.0);//??
 			if (type == Light::PointLightType)
 			{				
-
-				float vpWidth = mapSize.x;
-				float vpHeight = mapSize.y;
-				// positive X
-				cube2DViewPorts[0] = Vector4D(vpWidth * 2, vpHeight, vpWidth, vpHeight);
-				// negative X
-				cube2DViewPorts[1] = Vector4D(0, vpHeight, vpWidth, vpHeight);
-				// positive Z
-				cube2DViewPorts[2] = Vector4D(vpWidth * 3, vpHeight, vpWidth, vpHeight);
-				// negative Z
-				cube2DViewPorts[3] = Vector4D(vpWidth, vpHeight, vpWidth, vpHeight);
-				// positive Y
-				cube2DViewPorts[4] = Vector4D(vpWidth * 3, 0, vpWidth, vpHeight);
-				// negative Y
-				cube2DViewPorts[5] = Vector4D(vpWidth, 0, vpWidth, vpHeight);
-
-				mapSize.x *= 4.0;
-				mapSize.y *= 2.0;
-
-				faceCount = 6;
-
-				//Vector3D position = light->getPosition();
-				//why no projection matrix,because point light shadow is 360 degree,
-				shadowMatrix = Matrix4D::makeTranslation(Vector3D(-cameraPosition.x, -cameraPosition.y, -cameraPosition.z));
+				for (int i = 0; i < 6; i++)
+				{
+					shadowCamera->lookAt(shadowCamera->getPosition(), shadowCamera->getPosition() + cubeDirections[i], cubeUps[i]);
+					cubeShadowMatrix[i] = shadowCamera->getProjectionMatrix()*shadowCamera->getViewMatrix();
+				}
+				
 			}
-			else{
-
-				/*tips: how to avoid shadow acne(because of resolution,one depth pixel correspoinding a region,so it show up
-				some fragmen greater than depth, and some fragment less than depth,so we can see stagger(交错) shadow),the method
-				is rise depth (add a bias value 0.0005)
-
-				*/
-				faceCount = 1;
+			else{				
 
 				Matrix4D matrix(
 					0.5, 0.0, 0.0, 0.0,
@@ -655,24 +626,35 @@ namespace SRE {
 
 			fb->bindForWriting();
 
-			for (int i = 0; i < faceCount; i++)
+			if (type == Light::PointLightType)
 			{
-				if (type == Light::PointLightType)
-				{
-					shadowCamera->lookAt(shadowCamera->getPosition(), shadowCamera->getPosition() + cubeDirections[i], cubeUps[i]);					
-					RenderState::setViewPort(cube2DViewPorts[i].x, cube2DViewPorts[i].y, cube2DViewPorts[i].z, cube2DViewPorts[i].w);
-				}
-
+				_cubeShadowDepth->use();
+				for (unsigned int i = 0; i < 6; ++i)
+					_cubeShadowDepth->setMat4(("shadowMatrices[" + std::to_string(i) + "]").c_str(), cubeShadowMatrix[i]);
+				_cubeShadowDepth->setVec3("lightPosition", light->getPosition());
+				PerspectiveCamera* pointCamera = (PerspectiveCamera*)shadowCamera;
+				_cubeShadowDepth->setFloat("farPlane", pointCamera->getFar());
 				for (auto mesh : meshs)
 				{
-					_shadowShader->use();
-					_shadowShader->setMat4("modelMatrix", mesh->getWorldMatrix());
-					_shadowShader->setMat4("viewMatrix", shadowCamera->getViewMatrix());
-					_shadowShader->setMat4("projectionMatrix", shadowCamera->getProjectionMatrix());
+					_cubeShadowDepth->use();
+					_cubeShadowDepth->setMat4("modelMatrix", mesh->getWorldMatrix());
 					mesh->drawPrimitive();
-				}				
+				}		
 
 			}
+			else
+			{
+				for (auto mesh : meshs)
+				{
+					_shadowDepth->use();
+					_shadowDepth->setMat4("modelMatrix", mesh->getWorldMatrix());
+					_shadowDepth->setMat4("viewMatrix", shadowCamera->getViewMatrix());
+					_shadowDepth->setMat4("projectionMatrix", shadowCamera->getProjectionMatrix());
+					mesh->drawPrimitive();
+				}
+			}				
+
+			
 		}
 		
 	}

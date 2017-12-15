@@ -35,7 +35,8 @@ namespace SRE {
 		std::string _light_num_define;
 		bool _isProjected;
 
-		Shader::ptr _shadowShader;
+		Shader::ptr _shadowDepth;
+		Shader::ptr _cubeShadowDepth;
 	};
 }
 

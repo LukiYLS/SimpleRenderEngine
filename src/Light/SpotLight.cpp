@@ -51,4 +51,33 @@ namespace SRE {
 
 		
 	}
+
+	void SpotLight::uploadShadow(Shader* shader, unsigned int& currectTextureUnit)
+	{
+		std::stringstream ss;
+		std::string number;
+		ss << _number;
+		ss >> number;
+		std::string uniform_name_matrix = "spotShadowMatrix[]";
+		if (_number < 10)
+			uniform_name_matrix.insert(17, number, 0, 1);
+		else
+			uniform_name_matrix.insert(17, number, 0, 2);
+
+		shader->use();
+
+		Matrix4D shadowMatrix = _shadowMatrix;
+		shader->setMat4(uniform_name_matrix.c_str(), shadowMatrix);
+
+		std::string uniform_name_map = "spotShadowMap[]";
+		if (_number < 10)
+			uniform_name_map.insert(14, number, 0, 1);
+		else
+			uniform_name_map.insert(14, number, 0, 2);
+		shader->setInt(uniform_name_map.c_str(), currectTextureUnit);
+		//FrameBuffer::ptr fbo = _shadowFB;
+		if (_shadowFB != NULL)
+			_shadowFB->bindForReading(currectTextureUnit);
+		++currectTextureUnit;
+	}
 }

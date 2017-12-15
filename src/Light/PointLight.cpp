@@ -62,16 +62,16 @@ namespace SRE {
 		std::string number;
 		ss << _number;
 		ss >> number;
-		std::string uniform_name_matrix = "pointShadowMatrix[]";
+		/*std::string uniform_name_matrix = "pointShadowMatrix[]";
 		if (_number < 10)
 			uniform_name_matrix.insert(18, number, 0, 1);
 		else
-			uniform_name_matrix.insert(18, number, 0, 2);
+			uniform_name_matrix.insert(18, number, 0, 2);*/
 
 		shader->use();
 
-		Matrix4D shadowMatrix = _shadowMatrix;
-		shader->setMat4(uniform_name_matrix.c_str(), shadowMatrix);
+		/*Matrix4D shadowMatrix = _shadowMatrix;
+		shader->setMat4(uniform_name_matrix.c_str(), shadowMatrix);*/
 
 		std::string uniform_name_map = "pointShadowMap[]";
 		if (_number < 10)

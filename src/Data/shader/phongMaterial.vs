@@ -17,6 +17,7 @@ layout (location = 4)in vec2 uv2;
 
 #define PHONG
 varying vec3 vViewPosition;
+varying vec3 vWorldPosition;
 #ifndef FLAT_SHADED
 	varying vec3 vNormal;
 #endif
@@ -69,8 +70,8 @@ vec3 inverseTransformDirection( in vec3 dir, in mat4 matrix ) {
 		varying vec4 vSpotShadowCoord[ NUM_SPOT_LIGHTS ];
 	#endif
 	#if NUM_POINT_LIGHTS > 0
-		uniform mat4 pointShadowMatrix[ NUM_POINT_LIGHTS ];
-		varying vec4 vPointShadowCoord[ NUM_POINT_LIGHTS ];
+		//uniform mat4 pointShadowMatrix[ NUM_POINT_LIGHTS ];
+		//varying vec4 vPointShadowCoord[ NUM_POINT_LIGHTS ];
 	#endif
 #endif
 
@@ -107,13 +108,16 @@ vec3 transformed = vec3( position );
 #endif
 
 vec4 mvPosition = modelMatrix * vec4( transformed, 1.0 );
+vWorldPosition = mvPosition.xyz;
+vec4 viewPosition = modelMatrix * viewMatrix * vec4( transformed, 1.0 );
+vViewPosition = -viewPosition.xyz;
 gl_Position = projectionMatrix * viewMatrix * mvPosition;
 
 //#if NUM_CLIPPING_PLANES > 0 && ! defined( PHYSICAL ) && ! defined( PHONG )
-//	vViewPosition = - mvPosition.xyz;
+//	vViewPosition =  mvPosition.xyz;
 //#endif
 
-	vViewPosition = - mvPosition.xyz;
+//vViewPosition =  mvPosition.xyz;
 #if defined( USE_ENVMAP ) || defined( DISTANCE ) || defined ( USE_SHADOWMAP )
 	vec4 worldPosition = modelMatrix * vec4( transformed, 1.0 );
 #endif
@@ -158,7 +162,7 @@ gl_Position = projectionMatrix * viewMatrix * mvPosition;
 
 	for ( int i = 0; i < NUM_POINT_LIGHTS; i ++ ) {
 
-		vPointShadowCoord[ i ] = pointShadowMatrix[ i ] * worldPosition;
+		//vPointShadowCoord[ i ] = pointShadowMatrix[ i ] * worldPosition;
 
 	}
 

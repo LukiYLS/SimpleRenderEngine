@@ -80,11 +80,12 @@ namespace SRE {
 		:_width(width),
 		_height(height)
 	{
+		glGenFramebuffers(1, &_fbo); 
 		glGenTextures(1, &_texture);
 		glBindTexture(GL_TEXTURE_CUBE_MAP, _texture);
 		GLenum gltype = FrameBuffer::getGLtype(type);
 		for (unsigned int i = 0; i < 6; ++i)
-			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, gltype, width, height, 0, gltype, GL_FLOAT, NULL);
+			glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GL_DEPTH_COMPONENT, width, height, 0, GL_DEPTH_COMPONENT, GL_FLOAT, NULL);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
@@ -95,7 +96,7 @@ namespace SRE {
 		float borderColor[] = { 1.0, 1.0, 1.0, 1.0 };
 		glTexParameterfv(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_BORDER_COLOR, borderColor);
 		glBindFramebuffer(GL_FRAMEBUFFER, _fbo);
-		glFramebufferTexture(GL_FRAMEBUFFER, FrameBuffer::getGLAttach(type), _texture, 0);
+		glFramebufferTexture(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, _texture, 0);
 		glDrawBuffer(GL_NONE);
 		glReadBuffer(GL_NONE);
 		glBindFramebuffer(GL_FRAMEBUFFER, 0);

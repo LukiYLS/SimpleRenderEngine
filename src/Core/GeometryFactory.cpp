@@ -8,6 +8,53 @@ namespace SRE {
 	Mesh* GeometryFactory::MakeQuad(int width, int height)
 	{
 		Mesh* mesh = new Mesh;
+
+		VertexData* vertexdata = new VertexData;
+		vertexdata->setVertexStart(0);
+		vertexdata->setVertexCount(4);
+		VertexDeclaration::ptr vd = vertexdata->getVertexDeclaration();
+		VertexBufferBinding::ptr bind = vertexdata->getVertexBufferBinding();
+		size_t offset = 0;
+		VertexElement::ptr tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_POSITION);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
+
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_NORMAL);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
+
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
+		offset += tmp_ve->getTypeSize(VET_FLOAT2);
+
+		char* data = (char*)malloc(sizeof(char)*vd->getVertexSize(0) * 4);
+
+		float halfWidth = width / 2.0, halfHeight = height / 2.0;
+
+		float vertices[32] = {
+			-halfWidth, 0.0, halfHeight, 0.0, 1.0, 0.0, 0.0, 0.0,
+			halfWidth, 0.0, halfHeight, 0.0, 1.0, 0.0, 0.0, 1.0,
+			-halfWidth, 0.0, -halfHeight, 0.0, 1.0, 0.0, 1.0, 0.0,
+			halfWidth, 0.0, -halfHeight, 0.0, 1.0, 0.0, 1.0, 1.0
+		};
+
+		HardwareVertexBuffer* buffer = new HardwareVertexBuffer(offset, 4, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		bind->setBinding(0, (HardwareVertexBuffer::ptr)buffer);
+		buffer->writeData(0, buffer->getSizeInBytes(), vertices);
+
+		IndexData* indexdata = new IndexData;
+		indexdata->setIndexStart(0);
+		indexdata->setIndexCount(6);
+		HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, 6, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		indexdata->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
+
+		unsigned short faces[36] = {
+
+			0,1,2,
+			2,1,3,
+		};
+
+		index_buffer->writeData(0, index_buffer->getSizeInBytes(), faces);
+
+		mesh->setVertexData((VertexData::ptr)vertexdata);
+		mesh->setIndexData((IndexData::ptr)indexdata);
 		return mesh;
 	}
 
