@@ -12,6 +12,15 @@ namespace SRE {
 	{
 		glViewport(x, y, width, height);
 	}
+	void RenderState::init()
+	{
+		glEnable(GL_CULL_FACE);
+		glDisable(GL_BLEND);
+		glEnable(GL_DEPTH_TEST);
+		glDepthFunc(LessEqualDepth);
+		glDepthMask(true);
+		glColorMask(true, true, true, true);
+	}
 	void RenderState::setMaterial(Material::ptr material)
 	{
 		CullFaceMode cfm = material->getCullFaceMode();

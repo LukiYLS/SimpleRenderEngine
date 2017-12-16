@@ -63,12 +63,12 @@ namespace SRE {
 		void loadImage(Image::ptr image);
 		void loadImages(std::vector<Image::ptr> images);
 		void upLoad();
-		
+		HardwareTextureBuffer::ptr getBuffer(size_t face, size_t mipmap);
 	protected:
 		
 		void createInternalResources();
 		void freeInternalResources();
-		HardwareTextureBuffer::ptr getBuffer(size_t face, size_t mipmap);
+		
 
 		std::string _name;
 		unsigned int _numMipMaps;
@@ -82,6 +82,7 @@ namespace SRE {
 		bool _isAlpha;
 		bool _autoGenerateMipMap;
 		TextureType _textureType;
+		bool _resourceCreated;
 	};
 }
 

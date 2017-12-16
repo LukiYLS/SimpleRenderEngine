@@ -128,7 +128,7 @@ namespace SRE {
 		/// Get this layer texture anisotropy level.
 		unsigned int getTextureAnisotropy() const;
 
-	//	Matrix3D getUvTransfrom()const { return _uvTransform; }
+///		Matrix3D getUvTransfrom()const { return _uvTransform; }
 
 	protected:
 		ColorValue _borderColour;
@@ -153,7 +153,7 @@ namespace SRE {
 		Texture::ptr _texture;
 		std::vector<Texture::ptr> _frameTextures;
 
-	//	Matrix3D _uvTransform;
+//		Matrix3D _uvTransform;
 
 	};
 }

@@ -1,5 +1,5 @@
 #include "TerrianTile.h"
-#include <FreeImage.h>
+#include "TextureManager.h"
 namespace SRE {
 
 	TerrianTile::TerrianTile()
@@ -23,45 +23,62 @@ namespace SRE {
 	}
 	void TerrianTile::loadFromHeightMap(const char* fileName)
 	{
-		FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
-		FIBITMAP *dib(0);
+		Texture::ptr texture = TextureManager::Inst()->loadTexture("heightmap", fileName);
 
-		fif = FreeImage_GetFileType(fileName, 0);
+		_width = texture->getWidth();
+		_height = texture->getHeight();
 
-		if (fif == FIF_UNKNOWN)
-			fif = FreeImage_GetFIFFromFilename(fileName);
+		HardwareTextureBuffer::ptr buffer = texture->getBuffer(0, 0);		
+		float* data = static_cast<float*>(buffer->lock(HardwareBuffer::HBL_READ_ONLY));
 
-		if (fif == FIF_UNKNOWN)
-			return;
-
-
-		if (FreeImage_FIFSupportsReading(fif))
-			dib = FreeImage_Load(fif, fileName);
-
-		if (!dib)
-			return;
-
-		dib = FreeImage_ConvertTo24Bits(dib);
-
-		//BYTE *pixels = (BYTE*)FreeImage_GetBits(dib);
-
-		_width = FreeImage_GetWidth(dib);
-		_height = FreeImage_GetHeight(dib);
-
-		if ((_width == 0) || (_height == 0))
-			return;
-		generateVertex();
-		int byteIndex = 0;
-		for (unsigned int i = 0; i < _height; i++)
+		_data = new float[_width * _height];
+		for (int i = 0; i < _height; i++)
 		{
-			for (unsigned int j = 0; j < _width; j++)
+			for (int j = 0; j < _width; j++)
 			{
-				RGBQUAD color;
-				FreeImage_GetPixelColor(dib, j, i, &color);
-				_vertices[i*_width + j].position_y = color.rgbGreen * 256.0f;
+				*_data++ = *data++;
+				data += 2;
 			}
-			
 		}
+		//FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
+		//FIBITMAP *dib(0);
+
+		//fif = FreeImage_GetFileType(fileName, 0);
+
+		//if (fif == FIF_UNKNOWN)
+		//	fif = FreeImage_GetFIFFromFilename(fileName);
+
+		//if (fif == FIF_UNKNOWN)
+		//	return;
+
+
+		//if (FreeImage_FIFSupportsReading(fif))
+		//	dib = FreeImage_Load(fif, fileName);
+
+		//if (!dib)
+		//	return;
+
+		//dib = FreeImage_ConvertTo24Bits(dib);
+
+		////BYTE *pixels = (BYTE*)FreeImage_GetBits(dib);
+
+		//_width = FreeImage_GetWidth(dib);
+		//_height = FreeImage_GetHeight(dib);
+
+		//if ((_width == 0) || (_height == 0))
+		//	return;
+		//generateVertex();
+		//int byteIndex = 0;
+		//for (unsigned int i = 0; i < _height; i++)
+		//{
+		//	for (unsigned int j = 0; j < _width; j++)
+		//	{
+		//		RGBQUAD color;
+		//		FreeImage_GetPixelColor(dib, j, i, &color);
+		//		_vertices[i*_width + j].position_y = color.rgbGreen * 256.0f;
+		//	}
+		//	
+		//}
 
 
 	}

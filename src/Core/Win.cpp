@@ -184,6 +184,7 @@ namespace SRE {
 	{
 		
 		glViewport(0, 0, width, height);
+
 	}
 	void Win::processInput()
 	{

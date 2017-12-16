@@ -21,7 +21,7 @@ namespace SRE {
 		_isProjected = false;
 		_shadowDepth = NULL;
 		_cubeShadowDepth = NULL;
-		//注册鼠标键盘事件，放在哪里？
+		//
 		CameraControl::ptr cc = make_shared<CameraControl>(camera);
 		EventManager::Inst()->registerReceiver("mouse.event", cc);
 		EventManager::Inst()->registerReceiver("keyboard.event", cc);
@@ -41,6 +41,7 @@ namespace SRE {
 		glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		glEnable(GL_DEPTH_TEST);
+		RenderState::init();
 	}
 	/*
 	true render
@@ -78,6 +79,8 @@ namespace SRE {
 		////sort();
 
 		//start render
+		
+		//glDepthFunc(GL_LEQUAL);
 		Skybox::ptr skybox = _scene->getSkybox();
 		if (skybox)
 			skybox->render(_camera.get());
@@ -85,13 +88,15 @@ namespace SRE {
 		{
 			//clear color
 		}
-
+		//glDepthFunc(GL_LESS);
 		if (_opaqueMehss.size()>0) renderMeshs(_opaqueMehss);
 
 		// transparent pass (back-to-front order)
 
 		if (_transparentMeshs.size()>0) renderMeshs(_transparentMeshs);
 		//_scene->render(_camera.get());
+
+		
 	}
 	/*
 	uniform need?
@@ -109,6 +114,7 @@ namespace SRE {
 			Vector3D color = light->getColor();
 			float intensity = light->getIntensity();
 			Light::LightType type = light->getType();
+			Vector3D target = light->getLightTarget();
 			if (type == Light::AmbientLightType)
 			{
 
@@ -121,9 +127,8 @@ namespace SRE {
 				//Vector3D direction = dir->getDirection();
 				
 				Vector3D position = directionLight->getWorldPosition();
-				Vector3D direction =  position - Vector3D(0.0);//default target(0,0,0)
+				Vector3D direction =  position - target ;//default target(0,0,0)
 				direction.normalize();
-
 				uniform_dir.direction = direction;
 				uniform_dir.color = color * intensity;
 				bool castShadow = directionLight->getCastShadow();
@@ -131,9 +136,7 @@ namespace SRE {
 				//no nead
 				uniform_dir.shadowBias = light->getShadowBias();
 				uniform_dir.shadowRadius = light->getShadowRadius();
-				uniform_dir.shadowMapSize = light->getShadowMapSize();
-
-				
+				uniform_dir.shadowMapSize = light->getShadowMapSize();				
 
 				directionLight->setNumber(numDirectionLight);
 				directionLight->setUniform(uniform_dir);
@@ -167,7 +170,7 @@ namespace SRE {
 				SpotLightUniform uniform_spot;
 
 				Vector3D position = spotLight->getWorldPosition();
-				Vector3D direction = position - Vector3D(0.0);//default target(0,0,0)
+				Vector3D direction = position - target;//default target(0,0,0)
 				direction.normalize();
 				uniform_spot.direction = direction;
 				uniform_spot.distance = spotLight->getDistance();
@@ -231,6 +234,7 @@ namespace SRE {
 			shader->setMat4("viewMatrix", _camera->getViewMatrix());
 			shader->setMat4("projectionMatrix", _camera->getProjectionMatrix());
 			//set uniform
+			shader->uplaod();
 			return;
 		}
 		

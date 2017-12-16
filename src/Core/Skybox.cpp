@@ -1,10 +1,13 @@
 #include "Skybox.h"
 #include "Shader.h"
 #include "GeometryFactory.h"
-#include <glew\glew.h>
-#include <FreeImage.h>
-namespace SRE {
 
+namespace SRE {
+	Skybox::Skybox()
+	{
+		_skyboxShader = std::make_shared<Shader>("../../../src/Data/shader/skybox.vs", "../../../src/Data/shader/skybox.fs");
+		_skybox = (Mesh::ptr)GeometryFactory::MakeBox(1.0, 1.0, 1.0);
+	}
 	Skybox::Skybox(std::vector<std::string> fileNames)
 	{		
 		/*glGenTextures(1, &_textureID);
@@ -51,6 +54,15 @@ namespace SRE {
 
 	void Skybox::render(Camera* camera)
 	{
+		_skyboxShader->use();
+		_skyboxShader->setMat3("viewRotation", camera->getViewMatrix().getMatrix3x3());
+		_skyboxShader->setMat4("projection", camera->getProjectionMatrix());
+		_cubeMap->bindTextureUnit(0);
+		_skyboxShader->setInt("skybox", 0);
+		glDisable(GL_CULL_FACE);
+		_skybox->drawPrimitive();
+		//glEnable(GL_CULL_FACE);
+		_skyboxShader->unUse();
 //		Shader::ptr skybox = std::make_shared<Shader>("../../../src/Data/shader/skybox.vs", "../../../src/Data/shader/skybox.fs");
 //		Mesh::ptr mesh = (Mesh::ptr)GeometryFactory::MakeBox(1.0, 1.0, 1.0);
 

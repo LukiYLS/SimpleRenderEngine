@@ -132,7 +132,7 @@
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp" />
     <ClCompile Include="..\..\..\src\Core\TextureUnitState.cpp" />
     <ClCompile Include="..\..\..\src\Core\Win.cpp" />
-    <ClCompile Include="..\..\..\src\Example\test.cpp" />
+    <ClCompile Include="..\..\..\src\Example\v1.0Test.cpp" />
     <ClCompile Include="..\..\..\src\Light\DirectionLight.cpp" />
     <ClCompile Include="..\..\..\src\Light\PointLight.cpp" />
     <ClCompile Include="..\..\..\src\Light\SpotLight.cpp" />

@@ -31,7 +31,7 @@ namespace SRE {
 		virtual Matrix4D getProjectionMatrix() const { return Matrix4D::makeIdentity(); }	
 		void setViewPort(ViewPort::ptr vp) { _view_port = vp; }
 		ViewPort::ptr getViewPort() { return _view_port; }
-
+		
 		//virtual CameraType getType() { return type; }
 		//for mouse and keyboard control
 	public:

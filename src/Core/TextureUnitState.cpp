@@ -11,6 +11,7 @@ namespace SRE {
 		
 	{
 			_addressMode.u = _addressMode.v = _addressMode.w = TAM_WRAP;
+
 	}
 	TextureUnitState::~TextureUnitState()
 	{

@@ -42,7 +42,7 @@ namespace SRE {
 		_textures[tex_name] = texture;
 		return texture;
 	}
-	Texture::ptr TextureManager::loadCubeMap(std::string tex_name, std::vector<const char*> files)
+	Texture::ptr TextureManager::loadCubeMap(const char* tex_name, std::vector<std::string> files)
 	{
 		//Texture* texture = new Texture(tex_name, TEX_TYPE_CUBE_MAP);
 		std::vector<Image::ptr> images;

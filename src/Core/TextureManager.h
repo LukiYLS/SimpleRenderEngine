@@ -17,7 +17,7 @@ namespace SRE {
 		virtual ~TextureManager();
 	
 		Texture::ptr loadTexture(std::string tex_name, const char* file_name, TextureType type = TEX_TYPE_2D);
-		Texture::ptr loadCubeMap(std::string tex_name, std::vector<const char*> flies);
+		Texture::ptr loadCubeMap(const char* tex_name, std::vector<std::string> files);
 		Texture::ptr getTexture(const std::string& tex_name);
 		//bool loadTexture(const char* filename, const std::string texName, GLenum image_format = GL_RGB, GLint internal_format = GL_RGB, GLint level = 0, GLint border = 0);
 		//bool loadCubeMap(std::vector<const char*> flies);

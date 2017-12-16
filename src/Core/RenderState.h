@@ -24,10 +24,11 @@ namespace SRE {
 		void setStencilFunc(CompareFunc func) { stencilFunc = func; }
 		void setCullFace(CullFaceMode face);
 		void setBlendingFunc();
-		void init();	
-
+		//void init();	
+//		static void disable(StateList state) { glDisable(state); }
 		static void setViewPort(int x, int y, int width, int height);
 		static void setMaterial(Material::ptr material);
+		static void init();
 		static void reset();
 		static void setBlending();
 		//static void setDepthFunc(CompareFunc func);

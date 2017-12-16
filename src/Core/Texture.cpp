@@ -11,7 +11,8 @@ namespace SRE {
 		_height(0),
 		_depth(0),
 		_isAlpha(false),
-		_textureType(type)
+		_textureType(type),
+		_resourceCreated(false)
 	{
 
 	}
@@ -111,10 +112,8 @@ namespace SRE {
 				height = height / 2;
 			if (depth > 1)
 				depth = depth / 2;
-		}
-
+		}	
 		createInternalResources();
-
 
 		
 	}
@@ -159,16 +158,18 @@ namespace SRE {
 	}
 	void Texture::createInternalResources()
 	{
+		if (_resourceCreated)return;
 		GLenum target = getTextureTarget();
 		glGenTextures(1, &_textureID);
 		glBindTexture(target, _textureID);
 
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_BASE_LEVEL, 0);
-		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAX_LEVEL, _numMipMaps);
+		glTexParameteri(target, GL_TEXTURE_BASE_LEVEL, 0);
+		glTexParameteri(target, GL_TEXTURE_MAX_LEVEL, _numMipMaps);
 		glTexParameteri(target, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
 		glTexParameteri(target, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
 		glTexParameteri(target, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
 		glTexParameteri(target, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+		glTexParameteri(target, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
 		unsigned width = _width;
 		unsigned height = _height;
@@ -211,6 +212,7 @@ namespace SRE {
 				case TEX_TYPE_2D_RECT:
 					break;
 				};
+				if (_autoGenerateMipMap)break;
 				if (width>1)
 					width = width / 2;
 				if (height>1)
@@ -220,7 +222,7 @@ namespace SRE {
 			}
 		}
 
-		
+		_resourceCreated = true;
 	}
 	void Texture::freeInternalResources()
 	{
@@ -246,7 +248,7 @@ namespace SRE {
 	void Texture::bindTextureUnit(unsigned int unit)
 	{
 		glActiveTexture(GL_TEXTURE0 + unit);
-		glBindTexture(GL_TEXTURE_2D, _textureID);
+		glBindTexture(getTextureTarget(), _textureID);
 	}
 	//void Texture::setFiltering(int magnification, int minification)
 	//{

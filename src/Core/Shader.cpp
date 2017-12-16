@@ -184,9 +184,10 @@ namespace SRE {
 	{
 		for (auto uniform : _uniforms)
 		{
-			const char* name = uniform.getName();
+			/*const char* name = uniform.getName();
 			AnyValue value = uniform.getValue();
-			ValueType type = uniform.getType();
+			ValueType type = uniform.getType();*/
+			uploadUniform(uniform);
 		}
 	}
 	void Shader::setMat4(const char* name, const Matrix4D& value)const

@@ -77,13 +77,25 @@ Scene::ptr createScene()
 	root->add(box3);
 	root->add(sphere);
 
-	//root->add(dlight);
+	root->add(dlight);
 	root->add(plight);
-	//root->add(spotlight);
+	root->add(spotlight);
 	scene->setSceneRoot(root);
 	scene->setUseShadowMap(true);
 
 	return scene;
+}
+Texture::ptr loadSkybox()
+{
+	std::string path = "../../../src/Data/texture/skybox2/";
+	std::vector<std::string> skyboxfile = {	path + "right.tga",
+		path + "left.tga",
+		path + "top.tga",
+		path + "bottom.tga",
+		path + "back.tga",
+		path + "front.tga"};
+	Texture::ptr skybox = TextureManager::Inst()->loadCubeMap("skybox", skyboxfile);
+	return skybox;
 }
 void main()
 {
@@ -91,8 +103,12 @@ void main()
 	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(65.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1, 500.0);
 	camera->setPosition(Vector3D(0.0f, 50.0f, -50.0));
 	camera->lookAt(0.0, 0.0, 0.0);
-
+	TerrianTile* tt = new TerrianTile();
+	tt->loadFromHeightMap("../../../src/Data/texture/HeightMap.jpg");
 	Scene::ptr scene = createScene();
+	Skybox* skybox = new Skybox;
+	skybox->setTexture(loadSkybox());
+	scene->setSkybox((Skybox::ptr)skybox);
 	RenderSystem *rs = new RenderSystem(scene.get(), camera.get());
 	Win::getSingleton()->loadRenderSystem(rs);
 	Win::getSingleton()->startRenderLoop();

@@ -49,7 +49,8 @@ namespace SRE {
 	protected:
 		int _width, _height;		
 		Code _code;
-		BoundingSphere _bounding_shpere;	
+		BoundingSphere _bounding_shpere;
+		float *_data;
 		//TerrianTile * _child[4];
 	};
 	

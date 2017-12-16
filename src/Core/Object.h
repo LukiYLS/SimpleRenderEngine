@@ -28,9 +28,6 @@ namespace SRE {
 		virtual Light* asLight() { return NULL; }
 		virtual const Light* asLight() const { return NULL; }
 
-		//virtual Plugin* asPlugin() { return 0; }
-		//virtual const Plugin* asPlugin() const { return 0; }
-
 		virtual Sprite* asSprite() { return NULL; }
 		virtual const Sprite* asSprite() const { return NULL; }
 

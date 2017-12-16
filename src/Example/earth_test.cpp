@@ -4,7 +4,8 @@
 #define radius 6378137.f
 Mesh* createSphere()
 {
-	Mesh* mesh = GeometryFactory::MakeSphereOld(1.025*radius, 128, 64);
+	Mesh* mesh = GeometryFactory::MakeSphere(1.025*radius, 128, 64);
+
 //	mesh->addTexture("earth");
 //	mesh->addRenderPass("atmosphere");
 //	mesh->addRenderPass("earth");
@@ -19,7 +20,7 @@ Scene::ptr createScene()
 	Object::ptr root = make_shared<Object>();
 	Mesh* mesh = createSphere();
 
-	Mesh* mesh1 = GeometryFactory::MakeSphereOld(radius, 128, 64);
+	Mesh* mesh1 = GeometryFactory::MakeSphere(radius, 128, 64);
 	mesh1->addTexture("earth");
 	mesh1->addTexture("cloud");
 	mesh1->addTexture("light");

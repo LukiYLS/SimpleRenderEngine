@@ -16,6 +16,7 @@
 #include "../Light/DirectionLight.h"
 #include "../Light/PointLight.h"
 #include "../Light/SpotLight.h"
+#include "../Core/TerrianTile.h"
 #include <vector>
 #include <iostream>
 #include <string>
