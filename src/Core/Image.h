@@ -38,7 +38,7 @@ namespace SRE {
 		
 		size_t rowSpan(void) const { return _width*_pixelSize; }
 	
-		unsigned char BPP() const { return _pixelSize * 8; }
+		unsigned char BPP() const { return	_bpp /*_pixelSize * 8*/; }
 	
 		//bool getHasAlpha() const;		
 	
@@ -64,6 +64,6 @@ namespace SRE {
 		unsigned char* _buffer;
 		PixelFormat _pixelFormat;
 		//std::string _type;
-
+		unsigned _bpp;
 	};
 }

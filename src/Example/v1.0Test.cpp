@@ -8,7 +8,7 @@ Scene::ptr createScene()
 	Scene::ptr scene = std::make_shared<Scene>();
 
 	//texture
-	Texture::ptr earthTex = TextureManager::Inst()->loadTexture("earth", "../../../src/Data/texture/earthmap.jpg");
+	Texture::ptr earthTex = TextureManager::Inst()->loadTexture("earth", "../../../src/Data/texture/grass.jpg");
 	Texture::ptr boxTex = TextureManager::Inst()->loadTexture("cloud", "../../../src/Data/texture/box.jpg");
 	Texture::ptr floorTex = TextureManager::Inst()->loadTexture("earth", "../../../src/Data/texture/floor.jpg");
 
@@ -71,15 +71,21 @@ Scene::ptr createScene()
 	spotlight->setPenumbra(0.05);
 	spotlight->setShadowCamera(new PerspectiveCamera(MathHelper::radian(50.0), 1.0, 1.0, 200.0));
 
-	root->add(floor);
-	root->add(box1);
-	root->add(box2);
-	root->add(box3);
-	root->add(sphere);
+	//root->add(floor);
+	//root->add(box1);
+	//root->add(box2);
+	//root->add(box3);
+	//root->add(sphere);
 
 	root->add(dlight);
-	root->add(plight);
-	root->add(spotlight);
+	//root->add(plight);
+	//root->add(spotlight);
+
+	TerrianTile* tt = new TerrianTile();
+	//Mesh* mesh = tt->createFromRandomHeght(32, 32);
+	Mesh* mesh = tt->createMeshFromHeightmap("../../../src/Data/texture/terrain1.jpg");
+	root->add(mesh);
+	mesh->setMaterial(earthMat);
 	scene->setSceneRoot(root);
 	scene->setUseShadowMap(true);
 
@@ -101,14 +107,13 @@ void main()
 {
 	Win::getSingleton()->create();	
 	PerspectiveCamera::ptr camera = make_shared<PerspectiveCamera>(MathHelper::radian(65.0), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1, 500.0);
-	camera->setPosition(Vector3D(0.0f, 50.0f, -50.0));
+	camera->setPosition(Vector3D(0.0f, 50.0f, -100.0));
 	camera->lookAt(0.0, 0.0, 0.0);
-	TerrianTile* tt = new TerrianTile();
-	tt->loadFromHeightMap("../../../src/Data/texture/HeightMap.jpg");
+	
 	Scene::ptr scene = createScene();
-	Skybox* skybox = new Skybox;
-	skybox->setTexture(loadSkybox());
-	scene->setSkybox((Skybox::ptr)skybox);
+	//Skybox* skybox = new Skybox;
+	//skybox->setTexture(loadSkybox());
+	//scene->setSkybox((Skybox::ptr)skybox);
 	RenderSystem *rs = new RenderSystem(scene.get(), camera.get());
 	Win::getSingleton()->loadRenderSystem(rs);
 	Win::getSingleton()->startRenderLoop();

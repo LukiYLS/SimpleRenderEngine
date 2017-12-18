@@ -168,7 +168,7 @@ namespace SRE {
 
 		FREE_IMAGE_TYPE imageType = FreeImage_GetImageType(dib);
 		FREE_IMAGE_COLOR_TYPE colorType = FreeImage_GetColorType(dib);
-		unsigned bpp = FreeImage_GetBPP(dib);
+		_bpp = FreeImage_GetBPP(dib);
 
 		switch (imageType)
 		{
@@ -190,10 +190,10 @@ namespace SRE {
 				FreeImage_Unload(dib);
 				dib = newBitmap;
 				// get new formats
-				bpp = FreeImage_GetBPP(dib);
+				_bpp = FreeImage_GetBPP(dib);
 			}
 			// Perform any colour conversions for RGB
-			else if (bpp < 8 || colorType == FIC_PALETTE || colorType == FIC_CMYK)
+			else if (_bpp < 8 || colorType == FIC_PALETTE || colorType == FIC_CMYK)
 			{
 				FIBITMAP* newBitmap = NULL;
 				if (FreeImage_IsTransparent(dib))
@@ -212,11 +212,11 @@ namespace SRE {
 				FreeImage_Unload(dib);
 				dib = newBitmap;
 				// get new formats
-				bpp = FreeImage_GetBPP(dib);
+				_bpp = FreeImage_GetBPP(dib);
 			}
 
 			// by this stage, 8-bit is greyscale, 16/24/32 bit are RGB[A]
-			switch (bpp)
+			switch (_bpp)
 			{
 			case 8:
 				_pixelFormat = PF_L8;
@@ -282,6 +282,7 @@ namespace SRE {
 
 		BYTE* bits = FreeImage_GetBits(dib);
 		int bit_count = FreeImage_GetLine(dib)*_height;	
+		//_pixelSize = bit_count / (_width*_height);
 
 		_buffer = (unsigned char*)malloc(sizeof(char) * bit_count);
 		memcpy(_buffer, bits, sizeof(char) * bit_count);

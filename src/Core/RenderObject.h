@@ -104,6 +104,10 @@ namespace SRE {
 		/// A fan of triangles, 3 vertices for the first triangle, and 1 per triangle after that
 		TRIANGLE_FAN = 6
 	};
+	enum DataType{
+		GPU,
+		CPU
+	};
 
 
 	/**
@@ -125,12 +129,18 @@ namespace SRE {
 		void drawPrimitive();
 		void setVertexData(VertexData::ptr data) { _vertex_data = data; }
 		void setIndexData(IndexData::ptr data) { _index_data = data; }
+
+		void setVertexData(std::vector<Vertex> vertices) { _vertices = vertices; }
+		void setIndexData(std::vector<unsigned int> indices) { _indices = indices; }
+
+
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }	
 
 		bool isUseColor()const { return _useColor; }		
 
 		virtual void raycast(RayCaster* raycaster, AnyValue& intersects);
+	
 		void computeNormals();
 		void computeBoundingBox();
 		void computeBoundingSphere();
@@ -140,17 +150,22 @@ namespace SRE {
 
 	protected:		
 
+		void drawVertex();
+		void createBuffer();
+
 		PrimitiveType _type;
 		bool _isVisible, _useColor;
 		uint32_t _vao, _vbo, _ebo;
-		std::vector<Vertex> _vertices;
-		std::vector<uint32_t> _indices;
+	
 		BoundingBox::ptr _bbx;
 		BoundingSphere::ptr _sphere;
 
+		bool _bufferCreated;
 		VertexData::ptr _vertex_data;
 		IndexData::ptr  _index_data;
 
+		std::vector<Vertex> _vertices;
+		std::vector<unsigned int> _indices;
 	};
 }
 

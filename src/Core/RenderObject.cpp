@@ -6,78 +6,86 @@ namespace SRE {
 	RenderObject::RenderObject()
 	{
 		glGenVertexArrays(1, &_vao);
+		_bufferCreated = false;
 	}
-	//void RenderObject::createBuffer()
-	//{
-	//	glGenVertexArrays(1, &_vao);
-	//	glGenBuffers(1, &_vbo);
+	void RenderObject::createBuffer()
+	{
+		//glGenVertexArrays(1, &_vao);
+		glBindVertexArray(_vao);
+		glGenBuffers(1, &_vbo);
+		_bufferCreated = true;
+
+		
+		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+
+		glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(Vertex), &_vertices[0], GL_STATIC_DRAW);
+
+		if (!_indices.empty())
+		{
+			glGenBuffers(1, &_ebo);
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
+			glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(uint32_t), &_indices[0], GL_STATIC_DRAW);
+		}
 
 
-	//	glBindVertexArray(_vao);
-	//	glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+		glEnableVertexAttribArray(0);
+		glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), (void*)0);
 
-	//	glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(Vertex), &_vertices[0], GL_STATIC_DRAW);
+		glEnableVertexAttribArray(1);
+		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)12);
 
-	//	if (!_indices.empty())
-	//	{
-	//		glGenBuffers(1, &_ebo);
-	//		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-	//		glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(uint32_t), &_indices[0], GL_STATIC_DRAW);
-	//	}
+		glEnableVertexAttribArray(2);
+		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
 
+		glBindVertexArray(0);
+	}
 
-	//	glEnableVertexAttribArray(0);
-	//	glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), (void*)0);
-
-	//	glEnableVertexAttribArray(1);
-	//	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)12);
-
-	//	glEnableVertexAttribArray(2);
-	//	glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
-
-	//	glBindVertexArray(0);
-	//}
-
-	//void RenderObject::draw(Shader* shader)
-	//{
-	//	if (!_vao)createBuffer();
-	//	GLint prim_type;
-	//	switch (_type)
-	//	{
-	//	case POINT_LIST:
-	//		prim_type = GL_POINTS;
-	//		break;
-	//	case LINE_LIST:
-	//		prim_type = GL_LINES;
-	//		break;
-	//	case LINE_STRIP:
-	//		prim_type = GL_LINE_STRIP;
-	//		break;
-	//	case TRIANGLE_LIST:
-	//		prim_type = GL_TRIANGLES;
-	//		break;
-	//	case TRIANGLE_STRIP:
-	//		prim_type = GL_TRIANGLE_STRIP;
-	//		break;
-	//	case TRIANGLE_FAN:
-	//		prim_type = GL_TRIANGLE_FAN;
-	//		break;
-	//	default:
-	//		prim_type = GL_TRIANGLES;
-	//	}		
-	//	shader->use();
-	//	glBindVertexArray(_vao);
-	//	if (_indices.empty())
-	//		glDrawArrays(prim_type, 0, _vertices.size());
-	//	else
-	//		glDrawElements(prim_type, _indices.size(), GL_UNSIGNED_INT, 0);
-	//	glBindVertexArray(0);
-	//}
+	void RenderObject::drawVertex()
+	{
+		if(!_bufferCreated)createBuffer();
+		GLint prim_type;
+		switch (_type)
+		{
+		case POINT_LIST:
+			prim_type = GL_POINTS;
+			break;
+		case LINE_LIST:
+			prim_type = GL_LINES;
+			break;
+		case LINE_STRIP:
+			prim_type = GL_LINE_STRIP;
+			break;
+		case TRIANGLE_LIST:
+			prim_type = GL_TRIANGLES;
+			break;
+		case TRIANGLE_STRIP:
+			prim_type = GL_TRIANGLE_STRIP;
+			break;
+		case TRIANGLE_FAN:
+			prim_type = GL_TRIANGLE_FAN;
+			break;
+		default:
+			prim_type = GL_TRIANGLES;
+		}	
+		//glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		glBindVertexArray(_vao);
+		if (_indices.empty())
+			glDrawArrays(prim_type, 0, _vertices.size());
+		else
+			glDrawElements(prim_type, _indices.size(), GL_UNSIGNED_INT, 0);
+		glBindVertexArray(0);
+	}
 	void RenderObject::drawPrimitive()
 	{
+		//old way
+		if (_vertices.size() > 0)
+		{
+			drawVertex();
+			return;
+		}
+			
 		if (!_vertex_data)
 			return;
-
 		
 		glBindVertexArray(_vao);
 		VertexElementList elements = _vertex_data->getVertexDeclaration()->getElements();
@@ -183,6 +191,21 @@ namespace SRE {
 	}
 	void RenderObject::computeNormals()
 	{
+//		if (!_vertex_data)return;
+//		VertexElement::ptr element = _vertex_data->getVertexDeclaration()->findElementBySemantic(VES_NORMAL);
+//		size_t offset = element->getOffset();
+//		unsigned short source = element->getSource();
+//		HardwareVertexBuffer::ptr vertex_buffer = _vertex_data->getVertexBufferBinding()->getBuffer(source);
+//		float* pVertex = static_cast<float*>(vertex_buffer->lock(HardwareBuffer::HBL_NORMAL));
+//
+//		//HardwareIndexBuffer::ptr index_buffer = 
+//
+/////		std::map<unsigned int, Vector3D> normals;
+//		while (pVertex)
+//		{
+//			
+//		}
+		
 		if (_vertices.size() == 0)
 			return;
 		if (_indices.size() > 0)
@@ -198,11 +221,22 @@ namespace SRE {
 
 				Vector3D v12 = v1 - v2;
 				Vector3D v23 = v2 - v3;
-				Vector3D normal = v23.cross(v12);
+				Vector3D normal = v12.cross(v23);
 				normal.normalize();
-				_vertices[_indices[i]].setNormal(normal);
-				_vertices[_indices[i + 1]].setNormal(normal);
-				_vertices[_indices[i + 2]].setNormal(normal);
+				_vertices[_indices[i]].normal_x += normal.x;
+				_vertices[_indices[i]].normal_y += normal.y;
+				_vertices[_indices[i]].normal_z += normal.z;
+
+				_vertices[_indices[i + 1]].normal_x += normal.x;
+				_vertices[_indices[i + 1]].normal_y += normal.y;
+				_vertices[_indices[i + 1]].normal_z += normal.z;
+
+				_vertices[_indices[i + 2]].normal_x += normal.x;
+				_vertices[_indices[i + 2]].normal_y += normal.y;
+				_vertices[_indices[i + 2]].normal_z += normal.z;
+				//_vertices[_indices[i]].setNormal(normal);
+				//_vertices[_indices[i + 1]].setNormal(normal);
+				//_vertices[_indices[i + 2]].setNormal(normal);
 
 			}
 		}

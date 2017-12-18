@@ -3,7 +3,8 @@
 namespace SRE {
 
 	TerrianTile::TerrianTile()
-	{
+	:_blockScale(1.0),
+	_heightScale(1.0/10.0){
 		
 
 	}
@@ -11,35 +12,134 @@ namespace SRE {
 	{
 
 	}
-	void TerrianTile::createFromRandomHeght(int width, int height)
+	Mesh* TerrianTile::createFromRandomHeght(int width, int height)
 	{
 		_width = width;
 		_height = height;
 		generateVertex();
 		for (int i = 0; i < _width*_height; i++)
 		{
-			_vertices[i].position_y = (float)rand() / (float)RAND_MAX - 0.5f;
+			_vertices[i].position_y = rand() % 5;
 		}
+		Mesh* mesh = new Mesh;
+		mesh->setVertexData(_vertices);
+		mesh->setIndexData(_indices);
+		mesh->computeNormals();
+		return mesh;
 	}
-	void TerrianTile::loadFromHeightMap(const char* fileName)
-	{
-		Texture::ptr texture = TextureManager::Inst()->loadTexture("heightmap", fileName);
+	Mesh* TerrianTile::createMeshFromHeightmap(const char* fileName)
+	{		
+		Image* image = new Image;
+		image->load(fileName);
+		unsigned char* data = image->data();
+		unsigned char bpp = image->BPP();
+		_width = image->width();
+		_height = image->height();
+		std::vector<Vertex> vertices;
+		std::vector<unsigned int> indices;
 
-		_width = texture->getWidth();
-		_height = texture->getHeight();
+		/*unsigned int vertexCount = _width*_height;
 
-		HardwareTextureBuffer::ptr buffer = texture->getBuffer(0, 0);		
-		float* data = static_cast<float*>(buffer->lock(HardwareBuffer::HBL_READ_ONLY));
+		VertexData* vertexdata = new VertexData;
+		vertexdata->setVertexStart(0);
+		vertexdata->setVertexCount(vertexCount);
+		VertexDeclaration::ptr vd = vertexdata->getVertexDeclaration();
+		VertexBufferBinding::ptr bind = vertexdata->getVertexBufferBinding();
+		size_t offset = 0;
+		VertexElement::ptr tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_POSITION);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
 
-		_data = new float[_width * _height];
-		for (int i = 0; i < _height; i++)
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_NORMAL);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
+
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
+		offset += tmp_ve->getTypeSize(VET_FLOAT2);
+
+		HardwareVertexBuffer* vertex_buffer = new HardwareVertexBuffer(offset, vertexCount, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		bind->setBinding(0, (HardwareVertexBuffer::ptr)vertex_buffer);
+		float* pVertex = static_cast<float*>(vertex_buffer->lock(HardwareBuffer::HBL_DISCARD));*/
+
+		float terrainWidth = (_width - 1) * _blockScale;
+		float terrainHeight = (_height - 1) * _blockScale;
+		float halfTerrainWidth = terrainWidth * 0.5f;
+		float halfTerrainHeight = terrainHeight * 0.5f;
+		const unsigned int bytesPerPixel = bpp / 8;
+		for (unsigned int j = 0; j < _height; ++j)
 		{
-			for (int j = 0; j < _width; j++)
+			for (unsigned i = 0; i < _width; ++i)
 			{
-				*_data++ = *data++;
-				data += 2;
+				unsigned int index = (j * _width) + i;				
+				float heightValue = getHeightValue(&data[index * bytesPerPixel], bytesPerPixel);
+
+				float s = (i / (float)(_width - 1));
+				float t = (j / (float)(_height - 1));
+
+				float x = (s * terrainWidth) - halfTerrainWidth;
+				float y = heightValue * _heightScale;
+				float z = (t * terrainHeight) - halfTerrainHeight;
+
+				Vertex vertex;
+				vertex.position_x = x;
+				vertex.position_y = y;
+				vertex.position_z = z;
+				vertex.texcoord_x = s;
+				vertex.texcoord_y = t;
+				vertices.push_back(vertex);
+
 			}
 		}
+		/*const unsigned int numTriangles = (_width - 1) * (_height - 1) * 2;
+		unsigned int index_count = numTriangles * 3;
+		IndexData* indexdata = new IndexData;
+		indexdata->setIndexStart(0);
+		indexdata->setIndexCount(index_count);
+		HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, index_count, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		indexdata->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
+		unsigned short* pIndices = static_cast<unsigned short*>(index_buffer->lock(HardwareBuffer::HBL_DISCARD));*/
+
+		for (unsigned int j = 0; j < (_height - 1); ++j)
+		{
+			for (unsigned int i = 0; i < (_width - 1); ++i)
+			{
+				int vertexIndex = (j * _width) + i;
+				indices.push_back(vertexIndex);
+				indices.push_back(vertexIndex + terrainWidth + 1);
+				indices.push_back(vertexIndex + 1);
+				indices.push_back(vertexIndex);
+				indices.push_back(vertexIndex + terrainWidth);
+				indices.push_back(vertexIndex + terrainWidth + 1);			
+			}
+		}
+
+		/*vertex_buffer->unlock();
+		index_buffer->unlock();*/
+		Mesh* mesh = new Mesh;
+		mesh->setVertexData(vertices);
+		mesh->setIndexData(indices);
+		mesh->computeNormals();
+		//mesh->setVertexData((VertexData::ptr)vertexdata);
+	//	mesh->setIndexData((IndexData::ptr)indexdata);
+
+		delete image;
+		return mesh;
+
+//		Texture::ptr texture = TextureManager::Inst()->loadTexture("heightmap", fileName);
+//
+//		_width = texture->getWidth();
+//		_height = texture->getHeight();
+//
+//		HardwareTextureBuffer::ptr buffer = texture->getBuffer(0, 0);		
+////		float* data = static_cast<float*>(buffer->lock(HardwareBuffer::HBL_READ_ONLY));
+//
+//		_data = new float[_width * _height];
+//		for (int i = 0; i < _height; i++)
+//		{
+//			for (int j = 0; j < _width; j++)
+//			{
+//			//	*_data++ = *data++;
+//			//	data += 2;
+//			}
+//		}
 		//FREE_IMAGE_FORMAT fif = FIF_UNKNOWN;
 		//FIBITMAP *dib(0);
 
@@ -81,6 +181,38 @@ namespace SRE {
 		//}
 
 
+	}
+	float TerrianTile::getHeightValue(const unsigned char* data, unsigned char numBytes)
+	{
+		switch (numBytes)
+		{
+		case 1:
+		{
+			return (unsigned char)(data[0]) /*/ (float)0xff*/;
+		}
+		break;
+		case 2:
+		{
+			return (unsigned short)(data[1] << 8 | data[0]) /*/ (float)0xffff*/;
+		}
+		break;
+		case 3:
+		{
+			return (unsigned short)(data[2] << 16/* | data[1] << 8*/ | data[0]) /*/ (float)0xffffff*/;
+		}
+		case 4:
+		{
+			return (unsigned int)(data[3] << 24 | data[2] << 16 | data[1] << 8 | data[0]) / (float)0xffffffff;
+		}
+		break;
+		default:
+		{
+			assert(false);  // Height field with non standard pixle sizes
+		}
+		break;
+		}
+
+		return 0.0f;
 	}
 	void TerrianTile::generateVertex()
 	{

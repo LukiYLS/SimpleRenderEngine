@@ -1,6 +1,6 @@
 #pragma once
 #include <string.h>
-#include "RenderObject.h"
+#include "Mesh.h"
 #include "../Utils/BoundingSphere.h"
 using namespace Utils;
 namespace SRE {
@@ -41,16 +41,20 @@ namespace SRE {
 	public:
 		TerrianTile();
 		~TerrianTile();
-		void createFromRandomHeght(int width, int height);
+		Mesh* createFromRandomHeght(int width, int height);
+		Mesh* createMeshFromHeightmap(const char* fileName);
 		void loadFromHeightMap(const char* fileName);
 	protected:
 		void generateVertex();
 		void computerNormal();
+		float getHeightValue(const unsigned char* data, unsigned char pixelSize);
 	protected:
 		int _width, _height;		
 		Code _code;
 		BoundingSphere _bounding_shpere;
 		float *_data;
+		float _blockScale;
+		float _heightScale;
 		//TerrianTile * _child[4];
 	};
 	
