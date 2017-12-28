@@ -2,7 +2,7 @@
 
 namespace Utils {
 
-	void BoundingSphere::expandBy(const Vector3D& v)
+	void BoundingSphere::expandByPoint(const Vector3D& v)
 	{
 		Vector3D toCenter = v - _center;
 		float length = toCenter.length();

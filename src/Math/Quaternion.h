@@ -85,7 +85,9 @@ namespace Math {
 		double getRoll(bool reprojectAxis = true) const;
 		double getPitch(bool reprojectAxis = true) const;
 		double getYaw(bool reprojectAxis = true) const;
-		double normalise(void);
+		double normalize(void);
+
+		static Quaternion slerp(float fT, const Quaternion& first, const Quaternion& second);
 	};
 
 }

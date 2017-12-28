@@ -12,6 +12,7 @@ namespace SRE {
 		RayCaster(Ray* ray, double near, double far) {};
 
 	public:
+		Ray::ptr getRay()const { return _ray; }
 		void setFromCamera(const Vector2D& coords, Camera* camera);
 		void intersectObject(Object* object, AnyValue& intersects, bool recursive);
 	protected:

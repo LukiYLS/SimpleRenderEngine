@@ -1,18 +1,47 @@
-#include "TerrianTile.h"
+#include "TerrainTile.h"
 #include "TextureManager.h"
 namespace SRE {
 
-	TerrianTile::TerrianTile()
+	TerrainTile::TerrainTile()
 	:_blockScale(1.0),
 	_heightScale(1.0/10.0){
 		
 
 	}
-	TerrianTile::~TerrianTile()
+	TerrainTile::TerrainTile(Terrain* terrain, TerrainTile* parent, unsigned int xStart, unsigned int yStart, size_t size, Code code)
+	{
+		if (terrain->getMaxLevel() < code.level)
+		{
+			//还可以继续创建子节点
+			unsigned int childSize = (unsigned int)(((size - 1) * 0.5f) + 1);
+			unsigned int childOff = childSize - 1;
+			unsigned int childLevel = code.level + 1; 
+			unsigned int xOffset = xStart, yOffset = yStart;
+			for (unsigned int i = 0; i < 4; ++i)
+			{
+				Code childCode;
+				childCode.x = code.x * 2 + i % 2;
+				childCode.y = code.y * 2 + i / 2;
+				childCode.level = code.level + 1;
+
+				if (i == 1)
+					xOffset += childOff;
+				if (i == 2)
+					yOffset += childOff;
+				_children[i] = new TerrainTile(terrain, this, xOffset, yOffset, childSize, childCode);
+
+			}
+		}
+		else
+		{
+			//该节点叶子节点
+		}
+	}
+	TerrainTile::~TerrainTile()
 	{
 
 	}
-	Mesh* TerrianTile::createFromRandomHeght(int width, int height)
+	Mesh* TerrainTile::createFromRandomHeght(int width, int height)
 	{
 		_width = width;
 		_height = height;
@@ -27,7 +56,7 @@ namespace SRE {
 		mesh->computeNormals();
 		return mesh;
 	}
-	Mesh* TerrianTile::createMeshFromHeightmap(const char* fileName)
+	Mesh* TerrainTile::createMeshFromHeightmap(const char* fileName)
 	{		
 		Image* image = new Image;
 		image->load(fileName);
@@ -182,7 +211,7 @@ namespace SRE {
 
 
 	}
-	float TerrianTile::getHeightValue(const unsigned char* data, unsigned char numBytes)
+	float TerrainTile::getHeightValue(const unsigned char* data, unsigned char numBytes)
 	{
 		switch (numBytes)
 		{
@@ -214,7 +243,7 @@ namespace SRE {
 
 		return 0.0f;
 	}
-	void TerrianTile::generateVertex()
+	void TerrainTile::generateVertex()
 	{
 		float halfHeight = (_height - 1) / 2;
 		float halfWidth = (_width - 2) / 2;

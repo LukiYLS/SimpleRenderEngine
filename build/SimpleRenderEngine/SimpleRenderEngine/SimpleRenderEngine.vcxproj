@@ -22,7 +22,9 @@
     <ClInclude Include="..\..\..\src\Animation\Animation.h" />
     <ClInclude Include="..\..\..\src\Animation\AnimationTrack.h" />
     <ClInclude Include="..\..\..\src\Animation\KeyFrame.h" />
+    <ClInclude Include="..\..\..\src\Core\Billboard.h" />
     <ClInclude Include="..\..\..\src\Core\BillboardCollection.h" />
+    <ClInclude Include="..\..\..\src\Core\BillboardSet.h" />
     <ClInclude Include="..\..\..\src\Core\Camera.h" />
     <ClInclude Include="..\..\..\src\Core\Constants.h" />
     <ClInclude Include="..\..\..\src\Core\CubeFrameBuffer.h" />
@@ -48,6 +50,7 @@
     <ClInclude Include="..\..\..\src\Core\ObjLoader.h" />
     <ClInclude Include="..\..\..\src\Core\OrthographicCamera.h" />
     <ClInclude Include="..\..\..\src\Core\ParticleSystem.h" />
+    <ClInclude Include="..\..\..\src\Core\PerlinNoiseTerrainBuilder.h" />
     <ClInclude Include="..\..\..\src\Core\PerspectiveCamera.h" />
     <ClInclude Include="..\..\..\src\Core\Ray.h" />
     <ClInclude Include="..\..\..\src\Core\RayCaster.h" />
@@ -60,8 +63,8 @@
     <ClInclude Include="..\..\..\src\Core\ShaderLib.h" />
     <ClInclude Include="..\..\..\src\Core\ShadowMapPlugin.h" />
     <ClInclude Include="..\..\..\src\Core\Skybox.h" />
-    <ClInclude Include="..\..\..\src\Core\Terrian.h" />
-    <ClInclude Include="..\..\..\src\Core\TerrianTile.h" />
+    <ClInclude Include="..\..\..\src\Core\Terrain.h" />
+    <ClInclude Include="..\..\..\src\Core\TerrainTile.h" />
     <ClInclude Include="..\..\..\src\Core\Texture.h" />
     <ClInclude Include="..\..\..\src\Core\TextureManager.h" />
     <ClInclude Include="..\..\..\src\Core\TextureUnitState.h" />
@@ -89,6 +92,7 @@
     <ClInclude Include="..\..\..\src\Utils\BoundingSphere.h" />
     <ClInclude Include="..\..\..\src\Utils\CamerControl.h" />
     <ClInclude Include="..\..\..\src\Utils\Event.h" />
+    <ClInclude Include="..\..\..\src\Utils\FirstPersonController.h" />
     <ClInclude Include="..\..\..\src\Utils\InputDefine.h" />
     <ClInclude Include="..\..\..\src\Utils\KeyBoardConfig.h" />
     <ClInclude Include="..\..\..\src\Utils\ObjectControl.h" />
@@ -96,7 +100,11 @@
     <ClInclude Include="..\..\..\src\Utils\UtilsHelp.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\src\Animation\Animation.cpp" />
+    <ClCompile Include="..\..\..\src\Animation\AnimationTrack.cpp" />
+    <ClCompile Include="..\..\..\src\Animation\KeyFrame.cpp" />
     <ClCompile Include="..\..\..\src\Core\BillboardCollection.cpp" />
+    <ClCompile Include="..\..\..\src\Core\BillboardSet.cpp" />
     <ClCompile Include="..\..\..\src\Core\Camera.cpp" />
     <ClCompile Include="..\..\..\src\Core\FrameBuffer.cpp" />
     <ClCompile Include="..\..\..\src\Core\GBuffer.cpp" />
@@ -116,6 +124,7 @@
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
     <ClCompile Include="..\..\..\src\Core\Object.cpp" />
     <ClCompile Include="..\..\..\src\Core\ParticleSystem.cpp" />
+    <ClCompile Include="..\..\..\src\Core\PerlinNoiseTerrainBuilder.cpp" />
     <ClCompile Include="..\..\..\src\Core\Ray.cpp" />
     <ClCompile Include="..\..\..\src\Core\RayCaster.cpp" />
     <ClCompile Include="..\..\..\src\Core\RenderObject.cpp" />

@@ -5,9 +5,9 @@ using namespace Math;
 namespace SRE {
 
 
-	Mesh* GeometryFactory::MakeQuad(int width, int height)
+	RenderObject* GeometryFactory::MakeQuad(int width, int height)
 	{
-		Mesh* mesh = new Mesh;
+		RenderObject* mesh = new RenderObject;
 
 		VertexData* vertexdata = new VertexData;
 		vertexdata->setVertexStart(0);
@@ -58,7 +58,7 @@ namespace SRE {
 		return mesh;
 	}
 
-	Mesh* GeometryFactory::MakeBox(int width, int height, int depth)
+	RenderObject* GeometryFactory::MakeBox(int width, int height, int depth)
 	{
 		size_t vertex_count = 24;
 		size_t index_count = 36;
@@ -149,14 +149,14 @@ namespace SRE {
 			20,22,23
 		};
 		index_buffer->writeData(0, index_buffer->getSizeInBytes(), faces);
-		Mesh* ro = new Mesh;
+		RenderObject* ro = new RenderObject;
 		ro->setVertexData((VertexData::ptr)vertexdata);
 		ro->setIndexData((IndexData::ptr)indexdata);
 		
 		return ro;
 		
 	}
-	Mesh* GeometryFactory::MakeSphere(double radius, int numRings, int numSegments)
+	RenderObject* GeometryFactory::MakeSphere(double radius, int numRings, int numSegments)
 	{
 		unsigned int vertex_count = (numRings + 1) * (numSegments + 1);
 		VertexData* vertexdata = new VertexData;
@@ -230,7 +230,7 @@ namespace SRE {
 		vertex_buffer->unlock();
 		index_buffer->unlock();
 		
-		Mesh* ro = new Mesh;
+		RenderObject* ro = new RenderObject;
 		ro->setVertexData((VertexData::ptr)vertexdata);
 		ro->setIndexData((IndexData::ptr)indexdata);
 		BoundingBox::ptr bx = std::make_shared<BoundingBox>(Vector3D(-radius, -radius, -radius), Vector3D(radius, radius,radius));

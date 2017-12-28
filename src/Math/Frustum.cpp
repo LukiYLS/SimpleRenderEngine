@@ -23,9 +23,9 @@ namespace Math {
 		_planes[5].normalize();
 	}
 
-	bool Frustum::intersectsSphere(BoundingSphere& sphere)
+	bool Frustum::intersectsSphere(const BoundingSphere& sphere)
 	{		
-		/*Vector3D center = sphere.center;
+		Vector3D center = sphere.center;
 		double negRadius = -sphere.radius;
 
 		for (int i = 0; i < 6; i++) {
@@ -40,7 +40,7 @@ namespace Math {
 
 		}
 
-		return true;*/
-		return false;
+		return true;
+		
 	}
 }

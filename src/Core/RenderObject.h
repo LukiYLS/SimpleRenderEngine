@@ -1,6 +1,7 @@
 #pragma once
 #include "Shader.h"
 #include "Object.h"
+#include "..\Material\Material.h"
 #include "../Utils/BoundingBox.h"
 #include "../Utils/BoundingSphere.h"
 #include "HardwareBuffer\PrimitiveData.h"
@@ -38,6 +39,7 @@ namespace SRE {
 		float position_x, position_y, position_z;
 		float normal_x, normal_y, normal_z;
 		float texcoord_x, texcoord_y;
+		float diffuse_x, diffuse_y, diffuse_z;
 		float tangent_x, tangent_y, tangent_z;
 		float bitangent_x, bitangent_y, bitangent_z;
 		Vertex()
@@ -56,6 +58,13 @@ namespace SRE {
 		{
 			position_x = px;		position_y = py;		position_z = pz;
 			normal_x = nx;		normal_y = ny;		normal_z = nz;
+			texcoord_x = texcoord_y = 0;
+		}
+		Vertex(float px, float py, float pz, float nx, float ny, float nz, float cx, float cy, float cz)
+		{
+			position_x = px;	position_y = py;	position_z = pz;
+			normal_x = nx;		normal_y = ny;		normal_z = nz;
+			diffuse_x = cx;     diffuse_y = cy;     diffuse_z = cz;
 			texcoord_x = texcoord_y = 0;
 		}
 		Vertex(float px, float py, float pz, float tx, float ty)
@@ -122,25 +131,32 @@ namespace SRE {
 		virtual ~RenderObject() {}
 	public:	
 
-		//void draw(Shader* shader);		
-		//void setVertices(std::vector<Vertex> vertices) { _vertices = vertices; }
-		//void setIndex(std::vector<unsigned int> indices) { _indices = indices; }
-
-		void drawPrimitive();
+		virtual RenderObject* asRenderObject() { return this; }
+		virtual const RenderObject* asRenderObject() const { return this; }
+		//数据量比较大时，硬件缓冲区来进行管理
 		void setVertexData(VertexData::ptr data) { _vertex_data = data; }
 		void setIndexData(IndexData::ptr data) { _index_data = data; }
-
+		//数据量比较小时，直接保存至vertex
 		void setVertexData(std::vector<Vertex> vertices) { _vertices = vertices; }
 		void setIndexData(std::vector<unsigned int> indices) { _indices = indices; }
 
+		////////////////////////////
+		void pushVertex(Vertex vertex);
+		///////////////////////////
+
+		void drawPrimitive();
 
 		void setPrimitiveType(PrimitiveType type) { _type = type; }
 		void setVisible(bool isVisible) { _isVisible = isVisible; }	
-
+		//当没有纹理时，实际颜色通过material设置
 		bool isUseColor()const { return _useColor; }		
-
+		void setMaterial(Material::ptr material) { _material = material; }
+		Material::ptr getMaterial() const { return _material; }
+		//射线求交，与三角面片求交
 		virtual void raycast(RayCaster* raycaster, AnyValue& intersects);
-	
+		bool getReceiveShadow()const { return _receiveShadow; }
+		void setReceiveShadow(bool receive) { _receiveShadow = receive; }
+		//
 		void computeNormals();
 		void computeBoundingBox();
 		void computeBoundingSphere();
@@ -156,13 +172,18 @@ namespace SRE {
 		PrimitiveType _type;
 		bool _isVisible, _useColor;
 		uint32_t _vao, _vbo, _ebo;
+
+		Material::ptr _material;
+		bool _receiveShadow;
 	
-		BoundingBox::ptr _bbx;
-		BoundingSphere::ptr _sphere;
+		BoundingBox _bbx;
+		BoundingSphere _sphere;
 
 		bool _bufferCreated;
 		VertexData::ptr _vertex_data;
 		IndexData::ptr  _index_data;
+
+		bool _vertexChanged;
 
 		std::vector<Vertex> _vertices;
 		std::vector<unsigned int> _indices;

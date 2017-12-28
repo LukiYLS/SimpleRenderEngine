@@ -204,7 +204,7 @@ namespace SRE {
 	/*
 	what's the problem,how to advance
 	*/
-	void RenderSystem::renderMeshs(std::vector<Mesh::ptr> meshs)
+	void RenderSystem::renderMeshs(std::vector<RenderObject::ptr> meshs)
 	{
 		for (auto mesh : meshs)
 		{
@@ -220,7 +220,7 @@ namespace SRE {
 	it's too... long, build shader and set material property,and upload 
 	it must fit in all differect material, so how?
 	*/
-	void RenderSystem::setProgram(Mesh::ptr mesh)
+	void RenderSystem::setProgram(RenderObject::ptr mesh)
 	{		
 		Material::ptr material = mesh->getMaterial();
 		Material::MaterialType type = material->getMaterialType();
@@ -484,9 +484,9 @@ namespace SRE {
 	void RenderSystem::projectObject(Object::ptr object)
 	{
 		//if (object->visible = false)return;
-		if (object->asMesh())
+		if (object->asRenderObject())
 		{
-			Mesh::ptr mesh = (Mesh::ptr)object->asMesh();
+			RenderObject::ptr mesh = (RenderObject::ptr)object->asRenderObject();
 			//if (_frustum.intersectsSphere(*mesh->getBoundSphere().get()))
 			{
 				Material::ptr material = mesh->getMaterial();
@@ -550,7 +550,7 @@ namespace SRE {
 	/*
 	what fuck! why place here,should i create a shadow map plugin
 	*/
-	void RenderSystem::shadowMapRender(std::vector<Light::ptr> lights, std::vector<Mesh::ptr> meshs)
+	void RenderSystem::shadowMapRender(std::vector<Light::ptr> lights, std::vector<RenderObject::ptr> meshs)
 	{
 		//
 		if (lights.empty())

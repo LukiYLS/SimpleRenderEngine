@@ -12,6 +12,7 @@ namespace SRE {
 	//class PhongMaterial;
 	//class BasicMaterial;
 	//class ShaderMaterial;
+	//Material设计思想：不同的material会在rendersystem组装成不同的shader文件，所有其属性会包含所有的material属性信息，
 	class Material {
 
 	public:

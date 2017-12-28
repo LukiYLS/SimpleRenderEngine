@@ -1,7 +1,8 @@
 #pragma once
 #include <string.h>
-#include "Mesh.h"
-#include "../Utils/BoundingSphere.h"
+#include "RenderObject.h"
+
+#include "Terrain.h"
 using namespace Utils;
 namespace SRE {
 
@@ -36,13 +37,20 @@ namespace SRE {
 			int mData[3];
 		};
 	};
-	class TerrianTile
+	/*
+	地形瓦片是LOD，并且LOD的构建是基于四叉树构建，所以每个瓦片会有四个子节点
+	*/
+	class TerrainTile
 		:public RenderObject {
 	public:
-		TerrianTile();
-		~TerrianTile();
-		Mesh* createFromRandomHeght(int width, int height);
-		Mesh* createMeshFromHeightmap(const char* fileName);
+		TerrainTile();
+		TerrainTile(Terrain* terrain, TerrianTile* parent, unsigned int xStart, unsigned int yStart, size_t size, Code code);
+		~TerrainTile();
+		void importHeightMap(float* heightMap);
+		RenderObject* createFromRandomHeght(int width, int height);
+		RenderObject* createMeshFromHeightmap(const char* fileName);
+		size_t getSize()const { return _size; }
+		Code getCode()const{return _code}
 		void loadFromHeightMap(const char* fileName);
 	protected:
 		void generateVertex();
@@ -55,6 +63,14 @@ namespace SRE {
 		float *_data;
 		float _blockScale;
 		float _heightScale;
+
+
+		Code _code;//在整个地形中的坐标
+		unsigned int _xStart, _yStart;
+		size_t _size;
+		TerrianTile* _parent;
+		TerrianTile* _children[4];
+
 		//TerrianTile * _child[4];
 	};
 	

@@ -1,5 +1,6 @@
 #pragma once
 #include <assert.h>
+#include "MathHelper.h"
 namespace Math {
 	class Vector2D
 	{
@@ -21,6 +22,9 @@ namespace Math {
 		}
 		Vector2D operator*(double scaler) const {
 			return Vector2D(scaler*x, scaler*y);
+		}
+		Vector2D operator/(double scaler) const {
+			return Vector2D(x / scaler, y / scaler);
 		}
 
 		Vector2D operator+ (const Vector2D& vec) const {
@@ -50,6 +54,21 @@ namespace Math {
 			);
 		}
 		//inline bool operator==(const Vector2D& rhs) const;
+		double length() const
+		{
+			return sqrt(x * x + y * y);
+		}
+		double normalize()
+		{
+			double len = length();
+			if (len < math_tolerance)
+			{
+				return 0;
+			}
+			x /= len;
+			y /= len;
+			return len;
+		}
 
 	public:
 		//useful when you need a triangle's area

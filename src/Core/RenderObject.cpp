@@ -1,5 +1,6 @@
 #include "RenderObject.h"
 #include "HardwareBuffer\HardwareBufferManager.h"
+#include "RayCaster.h"
 #include <glm\gtc\matrix_transform.hpp>
 namespace SRE {
 
@@ -7,37 +8,79 @@ namespace SRE {
 	{
 		glGenVertexArrays(1, &_vao);
 		_bufferCreated = false;
+		_receiveShadow = true;
+		_vertexChanged = true;
 	}
 	void RenderObject::createBuffer()
 	{
-		//glGenVertexArrays(1, &_vao);
-		glBindVertexArray(_vao);
-		glGenBuffers(1, &_vbo);
-		_bufferCreated = true;
+		VertexData* vertexdata = new VertexData;
+		vertexdata->setVertexStart(0);
+		vertexdata->setVertexCount(_vertices.size());
+		VertexDeclaration::ptr vd = vertexdata->getVertexDeclaration();
+		VertexBufferBinding::ptr bind = vertexdata->getVertexBufferBinding();
+		size_t offset = 0;
+		VertexElement::ptr tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_POSITION);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);
 
-		
-		glBindBuffer(GL_ARRAY_BUFFER, _vbo);
+		tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_NORMAL);
+		offset += tmp_ve->getTypeSize(VET_FLOAT3);		
 
-		glBufferData(GL_ARRAY_BUFFER, _vertices.size() * sizeof(Vertex), &_vertices[0], GL_STATIC_DRAW);
-
-		if (!_indices.empty())
+		if (_useColor)
 		{
-			glGenBuffers(1, &_ebo);
-			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _ebo);
-			glBufferData(GL_ELEMENT_ARRAY_BUFFER, _indices.size() * sizeof(uint32_t), &_indices[0], GL_STATIC_DRAW);
+			tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_DIFFUSE);
+			offset += tmp_ve->getTypeSize(VET_FLOAT3);
+		}
+		else
+		{
+			tmp_ve = vd->addElement(0, offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
+			offset += tmp_ve->getTypeSize(VET_FLOAT2);
 		}
 
+		HardwareVertexBuffer* vertex_buffer = new HardwareVertexBuffer(offset, _vertices.size(), HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		bind->setBinding(0, (HardwareVertexBuffer::ptr)vertex_buffer);
+		float* pVertex = static_cast<float*>(vertex_buffer->lock(HardwareBuffer::HBL_DISCARD));
 
-		glEnableVertexAttribArray(0);
-		glVertexAttribPointer(0, 3, GL_FLOAT, false, sizeof(Vertex), (void*)0);
+		for (int i = 0; i < _vertices.size(); i++)
+		{
+			*pVertex++ = _vertices[i].position_x;
+			*pVertex++ = _vertices[i].position_y;
+			*pVertex++ = _vertices[i].position_z;
 
-		glEnableVertexAttribArray(1);
-		glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)12);
+			*pVertex++ = _vertices[i].normal_x;
+			*pVertex++ = _vertices[i].normal_y;
+			*pVertex++ = _vertices[i].normal_z;		
 
-		glEnableVertexAttribArray(2);
-		glVertexAttribPointer(2, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)24);
+			_bbx.expandByPoint(_vertices[i].position_x, _vertices[i].position_y, _vertices[i].position_z);
+			_sphere.expandByPoint(_vertices[i].position_x, _vertices[i].position_y, _vertices[i].position_z);
+			//color per vertex
+			if (_useColor)
+			{
+				*pVertex++ = _vertices[i].diffuse_x;
+				*pVertex++ = _vertices[i].diffuse_y;
+				*pVertex++ = _vertices[i].diffuse_z;
+			}
+			else
+			{
+				*pVertex++ = _vertices[i].texcoord_x;
+				*pVertex++ = _vertices[i].texcoord_y;
+			}
+			
+		}
+		vertex_buffer->unlock();
+	
+		IndexData* indexdata = new IndexData;
+		indexdata->setIndexStart(0);
+		indexdata->setIndexCount(_indices.size());
+		HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, _indices.size(), HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+		indexdata->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
+		unsigned short* pIndices = static_cast<unsigned short*>(index_buffer->lock(HardwareBuffer::HBL_DISCARD));
 
-		glBindVertexArray(0);
+		for (int i = 0; i < _indices.size(); i++)
+		{
+			*pIndices++ = _indices[i];
+		}
+		index_buffer->unlock();
+		_vertexChanged = false;
 	}
 
 	void RenderObject::drawVertex()
@@ -77,12 +120,8 @@ namespace SRE {
 	}
 	void RenderObject::drawPrimitive()
 	{
-		//old way
-		if (_vertices.size() > 0)
-		{
-			drawVertex();
-			return;
-		}
+		if (_vertices.size() > 0 && _vertexChanged)
+			createBuffer();
 			
 		if (!_vertex_data)
 			return;
@@ -126,19 +165,19 @@ namespace SRE {
 				glEnableVertexAttribArray(1);
 				break;
 
-			case VES_DIFFUSE:
-				glVertexAttribPointer(3,
-					VertexElement::getTypeCount(elem->getType()), HardwareBufferManager::getGLType(elem->getType()),
-					GL_FALSE, vertex_buffer->getVertexSize(), buffer_data);
-				glEnableVertexAttribArray(3);
-				break;
-
 			case VES_TEXTURE_COORDINATES:
 				glVertexAttribPointer(2,
 					VertexElement::getTypeCount(elem->getType()), HardwareBufferManager::getGLType(elem->getType()),
 					GL_FALSE, vertex_buffer->getVertexSize(), buffer_data);
 				glEnableVertexAttribArray(2);
 				break;
+
+			case VES_DIFFUSE:
+				glVertexAttribPointer(3,
+					VertexElement::getTypeCount(elem->getType()), HardwareBufferManager::getGLType(elem->getType()),
+					GL_FALSE, vertex_buffer->getVertexSize(), buffer_data);
+				glEnableVertexAttribArray(3);
+				break;			
 
 			default:
 				break;
@@ -266,5 +305,9 @@ namespace SRE {
 		//with boundingbox intersect
 
 		if (_sphere == NULL)computeBoundingSphere();
+
+		Vector3D intersect;
+		if (!raycaster->getRay()->intersectSphere(*_sphere.get(), intersect))return;
+
 	}
 }

@@ -47,7 +47,8 @@ namespace Utils {
 			_max = max;
 		}
 		void setFromPoints(std::vector<Vector3D> points);
-
+		void expandByPoint(double x, double y, double z) { expandByPoint(Vector3D(x, y, z); }
+		void expandByPoint(const Vector3D& point);
 		inline double& xMin() { return _min.x; }
 		inline double xMin() const { return _min.x; }
 

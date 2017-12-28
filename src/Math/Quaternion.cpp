@@ -357,12 +357,76 @@ namespace Math {
 		}
 	}
 
-	double Quaternion::normalise(void)
+	double Quaternion::normalize(void)
 	{
 		double len = norm();
 		double factor = 1.0f / sqrt(len);
 		*this = *this * factor;
 		return len;
+	}
+
+	Quaternion Quaternion::slerp(float t, const Quaternion& first, const Quaternion& second)
+	{
+
+		if (t == 0.0f)
+			return first;
+		if (t == 1.0f)
+			return second;
+
+		Quaternion result;	
+
+		double cosHalfTheta = first.w * second.w + first.x * second.x + first.y * second.y + first.z * second.z;
+
+		if (cosHalfTheta < 0) {
+
+			result.w = -second.w;
+			result.x = -second.x;
+			result.y = -second.y;
+			result.z = -second.z;
+
+			cosHalfTheta = -cosHalfTheta;
+
+		}
+		else {
+
+			result = second;
+
+		}
+
+		if (cosHalfTheta >= 1.0) {
+
+			result.w = first.w;
+			result.x = first.x;
+			result.y = first.y;
+			result.z = first.z;			
+
+			return result;
+
+		}
+
+		double sinHalfTheta = sqrt(1.0 - cosHalfTheta * cosHalfTheta);
+
+		if (fabs(sinHalfTheta) < 0.001) {
+
+			result.w = 0.5 * (first.w + result.w);
+			result.x = 0.5 * (first.x + result.x);
+			result.y = 0.5 * (first.y + result.y);
+			result.z = 0.5 * (first.z + result.z);
+
+			return result;
+
+		}
+
+		double halfTheta = atan2(sinHalfTheta, cosHalfTheta);
+		double ratioA = sin((1 - t) * halfTheta) / sinHalfTheta;
+		double ratioB = sin(t * halfTheta) / sinHalfTheta;
+
+		result.w = (first.w * ratioA + result.w * ratioB);
+		result.x = (first.x * ratioA + result.x * ratioB);
+		result.y = (first.y * ratioA + result.y * ratioB);
+		result.z = (first.z * ratioA + result.z * ratioB);	
+
+		return result;
 	}
 	
 }

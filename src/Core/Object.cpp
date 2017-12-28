@@ -27,6 +27,24 @@ namespace SRE {
 		_orientation = _orientation * quat;
 		//_position = _position * quat;//
 	}
+	void Object::rotate(const Quaternion& quat, TransformSpace space)
+	{
+		switch (space)
+		{
+		case LocalSpace:
+			_orientation = _orientation * quat;
+			break;
+		case ParentSpace:
+			_orientation = quat * _orientation;
+			break;
+		case WorldSpace:
+			//_orientation = _orientation * _orientation().Inverse()
+			//	* quat * _getDerivedOrientation();
+			break;
+		}
+		_orientation.normalize();
+		_neadUpdate = true;
+	}
 	void Object::rotateOnAxisFixedPosition(const Vector3D& axis, double angle)
 	{
 		Quaternion quat;
@@ -36,9 +54,41 @@ namespace SRE {
 	}
 	void Object::translateOnAxis(const Vector3D& axis, double distance)
 	{
+
 		Vector3D new_axis = axis * _orientation;//得到旋转后的向量
 		_position += (distance * new_axis);		
 	}
+	void Object::translate(const Vector3D& vec, TransformSpace space)
+	{
+		switch (space)
+		{
+		case LocalSpace:
+			_position += _orientation * vec;
+			break;
+		case ParentSpace:
+			_position += vec;
+			break;
+		case WorldSpace:
+			//_orientation = _orientation * _orientation().Inverse()
+			//	* quat * _getDerivedOrientation();
+			break;
+		}
+		_neadUpdate = true;
+	}
+	void Object::scale(const Vector3D& scale)
+	{
+		_scale = scale * _scale;		
+		_neadUpdate = true;
+	}
+
+	void Object::scale(double x, double y, double z)
+	{
+		_scale.x *= x;
+		_scale.y *= y;
+		_scale.z *= z;		
+		_neadUpdate = true;
+	}
+	//---------------
 	void Object::localToWorld(Vector3D& vector)
 	{
 		vector = _matrix_world * vector;

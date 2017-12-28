@@ -124,9 +124,6 @@ namespace SRE {
 
 		if ((tmin > tymax) || (tymin > tmax)) return false;
 
-		// These lines also handle the case where tmin or tmax is NaN
-		// (result of 0 * Infinity). x !== x returns true if x is NaN
-
 		if (tymin > tmin || tmin != tmin) tmin = tymin;
 
 		if (tymax < tmax || tmax != tmax) tmax = tymax;

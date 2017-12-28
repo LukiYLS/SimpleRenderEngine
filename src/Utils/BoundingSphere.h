@@ -26,7 +26,8 @@ namespace Utils {
 		inline float& radius() { return _radius; }		
 		inline float radius() const { return _radius; }
 
-		void expandBy(const Vector3D& v);
+		void expandByPoint(double x, double y, double z) { expandByPoint(Vector3D(x, y, z)); }
+		void expandByPoint(const Vector3D& v);
 		void expandRadiusBy(const Vector3D& v);
 		void expandBy(const BoundingSphere& sh);
 		void expandRadiusBy(const BoundingSphere& sh);

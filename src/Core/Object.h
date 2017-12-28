@@ -7,7 +7,7 @@
 #include <memory>
 using namespace Math;
 namespace SRE {	
-	class Mesh;
+	class RenderObject;
 	class Light;	
 	class Sprite;
 	class BillboardCollection;
@@ -16,14 +16,25 @@ namespace SRE {
 	class TerrianTile;
 	class Object {
 	public:
+		enum TransformSpace
+		{
+			//相对局部坐标系执行变换
+			LocalSpace,
+			//相对父节点坐标系执行变换
+			ParentSpace,
+			//相对世界坐标系执行变换
+			WorldSpace
+			
+		};
+
 		typedef std::shared_ptr<Object> ptr;
 		typedef std::vector<Object::ptr> Children;
 		Object() :_position(Vector3D(0.0, 0.0, 0.0)), _scale(Vector3D(1.0, 1.0, 1.0)) {}
 		Object(const Vector3D& pos) :_position(pos), _scale(Vector3D(1.0, 1.0, 1.0)) {}
 		Object(const Vector3D& pos, const Quaternion& quat) :_position(pos), _orientation(quat), _scale(Vector3D(1.0, 1.0, 1.0)) {}
 	public:
-		virtual Mesh* asMesh() { return NULL; }
-		virtual const Mesh* asMesh() const { return NULL; }
+		virtual RenderObject* asRenderObject() { return NULL; }
+		virtual const RenderObject* asRenderObject() const { return NULL; }
 
 		virtual Light* asLight() { return NULL; }
 		virtual const Light* asLight() const { return NULL; }
@@ -66,11 +77,20 @@ namespace SRE {
 		void rotateOnX(double angle) { rotateOnAxis(Vector3D(1.0, 0.0, 0.0), angle); }
 		void rotateOnY(double angle) { rotateOnAxis(Vector3D(0.0, 1.0, 0.0), angle); }
 		void rotateOnZ(double angle) { rotateOnAxis(Vector3D(0.0, 0.0, 1.0), angle); }
+		void rotate(const Quaternion& quat, TransformSpace space = LocalSpace);
 		//for position change
 		void translateOnAxis(const Vector3D& axis, double distance);	
 		void translateOnX(double distance) { translateOnAxis(Vector3D(1.0, 0.0, 0.0), distance); }
 		void translateOnY(double distance) { translateOnAxis(Vector3D(0.0, 1.0, 0.0), distance); }
 		void translateOnZ(double distance) { translateOnAxis(Vector3D(0.0, 0.0, 1.0), distance); }
+		void translate(const Vector3D& vec, TransformSpace space = LocalSpace);
+
+		void scale(const Vector3D& scale);
+		void scale(double x, double y, double z);
+
+		void roll(const float& angle, TransformSpace relativeSpace = LocalSpace);
+		void pitch(const float& angle, TransformSpace relativeSpace = LocalSpace);
+		void yaw(const float& angle, TransformSpace relativeSpace = LocalSpace);
 
 		Vector3D getDirection()const { return _orientation * Vector3D(0, 0, 1); }
 		Vector3D getUp(void) const { return _orientation * Vector3D(0, 1, 0); }
@@ -96,6 +116,7 @@ namespace SRE {
 		Vector3D getWorldScale();
 
 	protected:
+		bool _neadUpdate;
 		Object* _parent;
 		Vector3D _position;
 		Vector3D _scale;

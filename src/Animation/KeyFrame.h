@@ -16,11 +16,8 @@ namespace SRE {
 		KeyFrame(const AnimationTrack* parent, double time);
 
 		virtual ~KeyFrame() {}
-
 		
 		double getTime(void) const { return _time; }
-		
-
 
 	protected:
 		double _time;
@@ -31,10 +28,12 @@ namespace SRE {
 
 	public:
 		typedef std::shared_ptr<NumericKeyFrame> ptr;
-		NumericKeyFrame(const AnimationTrack* parent, double time);
+
+		NumericKeyFrame(const AnimationTrack* parentTrack, double time);
 		~NumericKeyFrame() {}
-		virtual const AnyValue& getValue(void) const;
-		virtual void setValue(const AnyValue& val);
+
+		virtual const AnyValue& getValue(void) const { return _value; }
+		virtual void setValue(const AnyValue& value) { _value = value; }
 
 	protected:
 		AnyValue _value;
@@ -44,26 +43,26 @@ namespace SRE {
 	{
 	public:
 		typedef std::shared_ptr<TransformKeyFrame> ptr;
-		TransformKeyFrame(const AnimationTrack* parent, float time);
+		TransformKeyFrame(const AnimationTrack* parentTrack, float time);
 		~TransformKeyFrame() {}
 		
-		virtual void setTranslate(const Vector3D& trans);
+		virtual void setTranslate(const Vector3D& trans) { _translate = trans; }
 		
-		const Vector3D& getTranslate(void) const;
+		const Vector3D& getTranslate(void) const { return _translate; }
 	
-		virtual void setScale(const Vector3D& scale);
+		virtual void setScale(const Vector3D& scale) { _scale = scale; }
 		
-		virtual const Vector3D& getScale(void) const;
+		virtual const Vector3D& getScale(void) const { return _scale; }
 		
-		virtual void setRotation(const Quaternion& rot);
+		virtual void setRotation(const Quaternion& rotation) { _rotation = rotation; }	
 		
-		virtual const Quaternion& getRotation(void) const;	
+		virtual const Quaternion& getRotation(void) const { return _rotation; }
 		
 	protected:
 
 		Vector3D _translate;
 		Vector3D _scale;
-		Quaternion _quaternion;
+		Quaternion _rotation;
 
 
 	};

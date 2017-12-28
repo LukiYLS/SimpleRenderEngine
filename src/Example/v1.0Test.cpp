@@ -33,22 +33,22 @@ Scene::ptr createScene()
 	boxMat->setMap(boxUnit);
 
 	//mesh
-	Mesh* floor = GeometryFactory::MakeQuad(100, 100);
+	RenderObject* floor = GeometryFactory::MakeQuad(100, 100);
 	floor->setMaterial(floorMat);
 
-	Mesh* box1 = GeometryFactory::MakeBox(20.0, 20.0, 20.0);
+	RenderObject* box1 = GeometryFactory::MakeBox(20.0, 20.0, 20.0);
 	box1->setPosition(Vector3D(-25.0, 10.0, 25.0));	
 	box1->setMaterial(boxMat);
 
-	Mesh* box2 = GeometryFactory::MakeBox(10.0, 10.0, 10.0);
+	RenderObject* box2 = GeometryFactory::MakeBox(10.0, 10.0, 10.0);
 	box2->setPosition(Vector3D(0.0, 5.0, -25.0));
 	box2->setMaterial(boxMat);
 
-	Mesh* box3 = GeometryFactory::MakeBox(10.0, 10.0, 10.0);
+	RenderObject* box3 = GeometryFactory::MakeBox(10.0, 10.0, 10.0);
 	box3->setPosition(Vector3D(25.0, 5.0, 25.0));
 	box3->setMaterial(boxMat);
 
-	Mesh* sphere = GeometryFactory::MakeSphere(8.0, 32, 32);
+	RenderObject* sphere = GeometryFactory::MakeSphere(8.0, 32, 32);
 	sphere->setPosition(Vector3D(0.0, 8.0, 0.0));	
 	sphere->setMaterial(earthMat);
 	
