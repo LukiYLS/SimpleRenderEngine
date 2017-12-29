@@ -12,8 +12,7 @@ namespace SRE {
 	_billboardType(BBT_POINT),
 	_commonDirection(Vector3D(0.0,0.0,1.0)),
 	_commonUpVector(Vector3D(0.0,1.0,0.0)),
-	_pointRender(false),
-	_bufferCreated(false)
+	_pointRender(false)
 	{
 
 	}
@@ -24,7 +23,10 @@ namespace SRE {
 
 	Billboard* BillboardSet::createBillboard(const Vector3D& position, const Vector3D& color = Vector3D(1.0, 1.0, 1.0))
 	{
-
+		Billboard* billboard = new Billboard(position, this, color);
+		Billboard::ptr bb_ptr = (Billboard::ptr)billboard;
+		_billboards.push_back(bb_ptr);
+		return bb_ptr.get();
 	}
 
 	void BillboardSet::update(size_t renderSize)
@@ -33,11 +35,10 @@ namespace SRE {
 
 		for (BillboardList::iterator it = _billboards.begin(); it != _billboards.end(); it++)
 		{
-			updateBillboard(*it);
+			updateBillboard(*(*it));
 		}
 		
 		endUpdate();
-
 	}
 	
 	void BillboardSet::beginUpdate(size_t numBillboards)
@@ -48,7 +49,7 @@ namespace SRE {
 
 		if (!_pointRender)
 		{
-			//先获取初始化偏移信息
+			
 			getParametricOffsets(_leftOff, _rightOff, _topOff, _bottomOff);
 
 
@@ -56,8 +57,9 @@ namespace SRE {
 				_billboardType != BBT_PERPENDICULAR_SELF &&
 				!(_accurateFacing && _billboardType != BBT_PERPENDICULAR_COMMON))
 			{
+				//不需要用到自己设置的属性来计算坐标轴
 				genBillboardAxes(&_xAxis, &_yAxis);
-
+				//计算最终的顶点偏移量
 				genVertOffsets(_leftOff, _rightOff, _topOff, _bottomOff, _defaultWidth, _defaultHeight, _xAxis, _yAxis, _offsets);
 
 			}
@@ -94,6 +96,7 @@ namespace SRE {
 	{
 		if (_currentNumVisible >= _maxSize)return;
 
+		//是否可见判断
 		if (!visibleBillboard(_currentCamera, billboard))return;
 
 		if (!_pointRender &&
@@ -101,7 +104,7 @@ namespace SRE {
 				_billboardType == BBT_PERPENDICULAR_SELF ||
 				(_accurateFacing && _billboardType != BBT_PERPENDICULAR_COMMON)))
 		{
-
+			//之前没有更新坐标轴
 			genBillboardAxes(&_xAxis, &_yAxis, &billboard);
 		}
 
@@ -118,10 +121,10 @@ namespace SRE {
 			}
 			genVertices(_offsets, billboard);
 		}
-		else // not all default size and not point rendering
+		else // 每个billboard大小不一样
 		{
 			Vector3D vOwnOffset[4];
-			// If it has own dimensions, or self-oriented, gen offsets
+			// 
 			if (_billboardType == BBT_ORIENTED_SELF ||
 				_billboardType == BBT_PERPENDICULAR_SELF ||
 				billboard._ownDimensions ||
@@ -220,7 +223,7 @@ namespace SRE {
 	{
 		Vector3D toCameraDir;
 		Quaternion quat = _currentCamera->getOrientation();
-		if (_accurateFaceing &&
+		if (_accurateFacing &&
 			(_billboardType == BBT_POINT ||
 				_billboardType == BBT_ORIENTED_COMMON ||
 				_billboardType == BBT_ORIENTED_SELF))
@@ -232,7 +235,7 @@ namespace SRE {
 		switch (_billboardType)
 		{
 		case BBT_POINT:
-			if (_accurateFaceing)
+			if (_accurateFacing)
 			{			
 				*pY = _currentCamera->getUp();
 				*pX = toCameraDir.cross(*pY);
@@ -261,16 +264,16 @@ namespace SRE {
 			break;
 
 		case BBT_PERPENDICULAR_COMMON:
-			//X和Y都有自己的方向
+			//
 			*pX = _commonUpVector.cross(_commonDirection);
 			*pY = _commonDirection.cross(*pX);
 			break;
 
 		case BBT_PERPENDICULAR_SELF:
-			//
+			//X和Y都有自己的方向
 			*pX = _commonUpVector.cross(bb->getDirection());
 			pX->normalize();
-			*pY = bb->getDirection().cross(*pX); // both should be normalised
+			*pY = bb->getDirection().cross(*pX); // 
 			break;
 		}
 
@@ -384,40 +387,44 @@ namespace SRE {
 		tmp_ve = vd->addElement(0, offset, VET_FLOAT3, VES_DIFFUSE);
 		offset += tmp_ve->getTypeSize(VET_FLOAT3);
 
-		tmp_ve = vd->addElement(0, offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
-		offset += tmp_ve->getTypeSize(VET_FLOAT2);
+		if (!_pointRender)
+		{
+			tmp_ve = vd->addElement(0, offset, VET_FLOAT2, VES_TEXTURE_COORDINATES);
+			offset += tmp_ve->getTypeSize(VET_FLOAT2);
+		}	
 
 		HardwareVertexBuffer* buffer = new HardwareVertexBuffer(offset, _maxSize * 4, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
 		_vertexBuffer = (HardwareVertexBuffer::ptr)buffer;
 		bind->setBinding(0, _vertexBuffer);
 
-		IndexData* index_data = new IndexData;
-		index_data->setIndexStart(0);
-		index_data->setIndexCount(_maxSize * 6);
-		HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, _maxSize * 6, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
-		index_data->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
+		if (!_pointRender)
+		{
+			IndexData* index_data = new IndexData;
+			index_data->setIndexStart(0);
+			index_data->setIndexCount(_maxSize * 6);
+			HardwareIndexBuffer * index_buffer = new HardwareIndexBuffer(HardwareIndexBuffer::IT_16BIT, _maxSize * 6, HardwareBuffer::HBU_STATIC_WRITE_ONLY);
+			index_data->setHardwareIndexBuffer((HardwareIndexBuffer::ptr)index_buffer);
 
-		unsigned short* pIdx = static_cast<unsigned short*>(index_buffer->lock(HardwareBuffer::HBL_DISCARD));		
+			unsigned short* pIdx = static_cast<unsigned short*>(index_buffer->lock(HardwareBuffer::HBL_DISCARD));
 
-		for (size_t idx, idxOff, bboard = 0; bboard < _maxSize;	++bboard)
-		{			
-			idx = bboard * 6;
-			idxOff = bboard * 4;
+			for (size_t idx, idxOff, bboard = 0; bboard < _maxSize; ++bboard)
+			{
+				idx = bboard * 6;
+				idxOff = bboard * 4;
 
-			pIdx[idx] = static_cast<unsigned short>(idxOff); 
-			pIdx[idx + 1] = static_cast<unsigned short>(idxOff + 2);
-			pIdx[idx + 2] = static_cast<unsigned short>(idxOff + 1);
-			pIdx[idx + 3] = static_cast<unsigned short>(idxOff + 1);
-			pIdx[idx + 4] = static_cast<unsigned short>(idxOff + 2);
-			pIdx[idx + 5] = static_cast<unsigned short>(idxOff + 3);
+				pIdx[idx] = static_cast<unsigned short>(idxOff);
+				pIdx[idx + 1] = static_cast<unsigned short>(idxOff + 2);
+				pIdx[idx + 2] = static_cast<unsigned short>(idxOff + 1);
+				pIdx[idx + 3] = static_cast<unsigned short>(idxOff + 1);
+				pIdx[idx + 4] = static_cast<unsigned short>(idxOff + 2);
+				pIdx[idx + 5] = static_cast<unsigned short>(idxOff + 3);
 
+			}
+
+			index_buffer->unlock();
+			_index_data = (IndexData::ptr)index_data;
 		}
-
-		index_buffer->unlock();
-
-		_vertex_data = (VertexData::ptr)vertex_data;
-		_index_data = (IndexData::ptr)index_data;
-		
+		_vertex_data = (VertexData::ptr)vertex_data;			
 		_bufferCreated = true;
 	}
 }

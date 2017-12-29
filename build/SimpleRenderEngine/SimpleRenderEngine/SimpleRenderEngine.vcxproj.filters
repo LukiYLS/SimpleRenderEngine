@@ -147,9 +147,6 @@
     <ClInclude Include="..\..\..\src\Core\ParticleSystem.h">
       <Filter>头文件</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\src\Core\BillboardCollection.h">
-      <Filter>头文件</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\..\src\Core\GBuffer.h">
       <Filter>头文件</Filter>
     </ClInclude>
@@ -353,9 +350,6 @@
     <ClCompile Include="..\..\..\src\Core\ParticleSystem.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\src\Core\BillboardCollection.cpp">
-      <Filter>源文件</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\..\src\Core\GBuffer.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
@@ -453,6 +447,9 @@
       <Filter>Animation</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\BillboardSet.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\Billboard.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

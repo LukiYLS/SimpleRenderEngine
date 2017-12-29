@@ -81,6 +81,7 @@ namespace SRE {
 		}
 		index_buffer->unlock();
 		_vertexChanged = false;
+		_bufferCreated = true;
 	}
 
 	void RenderObject::drawVertex()

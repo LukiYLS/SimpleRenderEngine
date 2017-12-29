@@ -23,7 +23,6 @@
     <ClInclude Include="..\..\..\src\Animation\AnimationTrack.h" />
     <ClInclude Include="..\..\..\src\Animation\KeyFrame.h" />
     <ClInclude Include="..\..\..\src\Core\Billboard.h" />
-    <ClInclude Include="..\..\..\src\Core\BillboardCollection.h" />
     <ClInclude Include="..\..\..\src\Core\BillboardSet.h" />
     <ClInclude Include="..\..\..\src\Core\Camera.h" />
     <ClInclude Include="..\..\..\src\Core\Constants.h" />
@@ -103,7 +102,7 @@
     <ClCompile Include="..\..\..\src\Animation\Animation.cpp" />
     <ClCompile Include="..\..\..\src\Animation\AnimationTrack.cpp" />
     <ClCompile Include="..\..\..\src\Animation\KeyFrame.cpp" />
-    <ClCompile Include="..\..\..\src\Core\BillboardCollection.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Billboard.cpp" />
     <ClCompile Include="..\..\..\src\Core\BillboardSet.cpp" />
     <ClCompile Include="..\..\..\src\Core\Camera.cpp" />
     <ClCompile Include="..\..\..\src\Core\FrameBuffer.cpp" />

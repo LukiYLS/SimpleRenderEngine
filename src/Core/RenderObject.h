@@ -167,7 +167,7 @@ namespace SRE {
 	protected:		
 
 		void drawVertex();
-		void createBuffer();
+		virtual void createBuffer();
 
 		PrimitiveType _type;
 		bool _isVisible, _useColor;
@@ -184,6 +184,7 @@ namespace SRE {
 		IndexData::ptr  _index_data;
 
 		bool _vertexChanged;
+		bool _bufferCreated;
 
 		std::vector<Vertex> _vertices;
 		std::vector<unsigned int> _indices;
