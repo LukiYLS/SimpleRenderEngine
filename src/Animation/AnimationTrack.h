@@ -51,7 +51,7 @@ namespace SRE {
 		virtual KeyFrame* createKeyFrame(float timePos);
 
 		/*
-		根据时间
+		获取某一时刻的前后两帧
 		*/
 		virtual float getKeyFramesAtTime(const TimeIndex& timeIndex, KeyFrame** keyFrame1, KeyFrame** keyFrame2,
 			unsigned short* firstKeyIndex = 0) const;
@@ -59,7 +59,9 @@ namespace SRE {
 		virtual void removeKeyFrame(unsigned short index);
 		
 		virtual void removeAllKeyFrames(void);
-
+		/*
+		插值出关键帧信息
+		*/
 		virtual void getInterpolatedKeyFrame(const TimeIndex& timeIndex, KeyFrame* kf) const = 0;
 
 		virtual void apply(const TimeIndex& timeIndex, float weight = 1.0, float scale = 1.0f) = 0;

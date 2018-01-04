@@ -86,6 +86,7 @@
     <ClInclude Include="..\..\..\src\math\Vector2D.h" />
     <ClInclude Include="..\..\..\src\math\Vector3D.h" />
     <ClInclude Include="..\..\..\src\math\Vector4D.h" />
+    <ClInclude Include="..\..\..\src\ParticleSystem\Particle.h" />
     <ClInclude Include="..\..\..\src\Utils\AnyValue.h" />
     <ClInclude Include="..\..\..\src\Utils\BoundingBox.h" />
     <ClInclude Include="..\..\..\src\Utils\BoundingSphere.h" />
@@ -96,6 +97,7 @@
     <ClInclude Include="..\..\..\src\Utils\KeyBoardConfig.h" />
     <ClInclude Include="..\..\..\src\Utils\ObjectControl.h" />
     <ClInclude Include="..\..\..\src\Utils\Parameter.h" />
+    <ClInclude Include="..\..\..\src\Utils\StringHelper.h" />
     <ClInclude Include="..\..\..\src\Utils\UtilsHelp.h" />
   </ItemGroup>
   <ItemGroup>
@@ -158,6 +160,7 @@
     <ClCompile Include="..\..\..\src\Utils\CameraControl.cpp" />
     <ClCompile Include="..\..\..\src\Utils\Event.cpp" />
     <ClCompile Include="..\..\..\src\Utils\ObjectControl.cpp" />
+    <ClCompile Include="..\..\..\src\Utils\StringHelper.cpp" />
     <ClCompile Include="..\..\..\src\Utils\UtilsHelp.cpp" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

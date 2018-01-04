@@ -4,8 +4,10 @@
 #include "../Utils/BoundingBox.h"
 #include "../Math/Plane3D.h"
 #include <memory>
-using namespace Math;
-using namespace Utils;
+using Math::Vector3D;
+using Math::Plane3D;
+using Utils::BoundingBox;
+using Utils::BoundingSphere;
 namespace SRE {
 
 	class Ray {

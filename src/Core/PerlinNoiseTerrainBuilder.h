@@ -4,15 +4,14 @@
 #include "TerrainTile.h"
 #define GRIDSIZE 0x100
 #define GRIDSIZE_DATA GRIDSIZE*2+2
-using namespace Math;
+using Math::Vector2D;
+using Math::Vector3D;
 namespace SRE {
 
 	class PerlinNoiseTerrainBuilder {
 
 	public:
-		/************************************************************************/
-		/*                                                                      */
-		/************************************************************************/
+	
 		PerlinNoiseTerrainBuilder(const float& alpha = 3.3, const float& beta = 2.2, int iterationNum = 10, const float& cycle = 128, const float& heightScale = 4);
 		void exportToTerrainTile(TerrainTile* terrain);
 		float noise2D(const Vector2D& vec);

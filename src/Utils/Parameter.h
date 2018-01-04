@@ -3,7 +3,8 @@
 #include <string>
 #include <map>
 #include "AnyValue.h"
-using namespace std;
+using std::string;
+using std::map;
 namespace Utils {
 
 	class Parameter {

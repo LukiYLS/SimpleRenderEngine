@@ -51,24 +51,24 @@ namespace SRE {
 		Billboard* getBillboard(unsigned int index) const;
 		void removeBillboard(unsigned int index);
 		void removeBillboard(Billboard* pBill);
-		void setBillboardOrigin(BillboardOrigin origin);
-		BillboardOrigin getBillboardOrigin() const;
-		void setBillboardRotationType(BillboardRotationType rotationType);
-		BillboardRotationType getBillboardRotationType() const;
-		void setDefaultWidth(float width);
-		float getDefaultWidth() const;
-		void setDefaultHeight(float height);
-		float getDefaultHeight() const;
-		void setBillboardType(BillboardType bbt);
-		BillboardType getBillboardType(void) const;
-		void setCommonDirection(const Vector3D& vec);
-		const Vector3D& getCommonDirection(void) const;
-		void setCommonUpVector(const Vector3& vec);
-		const Vector3D& getCommonUpVector(void) const;
+		void setBillboardOrigin(BillboardOrigin origin) { _originType = origin; }
+		BillboardOrigin getBillboardOrigin() const { return _originType; }
+		void setBillboardRotationType(BillboardRotationType rotationType) { _rotationType = rotationType; }
+		BillboardRotationType getBillboardRotationType() const { return _rotationType; }
+		void setDefaultWidth(float width) { _defaultWidth = width; }
+		float getDefaultWidth() const { return _defaultWidth; }
+		void setDefaultHeight(float height) { _defaultHeight = height; }
+		float getDefaultHeight() const { return _defaultHeight; }
+		void setBillboardType(BillboardType bbt) { _billboardType = bbt; }
+		BillboardType getBillboardType(void) const { return _billboardType; }
+		void setCommonDirection(const Vector3D& vec) { _commonDirection = vec; }
+		const Vector3D& getCommonDirection(void) const { return _commonDirection; }
+		void setCommonUpVector(const Vector3D& vec) { _commonUpVector = vec; }
+		const Vector3D& getCommonUpVector(void) const { return _commonUpVector; }
 	protected:
 		void beginUpdate(size_t numBillboards);
 		void endUpdate();
-		void createBuffer();
+		virtual void createBuffer();
 		void updateBillboard(const Billboard& billboard);
 		bool visibleBillboard(Camera* camera, const Billboard& billboard);
 		//根据BillboardOrigin对齐方式获取偏移信息

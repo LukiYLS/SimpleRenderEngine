@@ -5,7 +5,9 @@
 #include "../Utils/AnyValue.h"
 #include <vector>
 #include <memory>
-using namespace Math;
+using Math::Vector3D;
+using Math::Quaternion;
+using Math::Matrix4D;
 namespace SRE {	
 	class RenderObject;
 	class Light;	

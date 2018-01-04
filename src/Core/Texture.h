@@ -6,7 +6,7 @@
 #include "Image.h"
 #include "HardwareBuffer\PixelBox.h"
 #include "HardwareBuffer\HardwareTextureBuffer.h"
-using namespace SRE;
+
 namespace SRE {
 	enum TextureType
 	{	

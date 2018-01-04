@@ -1,7 +1,8 @@
 #pragma once
 #include <string>
 #include <map>
-using namespace std;
+using std::string;
+using std::map;
 namespace Utils {
 	class KeyBoardConfig
 	{

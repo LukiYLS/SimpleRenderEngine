@@ -3,7 +3,7 @@
 #include <string>
 #include <FreeImage.h>
 #include "HardwareBuffer\PixelBox.h"
-using namespace SRE;
+
 namespace SRE {
 
 	class Image {

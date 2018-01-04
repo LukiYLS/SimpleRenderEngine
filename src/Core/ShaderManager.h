@@ -2,7 +2,8 @@
 #include "Shader.h"
 #include <string>
 #include <map>
-using namespace std;
+using std::string;
+using std::map;
 namespace SRE {
 
 	class ShaderManager {

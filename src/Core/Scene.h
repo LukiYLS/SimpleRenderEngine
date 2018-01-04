@@ -4,8 +4,11 @@
 #include <vector>
 #include <string>
 #include "Skybox.h"
-using namespace std;
-using namespace Utils;
+using std::string;
+using std::map;
+using std::vector;
+
+
 namespace SRE {
 	struct Fog {
 

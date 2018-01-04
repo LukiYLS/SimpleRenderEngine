@@ -3,7 +3,7 @@
 #include "Vector3D.h"
 #include "Matrix4D.h"
 #include "..\Utils\BoundingSphere.h"
-using namespace Utils;
+using Utils::BoundingSphere;
 namespace Math {
 	enum CULL_STATE
 	{

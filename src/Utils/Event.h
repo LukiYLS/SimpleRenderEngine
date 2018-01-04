@@ -4,7 +4,9 @@
 #include <map>
 #include <list>
 #include "AnyValue.h"
-using namespace std;
+using std::string;
+using std::map;
+using std::list;
 namespace Utils
 {
 	typedef map<string, AnyValue> event_value_map_type;

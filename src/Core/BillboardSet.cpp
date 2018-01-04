@@ -21,7 +21,7 @@ namespace SRE {
 		
 	}
 
-	Billboard* BillboardSet::createBillboard(const Vector3D& position, const Vector3D& color = Vector3D(1.0, 1.0, 1.0))
+	Billboard* BillboardSet::createBillboard(const Vector3D& position, const Vector3D& color)
 	{
 		Billboard* billboard = new Billboard(position, this, color);
 		Billboard::ptr bb_ptr = (Billboard::ptr)billboard;
@@ -29,6 +29,18 @@ namespace SRE {
 		return bb_ptr.get();
 	}
 
+	Billboard* BillboardSet::getBillboard(unsigned int index) const
+	{
+
+	}
+	void BillboardSet::removeBillboard(unsigned int index)
+	{
+
+	}
+	void BillboardSet::removeBillboard(Billboard* pBill)
+	{
+
+	}
 	void BillboardSet::update(size_t renderSize)
 	{
 		beginUpdate(renderSize);
@@ -48,10 +60,8 @@ namespace SRE {
 			createBuffer();
 
 		if (!_pointRender)
-		{
-			
+		{			
 			getParametricOffsets(_leftOff, _rightOff, _topOff, _bottomOff);
-
 
 			if (_billboardType != BBT_ORIENTED_SELF &&
 				_billboardType != BBT_PERPENDICULAR_SELF &&
@@ -295,7 +305,7 @@ namespace SRE {
 			*_lockData++ = color.y;
 			*_lockData++ = color.z;
 		}
-		else if (_useDefaultOriention || billboard.getRotateAngle() == 0.0)//没有旋转的情况下
+		else if (_useDefaultOriention || billboard.getRotationAngle() == 0.0)//没有旋转的情况下
 		{
 			Vector3D position = billboard.getPosition();
 			*_lockData++ = offsets[0].x + position.x;
@@ -426,5 +436,10 @@ namespace SRE {
 		}
 		_vertex_data = (VertexData::ptr)vertex_data;			
 		_bufferCreated = true;
+	}
+
+	bool BillboardSet::visibleBillboard(Camera* camera, const Billboard& billboard)
+	{
+		return true;
 	}
 }

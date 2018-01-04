@@ -44,21 +44,23 @@ namespace SRE {
 
 	}
 
-	void PerlinNoiseTerrainBuilder::exportToTerrainTile(TerrainTile* terrain)
+	void PerlinNoiseTerrainBuilder::exportToTerrainTile(TerrainTile* tile)
 	{
-		size_t size = terrain->getSize();
-		Code code = terrain->getCode();
-		float* heightMap = new float[size*size];
+	
+		unsigned int width = tile->getWidth();
+		unsigned int height = tile->getHeight();
+		Code code = tile->getCode();
+		float* heightMap = new float[width * height];
 		
-		Vector2D worldOffset(float(code.x*(size - 1)), float(code.y*(size - 1)));
+		Vector2D worldOffset(float(code.x*(width - 1)), float(code.y*(height - 1)));
 		Vector2D revisedValuePoint;
-		for (unsigned int i = 0; i<size; i++)
-			for (unsigned int j = 0; j<size; j++)
+		for (unsigned int i = 0; i<height; i++)
+			for (unsigned int j = 0; j<width; j++)
 			{
 				revisedValuePoint = (worldOffset + Vector2D(j, i)) / _cycle;
-				heightMap[i*size + j] = produceHeight(revisedValuePoint) * _heightScale;
+				heightMap[i*width + j] = produceHeight(revisedValuePoint) * _heightScale;
 			}
-		terrain->importHeightMap(heightMap);
+		tile->importHeightMap(heightMap);
 	}
 
 	float PerlinNoiseTerrainBuilder::produceHeight(const Vector2D& vec)

@@ -2,7 +2,8 @@
 #include "../Math/Vector3D.h"
 #include "../Math/Matrix4D.h"
 #include <memory>
-using namespace Math;
+using Math::Vector3D;
+using Math::Matrix4D;
 namespace Utils {
 
 	class BoundingSphere {

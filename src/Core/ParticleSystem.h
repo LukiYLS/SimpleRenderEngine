@@ -5,7 +5,7 @@
 #include "Effect.h"
 #include "Shader.h"
 #include "BillboardCollection.h"
-using namespace Math;
+using Math::Vector3D;
 namespace SRE {
 	
 	struct Particle{

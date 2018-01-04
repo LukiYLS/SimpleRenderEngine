@@ -5,7 +5,7 @@ namespace SRE {
 	class Terrain {
 
 	public:
-
+		friend class TerrainTile;
 		unsigned int getMaxLevel()const { return _maxLevel; }
 
 	protected:

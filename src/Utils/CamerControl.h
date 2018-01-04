@@ -3,7 +3,7 @@
 #include "../Core/Camera.h"
 #include "Event.h"
 #include "InputDefine.h"
-using namespace SRE;
+using SRE::Camera;
 namespace Utils
 {
 	class CameraControl

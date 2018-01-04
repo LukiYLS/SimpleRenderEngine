@@ -3,7 +3,7 @@
 #include <memory>
 #include "../Utils/AnyValue.h"
 #include <string>
-using namespace Utils;
+using Utils::AnyValue;
 namespace SRE {
 
 	enum ValueType {

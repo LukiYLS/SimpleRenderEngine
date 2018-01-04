@@ -1,7 +1,9 @@
 #pragma once
 #include "..\Math\Vector3D.h"
 #include "..\Math\Vector4D.h"
-using namespace Math;
+using Math::Vector3D;
+using Math::Vector4D;
+#include <memory>
 namespace SRE {
 
 	class Billboard {

@@ -34,6 +34,9 @@
     <Filter Include="Animation">
       <UniqueIdentifier>{b461ca4f-1dca-4954-8afa-7d15a8d51316}</UniqueIdentifier>
     </Filter>
+    <Filter Include="ParticleSystem">
+      <UniqueIdentifier>{a3572b03-286b-41b7-bfbc-f0a85d908143}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Core\Camera.h">
@@ -270,6 +273,12 @@
     <ClInclude Include="..\..\..\src\Utils\FirstPersonController.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\ParticleSystem\Particle.h">
+      <Filter>ParticleSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Utils\StringHelper.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -451,6 +460,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Billboard.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Utils\StringHelper.cpp">
+      <Filter>Utils</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

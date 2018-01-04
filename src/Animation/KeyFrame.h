@@ -4,8 +4,9 @@
 #include "../Math/Vector3D.h"
 #include "../Math/Quaternion.h"
 #include <memory>
-using namespace Utils;
-using namespace Math;
+using Utils::AnyValue;
+using Math::Vector3D;
+using Math::Quaternion;
 namespace SRE {
 
 	class AnimationTrack;

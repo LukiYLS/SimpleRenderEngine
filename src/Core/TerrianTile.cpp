@@ -1,4 +1,5 @@
 #include "TerrainTile.h"
+#include "Terrain.h"
 #include "TextureManager.h"
 namespace SRE {
 
@@ -8,14 +9,16 @@ namespace SRE {
 		
 
 	}
-	TerrainTile::TerrainTile(Terrain* terrain, TerrainTile* parent, unsigned int xStart, unsigned int yStart, size_t size, Code code)
+	TerrainTile::TerrainTile(Terrain* terrain, TerrianTile* parent, unsigned int xStart, unsigned int yStart, unsigned int width, unsigned int height, Code code)
 	{
 		if (terrain->getMaxLevel() < code.level)
 		{
 			//还可以继续创建子节点
-			unsigned int childSize = (unsigned int)(((size - 1) * 0.5f) + 1);
-			unsigned int childOff = childSize - 1;
-			unsigned int childLevel = code.level + 1; 
+			unsigned int childWidth = (unsigned int)(((width - 1) * 0.5f) + 1);
+			unsigned int childHeight = (unsigned int)(((width - 1) * 0.5f) + 1);
+			unsigned int childOffX = childWidth - 1;
+			unsigned int childOffY = childHeight - 1;
+			unsigned int childLevel = code.level + 1;
 			unsigned int xOffset = xStart, yOffset = yStart;
 			for (unsigned int i = 0; i < 4; ++i)
 			{
@@ -25,10 +28,10 @@ namespace SRE {
 				childCode.level = code.level + 1;
 
 				if (i == 1)
-					xOffset += childOff;
+					xOffset += childOffX;
 				if (i == 2)
-					yOffset += childOff;
-				_children[i] = new TerrainTile(terrain, this, xOffset, yOffset, childSize, childCode);
+					yOffset += childOffY;
+				_children[i] = new TerrainTile(terrain, this, xOffset, yOffset, childWidth, childHeight, childCode);
 
 			}
 		}
@@ -37,11 +40,18 @@ namespace SRE {
 			//该节点叶子节点
 		}
 	}
+	
 	TerrainTile::~TerrainTile()
 	{
 
 	}
-	Mesh* TerrainTile::createFromRandomHeght(int width, int height)
+
+	void TerrainTile::importHeightMap(float* heightMap)
+	{
+		//将高度值
+	}
+
+	RenderObject* TerrainTile::createFromRandomHeght(int width, int height)
 	{
 		_width = width;
 		_height = height;
@@ -50,13 +60,13 @@ namespace SRE {
 		{
 			_vertices[i].position_y = rand() % 5;
 		}
-		Mesh* mesh = new Mesh;
+		RenderObject* mesh = new RenderObject;
 		mesh->setVertexData(_vertices);
 		mesh->setIndexData(_indices);
 		mesh->computeNormals();
 		return mesh;
 	}
-	Mesh* TerrainTile::createMeshFromHeightmap(const char* fileName)
+	RenderObject* TerrainTile::createMeshFromHeightmap(const char* fileName)
 	{		
 		Image* image = new Image;
 		image->load(fileName);
@@ -142,7 +152,7 @@ namespace SRE {
 
 		/*vertex_buffer->unlock();
 		index_buffer->unlock();*/
-		Mesh* mesh = new Mesh;
+		RenderObject* mesh = new RenderObject;
 		mesh->setVertexData(vertices);
 		mesh->setIndexData(indices);
 		mesh->computeNormals();

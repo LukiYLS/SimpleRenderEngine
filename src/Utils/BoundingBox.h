@@ -2,7 +2,7 @@
 #include "../Math/Vector3D.h"
 #include <vector>
 #include <memory>
-using namespace Math;
+using Math::Vector3D;
 namespace Utils {
 
 	class BoundingBox {	
