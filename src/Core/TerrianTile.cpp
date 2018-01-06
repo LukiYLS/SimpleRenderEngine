@@ -43,12 +43,74 @@ namespace SRE {
 	
 	TerrainTile::~TerrainTile()
 	{
+		if (_heightData)
+			delete[] heightData;
+	}
+
+	void TerrainTile::setWidth(unsigned int width)
+	{ 
+		_width = width; 
+		_verticesNeedUpdate = true;
+	}
+	unsigned int TerrainTile::getWidth()const 
+	{ 
+		return _width; 
+	}
+	void TerrainTile::setHeight(unsigned int  height)
+	{ 
+		_height = height; 
+		_verticesNeedUpdate = true;
+	}
+	unsigned int TerrainTile::getHeight()const
+	{
+		return _height;
+	}
+
+	void TerrainTile::updateVertexBuffer(HardwareVertexBuffer::ptr buffer)
+	{
+		//更新高度信息？？
+
+		//先判断格网是否构建，也就是说顶点和索引是否已经生成
+
+		if (_verticesNeedUpdate)
+		{
+			generateVertex();
+			_verticesNeedUpdate = false;
+			_bufferCreated = false;
+		}
+
+		if (_heightNeedUpdate && _heightData)
+		{
+			for (unsigned int i = 0; i < _height; i++)
+				for (unsigned int j = 0; j < _width; j++)
+				{
+					switch (_alignment)
+					{
+					case TerrainTile::ALIGN_X_Z:
+						_vertices[i*_width + j].position_y = _heightData[i*_width + j];
+						break;
+					case TerrainTile::ALIGN_X_Y:
+						_vertices[i*_width + j].position_z = _heightData[i*_width + j];
+						break;
+					case TerrainTile::ALIGN_Y_Z:
+						_vertices[i*_width + j].position_x = _heightData[i*_width + j];
+						break;
+					default:
+						break;
+					}
+					
+				}
+			computeNormals();
+			_bufferCreated = false;
+		}
 
 	}
 
-	void TerrainTile::importHeightMap(float* heightMap)
+	void TerrainTile::importHeightMap(float* heightData)
 	{
 		//将高度值
+		_heightData = heightData;
+		_heightNeedUpdate = true;
 	}
 
 	RenderObject* TerrainTile::createFromRandomHeght(int width, int height)
@@ -262,7 +324,23 @@ namespace SRE {
 			for (int j = 0; j < _width; j++)
 			{
 				//间隔计算点坐标
-				Vertex v(j - halfWidth, 0.0, halfHeight - i, 0, 1, 0, j / (_width - 1), 1 - i / (_height - 1));
+				float x = j - halfWidth;
+				float y = 0.0;
+				float z = halfHeight - i;
+				switch (_alignment)
+				{
+				case TerrainTile::ALIGN_X_Z:					
+					break;
+				case TerrainTile::ALIGN_X_Y:
+					std::swap(y, z);
+					break;
+				case TerrainTile::ALIGN_Y_Z:
+					std::swap(y, x);
+					break;
+				default:
+					break;
+				}
+				Vertex v(x, y, z, 0, 1, 0, j / (_width - 1), 1 - i / (_height - 1));
 				_vertices.push_back(v);
 			}
 		}

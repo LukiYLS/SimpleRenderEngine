@@ -45,6 +45,7 @@
     <ClInclude Include="..\..\..\src\Core\Loader.h" />
     <ClInclude Include="..\..\..\src\Core\Mesh.h" />
     <ClInclude Include="..\..\..\src\Core\GeometryFactory.h" />
+    <ClInclude Include="..\..\..\src\Core\Model.h" />
     <ClInclude Include="..\..\..\src\Core\Object.h" />
     <ClInclude Include="..\..\..\src\Core\ObjLoader.h" />
     <ClInclude Include="..\..\..\src\Core\OrthographicCamera.h" />
@@ -123,6 +124,7 @@
     <ClCompile Include="..\..\..\src\Core\HardwareBuffer\VertexElement.cpp" />
     <ClCompile Include="..\..\..\src\Core\Image.cpp" />
     <ClCompile Include="..\..\..\src\Core\Mesh.cpp" />
+    <ClCompile Include="..\..\..\src\Core\Model.cpp" />
     <ClCompile Include="..\..\..\src\Core\Object.cpp" />
     <ClCompile Include="..\..\..\src\Core\ParticleSystem.cpp" />
     <ClCompile Include="..\..\..\src\Core\PerlinNoiseTerrainBuilder.cpp" />

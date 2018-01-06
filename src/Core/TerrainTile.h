@@ -59,17 +59,17 @@ namespace SRE {
 			ALIGN_X_Y = 1,			
 			ALIGN_Y_Z = 2
 		};
-
+		void updateVertexBuffer(HardwareVertexBuffer::ptr buffer);
 		void importHeightMap(float* heightMap);
 		RenderObject* createFromRandomHeght(int width, int height);
 		RenderObject* createMeshFromHeightmap(const char* fileName);
 
 		size_t getSize()const { return _size; }
 
-		void setWidth(unsigned int width) { _width = width; }
-		unsigned int getWidth()const { return _width; }
-		void setHeight(unsigned int  height) { _height = height; }
-		unsigned int getHeight()const { return _height; }
+		void setWidth(unsigned int width);
+		unsigned int getWidth()const;
+		void setHeight(unsigned int  height);
+		unsigned int getHeight()const;
 		Code getCode()const { return _code; }
 
 
@@ -82,18 +82,19 @@ namespace SRE {
 		int _width, _height;		
 		Code _code;
 		BoundingSphere _bounding_shpere;
-		float *_data;
+		float *_heightData;
 		float _blockScale;
 		float _heightScale;
 
-
+		bool _verticesNeedUpdate;
+		bool _heightNeedUpdate;
 		Code _code;//在整个地形中的坐标
 		unsigned int _xStart, _yStart;
 		size_t _size;
 		TerrianTile* _parent;
 		TerrianTile* _children[4];
 
-		//TerrianTile * _child[4];
+		Alignment _alignment;
 	};
 	
 }

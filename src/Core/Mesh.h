@@ -1,6 +1,8 @@
 #pragma once
 #include "RenderObject.h"
 #include "..\Material\Material.h"
+#include <assimp\Importer.hpp>
+#include <assimp\scene.h>
 #include <string>
 #include <map>
 namespace SRE {	
@@ -27,8 +29,14 @@ namespace SRE {
 		//virtual void setShaderUniform(Shader* shader) {}
 		bool getReceiveShadow()const { return _receiveShadow; }
 		void setReceiveShadow(bool receive) { _receiveShadow = receive; }
+
+		void loadModel(const std::string& path);
+
 		
-	protected:		
+	protected:	
+		
+		
+
 		//std::vector<std::string> _textures;
 		Material::ptr _material;	
 		//std::string _shader_name;

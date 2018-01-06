@@ -121,7 +121,7 @@ namespace SRE {
 	}
 	void RenderObject::drawPrimitive()
 	{
-		if (_vertices.size() > 0 && _vertexChanged)
+		if (_vertices.size() > 0 && !_bufferCreated)
 			createBuffer();
 			
 		if (!_vertex_data)
@@ -230,22 +230,7 @@ namespace SRE {
 		glBindVertexArray(0);
 	}
 	void RenderObject::computeNormals()
-	{
-//		if (!_vertex_data)return;
-//		VertexElement::ptr element = _vertex_data->getVertexDeclaration()->findElementBySemantic(VES_NORMAL);
-//		size_t offset = element->getOffset();
-//		unsigned short source = element->getSource();
-//		HardwareVertexBuffer::ptr vertex_buffer = _vertex_data->getVertexBufferBinding()->getBuffer(source);
-//		float* pVertex = static_cast<float*>(vertex_buffer->lock(HardwareBuffer::HBL_NORMAL));
-//
-//		//HardwareIndexBuffer::ptr index_buffer = 
-//
-/////		std::map<unsigned int, Vector3D> normals;
-//		while (pVertex)
-//		{
-//			
-//		}
-		
+	{		
 		if (_vertices.size() == 0)
 			return;
 		if (_indices.size() > 0)
@@ -274,9 +259,6 @@ namespace SRE {
 				_vertices[_indices[i + 2]].normal_x += normal.x;
 				_vertices[_indices[i + 2]].normal_y += normal.y;
 				_vertices[_indices[i + 2]].normal_z += normal.z;
-				//_vertices[_indices[i]].setNormal(normal);
-				//_vertices[_indices[i + 1]].setNormal(normal);
-				//_vertices[_indices[i + 2]].setNormal(normal);
 
 			}
 		}
@@ -292,23 +274,15 @@ namespace SRE {
 	void RenderObject::computeBoundingSphere()
 	{
 
-	}
-	BoundingSphere::ptr RenderObject::getBoundSphere()
-	{
-		if (!_sphere)
-		{
-			computeBoundingSphere();
-		}
-		return _sphere;
-	}
+	}	
 	void RenderObject::raycast(RayCaster* raycaster, AnyValue& intersects)
 	{
 		//with boundingbox intersect
 
-		if (_sphere == NULL)computeBoundingSphere();
+	
 
 		Vector3D intersect;
-		if (!raycaster->getRay()->intersectSphere(*_sphere.get(), intersect))return;
+		if (!raycaster->getRay()->intersectSphere(_sphere, intersect))return;
 
 	}
 }

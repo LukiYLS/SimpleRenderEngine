@@ -279,6 +279,9 @@
     <ClInclude Include="..\..\..\src\Utils\StringHelper.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\Model.h">
+      <Filter>Utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -463,6 +466,9 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Utils\StringHelper.cpp">
       <Filter>Utils</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\Model.cpp">
+      <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
