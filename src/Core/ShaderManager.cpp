@@ -82,7 +82,7 @@ namespace SRE {
 		}
 
 		uint32_t shader_ID = glCreateProgram();
-		Shader::ptr shader = make_shared<Shader>(shader_ID);
+		Shader::ptr shader = std::make_shared<Shader>(shader_ID);
 		glAttachShader(shader_ID, vertex);
 		glAttachShader(shader_ID, fragment);
 		if (geometryPath != nullptr)

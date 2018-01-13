@@ -15,7 +15,8 @@ namespace SRE {
 	protected:
 		void processNode(aiNode* node, const aiScene* scene);
 		RenderObject* processMesh(aiMesh* mesh, const aiScene* scene);
-		Material::ptr loadMaterial(aiMaterial *mat);
+		Material::ptr parseMaterial(aiMaterial *mat);
+		TextureUnitState::ptr parseTexture(aiTextureType type, aiMaterial* aiMat);
 		string directory;
 		//std::vector<RenderObject::ptr> 
 

@@ -35,7 +35,18 @@ namespace SRE {
 	RenderObject* Model::processMesh(aiMesh* mesh, const aiScene* scene)
 	{
 		RenderObject* renderObject = new RenderObject;
+
+		if (mesh->mPrimitiveTypes & aiPrimitiveType_POINT)
+			renderObject->setPrimitiveType(POINT_LIST);
+		else if (mesh->mPrimitiveTypes & aiPrimitiveType_LINE)
+			renderObject->setPrimitiveType(LINE_LIST);
+		else if (mesh->mPrimitiveTypes & aiPrimitiveType_TRIANGLE)
+			renderObject->setPrimitiveType(TRIANGLE_LIST);
+		else
+			renderObject->setPrimitiveType (TRIANGLE_LIST);
 		std::vector<Vertex> vertices;
+		BoundingBox bbox;
+		BoundingSphere sphere;
 		for (unsigned int i = 0; i < mesh->mNumVertices; i++)
 		{
 			Vertex vertex;
@@ -43,6 +54,10 @@ namespace SRE {
 			vertex.position_x = mesh->mVertices[i].x;
 			vertex.position_y = mesh->mVertices[i].y;
 			vertex.position_z = mesh->mVertices[i].z;
+
+			bbox.expandByPoint(Vector3D(vertex.position_x, vertex.position_y, vertex.position_z));
+			sphere.expandByPoint(Vector3D(vertex.position_x, vertex.position_y, vertex.position_z));
+
 
 			vertex.normal_x = mesh->mNormals[i].x;
 			vertex.normal_y = mesh->mNormals[i].y;
@@ -76,10 +91,114 @@ namespace SRE {
 
 		renderObject->setVertexData(vertices);
 		renderObject->setIndexData(indices);
-
+		renderObject->setBoundBox(bbox);
+		renderObject->setBoundSphere(sphere);
+		
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
 
+		renderObject->setMaterial(parseMaterial(material));
+
+		return renderObject;
 		//解析material
 		
+	}
+
+	Material::ptr Model::parseMaterial(aiMaterial *aiMat)
+	{
+		//是否有光照？
+		Material* material = new Material;
+	
+		//////////////////////////////////////////////////////////////////////////
+		aiColor4D color;
+		if (AI_SUCCESS == aiMat->Get(AI_MATKEY_COLOR_DIFFUSE, color))
+		{
+			material->setColor(Vector3D(color.r, color.g, color.b));		
+		}
+
+		if (AI_SUCCESS == aiMat->Get(AI_MATKEY_COLOR_SPECULAR, color))
+		{
+			material->setSpecular(Vector3D(color.r, color.g, color.b));
+		}
+
+		if (AI_SUCCESS == aiMat->Get(AI_MATKEY_COLOR_EMISSIVE, color))
+		{
+			material->setEmissive(Vector3D(color.r, color.g, color.b));
+		}
+		bool bvalue;
+		if (AI_SUCCESS == aiMat->Get(AI_MATKEY_COLOR_TRANSPARENT, bvalue))
+		{
+			material->setTransparent(bvalue);
+		}
+		if (AI_SUCCESS == aiMat->Get(AI_MATKEY_ENABLE_WIREFRAME, bvalue))
+		{
+			material->setWireframe(bvalue);
+		}
+		if (AI_SUCCESS == aiMat->Get(AI_MATKEY_TWOSIDED, bvalue))
+		{
+			material->setCullFaceMode(CullFaceMode::DoubleSide);
+		}
+		float fvalue;
+		if (AI_SUCCESS == aiMat->Get(AI_MATKEY_OPACITY, fvalue))
+		{
+			material->setOpacity(fvalue);
+		}
+		if (AI_SUCCESS == aiMat->Get(AI_MATKEY_SHININESS, fvalue))
+		{
+			material->setShininess(fvalue);
+		}
+		//////////////////////////////////////////////////////////////////////////
+
+
+
+	}
+
+
+	TextureUnitState::ptr Model::parseTexture(aiTextureType type, aiMaterial* aiMat)
+	{
+		aiString path;
+		aiTextureMapping mapping;
+		unsigned int uvindex;
+		//PN_stdfloat blend;
+		float blend;
+		aiTextureOp op;
+		int count = aiMat->GetTextureCount(type);//??????
+		TextureUnitState* texture_unit = new TextureUnitState;
+
+		if (AI_SUCCESS == aiMat->GetTexture(type, 0, &path, &mapping, NULL, &blend, &op, NULL))
+		{
+			if (type == aiTextureType_OPACITY)
+			{
+				
+			}
+			switch (mapping)
+			{
+			case aiTextureMapping_UV:
+				//2d
+				break;
+			case aiTextureMapping_BOX:
+				//3d
+				break;
+			default:
+				//2d
+				break;
+			}
+
+			int wrapping;
+			if (AI_SUCCESS == aiMat->Get(AI_MATKEY_MAPPINGMODE_U(type, 0), wrapping))
+			{
+				switch (wrapping)
+				{
+				case aiTextureMapMode_Wrap:
+					texture_unit->setTextureAddressingMode(TAM_WRAP);
+					break;
+				case aiTextureMapMode_Clamp:
+					texture_unit->setTextureAddressingMode(TAM_CLAMP);
+					break;
+				case aiTextureMapMode_Mirror:
+					texture_unit->setTextureAddressingMode(TAM_MIRROR);
+					break;
+				}
+			}
+		}
 	}
 }

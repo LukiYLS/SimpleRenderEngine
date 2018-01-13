@@ -37,6 +37,12 @@
     <Filter Include="ParticleSystem">
       <UniqueIdentifier>{a3572b03-286b-41b7-bfbc-f0a85d908143}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Thread">
+      <UniqueIdentifier>{d7189a57-91a9-4de2-b276-0e75c69824cf}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="HTTP">
+      <UniqueIdentifier>{fa414c1e-c620-4794-9ed9-cd1f4afec80b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Core\Camera.h">
@@ -282,6 +288,12 @@
     <ClInclude Include="..\..\..\src\Core\Model.h">
       <Filter>Utils</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\Thread\Thread.h">
+      <Filter>Thread</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\Core\PickTool.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -468,6 +480,9 @@
       <Filter>Utils</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\Model.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Core\PickTool.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
   </ItemGroup>

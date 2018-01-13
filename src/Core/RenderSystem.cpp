@@ -22,7 +22,7 @@ namespace SRE {
 		_shadowDepth = NULL;
 		_cubeShadowDepth = NULL;
 		//
-		CameraControl::ptr cc = make_shared<CameraControl>(camera);
+		CameraControl::ptr cc = std::make_shared<CameraControl>(camera);
 		EventManager::Inst()->registerReceiver("mouse.event", cc);
 		EventManager::Inst()->registerReceiver("keyboard.event", cc);
 	}

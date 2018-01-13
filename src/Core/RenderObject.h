@@ -161,8 +161,8 @@ namespace SRE {
 		void computeNormals();
 		void computeBoundingBox();
 		void computeBoundingSphere();
-		void setBoundBox(BoundingBox::ptr bbx) { _bbx = bbx; }
-		void setBoundSphere(BoundingSphere::ptr bs) { _sphere = bs; }
+		void setBoundBox(const BoundingBox& bbx) { _bbx = bbx; }
+		void setBoundSphere(const BoundingSphere& bs) { _sphere = bs; }
 		BoundingSphere::ptr getBoundSphere();
 
 	protected:		

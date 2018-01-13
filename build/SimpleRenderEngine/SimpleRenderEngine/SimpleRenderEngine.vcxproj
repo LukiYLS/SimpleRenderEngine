@@ -52,6 +52,7 @@
     <ClInclude Include="..\..\..\src\Core\ParticleSystem.h" />
     <ClInclude Include="..\..\..\src\Core\PerlinNoiseTerrainBuilder.h" />
     <ClInclude Include="..\..\..\src\Core\PerspectiveCamera.h" />
+    <ClInclude Include="..\..\..\src\Core\PickTool.h" />
     <ClInclude Include="..\..\..\src\Core\Ray.h" />
     <ClInclude Include="..\..\..\src\Core\RayCaster.h" />
     <ClInclude Include="..\..\..\src\Core\RenderObject.h" />
@@ -88,6 +89,7 @@
     <ClInclude Include="..\..\..\src\math\Vector3D.h" />
     <ClInclude Include="..\..\..\src\math\Vector4D.h" />
     <ClInclude Include="..\..\..\src\ParticleSystem\Particle.h" />
+    <ClInclude Include="..\..\..\src\Thread\Thread.h" />
     <ClInclude Include="..\..\..\src\Utils\AnyValue.h" />
     <ClInclude Include="..\..\..\src\Utils\BoundingBox.h" />
     <ClInclude Include="..\..\..\src\Utils\BoundingSphere.h" />
@@ -128,6 +130,7 @@
     <ClCompile Include="..\..\..\src\Core\Object.cpp" />
     <ClCompile Include="..\..\..\src\Core\ParticleSystem.cpp" />
     <ClCompile Include="..\..\..\src\Core\PerlinNoiseTerrainBuilder.cpp" />
+    <ClCompile Include="..\..\..\src\Core\PickTool.cpp" />
     <ClCompile Include="..\..\..\src\Core\Ray.cpp" />
     <ClCompile Include="..\..\..\src\Core\RayCaster.cpp" />
     <ClCompile Include="..\..\..\src\Core\RenderObject.cpp" />

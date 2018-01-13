@@ -1,19 +1,22 @@
 
-#include <glew\glew.h>
-#include <glm/gtc/matrix_transform.hpp>
+
 #include "PickTool.h"
+#include "Camera.h"
+#include <glew/glew.h>
+using namespace Math;
 
 #define RGB_WHITE (0xFF | (0xFF<<8) | (0xFF<<16))
 
-namespace Core
+namespace SRE
 {
-	glm::vec4 GetColorByIndex(int index)
+	//先把场景render to texture，每个对象用索引代表不同的有颜色，然后通过拾取颜色来得到对象索引信息
+	Vector4D GetColorByIndex(int index)
 	{
 		int r = index & 0xFF;
 		int g = (index >> 8) & 0xFF;
 		int b = (index >> 16) & 0xFF;
 
-		return glm::vec4(float(r) / 255.0f, float(g) / 255.0f, float(b) / 255.0f, 1.0f);
+		return Vector4D(float(r) / 255.0f, float(g) / 255.0f, float(b) / 255.0f, 1.0f);
 	}
 
 	int GetIndexByColor(int r, int g, int b)
@@ -32,30 +35,30 @@ namespace Core
 		return iResult;
 	}
 
-	/*void Get3DRayUnderMouse(int x, int y,int width, int height, glm::vec3* v1, glm::vec3* v2,Camera::ptr camera)
+	void Get3DRayUnderMouse(int x, int y,int width, int height, Vector3D* v1, Vector3D* v2,Camera::ptr camera)
 	{		
 
-		glm::vec4 viewport = glm::vec4(0.0f, 0.0f, width, height);
+		Vector4D viewport = Vector4D(0.0f, 0.0f, width, height);
 
-		*v1 = glm::unProject(glm::vec3(float(x), float(y), 0.0f), camera->getViewMatrix(),camera->getProjectMatrix(), viewport);
-		*v2 = glm::unProject(glm::vec3(float(x), float(y), 1.0f), camera->getViewMatrix(), camera->getProjectMatrix(), viewport);
-	}*/
+		//*v1 = glm::unProject(glm::vec3(float(x), float(y), 0.0f), camera->getViewMatrix(),camera->getProjectMatrix(), viewport);
+		//*v2 = glm::unProject(glm::vec3(float(x), float(y), 1.0f), camera->getViewMatrix(), camera->getProjectMatrix(), viewport);
+	}
 
-	bool RaySphereCollision(glm::vec3 vSphereCenter, float fSphereRadius, glm::vec3 vA, glm::vec3 vB)
+	bool RaySphereCollision(Math::Vector3D vSphereCenter, float fSphereRadius, Math::Vector3D vA, Math::Vector3D vB)
 	{
 		// Create the vector from end point vA to center of sphere
-		glm::vec3 vDirToSphere = vSphereCenter - vA;
+		Vector3D vDirToSphere = vSphereCenter - vA;
 
 		// Create a normalized direction vector from end point vA to end point vB
-		glm::vec3 vLineDir = glm::normalize(vB - vA);
+		Vector3D vLineDir = (vB - vA).normalize();
 
 		// Find length of line segment
-		float fLineLength = glm::distance(vA, vB);
+		float fLineLength =(vA, vB).length();
 
 		// Using the dot product, we project the vDirToSphere onto the vector vLineDir
-		float t = glm::dot(vDirToSphere, vLineDir);
+		float t = vDirToSphere.dot(vLineDir);
 
-		glm::vec3 vClosestPoint;
+		Vector3D vClosestPoint;
 		// If our projected distance from vA is less than or equal to 0, the closest point is vA
 		if (t <= 0.0f)
 			vClosestPoint = vA;
@@ -67,7 +70,7 @@ namespace Core
 			vClosestPoint = vA + vLineDir*t;
 
 		// Now just check if closest point is within radius of sphere
-		return glm::distance(vSphereCenter, vClosestPoint) <= fSphereRadius;
+		return (vSphereCenter, vClosestPoint).length() <= fSphereRadius;
 	}
 }
 

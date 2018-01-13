@@ -3,7 +3,7 @@
 #include  <iostream>
 #include "RenderSystem.h"
 #include <list>
-using namespace Utils;
+using namespace  Utils;
 namespace SRE {
 	
 	Win* Win::instance(0);

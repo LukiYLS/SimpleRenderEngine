@@ -25,7 +25,7 @@ namespace SRE {
 
 	class Scene {
 	public:
-		typedef shared_ptr<Scene> ptr;
+		typedef std::shared_ptr<Scene> ptr;
 		Scene();
 	public:
 		void setSceneRoot(Object::ptr root) { _root = root; }
