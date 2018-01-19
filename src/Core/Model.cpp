@@ -18,6 +18,13 @@ namespace SRE {
 		processNode(scene->mRootNode, scene);
 	}
 
+	void Model::saveModel(const std::string fileName)
+	{
+		Assimp::Exporter exporter;
+		//aiScene* scene = modelToAiScene(this);
+		//exporter.Export((scene,)
+	}
+
 	void Model::processNode(aiNode* node, const aiScene* scene)
 	{		
 		for (unsigned int i = 0; i < node->mNumMeshes; i++)
@@ -147,8 +154,9 @@ namespace SRE {
 			material->setShininess(fvalue);
 		}
 		//////////////////////////////////////////////////////////////////////////
+		//texture parse
 
-
+		return Material::ptr(material);
 
 	}
 
@@ -162,6 +170,7 @@ namespace SRE {
 		float blend;
 		aiTextureOp op;
 		int count = aiMat->GetTextureCount(type);//??????
+		//aiMat->GetTexture()
 		TextureUnitState* texture_unit = new TextureUnitState;
 
 		if (AI_SUCCESS == aiMat->GetTexture(type, 0, &path, &mapping, NULL, &blend, &op, NULL))

@@ -4,15 +4,15 @@
 #include <vector>
 #include <memory>
 namespace HTTP {
-#define content_type_field			"Content-Type"
-#define field_name_field			"name"
+#define ContentTypeField			"Content-Type"
+#define FieldNameField			"name"
 
-#define multi_field_form_data		"multifield/form-data"
+#define MultiFieldOrFromDataField		"multifield/form-data"
 
-#define field_string_type			"text/plain"
-#define field_buffer_type			"application/octet-stream"
+#define StringField			"text/plain"
+#define StreamBufferField			"application/octet-stream"
 
-#define field_file_stream_type		"file_stream"
+#define FileStreamField		"file_stream"
 
 	class HttpPostField {
 
@@ -25,34 +25,34 @@ namespace HTTP {
 
 		enum DataType
 		{
-			textual,	//for in_memory data
-			tga,		//以下这些格式，可以是文件的扩展名，也可以是已全部读入buffer中的文件的binary
-			jpg,
-			stream
+			TEXTURAL,	//for in_memory data
+			TGA,		//以下这些格式，可以是文件的扩展名，也可以是已全部读入buffer中的文件的binary
+			JPG,
+			STREAM
 			/*以后添加新的格式*/
 		};
 
 		typedef std::map<std::string, std::string> headers;
 
-		HttpPostField(const char* field_name, char* string_buffer, size_t data_size, DataType data_format = textual)
+		HttpPostField(const char* field_name, char* string_buffer, size_t data_size, DataType data_format = TEXTURAL)
 		{
-			_string_data = string_buffer;
-			_data_size = data_size;
-			_field_type = STRING;
+			_stringData = string_buffer;
+			_dataSize = data_size;
+			_fieldType = STRING;
 			if (field_name)
-				add_header(field_name_field, field_name);
+				add_header(FieldNameField, field_name);
 
 			set_content_type_header(data_format);
 		}
 
-		HttpPostField(const char* field_name_, const char* file_name_, DataType data_format_ = stream)
+		HttpPostField(const char* field_name, const char* file_name, DataType data_format = STREAM)
 		{
-			_field_type = FILE;
-			if (field_name_)
-				add_header(field_name_field, field_name_);
+			_fieldType = FILE;
+			if (field_name)
+				add_header(FieldNameField, field_name);
 			//get_file_extention_name(field_name_);
 
-			set_content_type_header(data_format_);
+			set_content_type_header(data_format);
 		}
 
 		typedef std::shared_ptr<HttpPostField> ptr;
@@ -61,7 +61,7 @@ namespace HTTP {
 	public:
 		const FieldType get_field_type()
 		{
-			return _field_type;
+			return _fieldType;
 		}
 
 		const headers& get_headers()
@@ -71,14 +71,14 @@ namespace HTTP {
 
 		size_t get_buffer_data_length()
 		{
-			return _data_size;
+			return _dataSize;
 		}
 
 		const char* get_string_data()
 		{
-			if (FieldType::STRING == _field_type)
+			if (FieldType::STRING == _fieldType)
 			{
-				return _string_data;
+				return _stringData;
 			}
 			else
 			{
@@ -89,44 +89,44 @@ namespace HTTP {
 
 		const char* get_file_name()
 		{
-			if (FieldType::FILE == _field_type)
+			if (FieldType::FILE == _fieldType)
 			{
-				return _file_name.c_str();
+				return _fileName.c_str();
 			}
 			else
 			{
-				cout << "you can not get the upload file's name, the filed_type you set is not a file type." << endl;
+				//cout << "you can not get the upload file's name, the filed_type you set is not a file type." << endl;
 				return NULL;
 			}
 		}
 
 	private:
-		void add_header(const char* name_, const char* value_)
+		void add_header(const char* name, const char* value)
 		{
-			if (NULL == name_)
+			if (NULL == name)
 				return;
 
-			if (NULL != value_)
-				_headers[name_] = value_;
+			if (NULL != value)
+				_headers[name] = value;
 			else
-				_headers[name_] = "";
+				_headers[name] = "";
 		}
 
-		void set_content_type_header(DataType data_format_)
+		void set_content_type_header(DataType data_format)
 		{
-			switch (data_format_)
+			switch (data_format)
 			{
-			case HttpPostField::textual:
-				add_header(content_type_field, "text/plain");
+			case HttpPostField::TEXTURAL:
+				add_header(ContentTypeField, "text/plain");
 				break;
-			case HttpPostField::tga:
-				add_header(content_type_field, "image/tga");
+			case HttpPostField::TGA:
+				add_header(ContentTypeField, "image/tga");
 				break;
-			case HttpPostField::jpg:
-				add_header(content_type_field, "image/jpg");
+			case HttpPostField::JPG:
+				add_header(ContentTypeField, "image/jpg");
 				break;
-			case HttpPostField::stream:
-				add_header(content_type_field, "application/octet-stream");
+			case HttpPostField::STREAM:
+				add_header(ContentTypeField, "application/octet-stream");
 				break;
 			default:
 				break;
@@ -134,13 +134,13 @@ namespace HTTP {
 		}
 
 	protected:
-		FieldType		_field_type;
+		FieldType		_fieldType;
 
 		headers			_headers;		/*multipart/form-data, when post, save your custom header*/
 
-		char*			_string_data;
-		size_t			_data_size;
+		char*			_stringData;
+		size_t			_dataSize;
 
-		std::string		_file_name;
+		std::string		_fileName;
 	};
 }

@@ -44,7 +44,7 @@ namespace SRE {
 	TerrainTile::~TerrainTile()
 	{
 		if (_heightData)
-			delete[] heightData;
+			delete[] _heightData;
 	}
 
 	void TerrainTile::setWidth(unsigned int width)

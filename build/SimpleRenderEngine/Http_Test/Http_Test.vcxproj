@@ -117,6 +117,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\src\HTTP\CallBack.h" />
+    <ClInclude Include="..\..\..\src\HTTP\HttpConnection.h" />
     <ClInclude Include="..\..\..\src\HTTP\HttpPostField.h" />
     <ClInclude Include="..\..\..\src\HTTP\HttpService.h" />
   </ItemGroup>

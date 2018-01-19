@@ -5,16 +5,16 @@
 #define MAX_SEMAPHORE_COUNT 0x7fffffff
 namespace SRE {
 
-	class mutex	
+	class Mutex	
 	{
 	public:
-		typedef std::shared_ptr<mutex> ptr;
-		mutex()
+		typedef std::shared_ptr<Mutex> ptr;
+		Mutex()
 		{
 			InitializeCriticalSection(&cs);
 		}
 
-		~mutex()
+		~Mutex()
 		{
 			DeleteCriticalSection(&cs);
 		}
@@ -37,16 +37,16 @@ namespace SRE {
 		CRITICAL_SECTION cs;
 	};
 
-	class condition
+	class Condition
 	{
 	public:	
-		typedef std::shared_ptr<condition> ptr;
-		condition()
+		typedef std::shared_ptr<Condition> ptr;
+		Condition()
 		{
 			_event = CreateSemaphore(NULL, 0, MAX_SEMAPHORE_COUNT, NULL);
 		}
 
-		~condition()
+		~Condition()
 		{
 			CloseHandle(_event);
 		}
@@ -69,54 +69,54 @@ namespace SRE {
 		HANDLE _event;
 	};
 
-	class thread
+	class Thread
 	{
 	public:
-		typedef std::shared_ptr<thread> ptr;
-		thread(HANDLE thread_handle_)
-			: _thread_handle(thread_handle_)
+		typedef std::shared_ptr<Thread> ptr;
+		Thread(HANDLE thread_handle)
+			: _threadHandle(thread_handle)
 		{
 
 		}
 
-		~thread()
+		~Thread()
 		{
-			CloseHandle(_thread_handle);
+			CloseHandle(_threadHandle);
 		}
 
 		void join()
 		{
-			WaitForSingleObject(_thread_handle, INFINITE);
+			WaitForSingleObject(_threadHandle, INFINITE);
 		}
 	private:
-		HANDLE _thread_handle;
+		HANDLE _threadHandle;
 	};
 
 	//////////////////////////////////////////////////////////////////////////
 
 
-	class thread_service
+	class ThreadService
 	{
 	public:
-		static thread_service* getSingleton();
-		thread_service();
-		~thread_service();
-		mutex::ptr create_mutex();
-		condition::ptr create_condition();
-		thread::ptr create_thread(void(*thread_start_function)(void *), void *parameter);
+		static ThreadService* getSingleton();
+		ThreadService();
+		~ThreadService();
+		Mutex::ptr createMutex();
+		Condition::ptr createCondition();
+		Thread::ptr createThread(void(*thread_start_function)(void *), void *parameter);
 		void sleep(unsigned long milliseconds);
 	private:
-		static thread_service* service;
+		static ThreadService* service;
 	};
 
-	mutex::ptr thread_service::create_mutex()
+	Mutex::ptr ThreadService::createMutex()
 	{
-		return mutex::ptr(new mutex());
+		return Mutex::ptr(new Mutex());
 	}
 
-	condition::ptr thread_service::create_condition()
+	Condition::ptr ThreadService::createCondition()
 	{
-		return condition::ptr(new condition());
+		return Condition::ptr(new Condition());
 	}
 
 	struct thread_start_warpper
@@ -133,17 +133,17 @@ namespace SRE {
 		return 0;
 	}
 
-	thread::ptr thread_service::create_thread(void(*thread_start_function)(void *), void *parameter)
+	Thread::ptr ThreadService::createThread(void(*thread_start_function)(void *), void *parameter)
 	{
 		thread_start_warpper* start_warpper = new thread_start_warpper();
 		start_warpper->thread_start_function = thread_start_function;
 		start_warpper->parameter = parameter;
 
 		HANDLE handle = CreateThread(NULL, 0, thread_start_function_warpper, start_warpper, 0, 0);
-		return thread::ptr(new thread(handle));
+		return Thread::ptr(new Thread(handle));
 	}
 
-	void thread_service::sleep(unsigned long milliseconds)
+	void ThreadService::sleep(unsigned long milliseconds)
 	{
 		Sleep(milliseconds);
 	}

@@ -1,5 +1,6 @@
 #pragma once
 #include "HttpPostField.h"
+#include "CallBack.h"
 #define HTTP_PROTOCOL_VERSION_1_1	"HTTP/1.1"
 
 
@@ -92,19 +93,19 @@ namespace HTTP {
 
 		enum RequestMethod
 		{
-			get,  ///< Request in get mode, standard method to retrieve a page
-			post, ///< Request in post mode, usually to send data to a page
-			head  ///< Request a page's header only
+			GET,  ///< Request in get mode, standard method to retrieve a page
+			POST, ///< Request in post mode, usually to send data to a page
+			HEAD  ///< Request a page's header only
 		};
 
 		enum Operation
 		{
-			simple_get,
-			string_post,
-			file_post,
-			multi_files_post
+			SimpleGet,
+			StringPost,
+			FilePost,
+			MultiFilesPost
 		};
-
+		typedef std::map<std::string, std::string> Headers;
 		typedef std::map<std::string, std::string > Parameters;
 
 	public:
@@ -116,7 +117,7 @@ namespace HTTP {
 		HttpRequest(const char* url, const char* a_file_name);
 
 		/* for multipart/form_data post*/
-		HttpRequest(const char* url, const HttpPostField::post_fields& fields);
+		HttpRequest(const char* url, const HttpPostField::PostFields& fields);
 
 		~HttpRequest();
 
@@ -148,8 +149,32 @@ namespace HTTP {
 		virtual size_t getDataLength() const;
 		virtual const char* getFileName() const;
 
-		virtual const HttpPostField::post_fields& get_fields() const;
+		virtual const HttpPostField::PostFields& get_fields() const;
+
+	protected:
+
+		std::string						_version;
+		RequestMethod					_method;
+		std::string						_baseUrl;
+		Operation			            _operation;
+		Parameters					    _queryParams;
+
+		Headers							_headers;	/*save custom header*/
+
+		char*							_bufferData;		/* for post*/
+		size_t							_dataLength;
+
+		std::string						_fileName;
+
+		HttpPostField::PostFields	   _fields;			/* for post: multipart/form_data*/
+
+		friend class HttpService;
 	};
+
+	//////////////////////////////////////////////////////////////////////////
+
+
+	
 
 	//////////////////////////////////////////////////////////////////////////
 
@@ -166,9 +191,17 @@ namespace HTTP {
 
 		void setTimeOut(long timeout = 2000);
 		void setProxySettings(const ProxySetting &proxy_settings);
+		//是否设置回调
+		void get(const char* url, HttpReponse::ptr response, ProgressCallBack::ptr callback);
+		void get(const HttpRequest::ptr request, HttpReponse::ptr response, ProgressCallBack::ptr callback);
 
-		void get(const char* url, HttpReponse::ptr response/*, progress_callback::ptr callback*/);
-		void get(const HttpRequest::ptr request, HttpReponse::ptr response/*, progress_callback::ptr callback*/);
+	protected:
+
+		HttpReponse::ptr doGet(const char* url, ProgressCallBack::ptr callback);
+		HttpReponse::ptr doGet(const HttpRequest::ptr request, ProgressCallBack::ptr callback);
+
+		HttpReponse::ptr performRequestGet(const HttpRequest* request, void* handle);
+		HttpReponse::ptr performRequestPost(const HttpRequest* request, void* handle);
 
 	};
 }

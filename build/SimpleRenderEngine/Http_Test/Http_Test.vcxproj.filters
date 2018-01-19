@@ -26,5 +26,11 @@
     <ClInclude Include="..\..\..\src\HTTP\HttpPostField.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\HTTP\CallBack.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\HTTP\HttpConnection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
