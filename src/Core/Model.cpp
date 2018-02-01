@@ -1,8 +1,10 @@
 #include "Model.h"
+#include "TextureManager.h"
+//#include "../Thread/Thread.h"
 #include <assimp/postprocess.h>
 namespace SRE {
 
-	void Model::loadModel(const std::string& path)
+	Object* Model::loadModel(const std::string& path)
 	{
 
 		Assimp::Importer importer;
@@ -11,11 +13,11 @@ namespace SRE {
 		if (!scene || scene->mFlags & AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) // 
 		{
 			//cout << "Failed";
-			return;
+			return NULL;
 		}
 		directory = path.substr(0, path.find_last_of('/'));
 
-		processNode(scene->mRootNode, scene);
+		return processNode(scene->mRootNode, scene);
 	}
 
 	void Model::saveModel(const std::string fileName)
@@ -25,18 +27,28 @@ namespace SRE {
 		//exporter.Export((scene,)
 	}
 
-	void Model::processNode(aiNode* node, const aiScene* scene)
+	Object* Model::processNode(aiNode* node, const aiScene* scene)
 	{		
+		aiMatrix4x4 transfrom = node->mTransformation;
+		aiVector3D position, scale;
+		aiQuaternion rotation;
+		transfrom.Decompose(scale, rotation, position);
+		Object* object = new Object;
+		object->setPosition(Vector3D(position.x, position.y, position.z));
+		object->setScale(Vector3D(scale.x, scale.y, scale.z));
+		object->setOrientation(Quaternion(rotation.x, rotation.y, rotation.z, rotation.w));
+
 		for (unsigned int i = 0; i < node->mNumMeshes; i++)
 		{			
 			aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
-			add(processMesh(mesh, scene));
+			object->add(processMesh(mesh, scene));
 		}
 	
 		for (unsigned int i = 0; i < node->mNumChildren; i++)
 		{
-			processNode(node->mChildren[i], scene);
+			object->add(processNode(node->mChildren[i], scene));
 		}
+		return object;
 	}
 
 	RenderObject* Model::processMesh(aiMesh* mesh, const aiScene* scene)
@@ -64,7 +76,6 @@ namespace SRE {
 
 			bbox.expandByPoint(Vector3D(vertex.position_x, vertex.position_y, vertex.position_z));
 			sphere.expandByPoint(Vector3D(vertex.position_x, vertex.position_y, vertex.position_z));
-
 
 			vertex.normal_x = mesh->mNormals[i].x;
 			vertex.normal_y = mesh->mNormals[i].y;
@@ -102,11 +113,11 @@ namespace SRE {
 		renderObject->setBoundSphere(sphere);
 		
 		aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-
+//½âÎömaterial
 		renderObject->setMaterial(parseMaterial(material));
 
 		return renderObject;
-		//½âÎömaterial
+		
 		
 	}
 
@@ -155,7 +166,7 @@ namespace SRE {
 		}
 		//////////////////////////////////////////////////////////////////////////
 		//texture parse
-
+		parseTexture(aiTextureType_DIFFUSE, aiMat);
 		return Material::ptr(material);
 
 	}
@@ -172,42 +183,49 @@ namespace SRE {
 		int count = aiMat->GetTextureCount(type);//??????
 		//aiMat->GetTexture()
 		TextureUnitState* texture_unit = new TextureUnitState;
-
-		if (AI_SUCCESS == aiMat->GetTexture(type, 0, &path, &mapping, NULL, &blend, &op, NULL))
+		for (int i = 0; i < count; i++)
 		{
-			if (type == aiTextureType_OPACITY)
+			if (AI_SUCCESS == aiMat->GetTexture(type, i, &path, &mapping, NULL, &blend, &op, NULL))
 			{
-				
-			}
-			switch (mapping)
-			{
-			case aiTextureMapping_UV:
-				//2d
-				break;
-			case aiTextureMapping_BOX:
-				//3d
-				break;
-			default:
-				//2d
-				break;
-			}
+				Texture::ptr texture = TextureManager::Inst()->loadTexture(path.C_Str(), (directory + "\\" + path.C_Str()).c_str());
 
-			int wrapping;
-			if (AI_SUCCESS == aiMat->Get(AI_MATKEY_MAPPINGMODE_U(type, 0), wrapping))
-			{
-				switch (wrapping)
+				if (type == aiTextureType_OPACITY)
 				{
-				case aiTextureMapMode_Wrap:
-					texture_unit->setTextureAddressingMode(TAM_WRAP);
+
+				}
+				switch (mapping)
+				{
+				case aiTextureMapping_UV:
+					//2d
 					break;
-				case aiTextureMapMode_Clamp:
-					texture_unit->setTextureAddressingMode(TAM_CLAMP);
+				case aiTextureMapping_BOX:
+					//3d
 					break;
-				case aiTextureMapMode_Mirror:
-					texture_unit->setTextureAddressingMode(TAM_MIRROR);
+				default:
+					//2d
 					break;
+				}
+
+				int wrapping;
+				if (AI_SUCCESS == aiMat->Get(AI_MATKEY_MAPPINGMODE_U(type, 0), wrapping))
+				{
+					switch (wrapping)
+					{
+					case aiTextureMapMode_Wrap:
+						texture_unit->setTextureAddressingMode(TAM_WRAP);
+						break;
+					case aiTextureMapMode_Clamp:
+						texture_unit->setTextureAddressingMode(TAM_CLAMP);
+						break;
+					case aiTextureMapMode_Mirror:
+						texture_unit->setTextureAddressingMode(TAM_MIRROR);
+						break;
+					}
 				}
 			}
 		}
+		
+
+		return TextureUnitState::ptr(texture_unit);
 	}
 }

@@ -233,8 +233,8 @@ namespace SRE {
 		RenderObject* ro = new RenderObject;
 		ro->setVertexData((VertexData::ptr)vertexdata);
 		ro->setIndexData((IndexData::ptr)indexdata);
-		BoundingBox::ptr bx = std::make_shared<BoundingBox>(Vector3D(-radius, -radius, -radius), Vector3D(radius, radius,radius));
-		BoundingSphere::ptr bs = std::make_shared<BoundingSphere>(Vector3D(0.0), radius);
+		BoundingBox bx(Vector3D(-radius, -radius, -radius), Vector3D(radius, radius,radius));
+		BoundingSphere bs(Vector3D(0.0), radius);
 		ro->setBoundBox(bx);
 		ro->setBoundSphere(bs);
 		return ro;

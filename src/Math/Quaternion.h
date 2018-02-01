@@ -82,6 +82,10 @@ namespace Math {
 				return Quaternion(0, 0, 0, 0);
 			}
 		}
+		Quaternion getUnitInverse()const
+		{
+			return Quaternion(-x, -y, -z, w);
+		}
 		double getRoll(bool reprojectAxis = true) const;
 		double getPitch(bool reprojectAxis = true) const;
 		double getYaw(bool reprojectAxis = true) const;

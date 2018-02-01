@@ -20,6 +20,6 @@ namespace SRE {
 	private:
 		Texture::ptr _cubeMap;
 		Shader::ptr _skyboxShader;
-		Mesh::ptr _skybox;
+		RenderObject::ptr _skybox;
 	};
 }

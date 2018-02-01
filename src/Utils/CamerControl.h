@@ -10,14 +10,14 @@ namespace Utils
 		:public EventReceiver
 	{
 	public:
-		typedef shared_ptr<CameraControl> ptr;
+		typedef std::shared_ptr<CameraControl> ptr;
 		CameraControl(Camera* camera);
 		~CameraControl() {}
 	public:
 		virtual void receive(Event::ptr event);
 	private:
 		Camera::ptr _camera;
-		Object::ptr _obect;
+		//Object::ptr _obect;
 		int  _last_x_pos;
 		int  _last_y_pos;
 

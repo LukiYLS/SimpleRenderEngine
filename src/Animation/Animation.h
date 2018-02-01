@@ -10,7 +10,7 @@ namespace SRE {
 
 		typedef std::map<unsigned short, ObjectAnimationTrack::ptr> ObjectTrackMap;
 		//多个动画轨迹的时候，应该collect到一个keyframe队列，根据时间
-		
+		float getLength() { return 0.0; }//mei
 
 	protected:
 		void collectTrackToKeyFrames(std::vector<float>& keyFrameTimes);

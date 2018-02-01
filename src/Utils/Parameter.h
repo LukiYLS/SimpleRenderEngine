@@ -10,7 +10,7 @@ namespace Utils {
 	class Parameter {
 
 	public:
-		typedef shared_ptr<Parameter> ptr;
+		typedef std::shared_ptr<Parameter> ptr;
 		void addParameter(const string& name, AnyValue value) { _paras.insert(make_pair(name, value)); }
 		AnyValue getValue(const string& name) {
 			if (_paras.find(name) != _paras.end())

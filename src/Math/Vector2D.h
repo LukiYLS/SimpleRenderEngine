@@ -1,6 +1,7 @@
 #pragma once
 #include <assert.h>
-#include "MathHelper.h"
+#include <math.h>
+#define math_tolerancef 1e-6
 namespace Math {
 	class Vector2D
 	{
@@ -11,7 +12,7 @@ namespace Math {
 		{
 
 		}
-		Vector2D(const double& x_, const double& y_) :x(x_), y(y_)
+		Vector2D(const double& x, const double& y) :x(x), y(y)
 		{
 
 		}
@@ -61,7 +62,7 @@ namespace Math {
 		double normalize()
 		{
 			double len = length();
-			if (len < math_tolerance)
+			if (len < math_tolerancef)
 			{
 				return 0;
 			}

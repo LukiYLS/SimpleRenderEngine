@@ -25,8 +25,8 @@ namespace Math {
 
 	bool Frustum::intersectsSphere(const BoundingSphere& sphere)
 	{		
-		Vector3D center = sphere.center;
-		double negRadius = -sphere.radius;
+		Vector3D center = sphere.center();
+		double negRadius = -sphere.radius();
 
 		for (int i = 0; i < 6; i++) {
 

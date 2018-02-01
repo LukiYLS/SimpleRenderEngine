@@ -11,12 +11,13 @@
 #include "../Core/GeometryFactory.h"
 #include "../Core/Win.h"
 #include "../Core/BillboardCollection.h"
-#include "../Core/TerrianTile.h"
+#include "../Core/TerrainTile.h"
 #include "../Core/ParticleSystem.h"
 #include "../Light/DirectionLight.h"
 #include "../Light/PointLight.h"
 #include "../Light/SpotLight.h"
-#include "../Core/TerrianTile.h"
+#include "../Core/TerrainTile.h"
+#include "../Core/Model.h"
 #include <vector>
 #include <iostream>
 #include <string>

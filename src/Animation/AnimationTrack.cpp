@@ -1,14 +1,15 @@
 #include "AnimationTrack.h"
 #include "Animation.h"
 #include <algorithm>
+using namespace Math;
 namespace SRE {
 
 	
 	struct KeyFrameTimeLess
 	{
-		bool operator() (const KeyFrame* kf, const KeyFrame* kf2) const
+		bool operator() (const KeyFrame::ptr kf1, const KeyFrame::ptr kf2) const
 		{
-			return kf->getTime() < kf2->getTime();
+			return kf1->getTime() < kf2->getTime();
 		}
 	};
 
@@ -32,9 +33,9 @@ namespace SRE {
 	{
 		KeyFrame* keyframe = createKeyFrameImpl(timePos);
 
-		KeyFrameList::iterator it = std::upper_bound(_keyFrames.begin(), _keyFrames.end(), KeyFrameTimeLess());
+		//KeyFrameList::iterator it = std::upper_bound(_keyFrames.begin(), _keyFrames.end(), KeyFrame::ptr(keyframe), KeyFrameTimeLess());
 
-		_keyFrames.insert(it, (KeyFrame::ptr)keyframe);
+		//_keyFrames.insert(it, (KeyFrame::ptr)keyframe);
 
 		return keyframe;
 	}
@@ -66,7 +67,7 @@ namespace SRE {
 		//如果有关键帧
 		if (timeIndex.hasKeyIndex())
 		{
-			if(timeIndex.getKeyIndex() < _keyFrameIndexList.size())
+			//if(timeIndex.getKeyIndex() < _keyFrameIndexList.size())
 
 		}
 		else
@@ -80,8 +81,10 @@ namespace SRE {
 
 			// No global keyframe index, need to search with local keyframes.
 			KeyFrame timeKey(0, timePos);
-			i = std::lower_bound(_keyFrames.begin(), _keyFrames.end(), &timeKey, KeyFrameTimeLess());
+			//i = std::lower_bound(_keyFrames.begin(), _keyFrames.end(), &timeKey, KeyFrameTimeLess());
 		}
+
+		return 0.0;
 	}
 
 
@@ -122,10 +125,10 @@ namespace SRE {
 
 		target->rotate(rotate);
 
-		Vector3D scale = kf.getScale();
+		Vector3D scalev = kf.getScale();
 
 		//weight scale
 
-		target->scale(scale);
+		target->scale(scalev);
 	}
 }

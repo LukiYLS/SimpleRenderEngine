@@ -18,6 +18,15 @@
     <ClCompile Include="..\..\..\src\HTTP\HttpService.cpp">
       <Filter>源文件</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\src\HTTP\HttpConnection.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\HTTP\HttpResponse.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\HTTP\HttpRequest.cpp">
+      <Filter>源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\HTTP\HttpService.h">
@@ -30,6 +39,15 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\src\HTTP\HttpConnection.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\HTTP\HttpResponse.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\HTTP\HttpRequest.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\src\HTTP\HttpDefine.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

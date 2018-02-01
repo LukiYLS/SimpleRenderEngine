@@ -81,11 +81,11 @@ Scene::ptr createScene()
 	//root->add(plight);
 	//root->add(spotlight);
 
-	TerrianTile* tt = new TerrianTile();
+	//TerrainTile* tt = new TerrainTile();
 	//Mesh* mesh = tt->createFromRandomHeght(32, 32);
-	Mesh* mesh = tt->createMeshFromHeightmap("../../../src/Data/texture/terrain1.jpg");
-	root->add(mesh);
-	mesh->setMaterial(earthMat);
+	//Mesh* mesh = tt->createMeshFromHeightmap("../../../src/Data/texture/terrain1.jpg");
+	//root->add(mesh);
+	//mesh->setMaterial(earthMat);
 	scene->setSceneRoot(root);
 	scene->setUseShadowMap(true);
 
@@ -103,6 +103,11 @@ Texture::ptr loadSkybox()
 	Texture::ptr skybox = TextureManager::Inst()->loadCubeMap("skybox", skyboxfile);
 	return skybox;
 }
+void loadModel(const char* fileName)
+{
+	Model* model = new Model;
+	Object * object =  model->loadModel(fileName);
+}
 void main()
 {
 	Win::getSingleton()->create();	
@@ -111,6 +116,7 @@ void main()
 	camera->lookAt(0.0, 0.0, 0.0);
 	
 	Scene::ptr scene = createScene();
+	loadModel("../../../src/Data/model/glTF/bjw.gltf");
 	//Skybox* skybox = new Skybox;
 	//skybox->setTexture(loadSkybox());
 	//scene->setSkybox((Skybox::ptr)skybox);

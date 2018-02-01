@@ -12,6 +12,7 @@ namespace SRE {
 	public:
 		typedef std::shared_ptr<Billboard> ptr;
 		Billboard();
+		~Billboard();
 		Billboard(const Vector3D& position, BillboardSet* owner, const Vector3D& color = Vector3D(1.0,1.0,1.0));
 
 

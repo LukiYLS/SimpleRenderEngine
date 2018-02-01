@@ -6,7 +6,7 @@ namespace SRE {
 	Skybox::Skybox()
 	{
 		_skyboxShader = std::make_shared<Shader>("../../../src/Data/shader/skybox.vs", "../../../src/Data/shader/skybox.fs");
-		_skybox = (Mesh::ptr)GeometryFactory::MakeBox(1.0, 1.0, 1.0);
+		_skybox = RenderObject::ptr(GeometryFactory::MakeBox(1.0, 1.0, 1.0));
 	}
 	Skybox::Skybox(std::vector<std::string> fileNames)
 	{		

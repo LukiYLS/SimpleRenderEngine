@@ -10,22 +10,24 @@
 #define M_2PI     6.28318530717958647692
 #define M_HALF_PI     (M_PI*0.5)
 #define M_QUAT_PI     (M_PI*0.25)
+
 namespace Math {
 
-	static const double VAL_EPSILON =
+	/*static const double VAL_EPSILON =
 		std::numeric_limits<double>::epsilon() * 1024.0;
 
-	bool almostEqual(const double &a, const double &b,
-		const double &epsilon = VAL_EPSILON)
-	{
-		return equalWithAbsError(a, b, epsilon);
-	}
 	template <class T>
 	inline bool
 		equalWithAbsError(T x1, T x2, T e)
 	{
 		return ((x1 > x2) ? x1 - x2 : x2 - x1) <= e;
 	}
+	bool almostEqual(const double &a, const double &b,
+		const double &epsilon = VAL_EPSILON)
+	{
+		return equalWithAbsError(a, b, epsilon);
+	}*/
+	
 
 
 	template <class T>

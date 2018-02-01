@@ -94,7 +94,7 @@ namespace SRE {
 
 	//////////////////////////////////////////////////////////////////////////
 
-
+	//win32¶àÏß³Ì
 	class ThreadService
 	{
 	public:
@@ -119,7 +119,7 @@ namespace SRE {
 		return Condition::ptr(new Condition());
 	}
 
-	struct thread_start_warpper
+	struct ThreadStartWarpper
 	{
 		void(*thread_start_function)(void *);
 		void* parameter;
@@ -127,7 +127,7 @@ namespace SRE {
 
 	DWORD WINAPI thread_start_function_warpper(LPVOID lpThreadParameter)
 	{
-		thread_start_warpper* start_warpper = (thread_start_warpper*)lpThreadParameter;
+		ThreadStartWarpper* start_warpper = (ThreadStartWarpper*)lpThreadParameter;
 		start_warpper->thread_start_function(start_warpper->parameter);
 		delete start_warpper;
 		return 0;
@@ -135,7 +135,7 @@ namespace SRE {
 
 	Thread::ptr ThreadService::createThread(void(*thread_start_function)(void *), void *parameter)
 	{
-		thread_start_warpper* start_warpper = new thread_start_warpper();
+		ThreadStartWarpper* start_warpper = new ThreadStartWarpper();
 		start_warpper->thread_start_function = thread_start_function;
 		start_warpper->parameter = parameter;
 

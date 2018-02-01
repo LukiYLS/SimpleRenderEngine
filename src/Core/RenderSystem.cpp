@@ -76,7 +76,7 @@ namespace SRE {
 		//use lights
 		setupLights(_lights);
 
-		////sort();
+		////sort(),不透明的由远到近，透明的由近到远;
 
 		//start render
 		
@@ -506,7 +506,7 @@ namespace SRE {
 
 
 			}	
-			int a = mesh.use_count();
+			//int a = mesh.use_count();
 
 		}
 		else if (object->asLight())

@@ -9,6 +9,7 @@ using Math::Vector3D;
 using Math::Quaternion;
 using Math::Matrix4D;
 namespace SRE {	
+	//此类的设计是沿用OGRE的SceneNode，不同的地方是我将此类作为基类，多有的对象都基础此类，而OGRE则通过attach的方式与可移动对象进行关联
 	class RenderObject;
 	class Light;	
 	class Sprite;
@@ -69,6 +70,8 @@ namespace SRE {
 		inline const Quaternion& getOrientation()const { return _orientation; }
 		inline void setOrientation(const Quaternion& orientation) { _orientation = orientation; }
 
+		void setDirection(const Vector3D& vec, TransformSpace space = LocalSpace, const Vector3D& localDirectionVector = Vector3D(0.0, 0.0, -1.0));
+
 		void applyMatrix(const Matrix4D& matrix);
 		//_orientation set
 		void setRotationFromAxisAngle(const Vector3D& axis, double angle);
@@ -89,6 +92,8 @@ namespace SRE {
 
 		void scale(const Vector3D& scale);
 		void scale(double x, double y, double z);
+
+		void updateFromParent();
 
 		void roll(const float& angle, TransformSpace relativeSpace = LocalSpace);
 		void pitch(const float& angle, TransformSpace relativeSpace = LocalSpace);
@@ -119,6 +124,8 @@ namespace SRE {
 
 	protected:
 		bool _neadUpdate;
+		bool _needUpdataParent;
+
 		Object* _parent;
 		Vector3D _position;
 		Vector3D _scale;
@@ -126,5 +133,12 @@ namespace SRE {
 		Children _children;
 		Matrix4D _matrix_local;
 		Matrix4D _matrix_world;
+
+		//一个是存储相对于父节点的姿态，一个是存储相对于世界坐标系的姿态
+		Vector3D _localPosition, _worldPosition;
+		Vector3D _localScale, _worldScale;
+		Quaternion _localOriention, _worldOriention;
+		Matrix4D _localMatrix, _worldMatrix;
+
 	};
 }

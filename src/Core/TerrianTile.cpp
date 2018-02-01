@@ -31,7 +31,8 @@ namespace SRE {
 					xOffset += childOffX;
 				if (i == 2)
 					yOffset += childOffY;
-				_children[i] = new TerrainTile(terrain, this, xOffset, yOffset, childWidth, childHeight, childCode);
+			
+//				_children[i] = new TerrainTile(terrain, this, xOffset, yOffset, childWidth, childHeight, childCode);
 
 			}
 		}

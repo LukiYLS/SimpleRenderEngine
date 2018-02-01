@@ -27,6 +27,48 @@ namespace SRE {
 		_orientation = _orientation * quat;
 		//_position = _position * quat;//
 	}
+	void Object::setDirection(const Vector3D& vec, TransformSpace space /* = LocalSpace */, const Vector3D& localDirectionVector /* = Vector3D(0.0, 0.0, -1.0) */)
+	{
+		Vector3D targetDir = vec;
+		targetDir.normalize();
+
+		switch (space)
+		{
+		case LocalSpace:
+			if (_parent)
+			{
+				targetDir = _parent->getOrientation() * targetDir;
+			}
+			break;
+		case ParentSpace:
+			targetDir = _orientation * targetDir;
+			break;
+		case WorldSpace: 
+			//_orientation = _orientation * _orientation().Inverse()
+			//	* quat * _getDerivedOrientation();
+			break;
+		}
+		Quaternion targetOrientation;
+		const Quaternion& currentOrientation = getOrientation();
+		Vector3D currentDir = currentOrientation * localDirectionVector;
+
+		if ((currentDir + targetDir).squaredLength() < 0.00005f)
+		{
+			// Oops, a 180 degree turn (infinite possible rotation axes)
+			// Default to yaw i.e. use current UP
+			targetOrientation =
+				Quaternion(-currentOrientation.y, -currentOrientation.z, currentOrientation.w, currentOrientation.x);
+		}
+		else
+		{		
+			Quaternion rotQuat = currentDir.getRotationTo(targetDir);
+			targetOrientation = rotQuat * currentOrientation;
+		}
+		if (_parent)
+			setOrientation(_parent->getWorldQuaternion().getUnitInverse() * targetOrientation);
+		else
+			setOrientation(targetOrientation);
+	}
 	void Object::rotate(const Quaternion& quat, TransformSpace space)
 	{
 		switch (space)
@@ -87,6 +129,29 @@ namespace SRE {
 		_scale.y *= y;
 		_scale.z *= z;		
 		_neadUpdate = true;
+	}
+	void Object::updateFromParent()
+	{
+		if (_parent)
+		{
+			//判断该节点是否基础至父节点
+			const Quaternion parentOrientation = _parent->getWorldQuaternion();
+			_worldOriention = parentOrientation * _localOriention;
+
+			const Vector3D parentScale = _parent->getWorldScale();
+			_worldScale = parentScale * _localScale;
+
+			_worldPosition = parentOrientation * (parentScale * _localPosition);
+			_worldPosition += _parent->getWorldPosition();
+
+		}
+		else
+		{
+			_worldOriention = _localOriention;
+			_worldScale = _localScale;
+			_worldPosition = _localPosition;
+		}
+		_needUpdataParent = false;
 	}
 	//---------------
 	void Object::localToWorld(Vector3D& vector)

@@ -31,7 +31,9 @@ namespace SRE {
 
 	Billboard* BillboardSet::getBillboard(unsigned int index) const
 	{
-
+		if (index > _billboards.size())
+			return NULL;
+		return _billboards[index].get();
 	}
 	void BillboardSet::removeBillboard(unsigned int index)
 	{

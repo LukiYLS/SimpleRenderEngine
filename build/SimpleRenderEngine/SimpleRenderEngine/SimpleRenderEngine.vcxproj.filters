@@ -43,6 +43,9 @@
     <Filter Include="HTTP">
       <UniqueIdentifier>{fa414c1e-c620-4794-9ed9-cd1f4afec80b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="DynLib">
+      <UniqueIdentifier>{e3eaf591-61d7-4a3f-9e3c-5bda838741aa}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\..\src\Core\Camera.h">
@@ -294,6 +297,9 @@
     <ClInclude Include="..\..\..\src\Core\PickTool.h">
       <Filter>头文件</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\src\DynLib\DynLib.h">
+      <Filter>DynLib</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\..\src\Core\TextureManager.cpp">
@@ -484,6 +490,12 @@
     </ClCompile>
     <ClCompile Include="..\..\..\src\Core\PickTool.cpp">
       <Filter>源文件</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\Thread\Thread.cpp">
+      <Filter>Thread</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\src\DynLib\DynLib.cpp">
+      <Filter>DynLib</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

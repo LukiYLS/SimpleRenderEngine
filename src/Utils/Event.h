@@ -13,7 +13,7 @@ namespace Utils
 	class Event
 	{
 	public:
-		typedef shared_ptr<Event> ptr;
+		typedef std::shared_ptr<Event> ptr;
 		Event() {}
 
 		 ~Event() {}
@@ -31,7 +31,7 @@ namespace Utils
 	class EventReceiver
 	{
 	public:
-		typedef shared_ptr<EventReceiver> ptr;
+		typedef std::shared_ptr<EventReceiver> ptr;
 
 		virtual ~EventReceiver() {};
 
@@ -43,8 +43,8 @@ namespace Utils
 	如何使用：监听对象必须先注册到EventManager，注册时事件名称和接收对象对应，同一个事件可以有多个receiver，事件发生时send该事件
 	就可以执行所有receiver对应的receive事件。
 	*/
-	typedef list<EventReceiver::ptr> event_list_type;
-	typedef map<string, event_list_type> event_receiver_map_type;
+	typedef std::list<EventReceiver::ptr> event_list_type;
+	typedef std::map<std::string, event_list_type> event_receiver_map_type;
 	class EventManager
 	{
 	public:

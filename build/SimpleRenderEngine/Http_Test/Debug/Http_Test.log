@@ -1,0 +1,2 @@
+﻿  HttpService.cpp
+c:\users\user\desktop\simplerenderengine\src\http\httpservice.cpp : fatal error C1041: 无法打开程序数据库“C:\Users\USER\Desktop\SimpleRenderEngine\build\SimpleRenderEngine\Http_Test\Debug\vc140.pdb”；如果要将多个 CL.EXE 写入同一个 .PDB 文件，请使用 /FS

@@ -180,7 +180,7 @@ namespace SRE {
 		BoundingBox _bbx;
 		BoundingSphere _sphere;
 
-		bool _bufferCreated;
+		
 		VertexData::ptr _vertex_data;
 		IndexData::ptr  _index_data;
 

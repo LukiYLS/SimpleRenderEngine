@@ -1,6 +1,6 @@
 
 #include "TextureManager.h"
-
+#include <algorithm>
 namespace SRE {
 	TextureManager* TextureManager::m_inst(0);
 
@@ -34,6 +34,8 @@ namespace SRE {
 	}
 	Texture::ptr TextureManager::loadTexture(std::string tex_name,const char* file_name, TextureType type)
 	{
+		if (_textures.find(tex_name) != _textures.end())
+			return _textures[tex_name];
 		Texture::ptr texture = std::make_shared<Texture>(tex_name, type);
 		Image::ptr image = std::make_shared<Image>();
 		image->load(file_name);

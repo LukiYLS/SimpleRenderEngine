@@ -1,9 +1,11 @@
 #include "HttpService.h"
+#include "HttpConnection.h"
 #include "curl/curl.h"
-#include <iostream>
 #include <sstream>
-
+#include <fstream>
 using namespace std;
+
+#define CONNECTION_COUNT 4
 namespace HTTP {
 
 
@@ -43,7 +45,7 @@ namespace HTTP {
 	/* for a string data upload*/
 	static size_t string_data_read_callback(void *ptr, size_t size, size_t nmemb, void *userdata)
 	{
-		PostDataDrag* data_arg = (post_data_arg*)userdata;
+		/*PostDataDrag* data_arg = (post_data_arg*)userdata;
 		if (data_arg)
 		{
 			size_t can_be_upload_size = size*nmemb;
@@ -62,6 +64,7 @@ namespace HTTP {
 			}
 		}
 
+		return 0;*/
 		return 0;
 	}
 
@@ -90,6 +93,30 @@ namespace HTTP {
 			//if (last_char_ptr == file_name_)
 			//	return file_name_;	/*当前目录下的文件，相对路径*/
 		}
+	}
+
+	//====================================================================================================
+	HttpService* HttpService::instance(0);
+	HttpService* HttpService::getSingleton() {
+		if (!instance)
+			instance = new HttpService();
+		return instance;
+	}
+	HttpService::HttpService()
+	{
+		/* http_service在整个程序中只有一个实例，所以先调用curl_global_init
+		然后再由调用者再各个线程中调用curl_easy_init来创建curl的handle*/
+		curl_global_init(CURL_GLOBAL_DEFAULT);
+		//_timeout = 120000; // ms
+
+	
+		_connection = new HttpConnection();
+		_connection->createConnections(CONNECTION_COUNT);
+	}
+
+	HttpService::~HttpService()
+	{
+		curl_global_cleanup();
 	}
 
 	HttpRequest::ptr HttpService::createSimpleGet(const char* url)
@@ -129,18 +156,18 @@ namespace HTTP {
 		FileNameList::const_iterator it = files.begin();
 		for (; it != files.end(); it++)
 		{
-			file_fields.push_back(new HttpPostField(getFileNameFromPath(it->c_str()).c_str(), it->c_str()));
+			//file_fields.push_back(new HttpPostField(getFileNameFromPath(it->c_str()).c_str(), it->c_str()));
 		}
 
 		return HttpRequest::ptr(new HttpRequest(url, file_fields));
 	}
 
-	HttpReponse::ptr HttpService::performRequestGet(const HttpRequest* request, void* handle)
+	HttpResponse::ptr HttpService::performRequestGet(const HttpRequest* request, void* handle)
 	{
 		CURLcode res;
 		long responseCode = 0L;
 
-		HttpReponse* response = new HttpReponse();
+		HttpResponse* response = new HttpResponse();
 
 		////char error_buf[CURL_ERROR_SIZE];
 		////error_buf[0] = 0;
@@ -168,15 +195,15 @@ namespace HTTP {
 			response->_cancelled = true;
 		}
 
-		return HttpReponse::ptr(response);
+		return HttpResponse::ptr(response);
 	}
 
-	HttpReponse::ptr HttpService::performRequestPost(const HttpRequest* request, void* handle)
+	HttpResponse::ptr HttpService::performRequestPost(const HttpRequest* request, void* handle)
 	{
 		CURLcode res;
 		long response_code = 0L;
 
-		HttpReponse* response = new HttpReponse();
+		HttpResponse* response = new HttpResponse();
 		curl_easy_setopt(handle, CURLOPT_HEADERDATA, &(response->_headers));
 		curl_easy_setopt(handle, CURLOPT_WRITEDATA, &(response->_bufferData));
 		switch (request->getCurrentOperation())
@@ -218,7 +245,7 @@ namespace HTTP {
 			if (NULL != request->getFileName())
 			{
 				std::ifstream in_file;
-				in_file.open(request->get_file_name(), ios_base::binary | ios_base::in);
+				in_file.open(request->getFileName(), ios_base::binary | ios_base::in);
 				if (in_file.good())
 				{
 					in_file.seekg(0, in_file.end);
@@ -236,10 +263,10 @@ namespace HTTP {
 
 		case HttpRequest::MultiFilesPost:
 		{
-			size_t field_count = request_->get_fields().size();
+			size_t field_count = request->getFields().size();
 			//form_add, you must specify the Content-Type: "multifield/form-data"
-			if (multi_field_form_data == request_->
-				get_header(content_type_field) && field_count > 0)
+			if (MultiFieldOrFromDataField == request->
+				getHeader(ContentTypeField) && field_count > 0)
 			{
 				CURLcode res;
 				long response_code = 0L;
@@ -250,7 +277,7 @@ namespace HTTP {
 
 				http_header_list = curl_slist_append(http_header_list, "Content-type: multipart/form-data");
 				//curl_easy_setopt(handle_, CURLOPT_ERRORBUFFER, (void*)error_buf);
-				curl_easy_setopt(handle_, CURLOPT_HTTPHEADER, http_header_list);
+				curl_easy_setopt(handle, CURLOPT_HTTPHEADER, http_header_list);
 
 				curl_httppost* form_post = NULL;
 				curl_httppost *last_ptr = NULL;
@@ -260,12 +287,12 @@ namespace HTTP {
 				for (; i < field_count; i++)
 				{
 					/* have you added some custom headers except content-type? */
-					http_post_field* p_field = request_->get_fields()[i].get();
-					const http_post_field::headers& field_headers_ = p_field->get_headers();
-					http_post_field::headers::const_iterator it = field_headers_.begin();
+					HttpPostField* p_field = request->getFields()[i].get();
+					const HttpPostField::headers& field_headers_ = p_field->get_headers();
+					HttpPostField::headers::const_iterator it = field_headers_.begin();
 					for (; it != field_headers_.end(); it++)
 					{
-						if (content_type_field != it->first && field_name_field != it->first)
+						if (ContentTypeField != it->first && FieldNameField != it->first)
 						{
 							ostringstream oss_;
 							oss_ << it->first << ": " << it->second;
@@ -273,32 +300,32 @@ namespace HTTP {
 						}
 					}
 
-					const string& field_name = field_headers_.at(field_name_field);
-					http_post_field::field_type type_ = p_field->get_field_type();
-					switch (type_)
+					const string& field_name = field_headers_.at(FieldNameField);
+					HttpPostField::FieldType type = p_field->get_field_type();
+					switch (type)
 					{
-					case http_post_field::string_type:
+					case HttpPostField::STRING:
 					{
 						curl_formadd(&form_post, &last_ptr,
 							CURLFORM_PTRNAME, field_name.c_str(),
 							CURLFORM_NAMELENGTH, field_name.length(),
 							CURLFORM_PTRCONTENTS, p_field->get_string_data(),
 							CURLFORM_CONTENTSLENGTH, p_field->get_buffer_data_length(),
-							CURLFORM_CONTENTTYPE, field_headers_.at(content_type_field),
+							CURLFORM_CONTENTTYPE, field_headers_.at(ContentTypeField),
 							CURLFORM_CONTENTHEADER, field_header_list,
 							CURLFORM_END);
 
 						break;
 					}
 
-					case http_post_field::file_type:
+					case HttpPostField::FILE:
 					{
 						curl_formadd(&form_post, &last_ptr,
 							CURLFORM_PTRNAME, field_name.c_str(),
 							CURLFORM_NAMELENGTH, field_name.length(),
 							CURLFORM_FILE, p_field->get_file_name(),
 							CURLFORM_FILENAME, field_name.c_str(),
-							CURLFORM_CONTENTTYPE, field_headers_.at(content_type_field),
+							CURLFORM_CONTENTTYPE, field_headers_.at(ContentTypeField),
 							CURLFORM_CONTENTHEADER, field_header_list,
 							CURLFORM_END);
 
@@ -309,9 +336,9 @@ namespace HTTP {
 				}
 
 				/*Tells libcurl you want a multifield/formdata HTTP POST to be made and you instruct what data to pass on to the server.*/
-				curl_easy_setopt(handle_, CURLOPT_HTTPPOST, form_post);
+				curl_easy_setopt(handle, CURLOPT_HTTPPOST, form_post);
 
-				res = curl_easy_perform(handle_);
+				res = curl_easy_perform(handle);
 				curl_slist_free_all(field_header_list);
 				curl_slist_free_all(http_header_list);
 			}
@@ -326,25 +353,25 @@ namespace HTTP {
 
 		if (CURLE_OK == res)
 		{
-			curl_easy_getinfo(handle_, CURLINFO_RESPONSE_CODE, &response_code);
-			response->_respond_code = response_code;
+			curl_easy_getinfo(handle, CURLINFO_RESPONSE_CODE, &response_code);
+			response->_respondCode = response_code;
 
 			char* content_type_cp;
-			curl_easy_getinfo(handle_, CURLINFO_CONTENT_TYPE, &content_type_cp);
+			curl_easy_getinfo(handle, CURLINFO_CONTENT_TYPE, &content_type_cp);
 
 			if (NULL != content_type_cp)
-				response->_content_type = content_type_cp;
+				response->_contentType = content_type_cp;
 		}
 		else
 		{
 			response->_cancelled = true;
 		}
 
-		return HttpReponse::ptr(response);
+		return HttpResponse::ptr(response);
 	}
 
 
-	void HttpService::get(const char* url, HttpReponse::ptr response, ProgressCallBack::ptr callback)
+	void HttpService::get(const char* url, HttpResponse::ptr response, ProgressCallBack::ptr callback)
 	{
 		if (!url)
 		{
@@ -362,7 +389,7 @@ namespace HTTP {
 
 	}
 
-	void HttpService::get(const HttpRequest::ptr request, HttpReponse::ptr response, ProgressCallBack::ptr callback)
+	void HttpService::get(const HttpRequest::ptr request, HttpResponse::ptr response, ProgressCallBack::ptr callback)
 	{
 		if (NULL != request && NULL != response)
 		{
@@ -377,18 +404,18 @@ namespace HTTP {
 
 	void HttpService::setProxySettings(const ProxySetting &proxy_settings)
 	{
-		_http_connection->set_proxy_settings(proxy_settings_);
+		_connection->setPorxySetting(proxy_settings);
 	}
 
-	HttpReponse::ptr HttpService::doGet(const char* url, ProgressCallBack::ptr callback)
+	HttpResponse::ptr HttpService::doGet(const char* url, ProgressCallBack::ptr callback)
 	{
 		HttpRequest::ptr request_ptr = createSimpleGet(url);
 		return doGet(request_ptr, callback);
 	}
 
-	HttpReponse::ptr HttpService::doGet(const HttpRequest::ptr request, ProgressCallBack::ptr callback)
+	HttpResponse::ptr HttpService::doGet(const HttpRequest::ptr request, ProgressCallBack::ptr callback)
 	{
-		CURL* _curl_handle = _http_connection->get_connection(gw_utility::get_current_thread_id());
+		CURL* _curl_handle = _connection->getConnection(0);//userid
 		string& tmp_req_url = request.get()->getUrl();
 		//curl_easy_setopt(_curl_handle, CURLOPT_URL, "http://127.0.0.1:9004");
 		curl_easy_setopt(_curl_handle, CURLOPT_URL, tmp_req_url.c_str());

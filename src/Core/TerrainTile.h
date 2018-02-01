@@ -80,7 +80,7 @@ namespace SRE {
 		float getHeightValue(const unsigned char* data, unsigned char pixelSize);
 	protected:
 		int _width, _height;		
-		Code _code;
+	
 		BoundingSphere _bounding_shpere;
 		float *_heightData;
 		float _blockScale;

@@ -4,9 +4,14 @@
 #include <list>
 namespace HTTP {
 
+	/*
+	管理HTTP连接
+	*/
 	class HttpConnection {
 
 	public:
+		HttpConnection();
+		~HttpConnection();
 
 		void createConnections(int count);
 		CURL* getConnection(unsigned long userID);
@@ -14,20 +19,20 @@ namespace HTTP {
 		void freeConnection(unsigned long userID);
 		void closeConnection(unsigned long userID);
 
-		void setTimeOut(long timeOut);
-		long getTimeOut()const;
+		void setTimeOut(long timeout) { _timeout = timeout; }
+		long getTimeOut()const { return _timeout; }
 
-		void setUserAgent(const char* agent);
-		const char* getUserAgent()const;
+		void setUserAgent(const char* agent) { _userAgent = agent; }
+		const char* getUserAgent()const { return _userAgent.c_str(); }
 
-		void setPorxySetting(const ProxySetting& proxySetting);
+		void setPorxySetting(const ProxySetting& proxySetting) { _proxySettings = proxySetting; }
 
 	protected:
 
 		typedef std::map<unsigned long, CURL*> ConnectMap;
 
 		void initializeConnection(CURL* handle);
-		void checkProxyConfiguration();
+		//void checkProxyConfiguration();
 
 	private:
 

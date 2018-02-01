@@ -56,9 +56,9 @@ namespace SRE {
 		virtual float getKeyFramesAtTime(const TimeIndex& timeIndex, KeyFrame** keyFrame1, KeyFrame** keyFrame2,
 			unsigned short* firstKeyIndex = 0) const;
 	
-		virtual void removeKeyFrame(unsigned short index);
+		virtual void removeKeyFrame(unsigned short index){}
 		
-		virtual void removeAllKeyFrames(void);
+		virtual void removeAllKeyFrames(void){}
 		/*
 		插值出关键帧信息
 		*/
@@ -96,12 +96,12 @@ namespace SRE {
 		ObjectAnimationTrack(Animation* parent, unsigned short index);
 		ObjectAnimationTrack(Animation* parent, unsigned short index, Object::ptr target);
 		virtual void getInterpolatedKeyFrame(const TimeIndex& timeIndex, KeyFrame* kf) const;
-		virtual void apply(const TimeIndex& timeIndex, float weight = 1.0, float scale = 1.0f);
+		virtual void apply(const TimeIndex& timeIndex, float weight = 1.0, float scale = 1.0f){}
 		void applyToTarget(Object* node, const TimeIndex& timeIndex, float weight = 1.0,
 			float scale = 1.0f);
 
 	protected:
-		KeyFrame* createKeyFrameImpl(float time);
+		KeyFrame* createKeyFrameImpl(float time) { return NULL; }
 
 		Object::ptr _target;
 	};

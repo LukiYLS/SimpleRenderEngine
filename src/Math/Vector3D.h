@@ -2,7 +2,7 @@
 #include <math.h>
 #include <algorithm>
 #include "Vector2D.h"
-
+#include "Quaternion.h"
 namespace Math {
 
 	class Vector4D;
@@ -331,6 +331,54 @@ namespace Math {
 		Vector3D reflect(const Vector3D& normal) const
 		{
 			return Vector3D(*this - (2 * this->dot(normal) * normal));
+		}
+		Quaternion getRotationTo(const Vector3D& dest, const Vector3D& fallbackAxis = Vector3D(0.0, 0.0, 0.0))
+		{
+			// Based on Stan Melax's article in Game Programming Gems
+			Quaternion q;
+			// Copy, since cannot modify local
+			Vector3D v0 = *this;
+			Vector3D v1 = dest;
+			v0.normalize();
+			v1.normalize();
+
+			double d = v0.dot(v1);
+			// If dot == 1, vectors are the same
+			if (d >= 1.0f)
+			{
+				return Quaternion(0, 0, 0, 1);
+			}
+			if (d < (1e-6f - 1.0f))
+			{
+				//if (fallbackAxis != Vector3D(0.0, 0.0, 0.0))
+				//{
+				//	// rotate 180 degrees about the fallback axis
+				//	q.setFromAxisAngle(M_PI, fallbackAxis);
+				//}
+				//else
+				//{
+				//	// Generate an axis
+				//	Vector3D axis = Vector3D(1,0,0).cross(*this);
+				//	if (axis.isZeroLength()) // pick another if colinear
+				//		axis = Vector3::UNIT_Y.crossProduct(*this);
+				//	axis.normalize();
+				//	q.setFromAxisAngle(Radian(Math::PI), axis);
+				//}
+			}
+			else
+			{
+				double s =sqrt((1 + d) * 2);
+				double invs = 1 / s;
+
+				Vector3D c = v0.cross(v1);
+
+				q.x = c.x * invs;
+				q.y = c.y * invs;
+				q.z = c.z * invs;
+				q.w = s * 0.5f;
+				q.normalize();
+			}
+			return q;
 		}
 
 	public:

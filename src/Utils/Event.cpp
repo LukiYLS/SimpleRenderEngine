@@ -33,7 +33,7 @@ namespace Utils
 
 	Event::ptr EventManager::createEvent()
 	{
-		return make_shared<Event>();
+		return std::make_shared<Event>();
 	}
 
 	void EventManager::sendEvent(Event::ptr event)
